@@ -372,7 +372,8 @@ a.btn.primary{color:var(--accent-ink)}
 .skills{display:flex;flex-wrap:wrap;gap:6px}
 .skills span{font-size:.76rem;border:1px solid var(--line);border-radius:999px;padding:2px 9px;background:var(--surface-2)}
 .card h2 .ic{vertical-align:-3px;color:var(--gold-deep)}
-.bnav{grid-template-columns:repeat(5,1fr)!important}
+.bnav{grid-template-columns:repeat(6,1fr)!important}
+@media (max-width:719px){.bnav button span{font-size:.62rem}}
 @media (max-width:719px){.home-hero h1{font-size:1.6rem}.tile{min-height:108px;padding:14px}}
 /* chapters */
 .wf{margin-bottom:4px}
@@ -388,6 +389,13 @@ a.btn.primary{color:var(--accent-ink)}
 .chname{font-size:.92rem}
 .chact{grid-column:2;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 @media (min-width:760px){.chrow{grid-template-columns:30px minmax(0,1fr) auto}.chact{grid-column:auto}}
+/* spom */
+.spgrid{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:760px){.spgrid{grid-template-columns:1fr 1fr}}
+.spset{display:grid;gap:8px;align-content:start}
+.spset h3{font-size:1.15rem}
+.spsteps{margin:0;padding-left:20px;display:grid;gap:8px}
+.spsteps li::marker{color:var(--gold-deep);font-weight:700}
 /* accounts */
 .acct{display:flex;align-items:center;gap:8px;font-size:.85rem}
 .acct:empty{display:none}
@@ -627,7 +635,7 @@ function go(t){const map={dashboard:["home"],papers:["resources","papers"],guida
   const m=map[t];if(m){tab=m[0];if(m[0]==="resources")resMode=m[1];if(m[0]==="plan")planMode=m[1]}else tab=t;
   if(tab!=="signin"){try{localStorage.setItem(K+".tab",tab)}catch(e){}}}
 try{go(localStorage.getItem(K+".tab")||"home")}catch(e){}
-if(location.hash&&/^#(home|resources|practice|plan|careers|dashboard|papers|mcq|planner|journey|guidance|about)$/.test(location.hash))go(location.hash.slice(1));
+if(location.hash&&/^#(home|resources|practice|plan|careers|spom|dashboard|papers|mcq|planner|journey|guidance|about)$/.test(location.hash))go(location.hash.slice(1));
 
 const L=()=>LEVELS[S.level];
 const paper=id=>L().papers.find(p=>p.id===id)||Object.values(LEVELS).flatMap(l=>l.papers).find(p=>p.id===id);
@@ -717,7 +725,7 @@ function hm(m){m=m%(24*60);const h=Math.floor(m/60),mm=m%60;return String(h).pad
 function currentPlan(){return buildPlan(Object.assign({level:S.level,start:today},S.plan,{weak:S.plan.weak||[]}))}
 
 /* ---------- render ---------- */
-const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["plan","Plan","Plan","plan"],["careers","Careers","Careers","brief"]];
+const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["plan","Plan","Plan","plan"],["spom","SPOM","SPOM","school"],["careers","Careers","Careers","brief"]];
 const IC={
  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
  papers:'<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="m9 14 2 2 4-4"/>',
@@ -814,7 +822,7 @@ function renderChrome(){
   const real=sb&&session&&!isGuest()&&!recovering;
   const ac=document.getElementById("acct");
   ac.innerHTML=!sb?"":real?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
-  const showLv=S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers";
+  const showLv=S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers"&&tab!=="spom";
   document.getElementById("levelSeg").innerHTML=Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}"><span class="lg">${v.label}</span><span class="sm">${k==="inter"?"Inter":v.label}</span></button>`).join("");
   document.getElementById("levelSeg").hidden=!showLv;
   document.querySelector(".tabs").hidden=tab==="signin";
@@ -1055,6 +1063,56 @@ plan(){
   const body=planMode==="progress"?VIEWS.dashboard():planMode==="journey"?VIEWS.journey():VIEWS.planner();
   return `${sub}${cu}${planMode!=="study"?nudge:""}${body}`;
 },
+spom(){
+  const sp=spomS(),C=sp.chap||{};
+  const sub=`<div class="seg subnav" role="group" aria-label="SPOM">${[["overview","Overview"],["syllabus","Syllabus"],["mcq","MCQs"],["test","Book test"]].map(x=>`<button data-spm="${x[0]}" aria-pressed="${spomMode===x[0]}">${x[1]}</button>`).join("")}</div>`;
+  const pctOf=id=>{const ch=spomSyl(id);if(!ch.length)return 0;const r=ch.filter((_,j)=>(C[id+"|"+j]||0)>=1).length,v=ch.filter((_,j)=>(C[id+"|"+j]||0)>=2).length;return Math.round((r+v)/(2*ch.length)*100)};
+  const passed=SPOM_SETS.filter(x=>(sp.st||{})[x[0]]==="passed").length;
+  const hero=`<div class="hero"><div><div class="eyebrow">CA Final · Self-Paced Online Modules</div><h1>SPOM, sorted.</h1><p class="muted">Four modules every CA Final student must clear: two compulsory, two electives. Learn on ICAI's LMS, then book an online test at a centre near you.</p></div><span class="pill ${passed===4?"good":""}">${passed}/4 sets passed</span></div>`;
+  let body="";
+  if(spomMode==="overview"){
+    body=`<div class="stats icons"><div class="stat"><div class="eyebrow">${ico("target",15)}To pass</div><div class="v">50%</div><div class="s">in each set</div></div><div class="stat"><div class="eyebrow">${ico("check",15)}Negative marking</div><div class="v">None</div><div class="s">answer everything</div></div><div class="stat"><div class="eyebrow">${ico("flame",15)}Attempts</div><div class="v">Unlimited</div><div class="s">retake until you pass</div></div><div class="stat"><div class="eyebrow">${ico("clock",15)}Tests</div><div class="v">Daily</div><div class="s">India and abroad</div></div></div>
+    <div class="spgrid">${SPOM_SETS.map(x=>{const id=x[0],st=(sp.st||{})[id]||"todo",pc=pctOf(id),el=id==="SC"?sp.c:id==="SD"?sp.d:"";
+      return `<div class="card spset"><div class="row sp"><span class="eyebrow">${x[1]} · ${x[4]}</span><span class="pill ${st==="passed"?"good":st==="booked"?"warn":""}">${SPOM_ST.find(z=>z[0]===st)[1]}</span></div>
+      <h3>${esc(id==="SC"||id==="SD"?(el||"Pick your elective"):x[2])}</h3>
+      ${id==="SC"||id==="SD"?`<div class="field"><label for="sp${id}">Your elective</label><select id="sp${id}"><option value="">Choose…</option>${(id==="SC"?SPOM_C:SPOM_D).map(o=>`<option ${o===el?"selected":""}>${esc(o)}</option>`).join("")}</select></div>`:""}
+      <p class="muted" style="font-size:.85rem">${x[3]} learning hours · 100-mark online test</p>
+      <div class="track"><div class="fill" style="width:${pc}%"></div></div><p class="muted" style="font-size:.8rem">${pc}% of syllabus ticked</p>
+      <div class="presets">${SPOM_ST.map(z=>`<button class="chip" data-spst="${id}|${z[0]}" aria-pressed="${st===z[0]}">${z[1]}</button>`).join("")}</div></div>`}).join("")}</div>
+    <div class="card"><h2 style="margin-bottom:12px">How SPOM works</h2><ol class="spsteps">
+      <li><b>Register for CA Final.</b> SPOM registration is included, with no separate fee.</li>
+      <li><b>Complete the learning hours on ICAI's LMS.</b> Set A and Set B need 40 hours each; each elective needs 20.</li>
+      <li><b>Book your test on the SPMT portal.</b> Log in with your SSP details, then pick the module, city, centre and date.</li>
+      <li><b>Score 50% or more in each set.</b> Marks aren't added to your Final exam marks.</li>
+      <li><b>Clear all four sets.</b> They're part of your Final eligibility, so check ICAI's current rules for the deadline.</li></ol>
+      <div class="row" style="margin-top:12px"><button class="btn primary sm" data-spm="test">Book a test & check centres</button><button class="btn sm" data-spm="mcq">Practise SPOM MCQs</button></div></div>`;
+  }else if(spomMode==="syllabus"){
+    body=SPOM_SETS.map(x=>{const id=x[0],ch=spomSyl(id),pc=pctOf(id);
+      return `<details class="card syl" id="spsyl-${id}" ${window.__spOpen===id?"open":""}><summary><span><span class="pno">${x[1]} · ${x[4]}</span><b>${esc(id==="SC"||id==="SD"?((id==="SC"?sp.c:sp.d)||"Elective not chosen yet"):x[2])}</b><span class="muted" style="font-size:.84rem">${ch.length?ch.length+" topics · "+x[3]+" learning hours":"Pick your elective in Overview"}</span></span><span class="sylpct num">${pc}%</span></summary>
+      <div class="track" style="margin:10px 0 6px"><div class="fill" style="width:${pc}%"></div></div>
+      <div class="chlist">${ch.map((c,j)=>{const st=C[id+"|"+j]||0,n=SPOM_Q.filter(q=>q.p===id&&q.c===j).length;return `<div class="chrow"><span class="chn num">${j+1}</span><span class="chname">${esc(c[0])}</span><span class="chact"><button class="chip" data-spc="${id}|${j}|1" aria-pressed="${st>=1}"><span class="tk">${st>=1?"✓":"·"}</span>Studied</button><button class="chip" data-spc="${id}|${j}|2" aria-pressed="${st>=2}"><span class="tk">${st>=2?"✓":"·"}</span>Revised</button>${n?`<button class="btn ghost sm" data-sps="${id}" data-spm="mcq">${n} MCQ${n>1?"s":""}</button>`:""}</span></div>`}).join("")}</div></details>`}).join("")+`<p class="muted" style="font-size:.84rem">Topics follow ICAI's SPOM study material for Sets A and B. Elective modules are covered in full on ICAI's LMS.</p>`;
+  }else if(spomMode==="mcq"){
+    if(!spomCur||(spomSet!=="all"&&spomCur.p!==spomSet))spomPick();
+    const q=spomCur,res=sp.mcq||[],acc=id=>{const r=res.filter(m=>m.s===id);return r.length?Math.round(r.filter(m=>m.ok).length/r.length*100)+"%":"—"};
+    body=`<div class="card"><div class="presets">${[["all","All sets"],["SA","Set A"],["SB","Set B"],["SC","Set C"],["SD","Set D"]].map(x=>`<button class="chip" data-sps="${x[0]}" aria-pressed="${spomSet===x[0]}">${x[1]}${x[0]!=="all"?` · ${acc(x[0])}`:""}</button>`).join("")}</div>
+      ${q?`<div style="margin-top:14px"><span class="pill">${SPOM_SETS.find(x=>x[0]===q.p)[1]}</span>${spomSyl(q.p)[q.c]&&(q.p==="SA"||q.p==="SB")?`<span class="pill chp">${esc(spomSyl(q.p)[q.c][0].replace(/^[^:]+: /,""))}</span>`:""}<p class="q">${esc(q.q)}</p>
+      <div class="opts">${q.o.map((o,i)=>{const cls=spomAns!==false?(i===q.a?"right":i===spomAns?"wrong":""):"";return `<button class="opt ${cls}" data-spo="${i}" ${spomAns!==false?"disabled":""}><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`}).join("")}</div>
+      ${spomAns!==false?`<div class="why"><b style="color:${spomAns===q.a?"var(--good)":"var(--tick)"}">${spomAns===q.a?"Nailed it!":"Not quite — it's "+"ABCD"[q.a]+"."}</b> ${esc(q.w)}</div>`:""}
+      <div class="mcq-foot"><span class="muted" style="font-size:.85rem">${spomPool().length} questions in this set · no negative marking in the real test</span><button class="btn primary" data-act="spnext">Next one</button></div></div>`:`<p class="muted" style="margin-top:12px">No questions for this set yet.</p>`}</div>
+      <p class="muted" style="font-size:.84rem">Starter question bank. More SPOM questions are on the way, set by set.</p>`;
+  }else{
+    body=`<div class="grid2"><div class="card"><div class="card-h"><h2>${ico("plan",20)} Book a test & check centres</h2></div>
+      <ol class="spsteps"><li>Finish the prescribed learning hours for the module on <b>lms.icai.org</b>.</li><li>Log in to <b>spmt.icai.org</b> with your SSP username and password.</li><li>Choose the module, then your <b>city</b>. The portal lists the centres and dates with seats available.</li><li>Pick a slot, pay the fee and download your admit card.</li><li>If no slots show for your city, try a nearby city or email the SPMT helpdesk.</li></ol>
+      <div class="row" style="margin-top:12px"><a class="btn primary sm" href="https://spmt.icai.org" target="_blank" rel="noopener">Check centres & book on SPMT</a><a class="btn sm" href="https://lms.icai.org/login" target="_blank" rel="noopener">ICAI LMS</a></div></div>
+    <div class="card"><div class="card-h"><h2>Fees</h2><span class="pill">Confirm while booking</span></div>
+      <table><tbody><tr><td>India</td><td class="num">₹500</td></tr><tr><td>Nepal and Bhutan</td><td class="num">₹850</td></tr><tr><td>Gulf (incl. Dubai, Abu Dhabi, Doha, Muscat)</td><td class="num">USD 150</td></tr></tbody></table>
+      <p class="muted" style="font-size:.82rem;margin-top:8px">Per test, as reported by CA test-series sites. The SPMT portal shows the current fee before you pay.</p></div></div>
+    <div class="grid2"><div class="card"><h2 style="margin-bottom:10px">Before you book</h2><ul class="steps"><li>Tests run daily across India and abroad, except government holidays.</li><li>ICAI sometimes pauses bookings for portal maintenance (tests were paused 11–20 April 2026), so check announcements first.</li><li>Keep your SSP login and a photo ID ready for test day.</li><li>No negative marking: attempt every question.</li></ul>
+      <div class="row" style="margin-top:12px"><a class="btn sm" href="https://www.icai.org/category/announcements" target="_blank" rel="noopener">ICAI announcements</a></div></div>
+    <div class="card"><h2 style="margin-bottom:10px">Stuck? ICAI helpdesk</h2><p>Slot, login or result problems go to the SPMT exam helpdesk:</p><p class="mono" style="margin-top:8px;user-select:all">spmt_examhelpline@icai.in</p><p class="muted" style="font-size:.84rem;margin-top:8px">Include your registration number, module and city.</p></div></div>`;
+  }
+  return hero+sub+body;
+},
 careers(){
   const c=cityOf(),st=stageOf();
   return `<div class="hero"><div><div class="eyebrow">Careers</div><h1>From articleship to your first CA job.</h1><p class="muted">Explore CA roles and jump straight to live openings on LinkedIn and Naukri, filtered for your city and stage.</p></div></div>
@@ -1143,6 +1201,45 @@ guidance(){
 }};
 
 
+/* ---------- SPOM (Self-Paced Online Modules) ---------- */
+const SPOM_C=["Risk Management","Sustainable Development and Sustainability Reporting","Public Finance and Government Accounting","Insolvency and Bankruptcy Code, 2016","International Taxation","Arbitration and Conciliation Act, 1996","Forensic Accounting","Valuation","Financial Services and Capital Markets","Forex and Treasury Management"];
+const SPOM_D=["Constitution of India and Art of Advocacy","Psychology and Philosophy","Entrepreneurship and Start-up Ecosystem","Digital Ecosystem and Controls"];
+const SPOM_SYL={
+ SA:[["Company Law: Appointment and Qualification of Directors",2],["Company Law: Appointment and Remuneration of Managerial Personnel",1],["Company Law: Meetings of Board and its Powers",2],["Company Law: Inspection, Inquiry and Investigation",1],["Company Law: Compromises, Arrangements and Amalgamations",2],["Company Law: Prevention of Oppression and Mismanagement",1],["Company Law: Winding Up",1],["Company Law: Miscellaneous Provisions",1],["Company Law: Adjudication, Special Courts, NCLT and NCLAT",1],["Company Law: Compliance and e-filing",1],["Securities Laws: SEBI Act, 1992 and SEBI Regulations (LODR, ICDR, SAST, PIT)",3],["Economic Laws: Foreign Exchange Management Act, 1999",1],["Economic Laws: Foreign Contribution (Regulation) Act, 2010",1],["Economic Laws: Insolvency and Bankruptcy Code, 2016",2]],
+ SB:[["Introduction to Strategic Cost Management",1],["Modern Business Environment",1],["Lean System and Innovation",1],["Specialist Cost Management Techniques",2],["Cost Management for Emerging Business Models",1],["Strategic Revenue Management",1],["Strategic Profit Management",1],["Introduction to Strategic Performance Management",1],["Performance Measures in the Private Sector",1],["Performance Measures in Not-for-Profit Organisations",1],["Preparation of Performance Reports",1],["Divisional Transfer Pricing",1],["Standard Costing",1],["Case Study",1]]
+};
+const SPOM_SETS=[["SA","Set A","Corporate and Economic Laws",40,"Compulsory"],["SB","Set B","Strategic Cost and Performance Management",40,"Compulsory"],["SC","Set C","Elective",20,"Choose 1 of 10"],["SD","Set D","Elective",20,"Choose 1 of 4"]];
+const SPOM_Q=[
+ ["SA","Without a special resolution, a company can have a maximum of how many directors?",["12","15","20","No limit"],1,"Section 149(1): up to 15 directors; more requires a special resolution.",0],
+ ["SA","The Board of a company must meet at least:",["Twice a year","Four times a year, with not more than 120 days between two meetings","Once every quarter with a 90-day gap","Monthly"],1,"Section 173(1): at least four meetings a year, gap not exceeding 120 days.",2],
+ ["SA","Every listed public company must have independent directors making up at least:",["One-fourth of total directors","One-third of total directors","One-half of total directors","Two directors"],1,"Section 149(4): at least one-third of the total number of directors.",0],
+ ["SA","Overall managerial remuneration of a public company should not exceed (without shareholder approval):",["5% of net profits","10% of net profits","11% of net profits","15% of net profits"],2,"Section 197: 11% of net profits computed under Section 198.",1],
+ ["SA","A petition for relief against oppression and mismanagement is filed with the:",["High Court","Registrar of Companies","National Company Law Tribunal","SEBI"],2,"Sections 241–242: members apply to the Tribunal (NCLT).",5],
+ ["SA","The minimum amount of default for initiating CIRP under the IBC is currently:",["₹1 lakh","₹10 lakh","₹1 crore","₹5 crore"],2,"The threshold was raised from ₹1 lakh to ₹1 crore by notification in March 2020.",13],
+ ["SA","The insolvency resolution process under the IBC must ordinarily be completed within:",["90 days","180 days (extendable), overall 330 days including litigation","365 days","2 years"],1,"Section 12: 180 days, extendable by up to 90 days; overall cap of 330 days.",13],
+ ["SA","The Foreign Contribution (Regulation) Act, 2010 regulates:",["Foreign direct investment in companies","Acceptance and use of foreign contribution by certain persons and NGOs","Import of goods","Remittances by residents abroad"],1,"FCRA regulates acceptance and utilisation of foreign contribution and hospitality.",12],
+ ["SA","Insider trading is governed by which SEBI regulations?",["SEBI (ICDR)","SEBI (LODR)","SEBI (PIT)","SEBI (SAST)"],2,"SEBI (Prohibition of Insider Trading) Regulations, 2015.",10],
+ ["SA","Under SEBI (SAST) Regulations, an open offer is triggered when an acquirer reaches:",["10% of voting rights","15% of voting rights","25% or more of voting rights","51% of voting rights"],2,"Regulation 3(1): acquiring 25% or more voting rights triggers an open offer.",10],
+ ["SB","Under target costing, target cost equals:",["Target price + target profit","Target price − target profit","Actual cost − savings","Standard cost × units"],1,"Start from the price the market will pay, deduct the required profit.",3],
+ ["SB","'Kaizen' refers to:",["A one-time process redesign","Continuous, incremental improvement","Just-in-time purchasing","A pricing technique"],1,"Kaizen is Japanese for continuous improvement through small steps.",2],
+ ["SB","Which is NOT one of the four Balanced Scorecard perspectives?",["Financial","Customer","Competitor","Learning and growth"],2,"The four are financial, customer, internal business process, and learning and growth.",8],
+ ["SB","In throughput accounting, throughput contribution equals:",["Sales − all variable costs","Sales − direct material cost","Sales − labour cost","Contribution − fixed costs"],1,"Throughput = sales revenue − totally variable (usually direct material) cost.",3],
+ ["SB","Economic Value Added (EVA) equals:",["Net profit − dividends","NOPAT − (capital employed × WACC)","EBIT − interest","Sales − cost of sales"],1,"EVA measures profit above the cost of all capital employed.",8],
+ ["SB","A transfer price at marginal cost is usually appropriate when the selling division:",["Is at full capacity","Has spare capacity","Sells only externally","Makes a loss"],1,"With spare capacity there is no opportunity cost, so marginal cost is the minimum transfer price.",11],
+ ["SB","Six Sigma quality aims for no more than:",["1 defect per thousand","3.4 defects per million opportunities","1% defects","Zero defects"],1,"Six Sigma targets 3.4 defects per million opportunities.",2],
+ ["SB","'Value for money' in not-for-profit organisations is judged on:",["Profit, growth and margin","Economy, efficiency and effectiveness","Liquidity, solvency and profitability","Cost, price and volume"],1,"The 3Es: economy, efficiency and effectiveness.",9],
+ ["SC","In a DCF valuation, the value of a business equals:",["Book value of net assets","Present value of expected future cash flows","Sum of past profits","Market capitalisation of peers"],1,"DCF discounts forecast free cash flows at the appropriate cost of capital. (Valuation elective)",0],
+ ["SC","Benford's Law is used in forensic accounting to:",["Value intangible assets","Spot unusual patterns in the leading digits of numbers","Calculate penalties","Estimate tax"],1,"Genuine data sets follow a predictable first-digit distribution; deviations can flag manipulation. (Forensic Accounting elective)",0],
+ ["SC","An arbitral award under the Arbitration and Conciliation Act, 1996 is enforced:",["As a contract","As if it were a decree of the court","Only after High Court approval","Only by mutual consent"],1,"Section 36: once the time to challenge expires, the award is enforceable like a court decree. (Arbitration elective)",0],
+ ["SD","Which is a core feature of a start-up ecosystem?",["Only government funding","Networks of founders, investors, incubators and mentors","Large listed companies only","Fixed-income markets"],1,"Ecosystems connect founders with capital, mentoring and support. (Entrepreneurship elective)",0]
+].map((r,i)=>({id:"s"+i,p:r[0],q:r[1],o:r[2],a:r[3],w:r[4],c:r[5]}));
+function spomS(){S.spom=S.spom||{c:"",d:"",st:{},chap:{},mcq:[]};return S.spom}
+function spomSyl(id){const sp=spomS();if(SPOM_SYL[id])return SPOM_SYL[id];const nm=id==="SC"?sp.c:sp.d;return nm?[[nm+" — e-learning module (20 hours)",1],[nm+" — revision and practice test",1]]:[]}
+const SPOM_ST=[["todo","Not started"],["learning","Learning on LMS"],["booked","Test booked"],["passed","Passed"]];
+let spomMode="overview",spomSet="all",spomCur=null,spomAns=false;
+function spomPool(){return SPOM_Q.filter(q=>spomSet==="all"||q.p===spomSet)}
+function spomPick(){const pl=spomPool();if(!pl.length){spomCur=null;return}let n;do{n=pl[Math.floor(Math.random()*pl.length)]}while(pl.length>1&&spomCur&&n.id===spomCur.id);spomCur=n;spomAns=false}
+
 /* ---------- careers data ---------- */
 const ROLES=[
  {id:"audit",name:"Statutory audit",what:"Check that a company's financial statements show a true and fair view.",skills:["SAs","Ind AS","Sampling","Excel"],where:"Big 4, mid-tier CA firms",q:"statutory audit"},
@@ -1178,6 +1275,8 @@ function searchIndex(){
   TIPS.forEach(x=>out.push({k:"Tip",t:x[0],s:x[1],a:`data-tab="resources" data-sub="tips"`}));
   ROLES.forEach(r=>out.push({k:"Career",t:r.name,s:r.what,a:`data-tab="careers" data-jump="role-${r.id}"`}));
   [["Articleship","Find articleship openings","careers","art"],["Industrial training","Openings for Final students","careers","art"],["Gulf jobs","CA roles in Dubai","careers","gulf"]].forEach(x=>out.push({k:"Career",t:x[0],s:x[1],a:`data-tab="careers" data-jump="${x[3]}"`}));
+  out.push({k:"SPOM",t:"SPOM overview",s:"Sets A–D, pass marks, electives",a:`data-tab="spom" data-spm="overview"`},{k:"SPOM",t:"Book SPOM test / check centres",s:"SPMT portal, fees, helpdesk",a:`data-spm="test"`},{k:"SPOM",t:"SPOM MCQs",s:"Practice for Sets A–D",a:`data-spm="mcq"`});
+  Object.keys(SPOM_SYL).forEach(id=>SPOM_SYL[id].forEach((c,j)=>out.push({k:"SPOM",t:c[0],s:id==="SA"?"Set A · Corporate and Economic Laws":"Set B · Strategic Cost and Performance Management",a:`data-spm="syllabus"`})));
   [["Catch-up plan","I'm behind — plan the days left","catchup"],["Study plan","Plan for any duration","plan"],["Log study hours","Track today's hours","progress"],["CA journey","Milestones to membership","journey"]].forEach(x=>out.push({k:"Plan",t:x[0],s:x[1],a:x[2]==="catchup"?`data-act="catchup"`:`data-tab="plan" data-sub="${x[2]==="plan"?"study":x[2]}"`}));
   lv.papers.forEach(p=>chapters(p.id).forEach((c,j)=>out.push({k:"Chapter",t:`Ch ${j+1} · ${chShort(p.id,j)}`,s:`P${p.no} ${p.name}`,a:`data-tab="resources" data-sub="syllabus" data-jump="syl-${p.id}" data-open="${p.id}"`})));
   Q.filter(q=>lv.papers.some(p=>p.id===q.p)).forEach(q=>out.push({k:"MCQ",t:q.q,s:"P"+paper(q.p).no+" · "+paper(q.p).name,a:`data-q="${q.id}"`}));
@@ -1381,6 +1480,11 @@ document.addEventListener("click",e=>{
   if(t.dataset.pick){S.level=t.dataset.pick;S.onboarded=true;save();render();return}
   if(t.dataset.chk){const [pid,j,l]=t.dataset.chk.split("|");S.chap=S.chap||{};const k=pid+"|"+j,cur0=S.chap[k]||0,L2=+l;S.chap[k]=cur0>=L2?L2-1:L2;if(!S.chap[k])delete S.chap[k];window.__sylOpen=pid;save();render();const el=document.getElementById("syl-"+pid);if(el)el.open=true;return}
   if(t.dataset.chq){const [pid,j]=t.dataset.chq.split("|");mode="practice";window.__mp=pid;window.__mc=j;cur=null;go("practice");render();window.scrollTo({top:0});return}
+  if(t.dataset.spm){spomMode=t.dataset.spm;if(t.dataset.sps){spomSet=t.dataset.sps;spomCur=null}go("spom");render();window.scrollTo({top:0});return}
+  if(t.dataset.sps){spomSet=t.dataset.sps;spomCur=null;render();return}
+  if(t.dataset.spst){const [id,v]=t.dataset.spst.split("|");const sp=spomS();sp.st=sp.st||{};sp.st[id]=v;save();render();if(v==="passed")toast("Set passed. Shabaash!");return}
+  if(t.dataset.spc){const [id,j,l]=t.dataset.spc.split("|");const sp=spomS();sp.chap=sp.chap||{};const k=id+"|"+j,c0=sp.chap[k]||0,L2=+l;sp.chap[k]=c0>=L2?L2-1:L2;if(!sp.chap[k])delete sp.chap[k];window.__spOpen=id;save();render();return}
+  if(t.dataset.spo!==undefined){if(spomAns!==false||!spomCur)return;spomAns=+t.dataset.spo;const sp=spomS();sp.mcq=(sp.mcq||[]).concat([{s:spomCur.p,ok:spomAns===spomCur.a,t:iso(today)}]).slice(-500);save();render();return}
   if(t.dataset.city){S.city=t.dataset.city;save();render();return}
   if(t.dataset.stage){S.stage=t.dataset.stage;save();render();return}
   if(t.dataset.q!==undefined){const q=Q.find(x=>x.id===t.dataset.q);if(q){mode="practice";window.__mp=q.p;cur=q;answered=false;go("practice");render();window.scrollTo({top:0})}return}
@@ -1395,6 +1499,7 @@ document.addEventListener("click",e=>{
   if(a==="signout"){signOut();return}
   if(a==="catchup"){catchup=true;const d=S.exam[S.level];const n=d?Math.round((new Date(d)-today)/864e5):null;if(n&&n>0){S.plan.dur=n;S.plan.unit="days";save()}go("plan");planMode="study";render();window.scrollTo({top:0});return}
   if(a==="cuclose"){catchup=false;render();return}
+  if(a==="spnext"){spomPick();render();return}
   if(a==="plandocx"){planDocx(t);return}
   if(a==="theme"){THEME=isDark()?"light":"dark";try{localStorage.setItem("prepx.theme",THEME)}catch(_){}applyTheme();renderChrome();return}
   if(a==="nextq"){pick();paintQ()}
@@ -1425,6 +1530,7 @@ document.addEventListener("change",e=>{
   if(id==="att"){window.__att=v;render()}
   if(id==="mcqP"){window.__mp=v;window.__mc="all";cur=null;render()}
   if(id==="mcqC"){window.__mc=v;cur=null;paintQ()}
+  if(id==="spSC"||id==="spSD"){const sp=spomS();if(id==="spSC")sp.c=v;else sp.d=v;save();render()}
   if(id==="pDur"){const n=Math.max(1,Math.min(730,parseInt(v)||1));S.plan.dur=n;save();render()}
   if(id==="pUnit"){S.plan.unit=v;save();render()}
   if(id==="pH"){S.plan.hpd=Math.max(1,Math.min(16,parseFloat(v)||1));save();render()}
