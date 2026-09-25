@@ -5,36 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CA PrepX</title>
 <meta name="description" content="Free study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final students.">
-<meta name="theme-color" content="#1C694A">
+<meta name="theme-color" content="#111111">
 <meta property="og:title" content="CA PrepX">
 <meta property="og:description" content="Plan it. Practise it. Tick it off. Study plans, RTP/MTP tracker and MCQs for CA students.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 :root{
-  --bg:#F1F4EF; --surface:#FFFFFF; --surface-2:#E7ECE5; --ink:#14211B; --muted:#5A6960;
-  --line:#D5DCD2; --accent:#1C694A; --accent-ink:#FFFFFF; --accent-soft:#DCEBE2;
-  --tick:#B5352C; --tick-soft:#F6E1DE; --good:#1C7A4D; --warn:#9A6300; --warn-soft:#F5EAD3;
-  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
-  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --bg:#FAF7EF; --surface:#FFFFFF; --surface-2:#F3EEE1; --ink:#141414; --muted:#6B6558;
+  --line:#E6DFCC; --accent:#111111; --accent-ink:#E0B43A; --accent-soft:#F6EDD2;
+  --gold:#E0B43A; --gold-deep:#9C7400; --gold-ink:#1A1405;
+  --tick:#C2410C; --tick-soft:#FBE4D8; --good:#2F7D4F; --good-soft:#E2F1E7; --warn:#A86A00; --warn-soft:#F6EBCB;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#0E1512; --surface:#16201B; --surface-2:#1D2923; --ink:#E5ECE7; --muted:#95A49B;
-    --line:#2A3831; --accent:#5DC296; --accent-ink:#0B1410; --accent-soft:#1E3A2D;
-    --tick:#F07C70; --tick-soft:#3A2220; --good:#6BCB97; --warn:#E3B04F; --warn-soft:#3A2F17;
+    --bg:#0B0B0C; --surface:#161617; --surface-2:#1F1F22; --ink:#F3EEDF; --muted:#A39C88;
+    --line:#2C2921; --accent:#E0B43A; --accent-ink:#1A1405; --accent-soft:#2A2414;
+    --gold:#E0B43A; --gold-deep:#E0B43A; --gold-ink:#1A1405;
+    --tick:#F2845C; --tick-soft:#3A2016; --good:#5FC08A; --good-soft:#15291E; --warn:#E3B04F; --warn-soft:#33290F;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#0E1512; --surface:#16201B; --surface-2:#1D2923; --ink:#E5ECE7; --muted:#95A49B;
-  --line:#2A3831; --accent:#5DC296; --accent-ink:#0B1410; --accent-soft:#1E3A2D;
-  --tick:#F07C70; --tick-soft:#3A2220; --good:#6BCB97; --warn:#E3B04F; --warn-soft:#3A2F17;
+  --bg:#0B0B0C; --surface:#161617; --surface-2:#1F1F22; --ink:#F3EEDF; --muted:#A39C88;
+  --line:#2C2921; --accent:#E0B43A; --accent-ink:#1A1405; --accent-soft:#2A2414;
+  --gold:#E0B43A; --gold-deep:#E0B43A; --gold-ink:#1A1405;
+  --tick:#F2845C; --tick-soft:#3A2016; --good:#5FC08A; --good-soft:#15291E; --warn:#E3B04F; --warn-soft:#33290F;
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
@@ -59,11 +62,11 @@ button,select,input{font:inherit;color:inherit}
 .brand small{display:block;color:var(--muted);font-size:.78rem;margin-top:-2px}
 .seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px;gap:2px}
 .seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;font-weight:500;font-size:.88rem;color:var(--muted)}
-.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14)}
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
 .tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .tabs button{border:0;background:none;padding:12px 12px 11px;cursor:pointer;white-space:nowrap;color:var(--muted);font-weight:500;border-bottom:2px solid transparent}
-.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--tick)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--gold)}
 main{padding-block:24px 64px}
 .view{display:grid;gap:20px}
 
@@ -110,9 +113,9 @@ main{padding-block:24px 64px}
 
 .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:.8rem;background:var(--surface);cursor:pointer;white-space:nowrap}
 .chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
-.chip .tk{display:inline-block;width:14px;text-align:center;color:var(--tick);font-weight:700}
+.chip .tk{display:inline-block;width:14px;text-align:center;color:var(--gold-deep);font-weight:700}
 .pill{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.03em;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
-.pill.good{background:var(--accent-soft);color:var(--good)}
+.pill.good{background:var(--good-soft);color:var(--good)}
 .pill.warn{background:var(--warn-soft);color:var(--warn)}
 .pill.bad{background:var(--tick-soft);color:var(--tick)}
 
@@ -133,7 +136,7 @@ select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;backgroun
 .opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;border:1px solid var(--line);background:var(--surface);padding:11px 14px;border-radius:10px;cursor:pointer;font-size:.95rem}
 .opt:hover:not(:disabled){border-color:var(--accent)}
 .opt .k{font-family:var(--mono);color:var(--muted);min-width:1.2em}
-.opt.right{border-color:var(--good);background:var(--accent-soft)}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
 .opt.wrong{border-color:var(--tick);background:var(--tick-soft)}
 .opt:disabled{cursor:default}
 .why{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--surface-2);font-size:.92rem;max-width:70ch}
@@ -158,8 +161,8 @@ select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;backgroun
 .journey{display:grid;gap:0}
 .ms{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 0;border-bottom:1px dashed var(--line)}
 .ms:last-child{border-bottom:0}
-.ms .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.8rem;font-weight:700;color:var(--tick);margin-top:1px}
-.ms.done .dot{border-color:var(--tick)}
+.ms .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.8rem;font-weight:700;color:var(--gold-deep);margin-top:1px}
+.ms.done .dot{border-color:var(--gold)}
 .ms.doing .dot{border-color:var(--warn)}
 .ms .nm{font-weight:600}
 .ms .nt{font-size:.85rem;color:var(--muted)}
@@ -172,7 +175,7 @@ select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;backgroun
 /* guidance */
 .tips{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .tips ul{margin:8px 0 0;padding-left:18px;display:grid;gap:6px;font-size:.92rem}
-.callout{border-left:3px solid var(--tick);padding:4px 0 4px 14px}
+.callout{border-left:3px solid var(--gold);padding:4px 0 4px 14px}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .sp{justify-content:space-between}
 @media (prefers-reduced-motion:no-preference){.fill{transition:width .4s ease}}
@@ -183,7 +186,7 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 @media (min-width:860px){.welcome{grid-template-columns:1fr 1fr;padding-top:28px}}
 .feat{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px}
 .feat li{padding-left:26px;position:relative;max-width:48ch}
-.feat li::before{content:"✓";position:absolute;left:0;top:0;color:var(--tick);font-weight:700}
+.feat li::before{content:"✓";position:absolute;left:0;top:0;color:var(--gold-deep);font-weight:700}
 .lvls{display:grid;gap:8px}
 .lvl{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px 12px;text-align:left;border:1px solid var(--line);background:var(--surface);padding:12px 14px;border-radius:10px;cursor:pointer}
 .lvl span{font-size:.82rem}
@@ -201,6 +204,96 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .rv:last-child{border-bottom:0}
 .rv-h{display:flex;gap:10px;align-items:center}
 .rv p{max-width:75ch}
+/* v3 ui */
+:root{--hero-bg:#111111;--hero-line:#111111;--hero-ink:#FFFFFF;--hero-muted:#B5AE9C;--hero-track:rgba(255,255,255,.14);--hero-ring:#E0B43A;--hero-field:rgba(255,255,255,.08)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--hero-bg:#161617;--hero-line:#2C2921;--hero-ink:#F3EEDF;--hero-muted:#A39C88;--hero-track:rgba(255,255,255,.08);--hero-ring:#E0B43A;--hero-field:rgba(255,255,255,.05)}}
+:root[data-theme="dark"]{--hero-bg:#161617;--hero-line:#2C2921;--hero-ink:#F3EEDF;--hero-muted:#A39C88;--hero-track:rgba(255,255,255,.08);--hero-ring:#E0B43A;--hero-field:rgba(255,255,255,.05)}
+.ic{flex:none}
+.tabs button{display:inline-flex;align-items:center;gap:7px}
+.icon-btn{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);border-radius:10px;cursor:pointer;color:var(--ink)}
+.seg .sm{display:none}
+.stats.icons .eyebrow{display:flex;align-items:center;gap:6px}
+.stats.icons .eyebrow .ic{color:var(--accent)}
+.stat .v small{font-size:.8rem;color:var(--muted);font-family:var(--sans);font-weight:400}
+.hc{position:relative;overflow:hidden;background:var(--hero-bg);color:var(--hero-ink);border-radius:16px;padding:22px;display:flex;flex-wrap:wrap;gap:20px 28px;align-items:center;justify-content:space-between}
+.hc-bg{position:absolute;right:-50px;bottom:-80px;width:260px;height:260px;color:var(--hero-ink);opacity:.05;pointer-events:none}
+.hc-main{position:relative;display:grid;gap:8px;min-width:0}
+.hc-eb{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600;color:var(--hero-muted)}
+.hc h1{font-size:1.7rem;color:var(--hero-ink)}
+.hc-count{display:flex;align-items:center;gap:12px;line-height:1.2;color:var(--hero-muted);font-size:.9rem}
+.hc-count .big{font-size:3.4rem;line-height:1;font-weight:500;color:var(--hero-ink);letter-spacing:-.03em}
+.hc-set{color:var(--hero-muted)}
+.hc-date{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;color:var(--hero-muted)}
+.hc-date input,.hc-log input{background:var(--hero-field);border:1px solid var(--hero-track);color:var(--hero-ink);border-radius:8px;padding:5px 8px;color-scheme:dark}
+.hc-side{position:relative;display:grid;justify-items:center;gap:10px}
+.ring{position:relative;width:118px;height:118px}
+.ring svg{width:100%;height:100%}
+.ring .rt{fill:none;stroke:var(--hero-track);stroke-width:8}
+.ring .rp{fill:none;stroke:var(--hero-ring);stroke-width:8;stroke-linecap:round}
+.rc{position:absolute;inset:0;display:grid;place-content:center;text-align:center;line-height:1.15}
+.rc b{font-size:1.5rem;font-weight:500}
+.rc small{font-size:.8rem;color:var(--hero-muted)}
+.rc span{font-size:.72rem;color:var(--hero-muted);text-transform:uppercase;letter-spacing:.08em}
+.hc-log{display:flex;gap:6px}
+.hc-log input{width:74px}
+.hc-log .btn{background:var(--hero-ink);color:var(--hero-bg);border-color:var(--hero-ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.bnav{display:none}
+@media (max-width:719px){
+  .top{padding-block:12px 8px}
+  .brand small{display:none}
+  .brand svg{width:30px;height:30px}
+  #levelSeg{order:3;width:100%}
+  #levelSeg button{flex:1}
+  .seg .lg{display:none}.seg .sm{display:inline}
+  .top{gap:10px}
+  .top>.row{display:contents}
+  .brand{flex:1;min-width:0}
+  .acct{order:1}
+  #themeBtn{order:2}
+  #levelSeg{order:3}
+  .tabs{display:none}
+  .bnav{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -4px 16px rgba(0,0,0,.05)}
+  .bnav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;font-size:.66rem;font-weight:500;color:var(--muted);cursor:pointer}
+  .bnav button[aria-selected="true"]{color:var(--accent)}
+  .bnav button[aria-selected="true"] .ic{stroke-width:2.2}
+  main{padding-block:16px 100px}
+  h1{font-size:1.55rem}
+  .hc{padding:18px}
+  .hc h1{font-size:1.35rem}
+  .hc-count .big{font-size:2.8rem}
+  .hc-side{grid-template-columns:auto auto;align-items:center;justify-content:start;width:100%;gap:14px}
+  .ring{width:92px;height:92px}
+  .rc b{font-size:1.2rem}
+  .who{max-width:120px}
+}
+/* v4 brand */
+.btn{border-radius:999px;padding:8px 16px}
+.btn.sm{padding:5px 12px}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.outline{border-color:var(--ink);background:transparent;font-weight:600}
+.stat .v,.hc-count .big,.rc b,.brand b,.q{font-family:var(--serif)}
+.stat .v{font-weight:600}
+.hc{border:1px solid var(--hero-line)}
+.hc h1{font-weight:600}
+.hc-count .big{color:var(--gold);font-weight:600}
+.hc-log .btn{background:var(--gold);color:var(--gold-ink);border-color:var(--gold);font-weight:700}
+.stats.icons .eyebrow .ic{color:var(--gold-deep)}
+.bnav button[aria-selected="true"]{color:var(--ink)}
+.bnav button[aria-selected="true"] .ic{color:var(--gold-deep)}
+.field input,.field select,select,textarea{border-radius:10px}
+.auth{max-width:440px;margin:28px auto 0;display:grid;gap:18px}
+.auth-head{text-align:center;display:grid;justify-items:center;gap:8px}
+.auth-head h1{font-size:1.75rem}
+.mark{width:54px;height:54px;border-radius:15px;background:var(--accent);display:grid;place-items:center}
+.auth .card{padding:22px;border-radius:18px}
+.auth .seg{display:flex}
+.auth .seg button{flex:1}
+.auth .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.chipsrow{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.chipsrow span{font-size:.75rem;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted);background:var(--surface)}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;background:var(--accent);color:var(--accent-ink);padding:10px 18px;border-radius:999px;font-weight:600;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+@media (min-width:720px){.toast{bottom:32px}}
 /* accounts */
 .acct{display:flex;align-items:center;gap:8px;font-size:.85rem}
 .acct:empty{display:none}
@@ -220,11 +313,12 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
     <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
     <div><b>CA PrepX</b><small>CA exam prep, ticked off paper by paper</small></div>
   </div>
-  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div></div>
+  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div><button class="icon-btn" data-act="theme" id="themeBtn" aria-label="Switch light or dark mode"></button></div>
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
 <div class="wrap" id="bannerWrap"></div>
 <main class="wrap" id="main"></main>
+<nav class="bnav" id="bnav" aria-label="Sections"></nav>
 
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.js"></script>
@@ -450,7 +544,27 @@ function hm(m){m=m%(24*60);const h=Math.floor(m/60),mm=m%60;return String(h).pad
 function currentPlan(){return buildPlan(Object.assign({level:S.level,start:today},S.plan,{weak:S.plan.weak||[]}))}
 
 /* ---------- render ---------- */
-const TABS=[["dashboard","Dashboard"],["papers","RTP & MTP"],["mcq","MCQ practice"],["planner","Study planner"],["journey","My journey"],["guidance","Guidance"]];
+const TABS=[["dashboard","Dashboard","Home","home"],["papers","RTP & MTP","Papers","papers"],["mcq","MCQ practice","MCQs","mcq"],["planner","Study planner","Plan","plan"],["journey","My journey","Journey","journey"],["guidance","Guidance","Guide","guide"]];
+const IC={
+ home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+ papers:'<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="m9 14 2 2 4-4"/>',
+ mcq:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.6v.3"/><path d="M12 17h.01"/>',
+ plan:'<rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="m9 15 2 2 4-4"/>',
+ journey:'<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
+ guide:'<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ flame:'<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.6 1 2.5 2 3 0-3 .5-5.5 1-8.5z"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ check:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="m8 12 3 3 5-6"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+ moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'
+};
+const ico=(n,sz)=>`<svg class="ic" width="${sz||20}" height="${sz||20}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
+/* theme */
+let THEME=null;try{THEME=localStorage.getItem("prepx.theme")}catch(e){}
+function applyTheme(){if(THEME)document.documentElement.setAttribute("data-theme",THEME);else document.documentElement.removeAttribute("data-theme")}
+function isDark(){return THEME?THEME==="dark":window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches}
+applyTheme();
 /* ---------- accounts (Supabase) ---------- */
 const CFG=window.PREPX_CONFIG||{};
 const sb=(CFG.url&&CFG.anonKey&&window.supabase)?window.supabase.createClient(CFG.url,CFG.anonKey):null;
@@ -485,12 +599,12 @@ async function authDo(kind){
     if(kind==="guest")res=await sb.auth.signInAnonymously();
     else if(kind==="signup")res=await sb.auth.signUp({email:(email||"").trim(),password:pw,options:{data:{name:nm}}});
     else if(kind==="signin")res=await sb.auth.signInWithPassword({email:(email||"").trim(),password:pw});
-    else if(kind==="reset"){res=await sb.auth.resetPasswordForEmail((email||"").trim(),{redirectTo:location.origin});if(!res.error){authMsg="Check your inbox for a link to reset your password.";authView="signin"}}
+    else if(kind==="reset"){res=await sb.auth.resetPasswordForEmail((email||"").trim(),{redirectTo:location.origin});if(!res.error){authMsg="Check your inbox — reset link sent.";authView="signin"}}
     else if(kind==="newpass"){res=await sb.auth.updateUser({password:pw});if(!res.error){recovering=false;authView="signin";const g=await sb.auth.getSession();session=g.data.session;if(session){await afterSignIn(true);tab="dashboard"}authBusy=false;render();return}}
   }catch(e){res={error:{message:"Couldn't reach the server. Check your connection and try again."}}}
   authBusy=false;
   if(res&&res.error){authMsg=res.error.message;authErr=true;render();return}
-  if(kind==="signup"&&res.data&&!res.data.session){authMsg="Account created. Check your email to confirm it, then sign in.";authView="signin";render();return}
+  if(kind==="signup"&&res.data&&!res.data.session){authMsg="Account created! Confirm it from your email, then sign in.";authView="signin";render();return}
   if(res&&res.data&&res.data.session){session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);tab="dashboard"}
   render();
 }
@@ -498,53 +612,80 @@ async function signOut(){try{await sb.auth.signOut()}catch(e){}session=null;isAd
 function authCard(){
   const busy=authBusy?"disabled":"";
   const msg=authMsg?`<p class="amsg ${authErr?"err":""}">${esc(authMsg)}</p>`:"";
-  if(authView==="newpass")return `<div class="card"><h2>Set a new password</h2>${msg}<div class="field" style="margin-top:14px"><label for="aPw">New password</label><input id="aPw" type="password" minlength="6" autocomplete="new-password"></div><div class="row" style="margin-top:16px"><button class="btn primary" data-auth="newpass" ${busy}>Save password</button></div></div>`;
-  if(authView==="reset")return `<div class="card"><h2>Reset your password</h2><p class="muted" style="margin-top:6px">We'll email you a link to set a new one.</p>${msg}<div class="field" style="margin-top:14px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" value="${esc(aEmailVal)}"></div><div class="row" style="margin-top:16px"><button class="btn primary" data-auth="reset" ${busy}>Send reset link</button><button class="btn ghost" data-aview="signin">Back to sign in</button></div></div>`;
+  if(authView==="newpass")return `<div class="card"><h2>Set a new password</h2>${msg}<div class="field" style="margin-top:14px"><label for="aPw">New password</label><input id="aPw" type="password" minlength="6" autocomplete="new-password"></div><div class="row" style="margin-top:16px"><button class="btn primary" data-auth="newpass" ${busy}>Save it</button></div></div>`;
+  if(authView==="reset")return `<div class="card"><h2>Forgot your password?</h2><p class="muted" style="margin-top:6px">No stress. We'll email you a reset link.</p>${msg}<div class="field" style="margin-top:14px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" value="${esc(aEmailVal)}"></div><div class="row" style="margin-top:16px"><button class="btn primary" data-auth="reset" ${busy}>Send link</button><button class="btn ghost" data-aview="signin">Back</button></div></div>`;
   const up=authView==="signup";
   return `<div class="card">
-    <div class="seg" role="group" aria-label="Account" style="margin-bottom:16px"><button data-aview="signin" aria-pressed="${!up}">Sign in</button><button data-aview="signup" aria-pressed="${up}">Create account</button></div>
+    <div class="seg" role="group" aria-label="Account" style="margin-bottom:16px"><button data-aview="signin" aria-pressed="${!up}">Sign in</button><button data-aview="signup" aria-pressed="${up}">New here?</button></div>
     ${msg}
-    ${up?`<div class="field"><label for="aName">Your name</label><input id="aName" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Priya"></div>`:""}
+    ${up?`<div class="field"><label for="aName">What should we call you?</label><input id="aName" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Priya"></div>`:""}
     <div class="field" style="margin-top:12px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(aEmailVal)}"></div>
-    <div class="field" style="margin-top:12px"><label for="aPw">Password</label><input id="aPw" type="password" minlength="6" autocomplete="${up?"new-password":"current-password"}" placeholder="${up?"At least 6 characters":""}"></div>
-    <div class="row sp" style="margin-top:16px"><button class="btn primary" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Please wait…":up?"Create account":"Sign in"}</button>${up?"":`<button class="btn ghost sm" data-aview="reset">Forgot password?</button>`}</div>
+    <div class="field" style="margin-top:12px"><label for="aPw">Password</label><input id="aPw" type="password" minlength="6" autocomplete="${up?"new-password":"current-password"}" placeholder="${up?"6+ characters":""}"></div>
+    <button class="btn primary" style="width:100%;margin-top:18px;padding-block:11px" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Hold on…":up?"Create my account":"Sign in"}</button>${up?"":`<div style="text-align:center;margin-top:8px"><button class="btn ghost sm" data-aview="reset">Forgot password?</button></div>`}
     <div class="or"><span>or</span></div>
-    <button class="btn" style="width:100%" data-auth="guest" ${busy}>Continue as guest</button>
-    <p class="muted" style="font-size:.8rem;margin-top:10px">Guests can use everything. Create an account to keep your progress on every device.</p>
+    <button class="btn outline" style="width:100%;padding-block:10px" data-auth="guest" ${busy}>Just browsing? Continue as guest</button>
+    <p class="muted" style="font-size:.8rem;margin-top:12px;text-align:center">Guests get everything. An account keeps your progress synced on every device.</p>
   </div>`;
 }
 function renderChrome(){
   const on=S.onboarded&&(!sb||(session&&!recovering));
   const ac=document.getElementById("acct");
   ac.innerHTML=sb&&session&&!recovering?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"Guest")}">${isGuest()?"Guest":esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:"";
-  document.getElementById("levelSeg").innerHTML=on?Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}">${v.label}</button>`).join(""):"";
+  document.getElementById("levelSeg").innerHTML=on?Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}"><span class="lg">${v.label}</span><span class="sm">${k==="inter"?"Inter":v.label}</span></button>`).join(""):"";
   document.getElementById("levelSeg").hidden=!on;
   document.querySelector(".tabs").hidden=!on;
-  document.getElementById("tabs").innerHTML=TABS.map(([k,v])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${v}</button>`).join("");
-  document.getElementById("bannerWrap").innerHTML=!on?"":S.sample?`<div class="banner"><span><b>You're looking at sample progress.</b> Explore freely, then start your own tracker.</span><button class="btn sm" data-act="fresh">Start fresh</button></div>`:isGuest()?`<div class="banner"><span><b>You're using a guest account.</b> Your progress is kept while you stay signed in on this device. Signing out ends the guest account.</span></div>`:"";
+  document.getElementById("tabs").innerHTML=TABS.map(([k,v,,i])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${ico(i,18)}${v}</button>`).join("");
+  const bn=document.getElementById("bnav");bn.hidden=!on;
+  bn.innerHTML=TABS.map(([k,,sh,i])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${sh}">${ico(i,22)}<span>${sh}</span></button>`).join("");
+  document.getElementById("themeBtn").innerHTML=ico(isDark()?"sun":"moon",19);
+  document.getElementById("bannerWrap").innerHTML=!on?"":S.sample?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:isGuest()?`<div class="banner"><span><b>You're on a guest pass.</b> Progress stays while you're signed in on this device. Sign out and it's gone.</span></div>`:"";
 }
 let W={level:"inter"};
 function welcome(){
-  return `<div class="welcome">
-    <div><div class="eyebrow">Free · works on any phone</div><h1 style="font-size:2.3rem">Plan it. Practise it. Tick it off.</h1>
-    <p class="muted" style="margin-top:10px;max-width:52ch">A study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final. Tell us where you are and we'll build your first plan.</p>
-    <ul class="feat"><li><b>Study plans</b> for any duration — a day, a month, six months</li><li><b>Every RTP, MTP and past paper</b>, ticked off per attempt</li><li><b>MCQ practice and timed mocks</b> with explanations</li><li><b>Your journey</b> from Foundation to membership</li></ul></div>
-    ${sb&&(!session||recovering)?authCard():`<div class="card">
-      <div class="field"><label for="wName">Your name <span class="muted">(optional)</span></label><input id="wName" type="text" maxlength="40" placeholder="e.g. Priya" autocomplete="given-name" value="${esc(S.name||"")}"></div>
-      <div class="field" style="margin-top:14px"><span class="lab">Level</span><div class="lvls">${Object.entries(LEVELS).map(([k,v])=>`<button class="lvl" data-wlevel="${k}" aria-pressed="${W.level===k}"><b>${v.label}</b><span class="muted">${v.papers.length} papers · next: ${v.attempts[0]}</span></button>`).join("")}</div></div>
+  const auth=sb&&(!session||recovering);
+  return `<div class="auth">
+    <div class="auth-head"><span class="mark"><svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true"><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linecap="round"/></svg></span>
+      <h1>${auth?"Hey! Let's get you exam-ready":"Quick setup, then you're in"}</h1>
+      <p class="muted">${auth?"CA Foundation, Inter &amp; Final — all in one place":"Takes 20 seconds. Promise."}</p>
+      ${auth?`<div class="chipsrow"><span>Study plans</span><span>RTP · MTP</span><span>MCQs &amp; mocks</span><span>Progress tracker</span></div>`:""}
+    </div>
+    ${auth?authCard():`<div class="card">
+      <div class="field"><label for="wName">What should we call you? <span class="muted">(optional)</span></label><input id="wName" type="text" maxlength="40" placeholder="e.g. Priya" autocomplete="given-name" value="${esc(S.name||"")}"></div>
+      <div class="field" style="margin-top:14px"><span class="lab">Which level?</span><div class="lvls">${Object.entries(LEVELS).map(([k,v])=>`<button class="lvl" data-wlevel="${k}" aria-pressed="${W.level===k}"><b>${v.label}</b><span class="muted">${v.papers.length} papers · next: ${v.attempts[0]}</span></button>`).join("")}</div></div>
       <div class="form" style="margin-top:14px">
-        <div class="field"><label for="wExam">First exam date <span class="muted">(optional)</span></label><input id="wExam" type="date"></div>
-        <div class="field"><label for="wH">Study hours per day</label><input id="wH" type="number" min="1" max="16" step="0.5" value="6"></div>
+        <div class="field"><label for="wExam">First paper date <span class="muted">(optional)</span></label><input id="wExam" type="date"></div>
+        <div class="field"><label for="wH">Study hours a day</label><input id="wH" type="number" min="1" max="16" step="0.5" value="6"></div>
       </div>
-      <div class="row" style="margin-top:18px;gap:12px"><button class="btn primary" data-act="start">Start preparing</button><button class="btn ghost" data-act="demo">Or explore with sample data</button></div>
-      <p class="muted" style="font-size:.8rem;margin-top:12px">${sb&&session&&!isGuest()?"Your progress is saved to your account.":"Your progress is saved on this device."}</p>
-    </div>`}</div>`;
+      <button class="btn primary" style="width:100%;margin-top:18px;padding-block:11px" data-act="start">Chalo, let's go</button>
+      <div style="text-align:center;margin-top:8px"><button class="btn ghost sm" data-act="demo">Or peek at sample data first</button></div>
+      <p class="muted" style="font-size:.8rem;margin-top:10px;text-align:center">${sb&&session&&!isGuest()?"Your progress saves to your account.":"Your progress saves on this device."}</p>
+    </div>`}
+  </div>`;
 }
 function render(){renderChrome();const m=document.getElementById("main");
   if(!authReady){m.innerHTML=`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
   if((sb&&(!session||recovering))||!S.onboarded){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
   m.innerHTML=`<section class="view">${VIEWS[tab]()}</section>`;if(tab==="mcq")paintMcq()}
 
+function heroCard(){
+  const hr=new Date().getHours();const greet=hr<5?"Late-night grind":hr<12?"Morning":hr<17?"Hey":"Evening grind";
+  const d=S.exam[S.level];const n=d?Math.round((new Date(d)-today)/864e5):null;
+  const done=S.log[iso(today)]||0,tgt=S.plan.hpd||1,pct=Math.min(1,done/tgt),C=2*Math.PI*42;
+  return `<section class="hc">
+    <svg class="hc-bg" viewBox="0 0 34 34" aria-hidden="true"><path d="M8 18l6 6L26 10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <div class="hc-main">
+      <div class="hc-eb">CA ${L().label} · ${L().attempts[0]} attempt</div>
+      <h1>${greet}${S.name?", "+esc(S.name):""}</h1>
+      ${n!==null&&n>=0?`<div class="hc-count"><span class="big num">${n}</span><span>days till your<br>first paper</span></div>`:`<p class="hc-set">${n!==null?"That date's gone — set your next one.":"Drop your exam date to start the countdown."}</p>`}
+      <label class="hc-date">Exam date <input type="date" id="examDate" value="${d||""}"></label>
+    </div>
+    <div class="hc-side">
+      <div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" class="rt"/><circle cx="50" cy="50" r="42" class="rp" stroke-dasharray="${(C*pct).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 50 50)"/></svg>
+        <div class="rc"><b class="num">${done}<small>/${tgt}h</small></b><span>today</span></div></div>
+      <div class="hc-log"><label for="logH" class="sr">Hours studied today</label><input id="logH" type="number" min="0" max="16" step="0.5" value="${S.log[iso(today)]||""}" placeholder="Hours"><button class="btn sm" data-act="logh">Log it</button></div>
+    </div>
+  </section>`;
+}
 function examLine(){
   const d=S.exam[S.level];
   if(!d)return `<span class="muted">Add your exam date to start a countdown.</span>`;
@@ -564,24 +705,21 @@ dashboard(){
   const plan=currentPlan();const te=plan.list[0];const w=weakest();
   const nextMs=MILESTONES.findIndex((_,i)=>S.ms[i]!=="done");
   return `
-  <div class="hero"><div><div class="eyebrow">CA ${L().label} · ${L().attempts[0]} attempt</div><h1>${S.name?"Keep going, "+esc(S.name):"Your prep, one tick at a time"}</h1>
-  <p class="muted">Today's timetable, how your MCQs are going, and what to fix next.</p></div>
-  <div class="examset"><label for="examDate">Exam date</label><input type="date" id="examDate" value="${S.exam[S.level]||""}"> ${examLine()}</div></div>
-  <div class="stats">
-    <div class="stat"><div class="eyebrow">MCQ accuracy</div><div class="v">${tot?Math.round(ok/tot*100)+"%":"—"}</div><div class="s">${ok} of ${tot} correct</div></div>
-    <div class="stat"><div class="eyebrow">Study streak</div><div class="v">${streak()}</div><div class="s">days in a row</div></div>
-    <div class="stat"><div class="eyebrow">Hours this week</div><div class="v">${wk}</div><div class="s">last 7 days</div></div>
-    <div class="stat"><div class="eyebrow">RTP · MTP · PYQ</div><div class="v">${rd.n}/${rd.t}</div><div class="s">${rd.a} papers ticked</div></div>
+  ${heroCard()}
+  <div class="stats icons">
+    <div class="stat"><div class="eyebrow">${ico("target",15)}MCQ accuracy</div><div class="v">${tot?Math.round(ok/tot*100)+"%":"—"}</div><div class="s">${ok}/${tot} right</div></div>
+    <div class="stat"><div class="eyebrow">${ico("flame",15)}Streak</div><div class="v">${streak()}<small> days</small></div><div class="s">${streak()>=3?"on fire":"keep it going"}</div></div>
+    <div class="stat"><div class="eyebrow">${ico("clock",15)}This week</div><div class="v">${wk}<small> h</small></div><div class="s">last 7 days</div></div>
+    <div class="stat"><div class="eyebrow">${ico("check",15)}ICAI papers</div><div class="v">${rd.n}/${rd.t}</div><div class="s">${rd.a} ticked off</div></div>
   </div>
   <div class="grid2">
-    <div class="card"><div class="card-h"><h2>Today's plan</h2><span class="pill ${te.rest?"":"good"}">${te.rest?"Light day":PH[te.phase]?PH[te.phase][0]:"Daily"}</span></div>
+    <div class="card"><div class="card-h"><h2>Today's game plan</h2><span class="pill ${te.rest?"":"good"}">${te.rest?"Light day":PH[te.phase]?PH[te.phase][0]:"Daily"}</span></div>
       <div class="slots">${slotsFor(te,S.plan.hpd).map(s=>`<div class="slot ${s.brk?"brk":""}"><div class="t">${s.t}</div><div class="w">${esc(s.w)}</div>${s.d?`<div class="d">${esc(s.d)}</div>`:""}</div>`).join("")}</div>
-      <div class="row sp" style="margin-top:6px"><span class="muted" style="font-size:.85rem">From your ${S.plan.dur}-${S.plan.unit.replace(/s$/,"")} plan · ${S.plan.hpd} h/day</span><button class="btn ghost sm" data-tab="planner">Change plan</button></div>
-      <div class="row" style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px"><label for="logH" style="font-size:.88rem">Hours studied today</label><input id="logH" type="number" min="0" max="16" step="0.5" value="${S.log[iso(today)]||""}" style="width:80px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)"><button class="btn sm primary" data-act="logh">Log</button></div>
+      <div class="row sp" style="margin-top:6px"><span class="muted" style="font-size:.85rem">From your ${S.plan.dur}-${S.plan.unit.replace(/s$/,"")} plan · ${S.plan.hpd} h/day</span><button class="btn ghost sm" data-tab="planner">Tweak plan</button></div>
     </div>
-    <div class="card"><div class="card-h"><h2>Accuracy by paper</h2><button class="btn ghost sm" data-tab="mcq">Practise</button></div>${barsHTML()}</div>
+    <div class="card"><div class="card-h"><h2>Where you stand</h2><button class="btn ghost sm" data-tab="mcq">Practice now</button></div>${barsHTML()}</div>
   </div>
-  <div class="card"><div class="card-h"><h2>What to do next</h2></div>
+  <div class="card"><div class="card-h"><h2>Your next moves</h2></div>
     <div style="display:grid;gap:12px">
       ${w?`<div class="callout"><b>Focus on P${paper(w.id).no} ${esc(paper(w.id).name)}.</b> <span class="muted">You're at ${Math.round(w.r*100)}% on ${w.n} questions — your lowest score. Give it your first study block for the next three days and redo the MCQs you missed.</span></div>`:`<div class="callout"><b>Attempt 10 MCQs per paper.</b> <span class="muted">That gives us enough to spot your weakest paper.</span></div>`}
       ${rd.n<rd.t?`<div class="callout"><b>${rd.t-rd.n} ICAI papers still to attempt for ${rd.a}.</b> <span class="muted">Start with the RTP for each paper, then MTP Series I under exam timing.</span></div>`:""}
@@ -602,7 +740,7 @@ papers(){
 },
 mcq(){
   const lv=L();const wn=mistakes().length;const total=Q.filter(q=>lv.papers.some(p=>p.id===q.p)).length;
-  const modes=[["practice","Practice"],["test","Timed test"],["mistakes",`Mistakes${wn?" · "+wn:""}`]];
+  const modes=[["practice","Practice"],["test","Timed test"],["mistakes",`My mistakes${wn?" · "+wn:""}`]];
   let body="";
   if(mode==="test"){
     if(T&&T.active)body=`<div id="qbox"></div>`;
@@ -611,7 +749,7 @@ mcq(){
       <div class="form"><div class="field"><label for="tP">Paper</label><select id="tP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}">P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>
       <div class="field"><label for="tN">Questions</label><select id="tN"><option>10</option><option>15</option><option>20</option><option>30</option></select></div>
       <div class="field"><label for="tM">Time per question</label><select id="tM"><option value="60">1 min</option><option value="72" selected>1 min 12 s (ICAI pace)</option><option value="90">1 min 30 s</option></select></div></div>
-      <div class="row" style="margin-top:16px"><button class="btn primary" data-act="starttest">Start test</button><span class="muted" style="font-size:.85rem">Answers are locked in when you submit. This test has no negative marking.</span></div></div>`;
+      <div class="row" style="margin-top:16px"><button class="btn primary" data-act="starttest">Start the test</button><span class="muted" style="font-size:.85rem">Answers are locked in when you submit. This test has no negative marking.</span></div></div>`;
   }else{
     body=`<div class="card"><div class="mcq-top">${mode==="practice"?`<div class="field" style="min-width:220px"><label for="mcqP">Paper</label><select id="mcqP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}" ${window.__mp===p.id?"selected":""}>P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>`:`<p class="muted" style="max-width:52ch">Questions you last got wrong. Answer one correctly and it leaves this list.</p>`}
     <div class="num muted" id="sess"></div></div><div id="qbox" style="margin-top:14px"></div></div>`;
@@ -731,16 +869,16 @@ function paintQ(){
   if(!cur||!pool().includes(cur))pick();
   const box=document.getElementById("qbox");if(!box)return;
   const sEl=document.getElementById("sess");if(sEl)sEl.textContent=sess.n?`This session: ${sess.ok}/${sess.n}`:"";
-  if(!cur){box.innerHTML=`<p class="muted">${mode==="mistakes"?"No mistakes to revise — nothing outstanding for this level.":"No questions for this paper yet."}</p>`;return}
+  if(!cur){box.innerHTML=`<p class="muted">${mode==="mistakes"?"Zero mistakes left. Shabaash!":"No questions for this paper yet."}</p>`;return}
   const p=paper(cur.p);
   box.innerHTML=`<span class="pill">P${p.no} · ${esc(p.name)}</span><p class="q">${esc(cur.q)}</p>
    <div class="opts">${cur.o.map((o,i)=>`<button class="opt" data-opt="${i}"><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}</div>
-   <div id="why"></div><div class="mcq-foot"><span class="muted" style="font-size:.85rem">${pool().length} questions in this set</span><button class="btn primary" data-act="nextq">Next question</button></div>`;
+   <div id="why"></div><div class="mcq-foot"><span class="muted" style="font-size:.85rem">${pool().length} questions in this set</span><button class="btn primary" data-act="nextq">Next one</button></div>`;
 }
 function answer(i){
   if(answered||!cur)return;answered=true;const ok=i===cur.a;
   document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j===cur.a)b.classList.add("right");else if(j===i)b.classList.add("wrong")});
-  document.getElementById("why").innerHTML=`<div class="why"><b style="color:${ok?"var(--good)":"var(--tick)"}">${ok?"Correct.":"Not quite — answer "+"ABCD"[cur.a]+"."}</b> ${esc(cur.w)}</div>`;
+  document.getElementById("why").innerHTML=`<div class="why"><b style="color:${ok?"var(--good)":"var(--tick)"}">${ok?["Nailed it!","Sahi jawab!","Correct!","Spot on!"][Math.floor(Math.random()*4)]:"Not quite — it's "+"ABCD"[cur.a]+"."}</b> ${esc(cur.w)}</div>`;
   record(cur,ok);sess.n++;if(ok)sess.ok++;save();document.getElementById("sess").textContent=`This session: ${sess.ok}/${sess.n}`;
 }
 /* timed test */
@@ -771,11 +909,12 @@ function testResults(){
   return `<div class="stats"><div class="stat"><div class="eyebrow">Score</div><div class="v">${T.ok}/${T.qs.length}</div><div class="s">${pct}% correct</div></div>
    <div class="stat"><div class="eyebrow">Time taken</div><div class="v">${hm2(T.secs)}</div><div class="s">of ${hm2(T.limit)}</div></div>
    <div class="stat"><div class="eyebrow">Unanswered</div><div class="v">${T.ans.filter(a=>a===null).length}</div><div class="s">questions</div></div>
-   <div class="stat"><div class="eyebrow">Verdict</div><div class="v" style="font-size:1.1rem;padding-top:6px">${pct>=70?"Exam-ready pace":pct>=50?"Getting there":"Revise first"}</div><div class="s">${pct>=70?"keep the rhythm":pct>=50?"fix the misses below":"go back to the module"}</div></div></div>
+   <div class="stat"><div class="eyebrow">Verdict</div><div class="v" style="font-size:1.1rem;padding-top:6px">${pct>=70?"Exam-ready":pct>=50?"Almost there":"Revise first"}</div><div class="s">${pct>=70?"keep this energy":pct>=50?"fix the misses below":"ho jayega — back to the module"}</div></div></div>
    <div class="card"><div class="card-h"><h2>By paper</h2></div><div class="bars">${Object.keys(by).map(id=>{const p=paper(id),x=by[id],r=Math.round(x.ok/x.n*100);return `<div class="bar-row"><span class="lbl"><span class="pno">P${p.no}</span> ${esc(p.name)}</span><span class="num" style="text-align:right">${x.ok}/${x.n}</span><div class="track"><div class="fill ${r<50?"low":r<70?"mid":""}" style="width:${r}%"></div></div></div>`}).join("")}</div></div>
-   <div class="card"><div class="card-h"><h2>Review</h2><div class="row"><button class="btn sm" data-act="newtest">New test</button><button class="btn sm primary" data-mode="mistakes">Revise mistakes</button></div></div>
+   <div class="card"><div class="card-h"><h2>Review</h2><div class="row"><button class="btn sm" data-act="newtest">New test</button><button class="btn sm primary" data-mode="mistakes">Fix my mistakes</button></div></div>
    <div class="review">${T.qs.map((q,i)=>{const a=T.ans[i],r=a===q.a;return `<div class="rv ${r?"ok":"no"}"><div class="rv-h"><span class="num muted">${i+1}</span><span class="pill ${r?"good":"bad"}">${r?"Correct":a===null?"Skipped":"Wrong"}</span></div><p><b>${esc(q.q)}</b></p><p class="muted" style="font-size:.9rem">${a!==null&&!r?`You: ${"ABCD"[a]}. ${esc(q.o[a])} · `:""}Answer: ${"ABCD"[q.a]}. ${esc(q.o[q.a])}</p><p style="font-size:.9rem">${esc(q.w)}</p></div>`}).join("")}</div></div>`;
 }
+function toast(msg){const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
 /* backup */
 function backupCode(){return btoa(unescape(encodeURIComponent(JSON.stringify(S))))}
 function restoreCode(c){try{const o=JSON.parse(decodeURIComponent(escape(atob(c.trim()))));if(!o||!o.level||!LEVELS[o.level])return false;S=o;S.wrong=S.wrong||{};S.tests=S.tests||[];S.onboarded=true;save();return true}catch(e){return false}}
@@ -798,6 +937,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.auth){authDo(t.dataset.auth);return}
   const a=t.dataset.act;
   if(a==="signout"){signOut();return}
+  if(a==="theme"){THEME=isDark()?"light":"dark";try{localStorage.setItem("prepx.theme",THEME)}catch(_){}applyTheme();renderChrome();return}
   if(a==="nextq"){pick();paintQ()}
   if(a==="fresh"){const keepUid=S.uid;S=blank(S.level);S.uid=keepUid;W.level=S.level;save();render()}
   if(a==="demo"){const keepUid=S.uid;S=sample();S.uid=keepUid;tab="dashboard";save();render()}
@@ -816,7 +956,8 @@ document.addEventListener("click",e=>{
   if(a==="reset1"){document.getElementById("resetBox").innerHTML=`<span style="font-size:.85rem">This clears all progress on this device.</span><button class="btn sm" data-act="reset0">Cancel</button><button class="btn sm primary" style="background:var(--tick);border-color:var(--tick)" data-act="reset2">Yes, reset</button>`}
   if(a==="reset0")render();
   if(a==="reset2"){clearInterval(tick);T=null;const keepUid=S.uid;S=blank();S.uid=keepUid;tab="dashboard";save();render();window.scrollTo({top:0})}
-  if(a==="logh"){const v=parseFloat(document.getElementById("logH").value);if(!isNaN(v)&&v>=0){S.log[iso(today)]=Math.min(16,v);save();render()}}
+  if(a==="logh"){const v=parseFloat(document.getElementById("logH").value);if(!isNaN(v)&&v>=0){S.log[iso(today)]=Math.min(16,v);save();render();const st=streak();
+    toast(v>=S.plan.hpd?"Target smashed. Shabaash!":st>=3?`${st}-day streak — keep it going!`:"Logged. Every hour counts.")}}
 });
 document.addEventListener("change",e=>{
   const id=e.target.id,v=e.target.value;
