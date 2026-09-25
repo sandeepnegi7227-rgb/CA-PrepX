@@ -68,7 +68,7 @@ button,select,input{font:inherit;color:inherit}
 .tabs button{border:0;background:none;padding:12px 12px 11px;cursor:pointer;white-space:nowrap;color:var(--muted);font-weight:500;border-bottom:2px solid transparent}
 .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--gold)}
 main{padding-block:24px 64px}
-.view{display:grid;gap:20px}
+.view{display:grid;gap:20px;grid-template-columns:minmax(0,1fr)}
 
 .banner{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:10px;padding:10px 14px;font-size:.9rem;margin-top:16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
@@ -325,6 +325,69 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .ab-pts span{font-size:.88rem;color:var(--hero-muted)}
 .ab-soon{justify-self:start;margin-top:6px;background:var(--gold);color:var(--gold-ink);font-weight:700;font-size:.85rem;padding:8px 16px;border-radius:999px}
 @media (max-width:719px){.ab-hero h1{font-size:1.6rem}#aboutBtn{order:2}.who{display:none}.brand b{font-size:1.12rem;white-space:nowrap}.top .btn.sm{padding:5px 11px;font-size:.8rem}.top .icon-btn{width:32px;height:32px}.top{gap:8px}}
+/* v5 help-first */
+a.btn{text-decoration:none;display:inline-flex;align-items:center;color:var(--ink)}
+a.btn.primary{color:var(--accent-ink)}
+.subnav{display:flex;width:max-content;max-width:100%;overflow-x:auto}
+.pick{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;border-color:var(--gold)}
+.pick>div:first-child{display:grid}
+.home-hero{display:grid;gap:10px}
+.home-hero h1{font-size:2rem}
+.hsearch{position:relative;display:flex;align-items:center}
+.hsearch .ic-wrap{position:absolute;left:14px;color:var(--muted);display:flex}
+.hsearch input{width:100%;padding:13px 16px 13px 42px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:16px;color:var(--ink)}
+.hsearch input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.hres{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.hit{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;padding:10px 12px;cursor:pointer}
+.hit:last-child{border-bottom:0}
+.hit:hover{background:var(--surface-2)}
+.hit>span:last-child{display:grid;min-width:0}
+.hit b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hit .muted{font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:760px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tile{display:grid;gap:4px;align-content:start;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:16px;cursor:pointer;min-height:118px;color:var(--ink)}
+.tile .ic{color:var(--gold-deep);margin-bottom:6px}
+.tile b{font-size:1rem}
+.tile span{font-size:.84rem;color:var(--muted)}
+.tile:hover{border-color:var(--gold)}
+.tile.dark{background:var(--hero-bg);border-color:var(--hero-line);color:var(--hero-ink)}
+.tile.dark .ic{color:var(--gold)}
+.tile.dark span{color:var(--hero-muted)}
+.tile.soon{opacity:.6;cursor:default;border-style:dashed}
+.resume{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:1px dashed var(--line);background:var(--surface);border-radius:14px;padding:12px 14px;cursor:pointer;color:var(--ink)}
+.resume>span:first-child{color:var(--gold-deep);display:flex}
+.resume>span:nth-child(2){flex:1}
+.tipcard{display:grid;gap:6px}
+.tipcard .btn{justify-self:start;padding-inline:0}
+.cu{border-color:var(--gold);display:grid;gap:8px}
+.cu h2{display:flex;align-items:center;gap:8px}
+.filt .presets{margin-top:4px}
+.steps{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.92rem}
+.roles{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:760px){.roles{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1040px){.roles{grid-template-columns:repeat(3,1fr)}}
+.role{display:flex;flex-direction:column;gap:8px}
+.role p{font-size:.92rem}
+.skills{display:flex;flex-wrap:wrap;gap:6px}
+.skills span{font-size:.76rem;border:1px solid var(--line);border-radius:999px;padding:2px 9px;background:var(--surface-2)}
+.card h2 .ic{vertical-align:-3px;color:var(--gold-deep)}
+.bnav{grid-template-columns:repeat(5,1fr)!important}
+@media (max-width:719px){.home-hero h1{font-size:1.6rem}.tile{min-height:108px;padding:14px}}
+/* chapters */
+.wf{margin-bottom:4px}
+.chl{display:block;font-size:.8rem;color:var(--muted);line-height:1.35;margin-top:2px}
+.pill.chp{margin-left:6px;background:var(--accent-soft);color:var(--ink)}
+.syl summary{display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;list-style:none}
+.syl summary::-webkit-details-marker{display:none}
+.syl summary>span:first-child{display:grid;gap:2px}
+.sylpct{font-family:var(--serif);font-size:1.4rem;font-weight:600;color:var(--gold-deep)}
+.chlist{display:grid}
+.chrow{display:grid;grid-template-columns:30px minmax(0,1fr);gap:4px 10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.chn{color:var(--muted);font-size:.85rem}
+.chname{font-size:.92rem}
+.chact{grid-column:2;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+@media (min-width:760px){.chrow{grid-template-columns:30px minmax(0,1fr) auto}.chact{grid-column:auto}}
 /* accounts */
 .acct{display:flex;align-items:center;gap:8px;font-size:.85rem}
 .acct:empty{display:none}
@@ -379,6 +442,29 @@ const LEVELS = {
     {id:"N6",no:6,name:"Integrated Business Solutions",g:2,type:"Case study, open book"}]}
 };
 const RES = [["RTP","Revision Test Paper","Revision+Test+Papers"],["MTP-I","Mock Test Paper Series I","Mock+Test+Papers"],["MTP-II","Mock Test Paper Series II","Mock+Test+Papers"],["PYQ","Last exam's question paper","Question+Papers+New+Scheme"]];
+
+/* ---------- ICAI syllabus: chapters per paper [name, relative size] ---------- */
+const SYL={
+ F1:[["Theoretical Framework",3],["Accounting Process",4],["Bank Reconciliation Statement",1],["Inventories",1],["Depreciation and Amortisation",1],["Bills of Exchange and Promissory Notes",1],["Final Accounts of Sole Proprietors",2],["Financial Statements of Not-for-Profit Organisations",1],["Accounts from Incomplete Records",1],["Partnership and LLP Accounts",4],["Company Accounts",4]],
+ F2:[["Indian Regulatory Framework",1],["The Indian Contract Act, 1872",4],["The Sale of Goods Act, 1930",3],["The Indian Partnership Act, 1932",3],["The Limited Liability Partnership Act, 2008",1],["The Companies Act, 2013",2],["The Negotiable Instruments Act, 1881",2]],
+ F3:[["Ratio and Proportion, Indices, Logarithms",1],["Equations",1],["Linear Inequalities",1],["Mathematics of Finance",1],["Permutations and Combinations",1],["Sequence and Series",1],["Sets, Relations, Functions, Limits and Continuity",1],["Differential and Integral Calculus",1],["Number Series, Coding-Decoding, Odd Man Out",1],["Direction Tests",1],["Seating Arrangements",1],["Blood Relations",1],["Statistical Representation of Data",2],["Measures of Central Tendency and Dispersion",2],["Probability",1],["Theoretical Distributions",1],["Correlation and Regression",1],["Index Numbers",1]],
+ F4:[["Nature and Scope of Business Economics",2],["Theory of Demand and Supply",3],["Theory of Production and Cost",2],["Price Determination in Different Markets",3],["Business Cycles",1],["Determination of National Income",2],["Public Finance",3],["Money Market",3],["International Trade",3],["Indian Economy",1]],
+ I1:[["Introduction to Accounting Standards",1],["Framework for Preparation and Presentation of Financial Statements",1],["Applicability of Accounting Standards",1],["Presentation and Disclosure-based Accounting Standards",2],["Asset-based Accounting Standards",3],["Liabilities-based Accounting Standards",2],["Accounting Standards on Items Impacting Financial Statements",2],["Revenue-based Accounting Standards",2],["Other Accounting Standards",2],["Accounting Standards for Consolidated Financial Statements",2],["Financial Statements of Companies",2],["Buyback of Securities",1],["Amalgamation of Companies",2],["Internal Reconstruction",1],["Accounting for Branches including Foreign Branches",1]],
+ I2:[["Preliminary",1],["Incorporation of Company and Matters Incidental Thereto",2],["Prospectus and Allotment of Securities",2],["Share Capital and Debentures",2],["Acceptance of Deposits by Companies",1],["Registration of Charges",1],["Management and Administration",2],["Declaration and Payment of Dividend",1],["Accounts of Companies",2],["Audit and Auditors",2],["Companies Incorporated Outside India",1],["The Limited Liability Partnership Act, 2008",1],["Other Laws: The General Clauses Act, 1897",1],["Other Laws: Interpretation of Statutes",1],["Other Laws: The Foreign Exchange Management Act, 1999",1]],
+ I3:[["Income Tax: Basic Concepts",1],["Income Tax: Residence and Scope of Total Income",1],["Income Tax: Salaries",2],["Income Tax: Income from House Property",1],["Income Tax: Profits and Gains of Business or Profession",3],["Income Tax: Capital Gains",2],["Income Tax: Income from Other Sources",1],["Income Tax: Income of Other Persons (Clubbing)",1],["Income Tax: Aggregation, Set-off and Carry Forward of Losses",1],["Income Tax: Deductions from Gross Total Income",1],["Income Tax: Advance Tax, TDS and Introduction to TCS",2],["Income Tax: Return of Income and Self-assessment",1],["Income Tax: Tax Liability — Computation and Optimisation",1],["GST: GST in India — An Introduction",1],["GST: Supply under GST",1],["GST: Charge of GST",1],["GST: Place of Supply",1],["GST: Exemptions from GST",1],["GST: Time of Supply",1],["GST: Value of Supply",1],["GST: Input Tax Credit",2],["GST: Registration",1],["GST: Tax Invoice, Credit and Debit Notes",1],["GST: Accounts and Records",1],["GST: E-way Bill",1],["GST: Payment of Tax",1],["GST: TDS and TCS under GST",1],["GST: Returns",1]],
+ I4:[["Introduction to Cost and Management Accounting",1],["Material Cost",2],["Employee Cost and Direct Expenses",1],["Overheads — Absorption Costing Method",2],["Activity-Based Costing",1],["Cost Sheet",1],["Cost Accounting System",1],["Unit and Batch Costing",1],["Job Costing",1],["Process and Operation Costing",2],["Joint Products and By-products",1],["Service Costing",1],["Standard Costing",2],["Marginal Costing",2],["Budget and Budgetary Control",1]],
+ I5:[["Nature, Objective and Scope of Audit",1],["Audit Strategy, Audit Planning and Audit Programme",1],["Risk Assessment and Internal Control",2],["Audit Evidence",2],["Audit of Items of Financial Statements",2],["Audit Documentation",1],["Completion and Review",1],["Audit Report",2],["Special Features of Audit of Different Types of Entities",1],["Audit of Banks",1],["Ethics and Terms of Audit Engagements",1]],
+ I6:[["FM: Scope and Objectives of Financial Management",1],["FM: Types of Financing",1],["FM: Ratio Analysis",1],["FM: Cost of Capital",2],["FM: Capital Structure",1],["FM: Leverages",1],["FM: Investment Decisions",2],["FM: Dividend Decisions",1],["FM: Management of Working Capital",3],["SM: Introduction to Strategic Management",1],["SM: Strategic Analysis — External Environment",1],["SM: Strategic Analysis — Internal Environment",1],["SM: Strategic Choices",1],["SM: Strategy Implementation and Evaluation",1]],
+ N1:[["Introduction to Indian Accounting Standards",1],["Conceptual Framework under Ind AS",1],["Ind AS on Presentation (1, 34, 7)",2],["Ind AS on Measurement (8, 10, 113)",2],["Ind AS 115 Revenue from Contracts with Customers",2],["Ind AS on Assets (2, 16, 23, 36, 38, 40, 105, 116)",4],["Other Ind AS (41, 20, 102)",1],["Ind AS on Liabilities (19, 37)",2],["Ind AS on Items Impacting Financials (12, 21)",2],["Ind AS on Disclosures (24, 33, 108)",1],["Financial Instruments",3],["Ind AS 103 Business Combinations",2],["Consolidated and Separate Financial Statements",3],["Ind AS 101 First-time Adoption",1],["Analysis of Financial Statements",1],["Professional and Ethical Duty",1],["Accounting and Technology",1]],
+ N2:[["Financial Policy and Corporate Strategy",1],["Risk Management",1],["Advanced Capital Budgeting Decisions",2],["Security Analysis",1],["Security Valuation",2],["Portfolio Management",2],["Securitization",1],["Mutual Funds",1],["Derivatives Analysis and Valuation",2],["Foreign Exchange Exposure and Risk Management",2],["International Financial Management",1],["Interest Rate Risk Management",1],["Business Valuation",2],["Mergers, Acquisitions and Corporate Restructuring",2],["Startup Finance",1]],
+ N3:[["Quality Control",1],["General Auditing Principles and Auditors' Responsibilities",2],["Audit Planning, Strategy and Execution",1],["Materiality, Risk Assessment and Internal Control",2],["Audit Evidence",2],["Completion and Review",1],["Reporting",2],["Specialised Areas",1],["Audit-related Services",1],["Review of Financial Information",1],["Prospective Financial Information and Other Assurance Services",1],["Digital Auditing and Assurance",1],["Group Audits",1],["Special Features of Audit of Banks and NBFCs",2],["Overview of Audit of Public Sector Undertakings",1],["Internal Audit",1],["Due Diligence, Investigation and Forensic Audit",1],["Emerging Areas: SDG and ESG Assurance",1],["Professional Ethics and Liabilities of Auditors",2]],
+ N4:[["Basic Concepts",1],["Incomes Excluded from Total Income",1],["Profits and Gains of Business or Profession",3],["Capital Gains",2],["Income from Other Sources",1],["Income of Other Persons",1],["Aggregation, Set-off and Carry Forward of Losses",1],["Deductions from Gross Total Income",1],["Assessment of Various Entities",2],["Assessment of Trusts, Institutions and Political Parties",1],["Tax Planning, Tax Avoidance and Tax Evasion",1],["Taxation of Digital Transactions",1],["Deduction, Collection and Recovery of Tax",2],["Income-tax Authorities",1],["Assessment Procedure",1],["Appeals and Revision",1],["Dispute Resolution",1],["Miscellaneous Provisions",1],["Provisions to Counteract Unethical Tax Practices",1],["Tax Audit and Ethical Compliances",1],["Non-resident Taxation",2],["Double Taxation Relief",1],["Advance Rulings",1],["Transfer Pricing",2],["Fundamentals of BEPS",1],["Application and Interpretation of Tax Treaties",1],["Overview of Model Tax Conventions",1],["Latest Developments in International Taxation",1]],
+ N5:[["GST: Supply under GST",1],["GST: Charge of GST",1],["GST: Place of Supply",2],["GST: Exemptions from GST",1],["GST: Time of Supply",1],["GST: Value of Supply",1],["GST: Input Tax Credit",2],["GST: Registration",1],["GST: Tax Invoice, Credit and Debit Notes",1],["GST: Accounts and Records; E-way Bill",1],["GST: Payment of Tax",1],["GST: E-commerce Transactions",1],["GST: Returns",1],["GST: Import and Export under GST",1],["GST: Refunds",1],["GST: Job Work",1],["GST: Assessment and Audit",1],["GST: Inspection, Search, Seizure and Arrest",1],["GST: Demand and Recovery",1],["GST: Liability to Pay in Certain Cases",1],["GST: Offences, Penalties and Ethical Aspects",1],["GST: Appeals and Revision",1],["GST: Advance Ruling",1],["GST: Miscellaneous Provisions",1],["Customs: Levy of and Exemptions from Customs Duty",1],["Customs: Types of Duty",1],["Customs: Classification of Imported and Exported Goods",1],["Customs: Valuation under the Customs Act, 1962",1],["Customs: Importation and Exportation of Goods",1],["Customs: Warehousing",1],["Customs: Refund",1],["Customs: Foreign Trade Policy",1]],
+ N6:[["Case practice: Financial Reporting (Ind AS)",3],["Case practice: Advanced Financial Management",2],["Case practice: Audit and Ethics",1],["Case practice: Direct Tax and International Tax",2],["Case practice: GST and Customs",1],["Self-paced Set A: Corporate and Economic Laws",1],["Self-paced Set B: Strategic Cost and Performance Management",2],["Full cases from ICAI's IBS Case Study Digest",3]]
+};
+const chapters=pid=>SYL[pid]||[];
+const chName=(pid,i)=>(chapters(pid)[i]||["—"])[0];
+const chShort=(pid,i)=>chName(pid,i).replace(/^(Income Tax|GST|Customs|FM|SM|Other Laws|Case practice|Self-paced Set [AB]): /,"");
 
 const Q = [
  ["F1","Revenue of a period is recognised together with the expenses incurred to earn it. Which concept is this?",["Going concern","Matching","Consistency","Money measurement"],1,"The matching concept pairs expenses with the revenue they helped earn in the same accounting period."],
@@ -458,8 +544,48 @@ const Q = [
  ["N4","Under tax treaties, a 'permanent establishment' generally means:",["Any customer in the other State","A fixed place of business through which the enterprise's business is wholly or partly carried on","A registered office only","A bank account in the other State"],1,"Article 5 of the Model Conventions: a fixed place of business through which business is wholly or partly carried on."],
  ["N5","Under GST, a composite supply is taxed at the rate applicable to:",["The cheapest component","The principal supply","The highest-rated component","An average of the rates"],1,"Composite supply → rate of the principal supply; mixed supply → highest rate among the components."],
  ["N5","A mixed supply under GST is taxed at:",["The rate of the principal supply","The rate of the component attracting the highest rate","Nil rate","The lowest rate"],1,"Section 8 of the CGST Act: mixed supply takes the highest applicable rate."],
- ["N5","Safeguard duty under the Customs Tariff Act is imposed to protect domestic industry against:",["Dumped imports","Subsidised imports","A sudden surge in imports causing serious injury","Counterfeit goods"],2,"Anti-dumping duty targets dumping; countervailing duty targets subsidies; safeguard duty targets import surges."]
-].map((r,i)=>({id:"q"+i,p:r[0],q:r[1],o:r[2],a:r[3],w:r[4]}));
+ ["N5","Safeguard duty under the Customs Tariff Act is imposed to protect domestic industry against:",["Dumped imports","Subsidised imports","A sudden surge in imports causing serious injury","Counterfeit goods"],2,"Anti-dumping duty targets dumping; countervailing duty targets subsidies; safeguard duty targets import surges."],
+ ["F1","Which of these is NOT a fundamental accounting assumption under AS 1?",["Going concern","Consistency","Accrual","Prudence"],3,"AS 1 lists going concern, consistency and accrual. Prudence is a consideration in selecting accounting policies.",0],
+ ["F1","On admission of a partner, sacrificing ratio equals:",["New ratio − Old ratio","Old ratio − New ratio","Old ratio ÷ New ratio","Capital ratio"],1,"Each old partner's sacrifice = old share − new share.",9],
+ ["F1","A Receipts and Payments Account of a not-for-profit organisation is:",["A nominal account","A summary of cash and bank transactions","A balance sheet","An income statement on accrual basis"],1,"It is a real account summarising cash and bank receipts and payments for the period.",7],
+ ["F1","Securities premium can be used to:",["Pay dividends","Issue fully paid bonus shares","Write off trading losses","Pay managerial remuneration"],1,"Section 52 permits use for fully paid bonus shares, writing off preliminary expenses, issue expenses, premium on redemption and buyback.",10],
+ ["F1","Days of grace allowed on a bill of exchange payable after a fixed period are:",["1 day","2 days","3 days","7 days"],2,"Three days of grace are added to arrive at the date of maturity.",5],
+ ["F2","An unpaid seller loses the right of lien when:",["The buyer becomes insolvent","The buyer lawfully obtains possession of the goods","The price is partly paid","The goods are in the seller's warehouse"],1,"Lien depends on possession; it ends once the buyer or his agent lawfully obtains possession.",2],
+ ["F2","Every LLP must have at least how many designated partners?",["1","2","3","7"],1,"The LLP Act requires at least two designated partners, one of whom is resident in India.",4],
+ ["F2","Under the Negotiable Instruments Act, a cheque is a bill of exchange:",["Drawn on any person","Drawn on a specified banker and payable on demand","Payable after 90 days","That cannot be crossed"],1,"Section 6 defines a cheque as a bill of exchange drawn on a specified banker, payable on demand (including electronic forms).",6],
+ ["F3","Two fair dice are rolled. The probability that the sum is 7 is:",["1/12","1/6","1/9","7/36"],1,"Six favourable outcomes out of 36: 6/36 = 1/6.",14],
+ ["F3","The coefficient of correlation always lies between:",["0 and 1","−1 and 0","−1 and +1","−∞ and +∞"],2,"r is a pure number bounded by −1 and +1.",16],
+ ["F3","A man faces North and turns 90° clockwise. Which direction is he facing?",["South","West","East","North-East"],2,"Clockwise from North by 90° gives East.",9],
+ ["F4","The repo rate is the rate at which:",["Banks lend to customers","RBI lends to commercial banks against securities","Banks park funds with RBI","Government borrows abroad"],1,"Repo: RBI lends short-term to banks against government securities; reverse repo is the opposite.",7],
+ ["F4","A tariff is best described as:",["A subsidy on exports","A tax on imported goods","A limit on the quantity of imports","A currency control"],1,"Tariffs are taxes on imports; quotas are quantity limits.",8],
+ ["F4","Fiscal deficit equals total expenditure minus:",["Revenue receipts only","Revenue receipts and non-debt capital receipts","Tax revenue only","Borrowings"],1,"Fiscal deficit = total expenditure − (revenue receipts + non-debt capital receipts).",6],
+ ["I1","Under Section 68 of the Companies Act, 2013, a buyback approved by the Board alone is limited to:",["5% of paid-up capital and free reserves","10% of paid-up capital and free reserves","25% of paid-up capital","25% of free reserves"],1,"Board approval covers up to 10%; beyond that (up to 25%) a special resolution is needed.",11],
+ ["I1","Reduction of share capital in an internal reconstruction under Section 66 requires confirmation by the:",["Registrar of Companies","Tribunal (NCLT)","SEBI","Central Government"],1,"Section 66 requires a special resolution and confirmation by the Tribunal.",13],
+ ["I1","Under AS 3, interest paid by a non-financial enterprise is normally classified as a cash flow from:",["Operating activities","Investing activities","Financing activities","Not shown"],2,"For non-financial enterprises, interest and dividends paid are financing cash flows.",3],
+ ["I2","A declared dividend must be paid within how many days of declaration?",["15 days","30 days","45 days","60 days"],1,"Section 127: failure to pay within 30 days of declaration is an offence.",7],
+ ["I2","FEMA, 1999 replaced which earlier law?",["SEBI Act, 1992","FERA, 1973","RBI Act, 1934","Companies Act, 1956"],1,"FEMA replaced the Foreign Exchange Regulation Act, 1973, shifting from regulation to management.",14],
+ ["I2","Under the General Clauses Act, 1897, 'month' means:",["30 days","A lunar month","A month reckoned according to the British calendar","4 weeks"],2,"Section 3(35) of the General Clauses Act defines month by the British calendar.",12],
+ ["I3","Aggregate turnover under GST includes:",["Taxes such as CGST and SGST","Value of inward supplies on reverse charge","Exempt supplies","Only intra-State taxable supplies"],2,"Aggregate turnover covers taxable, exempt, export and inter-State supplies (same PAN), excluding taxes and inward RCM supplies.",13],
+ ["I3","An e-way bill is generally required when the consignment value exceeds:",["₹10,000","₹25,000","₹50,000","₹1,00,000"],2,"Rule 138 sets the general threshold at ₹50,000 (States may notify differences for intra-State movement).",24],
+ ["I3","For a supply of services, a tax invoice should generally be issued within:",["7 days","15 days","30 days","60 days"],2,"Rule 47: within 30 days of supply of services (45 days for certain banks and financial institutions).",22],
+ ["I4","In activity-based costing, a suitable cost driver for the purchasing activity is:",["Machine hours","Number of purchase orders","Direct labour hours","Units produced"],1,"Purchasing cost is driven by how many orders are raised.",4],
+ ["I4","In process costing, the cost of normal loss is:",["Written off to costing P&L","Absorbed by the good units produced","Charged to abnormal loss account","Ignored"],1,"Normal loss is unavoidable, so its cost is borne by good output.",9],
+ ["I4","Material cost variance equals:",["Price variance + Usage variance","Price variance − Usage variance","Mix variance + Yield variance only","Usage variance only"],0,"MCV = MPV + MUV (usage further splits into mix and yield).",12],
+ ["I5","Which SA deals with the overall objectives of the independent auditor?",["SA 200","SA 210","SA 230","SA 300"],0,"SA 200 sets the overall objectives and conduct of an audit in accordance with SAs.",0],
+ ["I5","Tests of controls are performed to obtain evidence about:",["The accuracy of balances","The operating effectiveness of controls","Fraud only","The going concern assumption"],1,"Tests of controls check that controls operated effectively throughout the period.",2],
+ ["I6","Using CAPM, with Rf 6%, beta 1.5 and market return 10%, the cost of equity is:",["10%","12%","15%","9%"],1,"Ke = 6% + 1.5 × (10% − 6%) = 12%.",3],
+ ["I6","Current ratio is calculated as:",["Current assets ÷ Current liabilities","Quick assets ÷ Current liabilities","Current liabilities ÷ Current assets","Total assets ÷ Total liabilities"],0,"A liquidity ratio comparing current assets with current liabilities.",2],
+ ["I6","In the Ansoff matrix, a new product for an existing market is:",["Market penetration","Market development","Product development","Diversification"],2,"Existing market + new product = product development.",12],
+ ["N1","Which Ind AS deals with earnings per share?",["Ind AS 24","Ind AS 33","Ind AS 108","Ind AS 12"],1,"Ind AS 33 Earnings per Share; Ind AS 24 related parties; Ind AS 108 operating segments.",9],
+ ["N1","A first-time adopter prepares an opening Ind AS balance sheet at the:",["Reporting date","Date of transition to Ind AS","Start of the next year","Date of listing"],1,"Ind AS 101 requires an opening Ind AS balance sheet at the date of transition.",13],
+ ["N2","The NAV per unit of a mutual fund is:",["Total assets ÷ units","(Total assets − liabilities) ÷ units outstanding","Market price of units","Face value of units"],1,"NAV = net assets divided by units outstanding.",7],
+ ["N2","Other things equal, higher volatility of the underlying makes a call option:",["Less valuable","More valuable","Worthless","Unaffected"],1,"Greater volatility raises the chance of large favourable moves, increasing option value.",8],
+ ["N3","Peer review of practising units in India is carried out under the:",["NFRA","Peer Review Board of ICAI","SEBI","RBI"],1,"The ICAI's Peer Review Board administers peer review of practice units.",0],
+ ["N4","The two main methods of relieving double taxation are:",["Exemption and credit","Deduction and refund","Deferral and rebate","Set-off and carry forward"],0,"Treaties relieve double tax by exempting income or giving credit for foreign tax.",21],
+ ["N5","A registered person making zero-rated supplies without paying tax can claim a refund of:",["Output tax","Unutilised input tax credit","Customs duty","TDS"],1,"Section 54 allows refund of unutilised ITC on zero-rated supplies made under bond/LUT.",14],
+ ["N5","Inputs sent to a job worker must generally be received back within:",["6 months","1 year","2 years","3 years"],1,"Section 143: one year for inputs, three years for capital goods (extendable in some cases).",15]
+].map((r,i)=>({id:"q"+i,p:r[0],q:r[1],o:r[2],a:r[3],w:r[4],c:r[5]}));
+[0,1,4,1,1,2,3,13,0,1,3,1,4,1,0,15,13,1,13,5,2,5,11,5,4,5,8,6,23,24,13,7,1,1,2,1,3,2,0,4,13,1,2,5,4,7,4,12,1,0,13,21,15,27,13,13,1,3,3,7,6,5,10,3,5,11,9,4,5,12,15,5,1,24,25,0,0,25].forEach((c,i)=>{if(Q[i]&&Q[i].c==null)Q[i].c=c});
 
 const MILESTONES = [
   ["Foundation cleared","Or direct entry via graduation / postgraduation"],
@@ -496,8 +622,12 @@ try{S=JSON.parse(localStorage.getItem(K))}catch(e){S=null}
 if(!S||!S.level)S=blank();
 else{S.wrong=S.wrong||{};S.tests=S.tests||[];S.name=S.name||"";if(S.onboarded===undefined)S.onboarded=true}
 function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}if(typeof cloudSave==="function")cloudSave()}
-let tab="dashboard";try{tab=localStorage.getItem(K+".tab")||"dashboard"}catch(e){}
-if(location.hash&&/^#(dashboard|papers|mcq|planner|journey|guidance|about)$/.test(location.hash))tab=location.hash.slice(1);
+let tab="home",resMode="papers",planMode="study",catchup=false;
+function go(t){const map={dashboard:["home"],papers:["resources","papers"],guidance:["resources","tips"],mcq:["practice"],planner:["plan","study"],journey:["plan","journey"],progress:["plan","progress"]};
+  const m=map[t];if(m){tab=m[0];if(m[0]==="resources")resMode=m[1];if(m[0]==="plan")planMode=m[1]}else tab=t;
+  if(tab!=="signin"){try{localStorage.setItem(K+".tab",tab)}catch(e){}}}
+try{go(localStorage.getItem(K+".tab")||"home")}catch(e){}
+if(location.hash&&/^#(home|resources|practice|plan|careers|dashboard|papers|mcq|planner|journey|guidance|about)$/.test(location.hash))go(location.hash.slice(1));
 
 const L=()=>LEVELS[S.level];
 const paper=id=>L().papers.find(p=>p.id===id)||Object.values(LEVELS).flatMap(l=>l.papers).find(p=>p.id===id);
@@ -510,6 +640,7 @@ function accuracy(){
   S.mcq.forEach(m=>{if(out[m.p]){out[m.p].n++;if(m.ok)out[m.p].ok++}});
   return out;
 }
+function activeDays(){const act=new Set(Object.keys(S.log).filter(k=>S.log[k]>0).concat(S.mcq.map(m=>m.t)));let n=0;for(let i=0;i<7;i++)if(act.has(iso(addDays(today,-i))))n++;return n}
 function streak(){
   const active=new Set(Object.keys(S.log).filter(k=>S.log[k]>0).concat(S.mcq.map(m=>m.t)));
   let n=0,d=new Date(today);if(!active.has(iso(d)))d=addDays(d,-1);
@@ -549,21 +680,32 @@ function buildPlan(opt){
     cursor+=ph.days;
     if(ph.key==="practice"){idx.forEach((li,k)=>list[li].main=papers[k%papers.length])}
     else{
-      const c=idx.length>=papers.length?alloc(idx.length,weights):papers.map((_,i)=>i<idx.length?1:0);
-      let k=0;papers.forEach((p,pi)=>{for(let j=0;j<c[pi];j++)list[idx[k++]].main=p});
+      // two parallel tracks: one paper in the main block, another in the second block, each spread over the whole phase
+      const tracks=papers.length>1?[papers.filter((_,i)=>i%2===0),papers.filter((_,i)=>i%2===1)]:[papers,papers];
+      tracks.forEach((tp,ti)=>{const w=tp.map(p=>weights[papers.indexOf(p)]);const c=idx.length>=tp.length?alloc(idx.length,w):tp.map((_,i)=>i<idx.length?1:0);
+        let k=0;tp.forEach((p,pi)=>{for(let j=0;j<c[pi];j++){const li=idx[k++];if(li===undefined)return;if(ti===0)list[li].main=p;else list[li].alt=p}})});
     }
-    idx.forEach(li=>{const m=list[li].main;const others=papers.filter(p=>p!==m);list[li].alt=others.length?others[(li)%others.length]:m});
+    idx.forEach(li=>{if(!list[li].main)list[li].main=papers[0];if(!list[li].alt||(list[li].alt===list[li].main&&papers.length>1)){const m=list[li].main;const others=papers.filter(p=>p!==m);list[li].alt=others.length?others[li%others.length]:m}});
   });
+  ["concepts","revision","final"].forEach(pk=>papers.forEach(p=>[["main","ch"],["alt","cha"]].forEach(([role,key])=>{
+    const ids=list.map((x,i)=>i).filter(i=>list[i].phase===pk&&!list[i].rest&&list[i][role]===p),ch=chapters(p.id);if(!ids.length||!ch.length)return;
+    const Wt=ch.reduce((a,c)=>a+c[1],0);let cum=0;const sp=ch.map(c=>{const s0=cum;cum+=c[1];return [s0,cum]});
+    ids.forEach((li,k)=>{const a=k*Wt/ids.length,b=(k+1)*Wt/ids.length;list[li][key]=sp.map((x,j)=>x[0]<b-1e-9&&x[1]>a+1e-9?j:-1).filter(j=>j>=0)})})));
   return {days,papers,hours,perPaper,phases,list};
 }
+function rangeStr(a){a=[...new Set(a)].sort((x,y)=>x-y);const out=[];for(let i=0;i<a.length;i++){let j=i;while(j+1<a.length&&a[j+1]===a[j]+1)j++;out.push(j>i?`${a[i]+1}–${a[j]+1}`:`${a[i]+1}`);i=j}return out.join(", ")}
+function chTxt(e,full,alt){const cs=alt?e&&e.cha:e&&e.ch,pp=alt?e&&e.alt:e&&e.main;if(!cs||!cs.length||!pp)return "";const arr=cs.map(j=>`Ch ${j+1} ${chShort(pp.id,j)}`);return full||arr.length<=2?arr.join(" · "):arr.slice(0,2).join(" · ")+` +${arr.length-2} more`}
+function weekCh(seg,p){return [...new Set(seg.flatMap(x=>(x.main===p&&x.ch?x.ch:[]).concat(x.alt===p&&x.cha?x.cha:[])))].sort((a,b)=>a-b)}
+function chLine(pid,c,max){const n=chapters(pid).length;if(!c.length)return "";if(c.length===n&&n>2)return `All ${n} chapters`;if(c.length>6)return `Ch ${rangeStr(c)} (${c.length} chapters)`;const nm=c.map(j=>chShort(pid,j));return `Ch ${rangeStr(c)}: `+(max&&nm.length>max?nm.slice(0,max).join(", ")+"…":nm.join("; "))}
+const weekPapers=seg=>[...new Set(seg.flatMap(x=>x.rest?[]:[x.main,x.phase==="practice"?null:x.alt]).filter(Boolean))];
 function slotsFor(entry,hpd){
-  const m=entry.main,a=entry.alt||m;const H=Math.max(1,hpd)*60;
+  const m=entry.main,a=entry.alt||m;const H=Math.max(1,hpd)*60;const ct=chTxt(entry),cta=chTxt(entry,0,1);
   const ph=entry.phase;
   const blocks=ph==="practice"?[
     [0.5,m,"Attempt a full MTP/RTP paper under exam timing"],[0.25,m,"Check against suggested answers; log every mistake"],[0.15,a,"Revise weak chapters from mistake log"],[0.1,null,"MCQ sprint — 15 questions"]]
-   :ph==="final"?[[0.45,m,"Rapid revision from your summary notes"],[0.25,m,"Amendments, formula sheet, key definitions"],[0.2,a,"One mixed question set"],[0.1,null,"MCQ sprint — 15 questions"]]
-   :ph==="revision"?[[0.45,m,"Revise one chapter + solve module questions"],[0.25,a,"Past-paper questions, timed"],[0.15,null,"MCQ sprint — 20 questions"],[0.15,null,"Re-read yesterday's notes"]]
-   :[[0.45,m,"New chapter — read the module, work every illustration"],[0.3,a,"Theory reading and short notes"],[0.125,null,"MCQ sprint — 15 questions"],[0.125,null,"Revise yesterday's work"]];
+   :ph==="final"?[[0.45,m,ct?"Rapid revision: "+ct:"Rapid revision from your summary notes"],[0.25,m,"Amendments, formula sheet, key definitions"],[0.2,a,cta?"Rapid revision: "+cta:"One mixed question set"],[0.1,null,"MCQ sprint — 15 questions"]]
+   :ph==="revision"?[[0.45,m,ct?"Revise "+ct+" + module questions":"Revise one chapter + solve module questions"],[0.25,a,cta?"Revise "+cta+" + past-paper questions":"Past-paper questions, timed"],[0.15,null,"MCQ sprint — 20 questions"],[0.15,null,"Re-read yesterday's notes"]]
+   :[[0.4,m,ct?ct+" — read the module, work every illustration":"New chapter — read the module, work every illustration"],[0.35,a,cta?cta+" — read and make short notes":"Theory reading and short notes"],[0.125,null,"MCQ sprint — 15 questions"],[0.125,null,"Revise yesterday's work"]];
   if(entry.rest)return [{t:"Any time",w:"Light day",d:"Revise the week's notes and do one MCQ set. Rest is part of the plan."}];
   let t=7*60;const out=[];
   blocks.forEach((b,i)=>{const mins=Math.round(H*b[0]/15)*15;if(mins<=0)return;
@@ -575,7 +717,7 @@ function hm(m){m=m%(24*60);const h=Math.floor(m/60),mm=m%60;return String(h).pad
 function currentPlan(){return buildPlan(Object.assign({level:S.level,start:today},S.plan,{weak:S.plan.weak||[]}))}
 
 /* ---------- render ---------- */
-const TABS=[["dashboard","Dashboard","Home","home"],["papers","RTP & MTP","Papers","papers"],["mcq","MCQ practice","MCQs","mcq"],["planner","Study planner","Plan","plan"],["journey","My journey","Journey","journey"],["guidance","Guidance","Guide","guide"]];
+const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["plan","Plan","Plan","plan"],["careers","Careers","Careers","brief"]];
 const IC={
  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
  papers:'<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="m9 14 2 2 4-4"/>',
@@ -589,6 +731,7 @@ const IC={
  check:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="m8 12 3 3 5-6"/>',
  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
  eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.8.8 3 2.6 3.5 5.2"/>',
@@ -618,7 +761,7 @@ async function afterSignIn(fresh){
     const {data}=await sb.from("progress").select("state").eq("user_id",uid).maybeSingle();
     if(data&&data.state&&data.state.level){S=data.state;S.wrong=S.wrong||{};S.tests=S.tests||[];S.uid=uid}
     else{
-      if(S.uid&&S.uid!==uid)S=blank();          // don't hand one student's local data to another
+      if(S.uid&&S.uid!==uid&&!S.fromGuest)S=blank();   // carry a guest's progress into their new account, never another student's
       if(!S.name&&session.user.user_metadata&&session.user.user_metadata.name)S.name=session.user.user_metadata.name;
       S.uid=uid;if(S.onboarded)cloudSave();
     }
@@ -626,6 +769,7 @@ async function afterSignIn(fresh){
   let visited=false;try{visited=sessionStorage.getItem("prepx.visit")===uid}catch(e){}
   if(fresh||!visited){try{await sb.rpc("record_login",{p_name:S.name||null,p_level:S.onboarded?S.level:null});sessionStorage.setItem("prepx.visit",uid)}catch(e){}}
   try{const r=await sb.rpc("is_admin");isAdmin=!!r.data}catch(e){isAdmin=false}
+  S.fromGuest=isGuest();
   try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}
 }
 async function authDo(kind){
@@ -638,15 +782,15 @@ async function authDo(kind){
     else if(kind==="signup")res=await sb.auth.signUp({email:(email||"").trim(),password:pw,options:{data:{name:nm}}});
     else if(kind==="signin")res=await sb.auth.signInWithPassword({email:(email||"").trim(),password:pw});
     else if(kind==="reset"){res=await sb.auth.resetPasswordForEmail((email||"").trim(),{redirectTo:location.origin});if(!res.error){authMsg="Check your inbox — reset link sent.";authView="signin"}}
-    else if(kind==="newpass"){res=await sb.auth.updateUser({password:pw});if(!res.error){recovering=false;authView="signin";const g=await sb.auth.getSession();session=g.data.session;if(session){await afterSignIn(true);tab="dashboard"}authBusy=false;render();return}}
+    else if(kind==="newpass"){res=await sb.auth.updateUser({password:pw});if(!res.error){recovering=false;authView="signin";const g=await sb.auth.getSession();session=g.data.session;if(session){await afterSignIn(true);tab="home"}authBusy=false;render();return}}
   }catch(e){res={error:{message:"Couldn't reach the server. Check your connection and try again."}}}
   authBusy=false;
   if(res&&res.error){authMsg=res.error.message;authErr=true;render();return}
   if(kind==="signup"&&res.data&&!res.data.session){authMsg="Account created! Confirm it from your email, then sign in.";authView="signin";render();return}
-  if(res&&res.data&&res.data.session){session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);tab="dashboard"}
+  if(res&&res.data&&res.data.session){session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);go("home")}
   render();
 }
-async function signOut(){try{await sb.auth.signOut()}catch(e){}session=null;isAdmin=false;S=blank();try{localStorage.removeItem(K);sessionStorage.removeItem("prepx.visit")}catch(e){}authView="signin";authMsg="";render()}
+async function signOut(){try{await sb.auth.signOut()}catch(e){}session=null;isAdmin=false;S=blank();try{localStorage.removeItem(K);sessionStorage.removeItem("prepx.visit")}catch(e){}authView="signin";authMsg="";go("home");render()}
 function authCard(){
   const busy=authBusy?"disabled":"";
   const msg=authMsg?`<p class="amsg ${authErr?"err":""}">${esc(authMsg)}</p>`:"";
@@ -661,29 +805,31 @@ function authCard(){
     <div class="field" style="margin-top:12px"><label for="aPw">Password</label><input id="aPw" type="password" minlength="6" autocomplete="${up?"new-password":"current-password"}" placeholder="${up?"6+ characters":""}"></div>
     <button class="btn primary" style="width:100%;margin-top:18px;padding-block:11px" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Hold on…":up?"Create my account":"Sign in"}</button>${up?"":`<div style="text-align:center;margin-top:8px"><button class="btn ghost sm" data-aview="reset">Forgot password?</button></div>`}
     <div class="or"><span>or</span></div>
-    <button class="btn outline" style="width:100%;padding-block:10px" data-auth="guest" ${busy}>Just browsing? Continue as guest</button>
-    <p class="muted" style="font-size:.8rem;margin-top:12px;text-align:center">Take a look as a guest. Create an account to keep your progress synced on every device.</p>
+    <button class="btn outline" style="width:100%;padding-block:10px" data-tab="home">Just browsing? Skip for now</button>
+    <p class="muted" style="font-size:.8rem;margin-top:12px;text-align:center">No account needed to use CA PrepX. Sign in to keep your progress on every device.</p>
     <div style="text-align:center;margin-top:6px"><button class="btn ghost sm" data-tab="about">Who's building this? Meet the founder →</button></div>
   </div>`;
 }
 function renderChrome(){
-  const on=S.onboarded&&(!sb||(session&&!recovering));
+  const real=sb&&session&&!isGuest()&&!recovering;
   const ac=document.getElementById("acct");
-  ac.innerHTML=sb&&session&&!recovering?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"Guest")}">${isGuest()?"Guest":esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:"";
-  document.getElementById("levelSeg").innerHTML=on?Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}"><span class="lg">${v.label}</span><span class="sm">${k==="inter"?"Inter":v.label}</span></button>`).join(""):"";
-  document.getElementById("levelSeg").hidden=!on;
-  document.querySelector(".tabs").hidden=!on;
+  ac.innerHTML=!sb?"":real?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
+  const showLv=S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers";
+  document.getElementById("levelSeg").innerHTML=Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}"><span class="lg">${v.label}</span><span class="sm">${k==="inter"?"Inter":v.label}</span></button>`).join("");
+  document.getElementById("levelSeg").hidden=!showLv;
+  document.querySelector(".tabs").hidden=tab==="signin";
   document.getElementById("tabs").innerHTML=TABS.map(([k,v,,i])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${ico(i,18)}${v}</button>`).join("");
-  const bn=document.getElementById("bnav");bn.hidden=!on;
+  const bn=document.getElementById("bnav");bn.hidden=tab==="signin";
   bn.innerHTML=TABS.map(([k,,sh,i])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${sh}">${ico(i,22)}<span>${sh}</span></button>`).join("");
   document.getElementById("themeBtn").innerHTML=ico(isDark()?"sun":"moon",19);
   document.getElementById("aboutBtn").setAttribute("aria-pressed",tab==="about");
-  document.getElementById("bannerWrap").innerHTML=!on?"":S.sample?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:isGuest()?`<div class="banner"><span><b>You're on a guest pass.</b> Progress stays while you're signed in on this device. Sign out and it's gone.</span></div>`:"";
+  document.getElementById("bannerWrap").innerHTML=S.sample&&tab!=="signin"?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:"";
 }
 let W={level:"inter"};
 function welcome(){
-  const auth=sb&&(!session||recovering);
+  const auth=sb&&(!session||isGuest()||recovering);
   return `<div class="auth">
+    ${recovering?"":`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back</button></div>`}
     <div class="auth-head"><span class="mark"><svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true"><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linecap="round"/></svg></span>
       <h1>${auth?"Hey! Let's get you exam-ready":"Quick setup, then you're in"}</h1>
       <p class="muted">${auth?"CA Foundation, Inter &amp; Final — all in one place":"Takes 20 seconds. Promise."}</p>
@@ -704,10 +850,13 @@ function welcome(){
 }
 function render(){renderChrome();const m=document.getElementById("main");
   if(!authReady){m.innerHTML=`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
-  const gated=(sb&&(!session||recovering))||!S.onboarded;
-  if(tab==="about"){m.innerHTML=`<section class="view">${gated?`<div><button class="btn ghost sm" data-tab="dashboard">${ico("back",16)} Back</button></div>`:""}${VIEWS.about()}</section>`;return}
-  if(gated){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
-  m.innerHTML=`<section class="view">${VIEWS[tab]()}</section>`;if(tab==="mcq")paintMcq()}
+  if(recovering||tab==="signin"){
+    if(!recovering&&sb&&session&&!isGuest())go("home");
+    else if(sb){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
+    else go("home");
+  }
+  if(!VIEWS[tab])go("home");
+  m.innerHTML=`<section class="view">${VIEWS[tab]()}</section>`;if(tab==="practice")paintMcq();if(tab==="home")paintSearch()}
 
 function heroCard(){
   const hr=new Date().getHours();const greet=hr<5?"Late-night grind":hr<12?"Morning":hr<17?"Hey":"Evening grind";
@@ -750,7 +899,7 @@ dashboard(){
   ${heroCard()}
   <div class="stats icons">
     <div class="stat"><div class="eyebrow">${ico("target",15)}MCQ accuracy</div><div class="v">${tot?Math.round(ok/tot*100)+"%":"—"}</div><div class="s">${ok}/${tot} right</div></div>
-    <div class="stat"><div class="eyebrow">${ico("flame",15)}Streak</div><div class="v">${streak()}<small> days</small></div><div class="s">${streak()>=3?"on fire":"keep it going"}</div></div>
+    <div class="stat"><div class="eyebrow">${ico("flame",15)}Active days</div><div class="v">${activeDays()}<small>/7</small></div><div class="s">this week</div></div>
     <div class="stat"><div class="eyebrow">${ico("clock",15)}This week</div><div class="v">${wk}<small> h</small></div><div class="s">last 7 days</div></div>
     <div class="stat"><div class="eyebrow">${ico("check",15)}ICAI papers</div><div class="v">${rd.n}/${rd.t}</div><div class="s">${rd.a} ticked off</div></div>
   </div>
@@ -793,7 +942,7 @@ mcq(){
       <div class="field"><label for="tM">Time per question</label><select id="tM"><option value="60">1 min</option><option value="72" selected>1 min 12 s (ICAI pace)</option><option value="90">1 min 30 s</option></select></div></div>
       <div class="row" style="margin-top:16px"><button class="btn primary" data-act="starttest">Start the test</button><span class="muted" style="font-size:.85rem">Answers are locked in when you submit. This test has no negative marking.</span></div></div>`;
   }else{
-    body=`<div class="card"><div class="mcq-top">${mode==="practice"?`<div class="field" style="min-width:220px"><label for="mcqP">Paper</label><select id="mcqP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}" ${window.__mp===p.id?"selected":""}>P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>`:`<p class="muted" style="max-width:52ch">Questions you last got wrong. Answer one correctly and it leaves this list.</p>`}
+    body=`<div class="card"><div class="mcq-top">${mode==="practice"?`<div class="field" style="min-width:220px"><label for="mcqP">Paper</label><select id="mcqP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}" ${window.__mp===p.id?"selected":""}>P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>${window.__mp&&window.__mp!=="all"?`<div class="field" style="min-width:220px;flex:1"><label for="mcqC">Chapter</label><select id="mcqC"><option value="all">All chapters (${Q.filter(q=>q.p===window.__mp).length} Qs)</option>${chapters(window.__mp).map((c,j)=>{const n=Q.filter(q=>q.p===window.__mp&&q.c===j).length;return n?`<option value="${j}" ${String(window.__mc)===String(j)?"selected":""}>Ch ${j+1} · ${esc(chShort(window.__mp,j))} (${n})</option>`:""}).join("")}</select></div>`:""}`:`<p class="muted" style="max-width:52ch">Questions you last got wrong. Answer one correctly and it leaves this list.</p>`}
     <div class="num muted" id="sess"></div></div><div id="qbox" style="margin-top:14px"></div></div>`;
   }
   return `<div class="hero"><div><div class="eyebrow">CA ${lv.label} · ${total} questions</div><h1>MCQ practice</h1><p class="muted">Every answer is logged against its paper, so your accuracy and weakest-paper guidance stay current.</p></div>
@@ -807,12 +956,12 @@ planner(){
   let rows="";
   if(plan.daily){rows=""}
   else if(byWeek){
-    for(let w=0;w*7<plan.list.length;w++){const seg=plan.list.slice(w*7,w*7+7);const phs=[...new Set(seg.map(d=>d.phase))];const ps=[...new Set(seg.filter(d=>d.main).map(d=>d.main))];
-      rows+=`<tr><td class="num" style="white-space:nowrap">Wk ${w+1}</td><td style="white-space:nowrap">${fmt(seg[0].date)} – ${fmt(seg[seg.length-1].date)}</td><td>${phs.map(k=>`<span class="pill ph-${k}" style="color:var(--ink)">${PH[k][0]}</span>`).join(" ")}</td><td>${ps.map(p=>`<b>P${p.no}</b> ${esc(p.name)}`).join("<br>")}</td><td class="muted">${PH[phs[phs.length-1]][1]}</td></tr>`}
+    for(let w=0;w*7<plan.list.length;w++){const seg=plan.list.slice(w*7,w*7+7);const phs=[...new Set(seg.map(d=>d.phase))];const ps=weekPapers(seg);
+      rows+=`<tr><td class="num" style="white-space:nowrap">Wk ${w+1}</td><td style="white-space:nowrap">${fmt(seg[0].date)} – ${fmt(seg[seg.length-1].date)}</td><td>${phs.map(k=>`<span class="pill ph-${k}" style="color:var(--ink)">${PH[k][0]}</span>`).join(" ")}</td><td>${ps.map(p=>{const c=weekCh(seg,p);return `<div class="wf"><b>P${p.no}</b> ${esc(p.name)}${c.length?`<span class="chl">${esc(chLine(p.id,c,3))}</span>`:""}</div>`}).join("")}</td><td class="muted">${PH[phs[phs.length-1]][1]}</td></tr>`}
   }else{
-    plan.list.forEach((d,i)=>{rows+=`<tr><td class="num">Day ${i+1}</td><td style="white-space:nowrap">${d.date.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})}</td><td><span class="pill ph-${d.phase}" style="color:var(--ink)">${PH[d.phase][0]}</span></td><td>${d.rest?"Light day — weekly revision":`<b>P${d.main.no}</b> ${esc(d.main.name)}<br><span class="muted">+ P${d.alt.no} ${esc(d.alt.name)}</span>`}</td><td class="muted">${d.rest?"":PH[d.phase][1]}</td></tr>`});
+    plan.list.forEach((d,i)=>{rows+=`<tr><td class="num">Day ${i+1}</td><td style="white-space:nowrap">${d.date.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})}</td><td><span class="pill ph-${d.phase}" style="color:var(--ink)">${PH[d.phase][0]}</span></td><td>${d.rest?"Light day — weekly revision":`<b>P${d.main.no}</b> ${esc(d.main.name)}${d.ch&&d.ch.length?`<span class="chl">${esc(chTxt(d,1))}</span>`:""}<span class="muted" style="display:block;font-size:.82rem">+ P${d.alt.no} ${esc(d.alt.name)}${d.cha&&d.cha.length?": "+esc(chTxt(d,1,1)):""}</span>`}</td><td class="muted">${d.rest?"":PH[d.phase][1]}</td></tr>`});
   }
-  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label}</div><h1>Study planner</h1><p class="muted">Enter how long you have. You get a phased plan, hours per paper, and a timetable for every day.</p></div></div>
+  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label}</div><h1>Study planner</h1><p class="muted">Enter how long you have. You get a phased plan, hours per paper, and a timetable for every day.</p></div><button class="btn primary" data-act="plandocx">${ico("papers",18)} Download as Word</button></div>
   <div class="card">
     <div class="form">
       <div class="field"><span class="lab">Time left</span><div class="dur"><input id="pDur" type="number" min="1" max="730" value="${P.dur}" aria-label="Duration"><select id="pUnit" aria-label="Unit">${["days","weeks","months"].map(u=>`<option ${u===P.unit?"selected":""}>${u}</option>`).join("")}</select></div>
@@ -860,6 +1009,74 @@ journey(){
     <div class="row sp" style="margin-top:10px"><button class="btn primary" data-act="restore">Restore</button>
       <span class="row" id="resetBox"><button class="btn ghost" style="color:var(--tick)" data-act="reset1">Reset everything</button></span></div>
   </div>`;
+},
+home(){
+  const lv=L(),d=S.exam[S.level],n=d?Math.round((new Date(d)-today)/864e5):null,wn=mistakes().length;
+  const hr=new Date().getHours(),greet=hr<5?"Late-night grind":hr<12?"Morning":hr<17?"Hey":"Evening";
+  const tip=TIPS[today.getDate()%TIPS.length];
+  const tiles=[
+    ["dark","papers","RTP · MTP · PYQ",`Latest for ${lv.attempts[0]}`,`data-tab="resources" data-sub="papers"`],
+    ["","mcq","10-min MCQs","Quick practice, any paper",`data-tab="practice"`],
+    ["","plan","I'm behind",n&&n>0?`Catch-up plan for ${n} days`:"Catch-up plan in one tap",`data-act="catchup"`],
+    ["","target","Fix my weak spots",wn?`${wn} questions to redo`:"Redo what you got wrong",`data-mode="mistakes"`],
+    ["","brief","Articleship & jobs","Roles and open vacancies",`data-tab="careers"`],
+    ["soon","users","Clear a doubt","Community — coming soon",""]
+  ];
+  return `${S.onboarded?"":`<div class="card pick"><div><b>Which level are you at?</b><span class="muted">We'll show papers and resources for it.</span></div><div class="row">${Object.entries(LEVELS).map(([k,v])=>`<button class="btn ${k===S.level?"primary":""}" data-pick="${k}">${v.label}</button>`).join("")}</div></div>`}
+  <div class="home-hero">
+    <div class="eyebrow">${greet}${S.name?", "+esc(S.name):""} · CA ${lv.label}${n&&n>0?` · ${n} days to exam`:""}</div>
+    <h1>What do you need today?</h1>
+    <div class="hsearch"><span class="ic-wrap">${ico("search",18)}</span><input id="hq" type="search" placeholder="Search papers, topics, SAs, careers…" value="${esc(HQ)}" autocomplete="off" aria-label="Search CA PrepX"></div>
+    <div id="hres" class="hres" hidden></div>
+  </div>
+  <div class="tiles">${tiles.map(x=>x[0]==="soon"?`<div class="tile soon" aria-disabled="true">${ico(x[1],22)}<b>${x[2]}</b><span>${x[3]}</span></div>`:`<button class="tile ${x[0]}" ${x[4]}>${ico(x[1],22)}<b>${x[2]}</b><span>${x[3]}</span></button>`).join("")}</div>
+  ${S.mcq.length||Object.keys(S.done).length?`<button class="resume" data-tab="plan" data-sub="progress"><span>${ico("clock",18)}</span><span><b>Welcome back.</b> ${wn?`${wn} mistakes waiting to be fixed.`:"See where you stand."} No pressure, pick up where you left off.</span><span>→</span></button>`:""}
+  <div class="card tipcard"><div class="eyebrow">Tip of the day · ${esc(tip[0])}</div><p>${esc(tip[1])}</p><button class="btn ghost sm" data-tab="resources" data-sub="tips">More exam tips →</button></div>`;
+},
+resources(){
+  return `<div class="seg subnav" role="group" aria-label="Resources"><button data-res="papers" aria-pressed="${resMode==="papers"}">RTP · MTP</button><button data-res="syllabus" aria-pressed="${resMode==="syllabus"}">Syllabus</button><button data-res="tips" aria-pressed="${resMode==="tips"}">Exam tips</button></div>${resMode==="tips"?VIEWS.guidance():resMode==="syllabus"?VIEWS.syllabus():VIEWS.papers()}`;
+},
+practice(){return VIEWS.mcq()},
+syllabus(){
+  const lv=L(),C=S.chap||{};
+  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label} · ICAI study material</div><h1>Chapter-wise syllabus</h1><p class="muted">Every chapter from ICAI's current modules. Tick first reading and revision whenever you like, and jump to MCQs for that chapter.</p></div></div>
+  ${lv.papers.map(p=>{const ch=chapters(p.id),r=ch.filter((_,j)=>(C[p.id+"|"+j]||0)>=1).length,v=ch.filter((_,j)=>(C[p.id+"|"+j]||0)>=2).length,pct=ch.length?Math.round((r+v)/(2*ch.length)*100):0;
+    return `<details class="card syl" id="syl-${p.id}" ${window.__sylOpen===p.id?"open":""}><summary><span><span class="pno">P${p.no}${lv.groups?" · G"+p.g:""}</span><b>${esc(p.name)}</b><span class="muted" style="font-size:.84rem">${ch.length} chapters · ${r} read · ${v} revised</span></span><span class="sylpct num">${pct}%</span></summary>
+      <div class="track" style="margin:10px 0 6px"><div class="fill" style="width:${pct}%"></div></div>
+      <div class="chlist">${ch.map((c,j)=>{const st=C[p.id+"|"+j]||0,n=Q.filter(q=>q.p===p.id&&q.c===j).length;return `<div class="chrow"><span class="chn num">${j+1}</span><span class="chname">${esc(c[0])}</span><span class="chact"><button class="chip" data-chk="${p.id}|${j}|1" aria-pressed="${st>=1}"><span class="tk">${st>=1?"✓":"·"}</span>Read</button><button class="chip" data-chk="${p.id}|${j}|2" aria-pressed="${st>=2}"><span class="tk">${st>=2?"✓":"·"}</span>Revised</button>${n?`<button class="btn ghost sm" data-chq="${p.id}|${j}">${n} MCQ${n>1?"s":""}</button>`:""}</span></div>`}).join("")}</div></details>`}).join("")}
+  <p class="muted" style="font-size:.84rem">Chapter lists follow ICAI's new-scheme study material. ICAI revises modules for each attempt, so check the BoS portal for the latest version.</p>`;
+},
+plan(){
+  const d=S.exam[S.level],n=d?Math.round((new Date(d)-today)/864e5):null;
+  const cu=catchup&&planMode==="study"?`<div class="card cu"><div class="row sp"><h2>${ico("plan",20)} Catch-up plan</h2><button class="btn ghost sm" data-act="cuclose">Close</button></div>
+    ${n&&n>0?`<p>You have <b>${n} days</b> to your first paper. Here's a realistic plan for exactly that. ${n<21?"With under three weeks, skip new chapters — revise what you know and attempt RTPs and MTPs.":"Start with your weakest paper; mark it as hard below so it gets more time."}</p>`:`<p>When's your first paper? We'll plan the days you have left.</p><div class="field" style="max-width:220px;margin-top:8px"><label for="cuDate">First paper date</label><input type="date" id="cuDate"></div>`}</div>`:"";
+  const sub=`<div class="seg subnav" role="group" aria-label="Plan"><button data-plan="study" aria-pressed="${planMode==="study"}">Study plan</button><button data-plan="progress" aria-pressed="${planMode==="progress"}">My progress</button><button data-plan="journey" aria-pressed="${planMode==="journey"}">CA journey</button></div>`;
+  const nudge=sb&&(!session||isGuest())?`<div class="banner" style="margin-top:0"><span>Your progress is saved on this device. <b>Sign in</b> to keep it on every device.</span><button class="btn sm primary" data-tab="signin">Sign in</button></div>`:"";
+  const body=planMode==="progress"?VIEWS.dashboard():planMode==="journey"?VIEWS.journey():VIEWS.planner();
+  return `${sub}${cu}${planMode!=="study"?nudge:""}${body}`;
+},
+careers(){
+  const c=cityOf(),st=stageOf();
+  return `<div class="hero"><div><div class="eyebrow">Careers</div><h1>From articleship to your first CA job.</h1><p class="muted">Explore CA roles and jump straight to live openings on LinkedIn and Naukri, filtered for your city and stage.</p></div></div>
+  <div class="card filt">
+    <div class="field"><span class="lab">Where?</span><div class="presets">${CITIES.map(x=>`<button class="chip" data-city="${x[0]}" aria-pressed="${c[0]===x[0]}">${x[1]}</button>`).join("")}</div></div>
+    <div class="field" style="margin-top:12px"><span class="lab">Your stage</span><div class="presets">${STAGES.map(x=>`<button class="chip" data-stage="${x[0]}" aria-pressed="${st[0]===x[0]}">${x[1]}</button>`).join("")}</div></div>
+  </div>
+  <div class="grid2" id="art">
+    <div class="card"><div class="card-h"><h2>${ico("school",20)} Articleship</h2><span class="pill">Inter students</span></div>
+      <ul class="steps"><li>Check ICAI's current eligibility: Intermediate result plus ICITSS (ITT + Orientation).</li><li>Register your training on ICAI's Self-Service Portal (SSP).</li><li>Shortlist firms: Big 4 for structure and brand, mid-size for wider exposure, boutique for hands-on work.</li><li>Keep a one-page CV: attempts, marks, Excel / Tally / SAP, and one line on why this firm.</li></ul>
+      <div class="row" style="margin-top:12px"><a class="btn primary sm" href="${liUrl("CA articleship","1")}" target="_blank" rel="noopener">Openings on LinkedIn</a><a class="btn sm" href="${naukriUrl("ca articleship")}" target="_blank" rel="noopener">Naukri</a><a class="btn ghost sm" href="https://www.icai.org" target="_blank" rel="noopener">ICAI</a></div></div>
+    <div class="card"><div class="card-h"><h2>${ico("brief",20)} Industrial training</h2><span class="pill">Final students</span></div>
+      <p>The last months of articleship can be done in industry. It's a strong route into corporate finance roles after qualifying.</p>
+      <div class="row" style="margin-top:12px"><a class="btn primary sm" href="${liUrl("CA industrial training","1")}" target="_blank" rel="noopener">Openings on LinkedIn</a><a class="btn sm" href="${naukriUrl("ca industrial training")}" target="_blank" rel="noopener">Naukri</a></div></div>
+  </div>
+  <div><h2 style="margin-bottom:10px">Explore CA roles</h2><p class="muted" style="margin-bottom:14px">Open roles are filtered for <b>${esc(c[1])}</b> · <b>${esc(st[1])}</b>.</p>
+  <div class="roles">${ROLES.map(r=>`<div class="card role" id="role-${r.id}"><h3>${esc(r.name)}</h3><p>${esc(r.what)}</p><div class="skills">${r.skills.map(k=>`<span>${esc(k)}</span>`).join("")}</div><p class="muted" style="font-size:.85rem">Where: ${esc(r.where)}</p>
+    <div class="row" style="margin-top:auto;padding-top:10px"><a class="btn primary sm" href="${liUrl(roleKw(r),st[2])}" target="_blank" rel="noopener">Open roles on LinkedIn</a><a class="btn sm" href="${naukriUrl(st[0]==="student"?"articleship "+r.q:r.q)}" target="_blank" rel="noopener">${c[0]==="dubai"?"NaukriGulf":"Naukri"}</a></div></div>`).join("")}</div></div>
+  <section class="ab-comm" id="gulf"><div class="eyebrow" style="color:var(--hero-muted)">Thinking of the Gulf?</div><h2>CA careers in Dubai</h2>
+    <p style="color:var(--hero-muted);max-width:62ch">The UAE brought in 5% VAT in 2018 and 9% corporate tax for financial years from June 2023, so tax, IFRS reporting and internal audit skills are in demand. Indian CAs are well represented across Big 4, consulting and corporate finance teams.</p>
+    <div class="row" style="margin-top:8px"><a class="btn sm" style="background:var(--gold);color:var(--gold-ink);border-color:var(--gold)" href="https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent("chartered accountant")}&location=${encodeURIComponent("Dubai, United Arab Emirates")}" target="_blank" rel="noopener">CA jobs in Dubai on LinkedIn</a><a class="btn sm" style="background:transparent;color:var(--hero-ink);border-color:var(--hero-track)" href="https://www.naukrigulf.com/chartered-accountant-jobs-in-dubai" target="_blank" rel="noopener">NaukriGulf</a></div></section>
+  <div class="card"><div class="card-h"><h2>Career tools</h2><span class="pill">Coming soon</span></div><div class="skills"><span>CV review</span><span>Mock interviews</span><span>Referral network</span><span>Salary insights</span></div></div>`;
 },
 about(){
   const steps=[["school","Bal Bharati Public School","Rohini, Delhi"],["school","Keshav Mahavidyalaya","University of Delhi"],["brief","EY India","Business consulting"],["brief","Protiviti Middle East","Management consulting · Dubai"]];
@@ -925,13 +1142,172 @@ guidance(){
   </div>`;
 }};
 
+
+/* ---------- careers data ---------- */
+const ROLES=[
+ {id:"audit",name:"Statutory audit",what:"Check that a company's financial statements show a true and fair view.",skills:["SAs","Ind AS","Sampling","Excel"],where:"Big 4, mid-tier CA firms",q:"statutory audit"},
+ {id:"ia",name:"Internal audit & risk",what:"Test controls and processes, and flag risks before they turn into losses.",skills:["Controls","Process mapping","Data analysis"],where:"Big 4 risk advisory, consulting firms, corporates",q:"internal audit"},
+ {id:"dt",name:"Direct tax",what:"Advise on income tax, TDS, assessments and transfer pricing.",skills:["Income-tax law","Litigation","Transfer pricing"],where:"Big 4 tax, CA firms, corporates",q:"direct tax"},
+ {id:"gst",name:"GST & indirect tax",what:"Run GST compliance, refunds and advisory for businesses.",skills:["GST law","Returns","Customs"],where:"CA firms, Big 4, corporates",q:"GST"},
+ {id:"fpa",name:"FP&A",what:"Build budgets, forecasts and business cases that drive decisions.",skills:["Financial modelling","Excel","Storytelling"],where:"MNCs, startups, global capability centres",q:"FP&A"},
+ {id:"ctrl",name:"Controllership & reporting",what:"Own the books: month-end close, consolidation and financial reporting.",skills:["Ind AS / IFRS","SAP / Oracle","Consolidation"],where:"Corporates, MNC shared services",q:"financial reporting"},
+ {id:"ta",name:"Transaction advisory",what:"Due diligence and valuation for mergers, acquisitions and fundraises.",skills:["Valuation","Due diligence","Modelling"],where:"Big 4 deals teams, boutique advisory",q:"transaction advisory"},
+ {id:"cons",name:"Management consulting",what:"Fix business problems: process redesign, strategy and transformation.",skills:["Problem solving","Process design","Presenting"],where:"Big 4 and consulting firms",q:"management consulting"},
+ {id:"forensic",name:"Forensic accounting",what:"Investigate fraud, trace money and support disputes.",skills:["Investigation","Data analytics","Law basics"],where:"Big 4 forensic, specialist firms",q:"forensic accounting"},
+ {id:"ib",name:"Investment banking & research",what:"Value companies, build models and pitch deals to investors.",skills:["Valuation","Modelling","Markets"],where:"Investment banks, brokers, PE / VC",q:"investment banking"}
+];
+const CITIES=[["delhi","Delhi NCR","Delhi, India","delhi-ncr"],["mumbai","Mumbai","Mumbai, Maharashtra, India","mumbai"],["bengaluru","Bengaluru","Bengaluru, Karnataka, India","bengaluru"],["pune","Pune","Pune, Maharashtra, India","pune"],["hyderabad","Hyderabad","Hyderabad, Telangana, India","hyderabad"],["india","All India","India",""],["dubai","Dubai","Dubai, United Arab Emirates","dubai"]];
+const STAGES=[["student","Articleship / training","1"],["fresher","Newly qualified","2"],["exp","1–5 years","3,4"]];
+const cityOf=()=>CITIES.find(c=>c[0]===(S.city||"delhi"))||CITIES[0];
+const stageOf=()=>STAGES.find(x=>x[0]===(S.stage||"fresher"))||STAGES[1];
+const slug=t=>t.toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+function liUrl(kw,exp){const c=cityOf();return "https://www.linkedin.com/jobs/search/?keywords="+encodeURIComponent(kw)+"&location="+encodeURIComponent(c[2])+(exp?"&f_E="+encodeURIComponent(exp):"")}
+function naukriUrl(kw){const c=cityOf();if(c[0]==="dubai")return "https://www.naukrigulf.com/"+slug(kw)+"-jobs-in-dubai";return "https://www.naukri.com/"+slug(kw)+"-jobs"+(c[3]?"-in-"+c[3]:"")}
+function roleKw(r){const st=stageOf()[0];return st==="student"?"articleship "+r.q:r.q+" chartered accountant"}
+const TIPS=[
+ ["RTP vs MTP","Read the RTP after your first revision; sit MTPs in 3 hours, no notes, then mark yourself.","tips"],
+ ["Pass criteria","40% in each paper and 50% aggregate in the group.","tips"],
+ ["MCQ strategy","Read all four options: ICAI distractors often differ by one word.","tips"],
+ ["Descriptive answers","Law and audit: provision, facts, analysis, conclusion.","tips"],
+ ["Last 30 days","No new chapters in the final fortnight; two full mocks a week.","tips"]
+];
+function searchIndex(){
+  const lv=L(),out=[];
+  lv.papers.forEach(p=>out.push({k:"Paper",t:`P${p.no} · ${p.name}`,s:"RTP, MTP and past papers",a:`data-tab="resources" data-sub="papers"`}));
+  [["RTP","Revision Test Papers"],["MTP","Mock Test Papers"],["PYQ","Past exam papers"],["Amendments","Check ICAI notices for your attempt"]].forEach(x=>out.push({k:"Resource",t:x[0],s:x[1],a:`data-tab="resources" data-sub="papers"`}));
+  TIPS.forEach(x=>out.push({k:"Tip",t:x[0],s:x[1],a:`data-tab="resources" data-sub="tips"`}));
+  ROLES.forEach(r=>out.push({k:"Career",t:r.name,s:r.what,a:`data-tab="careers" data-jump="role-${r.id}"`}));
+  [["Articleship","Find articleship openings","careers","art"],["Industrial training","Openings for Final students","careers","art"],["Gulf jobs","CA roles in Dubai","careers","gulf"]].forEach(x=>out.push({k:"Career",t:x[0],s:x[1],a:`data-tab="careers" data-jump="${x[3]}"`}));
+  [["Catch-up plan","I'm behind — plan the days left","catchup"],["Study plan","Plan for any duration","plan"],["Log study hours","Track today's hours","progress"],["CA journey","Milestones to membership","journey"]].forEach(x=>out.push({k:"Plan",t:x[0],s:x[1],a:x[2]==="catchup"?`data-act="catchup"`:`data-tab="plan" data-sub="${x[2]==="plan"?"study":x[2]}"`}));
+  lv.papers.forEach(p=>chapters(p.id).forEach((c,j)=>out.push({k:"Chapter",t:`Ch ${j+1} · ${chShort(p.id,j)}`,s:`P${p.no} ${p.name}`,a:`data-tab="resources" data-sub="syllabus" data-jump="syl-${p.id}" data-open="${p.id}"`})));
+  Q.filter(q=>lv.papers.some(p=>p.id===q.p)).forEach(q=>out.push({k:"MCQ",t:q.q,s:"P"+paper(q.p).no+" · "+paper(q.p).name,a:`data-q="${q.id}"`}));
+  return out;
+}
+let HQ="";
+function paintSearch(){
+  const box=document.getElementById("hres");if(!box)return;
+  const q=HQ.trim().toLowerCase();if(!q){box.innerHTML="";box.hidden=true;return}
+  const words=q.split(/\s+/);
+  const hits=searchIndex().filter(x=>{const h=(x.t+" "+x.s+" "+x.k).toLowerCase();return words.every(w=>h.includes(w))}).slice(0,8);
+  box.hidden=false;
+  box.innerHTML=hits.length?hits.map(x=>`<button class="hit" ${x.a}><span class="pill">${x.k}</span><span><b>${esc(x.t)}</b><span class="muted">${esc(x.s)}</span></span></button>`).join(""):`<p class="muted" style="padding:10px 12px">Nothing for "${esc(HQ)}" yet. Try a paper name, "RTP", "GST" or "articleship".</p>`;
+}
+
+/* ---------- Word export (branded .docx with watermark) ---------- */
+function loadJSZip(){return window.JSZip?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
+const DX={
+  x:t=>String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"),
+  r(t,o={}){return `<w:r><w:rPr><w:rFonts w:ascii="${o.f||"Calibri"}" w:hAnsi="${o.f||"Calibri"}" w:cs="${o.f||"Calibri"}"/>${o.b?"<w:b/><w:bCs/>":""}${o.caps?"<w:caps/>":""}<w:color w:val="${o.c||"141414"}"/>${o.sp?`<w:spacing w:val="${o.sp}"/>`:""}<w:sz w:val="${o.sz||20}"/><w:szCs w:val="${o.sz||20}"/></w:rPr><w:t xml:space="preserve">${DX.x(t)}</w:t></w:r>`},
+  p(runs,o={}){const pb=o.bb?`<w:pBdr><w:bottom w:val="single" w:sz="${o.bb[1]||12}" w:space="4" w:color="${o.bb[0]}"/></w:pBdr>`:"";
+    return `<w:p><w:pPr>${o.kn?"<w:keepNext/>":""}${pb}${o.fill?`<w:shd w:val="clear" w:color="auto" w:fill="${o.fill}"/>`:""}${o.tabs||""}<w:spacing w:before="${o.bf||0}" w:after="${o.af==null?80:o.af}" w:line="${o.ln||264}" w:lineRule="auto"/>${o.ind?`<w:ind w:left="${o.ind}"/>`:""}${o.jc?`<w:jc w:val="${o.jc}"/>`:""}</w:pPr>${Array.isArray(runs)?runs.join(""):runs}</w:p>`},
+  tbl(widths,rows,o={}){const tot=widths.reduce((a,b)=>a+b,0),bc=o.bc||"E6DFCC",bd=o.nob?"nil":"single";
+    const B=["top","left","bottom","right","insideH","insideV"].map(k=>`<w:${k} w:val="${o.nob?"nil":(k==="left"||k==="right"||k==="insideV")&&o.noV?"nil":bd}" w:sz="4" w:space="0" w:color="${bc}"/>`).join("");
+    return `<w:tbl><w:tblPr><w:tblW w:w="${tot}" w:type="dxa"/><w:tblBorders>${B}</w:tblBorders><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="${o.pad||90}" w:type="dxa"/><w:left w:w="${o.padx||140}" w:type="dxa"/><w:bottom w:w="${o.pad||90}" w:type="dxa"/><w:right w:w="${o.padx||140}" w:type="dxa"/></w:tblCellMar><w:tblLook w:val="0000" w:firstRow="0" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:noHBand="1" w:noVBand="1"/></w:tblPr><w:tblGrid>${widths.map(w=>`<w:gridCol w:w="${w}"/>`).join("")}</w:tblGrid>${
+      rows.map(r=>{let ci=0;return `<w:tr><w:trPr><w:cantSplit/>${r.h?"<w:tblHeader/>":""}${r.ht?`<w:trHeight w:val="${r.ht}" w:hRule="exact"/>`:""}</w:trPr>${r.c.map(c=>{const span=c.span||1,w=widths.slice(ci,ci+span).reduce((a,b)=>a+b,0);ci+=span;
+        return `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${span>1?`<w:gridSpan w:val="${span}"/>`:""}${c.lb?`<w:tcBorders><w:left w:val="single" w:sz="${c.lb[1]||24}" w:space="0" w:color="${c.lb[0]}"/></w:tcBorders>`:""}${c.fill?`<w:shd w:val="clear" w:color="auto" w:fill="${c.fill}"/>`:""}${c.mar?`<w:tcMar><w:top w:w="${c.mar}" w:type="dxa"/><w:left w:w="${c.mar}" w:type="dxa"/><w:bottom w:w="${c.mar}" w:type="dxa"/><w:right w:w="${c.mar}" w:type="dxa"/></w:tcMar>`:""}<w:vAlign w:val="${c.v||"center"}"/></w:tcPr>${c.x}</w:tc>`}).join("")}</w:tr>`}).join("")}</w:tbl>`},
+  gap(h){return `<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="${h||120}" w:lineRule="exact"/></w:pPr></w:p>`},
+  h2(t,sub){return DX.p([DX.r(t,{f:"Georgia",b:1,sz:28,c:"141414"})],{bf:280,af:sub?20:120,kn:1,bb:["E0B43A",12]})+(sub?DX.p(DX.r(sub,{sz:18,c:"6B6558"}),{af:120,kn:1}):"")},
+  bar(pct,w){const a=Math.max(60,Math.round(w*pct)),b=Math.max(0,w-a);const cells=[{x:DX.p("",{af:0}),fill:"E0B43A"}];if(b>0)cells.push({x:DX.p("",{af:0}),fill:"F1ECDF"});
+    return DX.tbl(b>0?[a,b]:[a],[{ht:150,c:cells}],{nob:1,pad:0,padx:0})+DX.p("",{af:0,ln:20})}
+};
+async function planDocx(btn){
+  const old=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="Preparing…"}
+  try{
+  await loadJSZip();
+  const lv=L(),P=S.plan,plan=currentPlan(),d=DX,W=9638;
+  const fmtL=dt=>dt.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+  const endD=addDays(today,plan.days-1);
+  const grp=lv.groups?(P.groups==="both"?"Both groups":P.groups==="g1"?"Group I":"Group II"):"All papers";
+  const PHC={concepts:["FFF4D6","141414"],revision:["F1ECDF","141414"],practice:["FBE4D8","7A2A0C"],final:["111111","E0B43A"],daily:["FFF4D6","141414"]};
+  let B="";
+  // cover band
+  B+=d.tbl([W],[{c:[{fill:"111111",mar:360,x:
+    d.p([d.r("CA PREPX",{f:"Georgia",b:1,sz:18,c:"E0B43A",sp:40})],{af:120})+
+    d.p([d.r(plan.daily?"Your plan for today":"Your study plan",{f:"Georgia",b:1,sz:52,c:"FFFFFF"})],{af:80,ln:240})+
+    d.p([d.r(`CA ${lv.label} · ${lv.attempts[0]} attempt${S.name?" · Prepared for "+S.name:""}`,{sz:21,c:"D8D1BE"})],{af:40})+
+    d.p([d.r(`${fmtL(today)} → ${fmtL(endD)} · ${grp} · ${P.hpd} h a day`,{sz:18,c:"B5AE9C"})],{af:0})}]}],{nob:1,pad:0,padx:0});
+  B+=d.gap(200);
+  // key facts
+  const exD=plan.list.find(x=>!x.rest)||plan.list[0];const kf=plan.daily?[[today.toLocaleDateString("en-GB",{day:"numeric",month:"short"}),"today"],[String(P.hpd),"study hours"],[String(new Set([exD.main,exD.alt].filter(Boolean)).size),"papers in focus"],[String(slotsFor(exD,P.hpd).filter(x=>!x.brk).length),"study blocks"]]:[[String(plan.days),"days in the plan"],[String(plan.hours),"study hours"],[String(plan.papers.length),"papers"],[String(Math.round(plan.hours/Math.max(1,plan.papers.length))),"hours per paper (avg)"]];
+  B+=d.tbl([2409,2410,2410,2409],[{c:kf.map(k=>({fill:"FAF7EF",mar:160,x:d.p(d.r(k[0],{f:"Georgia",b:1,sz:40,c:"141414"}),{af:0,ln:240})+d.p(d.r(k[1],{sz:16,c:"6B6558",caps:1,sp:10}),{af:0})}))}],{bc:"E6DFCC",noV:0});
+  if(!plan.daily){
+    // phases
+    B+=d.h2("Your phases","Four stages, from learning to exam-ready. Dates are worked out from today.");
+    let cur=0;const rows=[{h:1,c:["Phase","Dates","Days","What to do"].map(t=>({fill:"111111",x:d.p(d.r(t,{b:1,sz:18,c:"E0B43A"}),{af:0})}))}];
+    plan.phases.forEach(ph=>{const s=addDays(today,cur),e=addDays(today,cur+ph.days-1);cur+=ph.days;const col=PHC[ph.key];
+      rows.push({c:[{fill:col[0],x:d.p(d.r(PH[ph.key][0],{b:1,sz:20,c:col[1]}),{af:0})},{x:d.p(d.r(`${fmt(s)} – ${fmt(e)}`,{sz:19}),{af:0})},{x:d.p(d.r(String(ph.days),{b:1,sz:19}),{af:0,jc:"center"})},{x:d.p(d.r(PH[ph.key][1],{sz:19,c:"3A3630"}),{af:0})}]})});
+    B+=d.tbl([2000,2100,900,4638],rows);
+  }
+  // hours per paper
+  if(!plan.daily){B+=d.h2("Hours per paper",(P.weak||[]).length?"Papers you marked as hard get about 40% more time.":"Split evenly. Mark hard papers in the planner to give them more time.");
+  const mx=Math.max(...plan.perPaper.map(x=>x.h),1);
+  B+=d.tbl([3900,900,4838],plan.perPaper.map((x,i)=>({c:[
+    {fill:i%2?"FFFFFF":"FAF7EF",x:d.p([d.r(`P${x.p.no}  `,{sz:17,c:"9C7400",b:1}),d.r(x.p.name,{sz:19}),(P.weak||[]).includes(x.p.id)?d.r("  ★ hard",{sz:16,c:"C2410C",b:1}):""],{af:0})},
+    {fill:i%2?"FFFFFF":"FAF7EF",x:d.p(d.r(x.h+" h",{b:1,sz:19}),{af:0,jc:"right"})},
+    {fill:i%2?"FFFFFF":"FAF7EF",x:d.bar(x.h/mx,4558)}]})),{noV:1});}
+  // a day
+  const ex=plan.list.find(x=>!x.rest)||plan.list[0];
+  B+=d.h2(plan.daily?"Your timetable for today":"What a study day looks like",`Built for ${P.hpd} hours. Move the blocks around — just keep the order: hardest work first.`);
+  const sl=slotsFor(ex,P.hpd);
+  B+=d.tbl([1900,3100,4638],[{h:1,c:["Time","Block","Focus"].map(t=>({fill:"111111",x:d.p(d.r(t,{b:1,sz:18,c:"E0B43A"}),{af:0})}))}].concat(sl.map(s=>({c:[
+    {fill:s.brk?"F7F4EC":"FFFFFF",x:d.p(d.r(s.t,{sz:18,c:s.brk?"9A937F":"141414",b:!s.brk}),{af:0})},
+    {fill:s.brk?"F7F4EC":"FFFFFF",x:d.p(d.r(s.w,{sz:19,b:!s.brk,c:s.brk?"9A937F":"141414"}),{af:0})},
+    {fill:s.brk?"F7F4EC":"FFFFFF",x:d.p(d.r(s.d||"Stretch, water, no phone",{sz:18,c:s.brk?"9A937F":"3A3630"}),{af:0})}]}))));
+  // week / day table
+  if(!plan.daily){
+    const byWeek=plan.days>21,rows=[{h:1,c:[byWeek?"Week":"Day","Dates","Phase","Focus","Target","Done"].map((t,i)=>({fill:"111111",x:d.p(d.r(t,{b:1,sz:17,c:"E0B43A"}),{af:0,jc:i===5?"center":undefined})}))}];
+    const add=(no,dt,phs,ps,tg,i,seg)=>{const col=PHC[phs[0]]||PHC.concepts,z=i%2?"FFFFFF":"FAF7EF";rows.push({c:[
+      {fill:z,x:d.p(d.r(no,{b:1,sz:18}),{af:0})},{fill:z,x:d.p(d.r(dt,{sz:17}),{af:0})},
+      {fill:col[0],x:phs.map(k=>d.p(d.r(PH[k][0],{b:1,sz:16,c:col[1]}),{af:0})).join("")},
+      {fill:z,x:ps.length?ps.map(p=>{const c=weekCh(seg||[],p);return d.p([d.r(`P${p.no} `,{b:1,sz:16,c:"9C7400"}),d.r(p.name,{sz:17,b:1})],{af:c.length?0:40})+(c.length?d.p(d.r(chLine(p.id,c),{sz:15,c:"5A554A"}),{af:60,ln:230}):"")}).join(""):d.p(d.r("Light day — weekly revision",{sz:17,c:"6B6558"}),{af:0})},
+      {fill:z,x:d.p(d.r(tg,{sz:16,c:"3A3630"}),{af:0})},
+      {fill:z,x:d.p(d.r("☐",{sz:26,c:"9C7400",f:"Segoe UI Symbol"}),{af:0,jc:"center"})}]})};
+    if(byWeek){for(let w=0;w*7<plan.list.length;w++){const seg=plan.list.slice(w*7,w*7+7),phs=[...new Set(seg.map(x=>x.phase))],ps=weekPapers(seg);add(String(w+1),`${fmt(seg[0].date)} – ${fmt(seg[seg.length-1].date)}`,phs,ps,PH[phs[phs.length-1]][1],w,seg)}}
+    else plan.list.forEach((x,i)=>add(String(i+1),x.date.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}),[x.phase],x.rest?[]:weekPapers([x]),x.rest?"Revise the week's notes":PH[x.phase][1],i,[x]));
+    B+=d.h2(byWeek?"Week by week":"Day by day","Tick the box when you're done. Fell behind? No stress — make a fresh catch-up plan on caprepx.com.");
+    B+=d.tbl([700,1500,1350,3400,1938,750],rows,{noV:1});
+  }
+  // syllabus checklist (chapter-wise, from ICAI study material)
+  if(plan.papers.some(p=>chapters(p.id).length)){
+    B+=d.h2("Syllabus checklist","Every chapter from ICAI's study material. Tick first reading and revision as you go.");
+    plan.papers.forEach(p=>{const ch=chapters(p.id);if(!ch.length)return;
+      B+=d.p([d.r(`P${p.no}  `,{b:1,sz:20,c:"9C7400"}),d.r(p.name,{f:"Georgia",b:1,sz:22})],{bf:160,af:60,kn:1});
+      const box=v=>d.p(d.r(v?"☑":"☐",{sz:24,c:"9C7400",f:"Segoe UI Symbol"}),{af:0,jc:"center"});
+      B+=d.tbl([700,6038,1450,1450],[{h:1,c:["Ch","Chapter","1st read","Revised"].map((t,i)=>({fill:"111111",x:d.p(d.r(t,{b:1,sz:16,c:"E0B43A"}),{af:0,jc:i>1?"center":undefined})}))}].concat(ch.map((c,j)=>{const st=(S.chap||{})[p.id+"|"+j]||0,z=j%2?"FFFFFF":"FAF7EF";return {c:[
+        {fill:z,x:d.p(d.r(String(j+1),{b:1,sz:17}),{af:0})},{fill:z,x:d.p(d.r(c[0],{sz:18}),{af:0})},{fill:z,x:box(st>=1)},{fill:z,x:box(st>=2)}]}})),{noV:1});
+    });
+  }
+  // tips box
+  B+=d.gap(240);
+  const tips=["Hardest paper in your freshest hours.","Every Sunday: 30 minutes to re-read the week's notes.","Sit RTPs and MTPs in exam conditions — 3 hours, no notes.","Missed a few days? Skip the guilt, re-plan and keep going."];
+  B+=d.tbl([W],[{c:[{fill:"FAF7EF",lb:["E0B43A",36],mar:220,x:d.p(d.r("How to use this plan",{f:"Georgia",b:1,sz:24}),{af:100})+tips.map(t=>d.p([d.r("✓  ",{b:1,sz:19,c:"9C7400",f:"Segoe UI Symbol"}),d.r(t,{sz:19})],{af:60})).join("")}]}],{nob:1,pad:0,padx:0});
+  B+=d.p([d.r("Made with ",{sz:17,c:"6B6558"}),d.r("CA PrepX",{f:"Georgia",b:1,sz:17,c:"9C7400"}),d.r(" · caprepx.com · Plan it. Practise it. Tick it off.",{sz:17,c:"6B6558"})],{bf:240,jc:"center"});
+  const NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w10="urn:schemas-microsoft-com:office:word"';
+  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${NS}><w:body>${B}<w:sectPr><w:headerReference w:type="default" r:id="rIdH"/><w:footerReference w:type="default" r:id="rIdF"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1300" w:right="1134" w:bottom="1134" w:left="1134" w:header="560" w:footer="560" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const WM=`<w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:noProof/></w:rPr><w:pict><v:shapetype id="_x0000_t136" coordsize="21600,21600" o:spt="136" adj="10800" path="m@7,l@8,m@5,21600l@6,21600e"><v:formulas><v:f eqn="sum #0 0 10800"/><v:f eqn="prod #0 2 1"/><v:f eqn="sum 21600 0 @1"/><v:f eqn="sum 0 0 @2"/><v:f eqn="sum 21600 0 @3"/><v:f eqn="if @0 @3 0"/><v:f eqn="if @0 21600 @1"/><v:f eqn="if @0 0 @2"/><v:f eqn="if @0 @4 21600"/><v:f eqn="mid @5 @6"/><v:f eqn="mid @8 @5"/><v:f eqn="mid @7 @8"/><v:f eqn="mid @6 @7"/><v:f eqn="sum @6 0 @5"/></v:formulas><v:path textpathok="t" o:connecttype="custom" o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0"/><v:textpath on="t" fitshape="t"/><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"/></v:handles><o:lock v:ext="edit" text="t" shapetype="t"/></v:shapetype><v:shape id="PowerPlusWaterMarkObject1" o:spid="_x0000_s2049" type="#_x0000_t136" style="position:absolute;margin-left:0;margin-top:0;width:440pt;height:110pt;rotation:315;z-index:-251655168;mso-position-horizontal:center;mso-position-horizontal-relative:margin;mso-position-vertical:center;mso-position-vertical-relative:margin" o:allowincell="f" fillcolor="#E0B43A" stroked="f"><v:fill opacity="13107f"/><v:textpath style="font-family:&quot;Georgia&quot;;font-size:1pt;font-weight:bold" string="CA PrepX"/><w10:wrap anchorx="margin" anchory="margin"/></v:shape></w:pict></w:r></w:p>`;
+  const hdr=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:hdr ${NS}>${d.p([d.r("CA PrepX",{f:"Georgia",b:1,sz:20,c:"141414"}),d.r("\tcaprepx.com",{sz:16,c:"9C7400"})],{af:0,bb:["E0B43A",8],tabs:'<w:tabs><w:tab w:val="right" w:pos="9638"/></w:tabs>'})}${WM}</w:hdr>`;
+  const ftr=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr ${NS}><w:p><w:pPr><w:spacing w:after="0"/><w:jc w:val="center"/></w:pPr>${d.r(`CA PrepX · ${lv.label} study plan · Page `,{sz:15,c:"9A937F"})}<w:fldSimple w:instr=" PAGE ">${d.r("1",{sz:15,c:"9A937F"})}</w:fldSimple>${d.r(" of ",{sz:15,c:"9A937F"})}<w:fldSimple w:instr=" NUMPAGES ">${d.r("1",{sz:15,c:"9A937F"})}</w:fldSimple></w:p></w:ftr>`;
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:eastAsia="Calibri" w:cs="Calibri"/><w:color w:val="141414"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-GB"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="80" w:line="264" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style><w:style w:type="table" w:default="1" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>`;
+  const z=new JSZip();
+  z.file("[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>`);
+  z.file("_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/></Relationships>`);
+  z.file("docProps/core.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>CA PrepX study plan</dc:title><dc:creator>CA PrepX</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${new Date().toISOString().slice(0,19)}Z</dcterms:created></cp:coreProperties>`);
+  z.file("word/document.xml",doc);z.file("word/styles.xml",styles);z.file("word/header1.xml",hdr);z.file("word/footer1.xml",ftr);
+  z.file("word/_rels/document.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdS" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdH" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header1.xml"/><Relationship Id="rIdF" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>`);
+  const blob=await z.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:6},mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`CA-PrepX-${lv.label}-study-plan-${iso(today)}.docx`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+  toast("Plan downloaded. Print it, stick it up, crush it.");
+  }catch(e){toast("Couldn't create the file. Check your connection and try again.")}
+  if(btn){btn.disabled=false;btn.textContent=old}
+}
+
 /* ---------- MCQ engine ---------- */
 let cur=null,answered=false,sess={n:0,ok:0},mode="practice",T=null,tick=null;
 const inLevel=q=>L().papers.some(p=>p.id===q.p);
 function mistakes(){return Q.filter(q=>S.wrong[q.id]&&inLevel(q))}
 function pool(){
   if(mode==="mistakes")return mistakes();
-  const f=window.__mp&&window.__mp!=="all"?[window.__mp]:L().papers.map(p=>p.id);return Q.filter(q=>f.includes(q.p));
+  const f=window.__mp&&window.__mp!=="all"?[window.__mp]:L().papers.map(p=>p.id);const mc=window.__mc;return Q.filter(q=>f.includes(q.p)&&(mc==null||mc==="all"||window.__mp==="all"||!window.__mp||String(q.c)===String(mc)));
 }
 function pick(){const pl=pool();if(!pl.length){cur=null;return}let n;do{n=pl[Math.floor(Math.random()*pl.length)]}while(pl.length>1&&cur&&n.id===cur.id);cur=n;answered=false}
 function record(q,ok){S.mcq.push({id:q.id,p:q.p,ok,t:iso(today)});if(S.mcq.length>2000)S.mcq=S.mcq.slice(-2000);if(ok)delete S.wrong[q.id];else S.wrong[q.id]=1}
@@ -942,7 +1318,7 @@ function paintQ(){
   const sEl=document.getElementById("sess");if(sEl)sEl.textContent=sess.n?`This session: ${sess.ok}/${sess.n}`:"";
   if(!cur){box.innerHTML=`<p class="muted">${mode==="mistakes"?"Zero mistakes left. Shabaash!":"No questions for this paper yet."}</p>`;return}
   const p=paper(cur.p);
-  box.innerHTML=`<span class="pill">P${p.no} · ${esc(p.name)}</span><p class="q">${esc(cur.q)}</p>
+  box.innerHTML=`<span class="pill">P${p.no} · ${esc(p.name)}</span>${cur.c!=null?`<span class="pill chp">Ch ${cur.c+1} · ${esc(chShort(cur.p,cur.c))}</span>`:""}<p class="q">${esc(cur.q)}</p>
    <div class="opts">${cur.o.map((o,i)=>`<button class="opt" data-opt="${i}"><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}</div>
    <div id="why"></div><div class="mcq-foot"><span class="muted" style="font-size:.85rem">${pool().length} questions in this set</span><button class="btn primary" data-act="nextq">Next one</button></div>`;
 }
@@ -973,7 +1349,7 @@ function finishTest(){
   if(!T||!T.active)return;clearInterval(tick);T.active=false;T.done=true;T.secs=Math.min(T.limit,Math.floor((Date.now()-T.start)/1000));
   let ok=0;T.qs.forEach((q,i)=>{const r=T.ans[i]===q.a;if(r)ok++;record(q,r)});T.ok=ok;
   S.tests.push({t:iso(today),lv:S.level,n:T.qs.length,ok,secs:T.secs});if(S.tests.length>50)S.tests=S.tests.slice(-50);save();
-  if(tab==="mcq")render();
+  if(tab==="practice")render();
 }
 function testResults(){
   const pct=Math.round(T.ok/T.qs.length*100);const by={};T.qs.forEach((q,i)=>{by[q.p]=by[q.p]||{n:0,ok:0};by[q.p].n++;if(T.ans[i]===q.a)by[q.p].ok++});
@@ -995,10 +1371,19 @@ document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-tab]");if(!t)return;
   if(t.dataset.wlevel){W.level=t.dataset.wlevel;document.querySelectorAll("[data-wlevel]").forEach(b=>b.setAttribute("aria-pressed",b===t));return}
   if(t.dataset.level){if(T&&T.active)return;S.level=t.dataset.level;S.plan.weak=[];cur=null;T=null;sess={n:0,ok:0};window.__mp="all";save();render();return}
-  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;tab="mcq";render();window.scrollTo({top:0});return}
+  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
   if(t.dataset.topt!==undefined){T.ans[T.i]=+t.dataset.topt;paintTest();return}
   if(t.dataset.goto!==undefined){T.i=+t.dataset.goto;paintTest();return}
-  if(t.dataset.tab){tab=t.dataset.tab;try{localStorage.setItem(K+".tab",tab)}catch(_){}render();window.scrollTo({top:0});return}
+  if(t.dataset.tab){if(t.dataset.open)window.__sylOpen=t.dataset.open;go(t.dataset.tab);if(t.dataset.sub){if(tab==="plan")planMode=t.dataset.sub;if(tab==="resources")resMode=t.dataset.sub}render();window.scrollTo({top:0});
+    if(t.dataset.jump)setTimeout(()=>{const el=document.getElementById(t.dataset.jump);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})},60);return}
+  if(t.dataset.plan){planMode=t.dataset.plan;render();return}
+  if(t.dataset.res){resMode=t.dataset.res;render();return}
+  if(t.dataset.pick){S.level=t.dataset.pick;S.onboarded=true;save();render();return}
+  if(t.dataset.chk){const [pid,j,l]=t.dataset.chk.split("|");S.chap=S.chap||{};const k=pid+"|"+j,cur0=S.chap[k]||0,L2=+l;S.chap[k]=cur0>=L2?L2-1:L2;if(!S.chap[k])delete S.chap[k];window.__sylOpen=pid;save();render();const el=document.getElementById("syl-"+pid);if(el)el.open=true;return}
+  if(t.dataset.chq){const [pid,j]=t.dataset.chq.split("|");mode="practice";window.__mp=pid;window.__mc=j;cur=null;go("practice");render();window.scrollTo({top:0});return}
+  if(t.dataset.city){S.city=t.dataset.city;save();render();return}
+  if(t.dataset.stage){S.stage=t.dataset.stage;save();render();return}
+  if(t.dataset.q!==undefined){const q=Q.find(x=>x.id===t.dataset.q);if(q){mode="practice";window.__mp=q.p;cur=q;answered=false;go("practice");render();window.scrollTo({top:0})}return}
   if(t.dataset.done){const k=t.dataset.done;if(S.done[k])delete S.done[k];else S.done[k]=1;save();render();return}
   if(t.dataset.ms!==undefined){const i=t.dataset.ms;const st=S.ms[i]||"todo";S.ms[i]=st==="todo"?"doing":st==="doing"?"done":"todo";if(S.ms[i]==="todo")delete S.ms[i];save();render();return}
   if(t.dataset.weak){const w=new Set(S.plan.weak||[]);w.has(t.dataset.weak)?w.delete(t.dataset.weak):w.add(t.dataset.weak);S.plan.weak=[...w];save();render();return}
@@ -1008,13 +1393,16 @@ document.addEventListener("click",e=>{
   if(t.dataset.auth){authDo(t.dataset.auth);return}
   const a=t.dataset.act;
   if(a==="signout"){signOut();return}
+  if(a==="catchup"){catchup=true;const d=S.exam[S.level];const n=d?Math.round((new Date(d)-today)/864e5):null;if(n&&n>0){S.plan.dur=n;S.plan.unit="days";save()}go("plan");planMode="study";render();window.scrollTo({top:0});return}
+  if(a==="cuclose"){catchup=false;render();return}
+  if(a==="plandocx"){planDocx(t);return}
   if(a==="theme"){THEME=isDark()?"light":"dark";try{localStorage.setItem("prepx.theme",THEME)}catch(_){}applyTheme();renderChrome();return}
   if(a==="nextq"){pick();paintQ()}
   if(a==="fresh"){const keepUid=S.uid;S=blank(S.level);S.uid=keepUid;W.level=S.level;save();render()}
-  if(a==="demo"){const keepUid=S.uid;S=sample();S.uid=keepUid;tab="dashboard";save();render()}
+  if(a==="demo"){const keepUid=S.uid;S=sample();S.uid=keepUid;go("home");save();render()}
   if(a==="start"){const lvl=W.level;const keepUid=S.uid;S=blank(lvl);S.uid=keepUid;S.onboarded=true;S.name=(document.getElementById("wName").value||"").trim().slice(0,40);
     S.exam[lvl]=document.getElementById("wExam").value||"";S.plan.hpd=Math.max(1,Math.min(16,parseFloat(document.getElementById("wH").value)||6));
-    tab="dashboard";save();render();window.scrollTo({top:0})}
+    go("home");save();render();window.scrollTo({top:0})}
   if(a==="starttest"){startTest(document.getElementById("tP").value,+document.getElementById("tN").value,+document.getElementById("tM").value);render()}
   if(a==="tprev"&&T){T.i=Math.max(0,T.i-1);paintTest()}
   if(a==="tnext"&&T){T.i=Math.min(T.qs.length-1,T.i+1);paintTest()}
@@ -1026,15 +1414,17 @@ document.addEventListener("click",e=>{
   if(a==="restore"){const v=document.getElementById("restoreTxt").value;if(restoreCode(v)){render();const m=document.getElementById("bkMsg");if(m)m.textContent="Progress restored."}else{document.getElementById("bkMsg").textContent="That code didn't work — check you copied all of it."}}
   if(a==="reset1"){document.getElementById("resetBox").innerHTML=`<span style="font-size:.85rem">This clears all progress on this device.</span><button class="btn sm" data-act="reset0">Cancel</button><button class="btn sm primary" style="background:var(--tick);border-color:var(--tick)" data-act="reset2">Yes, reset</button>`}
   if(a==="reset0")render();
-  if(a==="reset2"){clearInterval(tick);T=null;const keepUid=S.uid;S=blank();S.uid=keepUid;tab="dashboard";save();render();window.scrollTo({top:0})}
+  if(a==="reset2"){clearInterval(tick);T=null;const keepUid=S.uid;S=blank();S.uid=keepUid;go("home");save();render();window.scrollTo({top:0})}
   if(a==="logh"){const v=parseFloat(document.getElementById("logH").value);if(!isNaN(v)&&v>=0){S.log[iso(today)]=Math.min(16,v);save();render();const st=streak();
-    toast(v>=S.plan.hpd?"Target smashed. Shabaash!":st>=3?`${st}-day streak — keep it going!`:"Logged. Every hour counts.")}}
+    toast(v>=S.plan.hpd?"Target smashed. Shabaash!":activeDays()>=3?`${activeDays()} active days this week. Keep going!`:"Logged. Every hour counts.")}}
 });
+document.addEventListener("input",e=>{if(e.target.id==="hq"){HQ=e.target.value;paintSearch()}});
 document.addEventListener("change",e=>{
   const id=e.target.id,v=e.target.value;
-  if(id==="examDate"){S.exam[S.level]=v;save();render()}
+  if(id==="examDate"||id==="cuDate"){S.exam[S.level]=v;if(id==="cuDate"){const n=Math.round((new Date(v)-today)/864e5);if(n>0){S.plan.dur=n;S.plan.unit="days"}}save();render()}
   if(id==="att"){window.__att=v;render()}
-  if(id==="mcqP"){window.__mp=v;cur=null;paintQ()}
+  if(id==="mcqP"){window.__mp=v;window.__mc="all";cur=null;render()}
+  if(id==="mcqC"){window.__mc=v;cur=null;paintQ()}
   if(id==="pDur"){const n=Math.max(1,Math.min(730,parseInt(v)||1));S.plan.dur=n;save();render()}
   if(id==="pUnit"){S.plan.unit=v;save();render()}
   if(id==="pH"){S.plan.hpd=Math.max(1,Math.min(16,parseFloat(v)||1));save();render()}
@@ -1049,6 +1439,7 @@ async function boot(){
     if(ev==="SIGNED_OUT"&&session){session=null;render()}
   });
   try{const {data}=await sb.auth.getSession();session=data.session}catch(e){session=null}
+  if(!session&&!recovering&&!/type=recovery/.test(location.hash)){try{const r=await sb.auth.signInAnonymously();if(r.data&&r.data.session)session=r.data.session}catch(e){}}
   if(session&&!recovering)await afterSignIn(false);
   authReady=true;render();
 }
