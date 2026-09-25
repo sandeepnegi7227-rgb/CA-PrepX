@@ -58,7 +58,7 @@ button,select,input{font:inherit;color:inherit}
 /* header */
 .top{padding-block:18px 10px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px}
-.brand b{font-family:var(--serif);font-size:1.3rem;font-weight:600;letter-spacing:-.01em}
+.brand b{font-family:var(--serif);font-size:1.3rem;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
 .brand small{display:block;color:var(--muted);font-size:.78rem;margin-top:-2px}
 .seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px;gap:2px}
 .seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;font-weight:500;font-size:.88rem;color:var(--muted)}
@@ -295,7 +295,8 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;background:var(--accent);color:var(--accent-ink);padding:10px 18px;border-radius:999px;font-weight:600;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.18)}
 @media (min-width:720px){.toast{bottom:32px}}
 /* about */
-.icon-btn[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-deep)}
+.about-btn{white-space:nowrap;font-weight:600}
+.about-btn[aria-pressed="true"]{border-color:var(--gold);background:var(--accent-soft)}
 .ab-hero h1{font-size:2rem;margin-top:4px}
 .ab-hero p{margin-top:8px;max-width:60ch}
 .ab-two{display:grid;gap:20px;grid-template-columns:1fr}
@@ -323,7 +324,7 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .ab-pts .ic{color:var(--gold)}
 .ab-pts span{font-size:.88rem;color:var(--hero-muted)}
 .ab-soon{justify-self:start;margin-top:6px;background:var(--gold);color:var(--gold-ink);font-weight:700;font-size:.85rem;padding:8px 16px;border-radius:999px}
-@media (max-width:719px){.ab-hero h1{font-size:1.6rem}#aboutBtn{order:2}}
+@media (max-width:719px){.ab-hero h1{font-size:1.6rem}#aboutBtn{order:2}.who{display:none}.brand b{font-size:1.12rem;white-space:nowrap}.top .btn.sm{padding:5px 11px;font-size:.8rem}.top .icon-btn{width:32px;height:32px}.top{gap:8px}}
 /* accounts */
 .acct{display:flex;align-items:center;gap:8px;font-size:.85rem}
 .acct:empty{display:none}
@@ -343,7 +344,7 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
     <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
     <div><b>CA PrepX</b><small>CA exam prep, ticked off paper by paper</small></div>
   </div>
-  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div><button class="icon-btn" data-tab="about" id="aboutBtn" aria-label="About CA PrepX"></button><button class="icon-btn" data-act="theme" id="themeBtn" aria-label="Switch light or dark mode"></button></div>
+  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div><button class="btn sm about-btn" data-tab="about" id="aboutBtn">About us</button><button class="icon-btn" data-act="theme" id="themeBtn" aria-label="Switch light or dark mode"></button></div>
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
 <div class="wrap" id="bannerWrap"></div>
@@ -676,7 +677,7 @@ function renderChrome(){
   const bn=document.getElementById("bnav");bn.hidden=!on;
   bn.innerHTML=TABS.map(([k,,sh,i])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${sh}">${ico(i,22)}<span>${sh}</span></button>`).join("");
   document.getElementById("themeBtn").innerHTML=ico(isDark()?"sun":"moon",19);
-  document.getElementById("aboutBtn").innerHTML=ico("info",19);document.getElementById("aboutBtn").setAttribute("aria-pressed",tab==="about");
+  document.getElementById("aboutBtn").setAttribute("aria-pressed",tab==="about");
   document.getElementById("bannerWrap").innerHTML=!on?"":S.sample?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:isGuest()?`<div class="banner"><span><b>You're on a guest pass.</b> Progress stays while you're signed in on this device. Sign out and it's gone.</span></div>`:"";
 }
 let W={level:"inter"};
