@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CA PrepX</title>
-<meta name="description" content="Free study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final students.">
+<meta name="description" content="Study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final students.">
 <meta name="theme-color" content="#111111">
 <meta property="og:title" content="CA PrepX">
 <meta property="og:description" content="Plan it. Practise it. Tick it off. Study plans, RTP/MTP tracker and MCQs for CA students.">
@@ -294,6 +294,36 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .chipsrow span{font-size:.75rem;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted);background:var(--surface)}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;background:var(--accent);color:var(--accent-ink);padding:10px 18px;border-radius:999px;font-weight:600;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.18)}
 @media (min-width:720px){.toast{bottom:32px}}
+/* about */
+.icon-btn[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-deep)}
+.ab-hero h1{font-size:2rem;margin-top:4px}
+.ab-hero p{margin-top:8px;max-width:60ch}
+.ab-two{display:grid;gap:20px;grid-template-columns:1fr}
+@media (min-width:760px){.ab-two{grid-template-columns:1fr 1fr}}
+.ab-mv{display:grid;gap:8px;align-content:start}
+.ab-mv .ic{color:var(--gold-deep)}
+.ab-mv p{max-width:60ch}
+.ab-founder{display:grid;gap:14px}
+.ab-fhead{display:flex;align-items:center;gap:18px;padding:5px}
+.ab-photo{position:relative;width:84px;height:84px;border-radius:50%;flex:none;background:var(--accent);box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--gold);display:grid;place-items:center;overflow:hidden}
+.ab-photo span{font-family:var(--serif);font-size:2.2rem;font-weight:600;color:var(--accent-ink)}
+.ab-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ab-name{font-size:1.5rem}
+.ab-bio{max-width:68ch}
+.ab-steps{display:grid;gap:12px;grid-template-columns:1fr;margin-top:6px;padding-top:16px;border-top:1px solid var(--line)}
+@media (min-width:760px){.ab-steps{grid-template-columns:repeat(4,1fr)}}
+.ab-step{display:flex;gap:10px;align-items:flex-start}
+.ab-step div{display:grid;font-size:.88rem;line-height:1.35}
+.ab-dot{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--accent-soft);color:var(--gold-deep)}
+.ab-comm{background:var(--hero-bg);color:var(--hero-ink);border:1px solid var(--hero-line);border-radius:16px;padding:24px;display:grid;gap:10px}
+.ab-comm h2{font-size:1.6rem;color:var(--gold)}
+.ab-pts{display:grid;gap:14px;grid-template-columns:1fr;margin-top:8px}
+@media (min-width:760px){.ab-pts{grid-template-columns:repeat(3,1fr)}}
+.ab-pts div{display:grid;gap:4px;padding:14px;border:1px solid var(--hero-track);border-radius:12px}
+.ab-pts .ic{color:var(--gold)}
+.ab-pts span{font-size:.88rem;color:var(--hero-muted)}
+.ab-soon{justify-self:start;margin-top:6px;background:var(--gold);color:var(--gold-ink);font-weight:700;font-size:.85rem;padding:8px 16px;border-radius:999px}
+@media (max-width:719px){.ab-hero h1{font-size:1.6rem}#aboutBtn{order:2}}
 /* accounts */
 .acct{display:flex;align-items:center;gap:8px;font-size:.85rem}
 .acct:empty{display:none}
@@ -313,7 +343,7 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
     <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
     <div><b>CA PrepX</b><small>CA exam prep, ticked off paper by paper</small></div>
   </div>
-  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div><button class="icon-btn" data-act="theme" id="themeBtn" aria-label="Switch light or dark mode"></button></div>
+  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div><button class="icon-btn" data-tab="about" id="aboutBtn" aria-label="About CA PrepX"></button><button class="icon-btn" data-act="theme" id="themeBtn" aria-label="Switch light or dark mode"></button></div>
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
 <div class="wrap" id="bannerWrap"></div>
@@ -466,7 +496,7 @@ if(!S||!S.level)S=blank();
 else{S.wrong=S.wrong||{};S.tests=S.tests||[];S.name=S.name||"";if(S.onboarded===undefined)S.onboarded=true}
 function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}if(typeof cloudSave==="function")cloudSave()}
 let tab="dashboard";try{tab=localStorage.getItem(K+".tab")||"dashboard"}catch(e){}
-if(location.hash&&/^#(dashboard|papers|mcq|planner|journey|guidance)$/.test(location.hash))tab=location.hash.slice(1);
+if(location.hash&&/^#(dashboard|papers|mcq|planner|journey|guidance|about)$/.test(location.hash))tab=location.hash.slice(1);
 
 const L=()=>LEVELS[S.level];
 const paper=id=>L().papers.find(p=>p.id===id)||Object.values(LEVELS).flatMap(l=>l.papers).find(p=>p.id===id);
@@ -557,7 +587,14 @@ const IC={
  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
  check:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="m8 12 3 3 5-6"/>',
  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
- moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'
+ moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+ eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+ users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.8.8 3 2.6 3.5 5.2"/>',
+ school:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c2 1.8 10 1.8 12 0v-5"/>',
+ brief:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/>',
+ spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+ back:'<path d="M15 5l-7 7 7 7"/>'
 };
 const ico=(n,sz)=>`<svg class="ic" width="${sz||20}" height="${sz||20}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 /* theme */
@@ -624,7 +661,8 @@ function authCard(){
     <button class="btn primary" style="width:100%;margin-top:18px;padding-block:11px" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Hold on…":up?"Create my account":"Sign in"}</button>${up?"":`<div style="text-align:center;margin-top:8px"><button class="btn ghost sm" data-aview="reset">Forgot password?</button></div>`}
     <div class="or"><span>or</span></div>
     <button class="btn outline" style="width:100%;padding-block:10px" data-auth="guest" ${busy}>Just browsing? Continue as guest</button>
-    <p class="muted" style="font-size:.8rem;margin-top:12px;text-align:center">Guests get everything. An account keeps your progress synced on every device.</p>
+    <p class="muted" style="font-size:.8rem;margin-top:12px;text-align:center">Take a look as a guest. Create an account to keep your progress synced on every device.</p>
+    <div style="text-align:center;margin-top:6px"><button class="btn ghost sm" data-tab="about">Who's building this? Meet the founder →</button></div>
   </div>`;
 }
 function renderChrome(){
@@ -638,6 +676,7 @@ function renderChrome(){
   const bn=document.getElementById("bnav");bn.hidden=!on;
   bn.innerHTML=TABS.map(([k,,sh,i])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${sh}">${ico(i,22)}<span>${sh}</span></button>`).join("");
   document.getElementById("themeBtn").innerHTML=ico(isDark()?"sun":"moon",19);
+  document.getElementById("aboutBtn").innerHTML=ico("info",19);document.getElementById("aboutBtn").setAttribute("aria-pressed",tab==="about");
   document.getElementById("bannerWrap").innerHTML=!on?"":S.sample?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:isGuest()?`<div class="banner"><span><b>You're on a guest pass.</b> Progress stays while you're signed in on this device. Sign out and it's gone.</span></div>`:"";
 }
 let W={level:"inter"};
@@ -664,7 +703,9 @@ function welcome(){
 }
 function render(){renderChrome();const m=document.getElementById("main");
   if(!authReady){m.innerHTML=`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
-  if((sb&&(!session||recovering))||!S.onboarded){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
+  const gated=(sb&&(!session||recovering))||!S.onboarded;
+  if(tab==="about"){m.innerHTML=`<section class="view">${gated?`<div><button class="btn ghost sm" data-tab="dashboard">${ico("back",16)} Back</button></div>`:""}${VIEWS.about()}</section>`;return}
+  if(gated){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
   m.innerHTML=`<section class="view">${VIEWS[tab]()}</section>`;if(tab==="mcq")paintMcq()}
 
 function heroCard(){
@@ -818,6 +859,35 @@ journey(){
     <div class="row sp" style="margin-top:10px"><button class="btn primary" data-act="restore">Restore</button>
       <span class="row" id="resetBox"><button class="btn ghost" style="color:var(--tick)" data-act="reset1">Reset everything</button></span></div>
   </div>`;
+},
+about(){
+  const steps=[["school","Bal Bharati Public School","Rohini, Delhi"],["school","Keshav Mahavidyalaya","University of Delhi"],["brief","EY India","Business consulting"],["brief","Protiviti Middle East","Management consulting · Dubai"]];
+  return `<div class="ab-hero"><div class="eyebrow">About CA PrepX</div><h1>CA prep, but make it a team sport.</h1>
+    <p class="muted">Smart tools, clear plans and a community that pushes each other forward, so no CA aspirant has to grind alone.</p></div>
+  <div class="ab-two">
+    <div class="card ab-mv">${ico("target",22)}<h2>Our mission</h2><p>Give every CA student real structure: a study plan that fits their timeline, every ICAI RTP and MTP in one place, and practice that shows exactly where they're losing marks.</p></div>
+    <div class="card ab-mv">${ico("eye",22)}<h2>Our vision</h2><p>A world where your CA result depends on your effort, not on your postcode. Built in Delhi, open to every aspirant in India.</p></div>
+  </div>
+  <div class="card ab-founder">
+    <div class="ab-fhead">
+      <div class="ab-photo"><img src="founder.jpg" alt="Sandeep, founder of CA PrepX" onerror="this.remove()"><span>S</span></div>
+      <div><div class="eyebrow">Meet the founder</div><h2 class="ab-name">Sandeep Negi</h2><p class="muted">Management consultant · Dubai</p></div>
+    </div>
+    <p class="ab-bio">Hey, I'm Sandeep. I grew up in Delhi, did my schooling at BBPS Rohini, then Keshav Mahavidyalaya at DU. I started my career in business consulting at EY India, and today I work in management consulting with Protiviti Middle East in Dubai.</p>
+    <p class="ab-bio">Years of audit and advisory work taught me one thing: talent is everywhere, but structure isn't. CA PrepX is my way of giving back: the planner, tracker and practice space I wish every student had.</p>
+    <div class="ab-steps">${steps.map((x,i)=>`<div class="ab-step"><span class="ab-dot">${ico(x[0],18)}</span><div><b>${x[1]}</b><span class="muted">${x[2]}</span></div></div>`).join("")}</div>
+  </div>
+  <section class="ab-comm">
+    <div class="eyebrow" style="color:var(--hero-muted)">Grow together</div>
+    <h2>Padhai akele, growth saath mein.</h2>
+    <p style="color:var(--hero-muted);max-width:60ch">CA is a marathon. We're building a community where aspirants share doubts, keep each other accountable and celebrate every cleared paper together.</p>
+    <div class="ab-pts">
+      <div>${ico("users",20)}<b>Study circles</b><span>Small groups at your level, same attempt, same goal.</span></div>
+      <div>${ico("spark",20)}<b>Doubt drops</b><span>Post a doubt, get it cracked by peers who've been there.</span></div>
+      <div>${ico("flame",20)}<b>Streak squads</b><span>Keep each other's streaks alive. Nobody ghosts the grind.</span></div>
+    </div>
+    <span class="ab-soon">Community launching soon</span>
+  </section>`;
 },
 guidance(){
   const w=weakest();const lv=L();
