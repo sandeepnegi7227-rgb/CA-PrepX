@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>TickMark CA Prep</title>
+<title>CA PrepX</title>
 <meta name="description" content="Free study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final students.">
 <meta name="theme-color" content="#1C694A">
-<meta property="og:title" content="TickMark CA Prep">
+<meta property="og:title" content="CA PrepX">
 <meta property="og:description" content="Plan it. Practise it. Tick it off. Study plans, RTP/MTP tracker and MCQs for CA students.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -201,6 +201,16 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .rv:last-child{border-bottom:0}
 .rv-h{display:flex;gap:10px;align-items:center}
 .rv p{max-width:75ch}
+/* accounts */
+.acct{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.acct:empty{display:none}
+.acct a.btn{text-decoration:none;color:var(--ink)}
+.who{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+.amsg{font-size:.88rem;padding:9px 12px;border-radius:8px;background:var(--accent-soft);margin-bottom:12px}
+.amsg.err{background:var(--tick-soft);color:var(--tick)}
+.or{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted);font-size:.8rem}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.field input[type=email],.field input[type=password],.field input[type=text]{font-size:16px}
 </style>
 </head>
 <body>
@@ -208,14 +218,16 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 <header class="wrap top">
   <div class="brand">
     <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
-    <div><b>TickMark</b><small>CA exam prep, ticked off paper by paper</small></div>
+    <div><b>CA PrepX</b><small>CA exam prep, ticked off paper by paper</small></div>
   </div>
-  <div class="seg" role="group" aria-label="CA level" id="levelSeg"></div>
+  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div></div>
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
 <div class="wrap" id="bannerWrap"></div>
 <main class="wrap" id="main"></main>
 
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.js"></script>
 <script>
 (function(){
 const K = "tickmark.v1";
@@ -358,7 +370,7 @@ let S;
 try{S=JSON.parse(localStorage.getItem(K))}catch(e){S=null}
 if(!S||!S.level)S=blank();
 else{S.wrong=S.wrong||{};S.tests=S.tests||[];S.name=S.name||"";if(S.onboarded===undefined)S.onboarded=true}
-function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}if(typeof cloudSave==="function")cloudSave()}
 let tab="dashboard";try{tab=localStorage.getItem(K+".tab")||"dashboard"}catch(e){}
 if(location.hash&&/^#(dashboard|papers|mcq|planner|journey|guidance)$/.test(location.hash))tab=location.hash.slice(1);
 
@@ -439,13 +451,77 @@ function currentPlan(){return buildPlan(Object.assign({level:S.level,start:today
 
 /* ---------- render ---------- */
 const TABS=[["dashboard","Dashboard"],["papers","RTP & MTP"],["mcq","MCQ practice"],["planner","Study planner"],["journey","My journey"],["guidance","Guidance"]];
+/* ---------- accounts (Supabase) ---------- */
+const CFG=window.PREPX_CONFIG||{};
+const sb=(CFG.url&&CFG.anonKey&&window.supabase)?window.supabase.createClient(CFG.url,CFG.anonKey):null;
+let aEmailVal="",recovering=false,session=null,authReady=!sb,authView="signin",authMsg="",authErr=false,authBusy=false,isAdmin=false,cloudTimer=null;
+const isGuest=()=>!!(session&&session.user&&session.user.is_anonymous);
+function cloudSave(){
+  if(!sb||!session)return;clearTimeout(cloudTimer);
+  cloudTimer=setTimeout(async()=>{try{await sb.from("progress").upsert({user_id:session.user.id,state:S,updated_at:new Date().toISOString()})}catch(e){}},1500);
+}
+async function afterSignIn(fresh){
+  const uid=session.user.id;
+  try{
+    const {data}=await sb.from("progress").select("state").eq("user_id",uid).maybeSingle();
+    if(data&&data.state&&data.state.level){S=data.state;S.wrong=S.wrong||{};S.tests=S.tests||[];S.uid=uid}
+    else{
+      if(S.uid&&S.uid!==uid)S=blank();          // don't hand one student's local data to another
+      if(!S.name&&session.user.user_metadata&&session.user.user_metadata.name)S.name=session.user.user_metadata.name;
+      S.uid=uid;if(S.onboarded)cloudSave();
+    }
+  }catch(e){}
+  let visited=false;try{visited=sessionStorage.getItem("prepx.visit")===uid}catch(e){}
+  if(fresh||!visited){try{await sb.rpc("record_login",{p_name:S.name||null,p_level:S.onboarded?S.level:null});sessionStorage.setItem("prepx.visit",uid)}catch(e){}}
+  try{const r=await sb.rpc("is_admin");isAdmin=!!r.data}catch(e){isAdmin=false}
+  try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}
+}
+async function authDo(kind){
+  if(authBusy)return;const email=(document.getElementById("aEmail")||{}).value,pw=(document.getElementById("aPw")||{}).value;
+  const nm=((document.getElementById("aName")||{}).value||"").trim();if(email)aEmailVal=email.trim();
+  authBusy=true;authMsg="";authErr=false;render();
+  let res;
+  try{
+    if(kind==="guest")res=await sb.auth.signInAnonymously();
+    else if(kind==="signup")res=await sb.auth.signUp({email:(email||"").trim(),password:pw,options:{data:{name:nm}}});
+    else if(kind==="signin")res=await sb.auth.signInWithPassword({email:(email||"").trim(),password:pw});
+    else if(kind==="reset"){res=await sb.auth.resetPasswordForEmail((email||"").trim(),{redirectTo:location.origin});if(!res.error){authMsg="Check your inbox for a link to reset your password.";authView="signin"}}
+    else if(kind==="newpass"){res=await sb.auth.updateUser({password:pw});if(!res.error){recovering=false;authView="signin";const g=await sb.auth.getSession();session=g.data.session;if(session){await afterSignIn(true);tab="dashboard"}authBusy=false;render();return}}
+  }catch(e){res={error:{message:"Couldn't reach the server. Check your connection and try again."}}}
+  authBusy=false;
+  if(res&&res.error){authMsg=res.error.message;authErr=true;render();return}
+  if(kind==="signup"&&res.data&&!res.data.session){authMsg="Account created. Check your email to confirm it, then sign in.";authView="signin";render();return}
+  if(res&&res.data&&res.data.session){session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);tab="dashboard"}
+  render();
+}
+async function signOut(){try{await sb.auth.signOut()}catch(e){}session=null;isAdmin=false;S=blank();try{localStorage.removeItem(K);sessionStorage.removeItem("prepx.visit")}catch(e){}authView="signin";authMsg="";render()}
+function authCard(){
+  const busy=authBusy?"disabled":"";
+  const msg=authMsg?`<p class="amsg ${authErr?"err":""}">${esc(authMsg)}</p>`:"";
+  if(authView==="newpass")return `<div class="card"><h2>Set a new password</h2>${msg}<div class="field" style="margin-top:14px"><label for="aPw">New password</label><input id="aPw" type="password" minlength="6" autocomplete="new-password"></div><div class="row" style="margin-top:16px"><button class="btn primary" data-auth="newpass" ${busy}>Save password</button></div></div>`;
+  if(authView==="reset")return `<div class="card"><h2>Reset your password</h2><p class="muted" style="margin-top:6px">We'll email you a link to set a new one.</p>${msg}<div class="field" style="margin-top:14px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" value="${esc(aEmailVal)}"></div><div class="row" style="margin-top:16px"><button class="btn primary" data-auth="reset" ${busy}>Send reset link</button><button class="btn ghost" data-aview="signin">Back to sign in</button></div></div>`;
+  const up=authView==="signup";
+  return `<div class="card">
+    <div class="seg" role="group" aria-label="Account" style="margin-bottom:16px"><button data-aview="signin" aria-pressed="${!up}">Sign in</button><button data-aview="signup" aria-pressed="${up}">Create account</button></div>
+    ${msg}
+    ${up?`<div class="field"><label for="aName">Your name</label><input id="aName" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Priya"></div>`:""}
+    <div class="field" style="margin-top:12px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(aEmailVal)}"></div>
+    <div class="field" style="margin-top:12px"><label for="aPw">Password</label><input id="aPw" type="password" minlength="6" autocomplete="${up?"new-password":"current-password"}" placeholder="${up?"At least 6 characters":""}"></div>
+    <div class="row sp" style="margin-top:16px"><button class="btn primary" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Please wait…":up?"Create account":"Sign in"}</button>${up?"":`<button class="btn ghost sm" data-aview="reset">Forgot password?</button>`}</div>
+    <div class="or"><span>or</span></div>
+    <button class="btn" style="width:100%" data-auth="guest" ${busy}>Continue as guest</button>
+    <p class="muted" style="font-size:.8rem;margin-top:10px">Guests can use everything. Create an account to keep your progress on every device.</p>
+  </div>`;
+}
 function renderChrome(){
-  const on=S.onboarded;
+  const on=S.onboarded&&(!sb||(session&&!recovering));
+  const ac=document.getElementById("acct");
+  ac.innerHTML=sb&&session&&!recovering?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"Guest")}">${isGuest()?"Guest":esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:"";
   document.getElementById("levelSeg").innerHTML=on?Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}">${v.label}</button>`).join(""):"";
   document.getElementById("levelSeg").hidden=!on;
   document.querySelector(".tabs").hidden=!on;
   document.getElementById("tabs").innerHTML=TABS.map(([k,v])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${v}</button>`).join("");
-  document.getElementById("bannerWrap").innerHTML=on&&S.sample?`<div class="banner"><span><b>You're looking at sample progress.</b> Explore freely, then start your own tracker.</span><button class="btn sm" data-act="fresh">Start fresh</button></div>`:"";
+  document.getElementById("bannerWrap").innerHTML=!on?"":S.sample?`<div class="banner"><span><b>You're looking at sample progress.</b> Explore freely, then start your own tracker.</span><button class="btn sm" data-act="fresh">Start fresh</button></div>`:isGuest()?`<div class="banner"><span><b>You're using a guest account.</b> Your progress is kept while you stay signed in on this device. Signing out ends the guest account.</span></div>`:"";
 }
 let W={level:"inter"};
 function welcome(){
@@ -453,19 +529,20 @@ function welcome(){
     <div><div class="eyebrow">Free · works on any phone</div><h1 style="font-size:2.3rem">Plan it. Practise it. Tick it off.</h1>
     <p class="muted" style="margin-top:10px;max-width:52ch">A study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final. Tell us where you are and we'll build your first plan.</p>
     <ul class="feat"><li><b>Study plans</b> for any duration — a day, a month, six months</li><li><b>Every RTP, MTP and past paper</b>, ticked off per attempt</li><li><b>MCQ practice and timed mocks</b> with explanations</li><li><b>Your journey</b> from Foundation to membership</li></ul></div>
-    <div class="card">
-      <div class="field"><label for="wName">Your name <span class="muted">(optional)</span></label><input id="wName" type="text" maxlength="40" placeholder="e.g. Priya" autocomplete="given-name"></div>
+    ${sb&&(!session||recovering)?authCard():`<div class="card">
+      <div class="field"><label for="wName">Your name <span class="muted">(optional)</span></label><input id="wName" type="text" maxlength="40" placeholder="e.g. Priya" autocomplete="given-name" value="${esc(S.name||"")}"></div>
       <div class="field" style="margin-top:14px"><span class="lab">Level</span><div class="lvls">${Object.entries(LEVELS).map(([k,v])=>`<button class="lvl" data-wlevel="${k}" aria-pressed="${W.level===k}"><b>${v.label}</b><span class="muted">${v.papers.length} papers · next: ${v.attempts[0]}</span></button>`).join("")}</div></div>
       <div class="form" style="margin-top:14px">
         <div class="field"><label for="wExam">First exam date <span class="muted">(optional)</span></label><input id="wExam" type="date"></div>
         <div class="field"><label for="wH">Study hours per day</label><input id="wH" type="number" min="1" max="16" step="0.5" value="6"></div>
       </div>
       <div class="row" style="margin-top:18px;gap:12px"><button class="btn primary" data-act="start">Start preparing</button><button class="btn ghost" data-act="demo">Or explore with sample data</button></div>
-      <p class="muted" style="font-size:.8rem;margin-top:12px">Your progress is saved on this device. No account needed.</p>
-    </div></div>`;
+      <p class="muted" style="font-size:.8rem;margin-top:12px">${sb&&session&&!isGuest()?"Your progress is saved to your account.":"Your progress is saved on this device."}</p>
+    </div>`}</div>`;
 }
 function render(){renderChrome();const m=document.getElementById("main");
-  if(!S.onboarded){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
+  if(!authReady){m.innerHTML=`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
+  if((sb&&(!session||recovering))||!S.onboarded){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
   m.innerHTML=`<section class="view">${VIEWS[tab]()}</section>`;if(tab==="mcq")paintMcq()}
 
 function examLine(){
@@ -717,11 +794,14 @@ document.addEventListener("click",e=>{
   if(t.dataset.weak){const w=new Set(S.plan.weak||[]);w.has(t.dataset.weak)?w.delete(t.dataset.weak):w.add(t.dataset.weak);S.plan.weak=[...w];save();render();return}
   if(t.dataset.preset){const [d,u]=t.dataset.preset.split("|");S.plan.dur=+d;S.plan.unit=u;save();render();return}
   if(t.dataset.opt!==undefined){answer(+t.dataset.opt);return}
+  if(t.dataset.aview){authView=t.dataset.aview;authMsg="";authErr=false;render();return}
+  if(t.dataset.auth){authDo(t.dataset.auth);return}
   const a=t.dataset.act;
+  if(a==="signout"){signOut();return}
   if(a==="nextq"){pick();paintQ()}
-  if(a==="fresh"){S=blank(S.level);W.level=S.level;save();render()}
-  if(a==="demo"){S=sample();tab="dashboard";save();render()}
-  if(a==="start"){const lvl=W.level;S=blank(lvl);S.onboarded=true;S.name=(document.getElementById("wName").value||"").trim().slice(0,40);
+  if(a==="fresh"){const keepUid=S.uid;S=blank(S.level);S.uid=keepUid;W.level=S.level;save();render()}
+  if(a==="demo"){const keepUid=S.uid;S=sample();S.uid=keepUid;tab="dashboard";save();render()}
+  if(a==="start"){const lvl=W.level;const keepUid=S.uid;S=blank(lvl);S.uid=keepUid;S.onboarded=true;S.name=(document.getElementById("wName").value||"").trim().slice(0,40);
     S.exam[lvl]=document.getElementById("wExam").value||"";S.plan.hpd=Math.max(1,Math.min(16,parseFloat(document.getElementById("wH").value)||6));
     tab="dashboard";save();render();window.scrollTo({top:0})}
   if(a==="starttest"){startTest(document.getElementById("tP").value,+document.getElementById("tN").value,+document.getElementById("tM").value);render()}
@@ -735,7 +815,7 @@ document.addEventListener("click",e=>{
   if(a==="restore"){const v=document.getElementById("restoreTxt").value;if(restoreCode(v)){render();const m=document.getElementById("bkMsg");if(m)m.textContent="Progress restored."}else{document.getElementById("bkMsg").textContent="That code didn't work — check you copied all of it."}}
   if(a==="reset1"){document.getElementById("resetBox").innerHTML=`<span style="font-size:.85rem">This clears all progress on this device.</span><button class="btn sm" data-act="reset0">Cancel</button><button class="btn sm primary" style="background:var(--tick);border-color:var(--tick)" data-act="reset2">Yes, reset</button>`}
   if(a==="reset0")render();
-  if(a==="reset2"){clearInterval(tick);T=null;S=blank();tab="dashboard";save();render();window.scrollTo({top:0})}
+  if(a==="reset2"){clearInterval(tick);T=null;const keepUid=S.uid;S=blank();S.uid=keepUid;tab="dashboard";save();render();window.scrollTo({top:0})}
   if(a==="logh"){const v=parseFloat(document.getElementById("logH").value);if(!isNaN(v)&&v>=0){S.log[iso(today)]=Math.min(16,v);save();render()}}
 });
 document.addEventListener("change",e=>{
@@ -749,7 +829,18 @@ document.addEventListener("change",e=>{
   if(id==="pG"){S.plan.groups=v;S.plan.weak=[];save();render()}
   if(id==="pR"){S.plan.rest=v==="1";save();render()}
 });
-render();
+async function boot(){
+  if(!sb){render();return}
+  render();
+  sb.auth.onAuthStateChange((ev,s)=>{
+    if(ev==="PASSWORD_RECOVERY"){session=s;recovering=true;authView="newpass";authMsg="";render()}
+    if(ev==="SIGNED_OUT"&&session){session=null;render()}
+  });
+  try{const {data}=await sb.auth.getSession();session=data.session}catch(e){session=null}
+  if(session&&!recovering)await afterSignIn(false);
+  authReady=true;render();
+}
+boot();
 })();
 </script>
 </body>

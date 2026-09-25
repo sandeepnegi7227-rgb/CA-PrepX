@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CA PrepX Admin</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F1F4EF; --surface:#FFFFFF; --surface-2:#E7ECE5; --ink:#14211B; --muted:#5A6960;
+  --line:#D5DCD2; --accent:#1C694A; --accent-ink:#FFFFFF; --accent-soft:#DCEBE2;
+  --tick:#B5352C; --tick-soft:#F6E1DE; --warn:#9A6300; --warn-soft:#F5EAD3;
+  --serif:"IBM Plex Serif",Georgia,serif; --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root{color-scheme:dark;
+  --bg:#0E1512; --surface:#16201B; --surface-2:#1D2923; --ink:#E5ECE7; --muted:#95A49B;
+  --line:#2A3831; --accent:#5DC296; --accent-ink:#0B1410; --accent-soft:#1E3A2D;
+  --tick:#F07C70; --tick-soft:#3A2220; --warn:#E3B04F; --warn-soft:#3A2F17;}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+[hidden]{display:none!important}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px}
+@media (min-width:720px){.wrap{padding-inline:28px}}
+h1,h2{font-family:var(--serif);font-weight:600;margin:0;letter-spacing:-.01em}
+h1{font-size:1.8rem} h2{font-size:1.2rem}
+p{margin:0}
+.muted{color:var(--muted)} .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-block:18px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand b{font-family:var(--serif);font-size:1.2rem}
+.btn{border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:8px;cursor:pointer;font-weight:500;font-size:.88rem;text-decoration:none;color:var(--ink)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{opacity:.5}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sp{justify-content:space-between}
+main{display:grid;gap:20px;padding-block:8px 60px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media (min-width:760px){.stats{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.stat{background:var(--surface);padding:14px 16px}
+.stat .v{font-family:var(--mono);font-size:1.6rem;font-weight:500;margin-top:4px}
+.stat .s{font-size:.8rem;color:var(--muted)}
+.chart{display:flex;align-items:flex-end;gap:3px;height:140px;border-bottom:1px solid var(--line);padding-top:8px}
+.col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-width:0}
+.col .e{background:var(--accent);border-radius:2px 2px 0 0}
+.col .g{background:var(--warn)}
+.col .e+.g{border-radius:0}
+.col .g:first-child{border-radius:2px 2px 0 0}
+.xl{display:flex;gap:3px;font-size:.66rem;color:var(--muted);font-family:var(--mono);margin-top:4px}
+.xl span{flex:1;text-align:center;min-width:0;overflow:hidden}
+.legend{display:flex;gap:16px;font-size:.8rem;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);font-weight:600}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.pill.g{background:var(--warn-soft);color:var(--warn)}
+input[type=search],input[type=email],input[type=password]{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:16px}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:5px 12px;border-radius:999px;cursor:pointer;font-size:.85rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.login{max-width:380px;margin:40px auto;display:grid;gap:12px}
+.field{display:grid;gap:5px}
+.field label{font-size:.8rem;font-weight:600;color:var(--muted)}
+.msg{font-size:.88rem;padding:9px 12px;border-radius:8px;background:var(--tick-soft);color:var(--tick)}
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand">
+    <svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
+    <div><b>CA PrepX</b> <span class="muted">· Admin</span></div>
+  </div>
+  <div class="row" id="topAct"></div>
+</header>
+<main class="wrap" id="main"><p class="muted">Loading…</p></main>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.js"></script>
+<script>
+(function(){
+const CFG=window.PREPX_CONFIG||{};
+const main=document.getElementById("main"),top=document.getElementById("topAct");
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+if(!CFG.url||!CFG.anonKey||!window.supabase){main.innerHTML=`<div class="card"><h2>Not connected yet</h2><p class="muted" style="margin-top:6px">Add your Supabase URL and key to <b>config.js</b>, then reload.</p></div>`;return}
+const sb=window.supabase.createClient(CFG.url,CFG.anonKey);
+let profiles=[],logins=[],filter="all",q="";
+const LV={foundation:"Foundation",inter:"Intermediate",final:"Final"};
+const d2=d=>new Date(d).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+const dayKey=d=>{const x=new Date(d);return x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()};
+
+function loginForm(err){
+  top.innerHTML=`<a class="btn" href="/">Open site</a>`;
+  main.innerHTML=`<div class="card login"><h1>Admin sign in</h1>${err?`<p class="msg">${esc(err)}</p>`:""}
+   <div class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="email"></div>
+   <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password"></div>
+   <button class="btn primary" id="go">Sign in</button></div>`;
+  const go=async()=>{const b=document.getElementById("go");b.disabled=true;b.textContent="Signing in…";
+    const {error}=await sb.auth.signInWithPassword({email:document.getElementById("em").value.trim(),password:document.getElementById("pw").value});
+    if(error)return loginForm(error.message);start()};
+  document.getElementById("go").onclick=go;document.getElementById("pw").onkeydown=e=>{if(e.key==="Enter")go()};
+}
+async function start(){
+  const {data}=await sb.auth.getSession();
+  if(!data.session)return loginForm();
+  const r=await sb.rpc("is_admin");
+  if(!r.data){top.innerHTML=`<button class="btn" id="so">Sign out</button>`;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
+    main.innerHTML=`<div class="card"><h2>This account isn't an admin</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(data.session.user.email||"a guest")}. Run the "make yourself admin" line in supabase-setup.sql for your account, then reload.</p></div>`;return}
+  top.innerHTML=`<a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
+  document.getElementById("rf").onclick=load;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
+  load();
+}
+async function load(){
+  main.innerHTML=`<p class="muted">Loading…</p>`;
+  const since=new Date(Date.now()-29*864e5);since.setHours(0,0,0,0);
+  const [p,l]=await Promise.all([
+    sb.from("profiles").select("*").order("last_login",{ascending:false,nullsFirst:false}).limit(5000),
+    sb.from("logins").select("user_id,is_guest,at").gte("at",since.toISOString()).order("at",{ascending:false}).limit(20000)
+  ]);
+  if(p.error||l.error){main.innerHTML=`<div class="card"><p class="msg">${esc((p.error||l.error).message)}</p></div>`;return}
+  profiles=p.data||[];logins=l.data||[];paint();
+}
+function paint(){
+  const now=new Date(),today=dayKey(now);
+  const emails=profiles.filter(x=>!x.is_guest).length,guests=profiles.length-emails;
+  const totalLogins=profiles.reduce((a,x)=>a+(x.login_count||0),0);
+  const todayUsers=new Set(logins.filter(x=>dayKey(x.at)===today).map(x=>x.user_id)).size;
+  const wk=Date.now()-7*864e5;const wkLogins=logins.filter(x=>new Date(x.at)>=wk).length;
+  const newWk=profiles.filter(x=>new Date(x.created_at)>=wk).length;
+  // chart: 30 days
+  const days=[];for(let i=29;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push({d,k:dayKey(d),e:0,g:0})}
+  const idx={};days.forEach((x,i)=>idx[x.k]=i);
+  logins.forEach(x=>{const i=idx[dayKey(x.at)];if(i!==undefined)x.is_guest?days[i].g++:days[i].e++});
+  const mx=Math.max(4,...days.map(x=>x.e+x.g));
+  const rows=profiles.filter(x=>(filter==="all"||(filter==="guest")===!!x.is_guest)&&(!q||((x.email||"")+" "+(x.name||"")).toLowerCase().includes(q)));
+  main.innerHTML=`
+  <div><div class="eyebrow">Updated ${d2(now)}</div><h1>Who's using CA PrepX</h1></div>
+  <div class="stats">
+    <div class="stat"><div class="eyebrow">Students</div><div class="v">${profiles.length}</div><div class="s">${emails} email · ${guests} guest</div></div>
+    <div class="stat"><div class="eyebrow">Total logins</div><div class="v">${totalLogins}</div><div class="s">all time</div></div>
+    <div class="stat"><div class="eyebrow">Active today</div><div class="v">${todayUsers}</div><div class="s">students</div></div>
+    <div class="stat"><div class="eyebrow">Logins · 7 days</div><div class="v">${wkLogins}</div><div class="s">sign-ins and visits</div></div>
+    <div class="stat"><div class="eyebrow">New · 7 days</div><div class="v">${newWk}</div><div class="s">students joined</div></div>
+  </div>
+  <div class="card"><div class="row sp" style="margin-bottom:12px"><h2>Logins per day</h2><div class="legend"><span><i style="background:var(--accent)"></i>Email</span><span><i style="background:var(--warn)"></i>Guest</span></div></div>
+    <div class="chart">${days.map(x=>`<div class="col" title="${x.d.toLocaleDateString("en-GB",{day:"numeric",month:"short"})}: ${x.e} email, ${x.g} guest">${x.g?`<div class="g" style="height:${x.g/mx*100}%"></div>`:""}${x.e?`<div class="e" style="height:${x.e/mx*100}%"></div>`:""}</div>`).join("")}</div>
+    <div class="xl">${days.map((x,i)=>`<span>${i%5===4||i===29?x.d.getDate()+" "+x.d.toLocaleDateString("en-GB",{month:"short"}):""}</span>`).join("")}</div>
+    <p class="muted" style="font-size:.8rem;margin-top:8px">Last 30 days. Peak: ${Math.max(...days.map(x=>x.e+x.g))} logins in a day.</p></div>
+  <div class="row sp"><h2>Students</h2><div class="row"><input type="search" id="q" placeholder="Search name or email" value="${esc(q)}"><div class="seg">${[["all","All"],["email","Email"],["guest","Guest"]].map(f=>`<button data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("")}</div></div></div>
+  <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Level</th><th style="text-align:right">Logins</th><th>Last login</th><th>Joined</th></tr></thead><tbody>
+  ${rows.length?rows.map(x=>`<tr><td>${esc(x.name)||'<span class="muted">—</span>'}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td><span class="pill ${x.is_guest?"g":""}">${x.is_guest?"Guest":"Email"}</span></td><td>${esc(LV[x.level]||x.level||"—")}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num">${x.last_login?d2(x.last_login):"—"}</td><td class="num">${d2(x.created_at)}</td></tr>`).join(""):`<tr><td colspan="7" class="muted">No students match.</td></tr>`}
+  </tbody></table></div>
+  <p class="muted" style="font-size:.8rem">A login is counted each time a student signs in, and once per visit when they return already signed in.</p>`;
+  const qi=document.getElementById("q");qi.oninput=()=>{q=qi.value.trim().toLowerCase();const pos=qi.selectionStart;paint();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos)};
+  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;paint()});
+}
+start();
+})();
+</script>
+</body>
+</html>
