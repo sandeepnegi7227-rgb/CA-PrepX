@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TickMark CA Prep</title>
+<meta name="description" content="Free study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final students.">
+<meta name="theme-color" content="#1C694A">
+<meta property="og:title" content="TickMark CA Prep">
+<meta property="og:description" content="Plan it. Practise it. Tick it off. Study plans, RTP/MTP tracker and MCQs for CA students.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+:root{
+  --bg:#F1F4EF; --surface:#FFFFFF; --surface-2:#E7ECE5; --ink:#14211B; --muted:#5A6960;
+  --line:#D5DCD2; --accent:#1C694A; --accent-ink:#FFFFFF; --accent-soft:#DCEBE2;
+  --tick:#B5352C; --tick-soft:#F6E1DE; --good:#1C7A4D; --warn:#9A6300; --warn-soft:#F5EAD3;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1512; --surface:#16201B; --surface-2:#1D2923; --ink:#E5ECE7; --muted:#95A49B;
+    --line:#2A3831; --accent:#5DC296; --accent-ink:#0B1410; --accent-soft:#1E3A2D;
+    --tick:#F07C70; --tick-soft:#3A2220; --good:#6BCB97; --warn:#E3B04F; --warn-soft:#3A2F17;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1512; --surface:#16201B; --surface-2:#1D2923; --ink:#E5ECE7; --muted:#95A49B;
+  --line:#2A3831; --accent:#5DC296; --accent-ink:#0B1410; --accent-soft:#1E3A2D;
+  --tick:#F07C70; --tick-soft:#3A2220; --good:#6BCB97; --warn:#E3B04F; --warn-soft:#3A2F17;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px}
+@media (min-width:720px){.wrap{padding-inline:28px}}
+h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:1.9rem;line-height:1.15}
+h2{font-size:1.35rem}
+h3{font-size:1.05rem}
+p{margin:0}
+.muted{color:var(--muted)}
+.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+a{color:var(--accent)}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+.top{padding-block:18px 10px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.brand b{font-family:var(--serif);font-size:1.3rem;font-weight:600;letter-spacing:-.01em}
+.brand small{display:block;color:var(--muted);font-size:.78rem;margin-top:-2px}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;font-weight:500;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs button{border:0;background:none;padding:12px 12px 11px;cursor:pointer;white-space:nowrap;color:var(--muted);font-weight:500;border-bottom:2px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--tick)}
+main{padding-block:24px 64px}
+.view{display:grid;gap:20px}
+
+.banner{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:10px;padding:10px 14px;font-size:.9rem;margin-top:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.card-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;margin-bottom:14px}
+.grid2{display:grid;gap:20px;grid-template-columns:1fr}
+@media (min-width:860px){.grid2{grid-template-columns:1.15fr .85fr}}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:500;font-size:.9rem}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--accent);padding-inline:6px}
+.btn.sm{padding:5px 10px;font-size:.82rem}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media (min-width:720px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{background:var(--surface);padding:14px 16px}
+.stat .v{font-family:var(--mono);font-size:1.6rem;font-weight:500;line-height:1.2;margin-top:4px}
+.stat .s{font-size:.8rem;color:var(--muted)}
+
+/* hero */
+.hero{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.hero p{max-width:60ch;margin-top:6px}
+.examset{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.88rem}
+.examset input{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+
+/* bars */
+.bars{display:grid;gap:10px}
+.bar-row{display:grid;grid-template-columns:minmax(0,1fr) 54px;gap:4px 10px;align-items:center;font-size:.88rem}
+.bar-row .lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{grid-column:1/-1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.fill{height:100%;border-radius:4px;background:var(--accent)}
+.fill.low{background:var(--tick)} .fill.mid{background:var(--warn)}
+
+/* slots */
+.slots{display:grid;gap:0;border-left:2px solid var(--line);margin-left:6px}
+.slot{position:relative;padding:0 0 14px 18px}
+.slot::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.slot.brk::before{border-color:var(--line)}
+.slot .t{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.slot .w{font-weight:600}
+.slot .d{font-size:.87rem;color:var(--muted)}
+
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:.8rem;background:var(--surface);cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.chip .tk{display:inline-block;width:14px;text-align:center;color:var(--tick);font-weight:700}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.03em;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.pill.good{background:var(--accent-soft);color:var(--good)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--tick-soft);color:var(--tick)}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td .chips{display:flex;flex-wrap:wrap;gap:6px}
+.pno{font-family:var(--mono);color:var(--muted);font-size:.8rem}
+
+/* mcq */
+.mcq-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);max-width:100%}
+.q{font-family:var(--serif);font-size:1.2rem;line-height:1.4;margin:6px 0 16px;max-width:62ch}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;border:1px solid var(--line);background:var(--surface);padding:11px 14px;border-radius:10px;cursor:pointer;font-size:.95rem}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{font-family:var(--mono);color:var(--muted);min-width:1.2em}
+.opt.right{border-color:var(--good);background:var(--accent-soft)}
+.opt.wrong{border-color:var(--tick);background:var(--tick-soft)}
+.opt:disabled{cursor:default}
+.why{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--surface-2);font-size:.92rem;max-width:70ch}
+.mcq-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:16px}
+
+/* planner */
+.form{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.field{display:grid;gap:5px;font-size:.85rem}
+.field label,.field .lab{font-weight:600;font-size:.8rem;color:var(--muted);letter-spacing:.02em}
+.field input,.field select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);width:100%}
+.dur{display:flex;gap:6px}
+.dur input{width:40%}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.phasebar{display:flex;height:34px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.phasebar div{display:flex;align-items:center;padding-inline:8px;font-size:.75rem;font-weight:600;white-space:nowrap;overflow:hidden;color:var(--ink)}
+.ph-concepts{background:var(--accent-soft)} .ph-revision{background:color-mix(in srgb,var(--accent) 34%,var(--surface))}
+.ph-practice{background:var(--warn-soft)} .ph-final{background:var(--tick-soft)} .ph-daily{background:var(--accent-soft)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* journey */
+.journey{display:grid;gap:0}
+.ms{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 0;border-bottom:1px dashed var(--line)}
+.ms:last-child{border-bottom:0}
+.ms .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.8rem;font-weight:700;color:var(--tick);margin-top:1px}
+.ms.done .dot{border-color:var(--tick)}
+.ms.doing .dot{border-color:var(--warn)}
+.ms .nm{font-weight:600}
+.ms .nt{font-size:.85rem;color:var(--muted)}
+.log{display:flex;gap:4px;align-items:flex-end;height:90px;padding-top:6px}
+.log .b{flex:1;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px;position:relative}
+.log .b.zero{background:var(--line)}
+.logx{display:flex;gap:4px;font-size:.66rem;color:var(--muted);font-family:var(--mono)}
+.logx span{flex:1;text-align:center}
+
+/* guidance */
+.tips{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.tips ul{margin:8px 0 0;padding-left:18px;display:grid;gap:6px;font-size:.92rem}
+.callout{border-left:3px solid var(--tick);padding:4px 0 4px 14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sp{justify-content:space-between}
+@media (prefers-reduced-motion:no-preference){.fill{transition:width .4s ease}}
+.btn:disabled{opacity:.45;cursor:default}
+textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%;resize:vertical}
+/* welcome */
+.welcome{display:grid;gap:28px;grid-template-columns:1fr;align-items:start;padding-top:8px}
+@media (min-width:860px){.welcome{grid-template-columns:1fr 1fr;padding-top:28px}}
+.feat{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px}
+.feat li{padding-left:26px;position:relative;max-width:48ch}
+.feat li::before{content:"✓";position:absolute;left:0;top:0;color:var(--tick);font-weight:700}
+.lvls{display:grid;gap:8px}
+.lvl{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px 12px;text-align:left;border:1px solid var(--line);background:var(--surface);padding:12px 14px;border-radius:10px;cursor:pointer}
+.lvl span{font-size:.82rem}
+.lvl[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+/* test */
+.opt.sel{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.timer{font-size:1.2rem;font-weight:500;padding:4px 12px;border-radius:8px;background:var(--surface-2)}
+.timer.bad{background:var(--tick-soft);color:var(--tick)}
+.pal{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.pal button{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-family:var(--mono);font-size:.82rem}
+.pal button.done{background:var(--accent-soft);border-color:var(--accent)}
+.pal button.cur{box-shadow:0 0 0 2px var(--ink)}
+.review{display:grid;gap:0}
+.rv{display:grid;gap:4px;padding:14px 0;border-bottom:1px solid var(--line)}
+.rv:last-child{border-bottom:0}
+.rv-h{display:flex;gap:10px;align-items:center}
+.rv p{max-width:75ch}
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <div class="brand">
+    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
+    <div><b>TickMark</b><small>CA exam prep, ticked off paper by paper</small></div>
+  </div>
+  <div class="seg" role="group" aria-label="CA level" id="levelSeg"></div>
+</header>
+<nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
+<div class="wrap" id="bannerWrap"></div>
+<main class="wrap" id="main"></main>
+
+<script>
+(function(){
+const K = "tickmark.v1";
+const BOS = "https://boslive.icai.org/education_content.php?p=";
+const LEVELS = {
+  foundation:{label:"Foundation",c:"foundation",attempts:["Jan 2027","May 2027"],groups:false,papers:[
+    {id:"F1",no:1,name:"Accounting",g:1,type:"Descriptive"},
+    {id:"F2",no:2,name:"Business Laws",g:1,type:"Descriptive"},
+    {id:"F3",no:3,name:"Quantitative Aptitude",g:1,type:"Objective"},
+    {id:"F4",no:4,name:"Business Economics",g:1,type:"Objective"}]},
+  inter:{label:"Intermediate",c:"intermediate",attempts:["Jan 2027","May 2027"],groups:true,papers:[
+    {id:"I1",no:1,name:"Advanced Accounting",g:1,type:"Descriptive + MCQ"},
+    {id:"I2",no:2,name:"Corporate & Other Laws",g:1,type:"Descriptive + MCQ"},
+    {id:"I3",no:3,name:"Taxation (Income Tax & GST)",g:1,type:"Descriptive + MCQ"},
+    {id:"I4",no:4,name:"Cost & Management Accounting",g:2,type:"Descriptive + MCQ"},
+    {id:"I5",no:5,name:"Auditing & Ethics",g:2,type:"Descriptive + MCQ"},
+    {id:"I6",no:6,name:"FM & Strategic Management",g:2,type:"Descriptive + MCQ"}]},
+  final:{label:"Final",c:"final",attempts:["Nov 2026","May 2027"],groups:true,papers:[
+    {id:"N1",no:1,name:"Financial Reporting",g:1,type:"Descriptive + MCQ"},
+    {id:"N2",no:2,name:"Advanced Financial Management",g:1,type:"Descriptive + MCQ"},
+    {id:"N3",no:3,name:"Advanced Auditing, Assurance & Ethics",g:1,type:"Descriptive + MCQ"},
+    {id:"N4",no:4,name:"Direct Tax Laws & International Taxation",g:2,type:"Descriptive + MCQ"},
+    {id:"N5",no:5,name:"Indirect Tax Laws",g:2,type:"Descriptive + MCQ"},
+    {id:"N6",no:6,name:"Integrated Business Solutions",g:2,type:"Case study, open book"}]}
+};
+const RES = [["RTP","Revision Test Paper","Revision+Test+Papers"],["MTP-I","Mock Test Paper Series I","Mock+Test+Papers"],["MTP-II","Mock Test Paper Series II","Mock+Test+Papers"],["PYQ","Last exam's question paper","Question+Papers+New+Scheme"]];
+
+const Q = [
+ ["F1","Revenue of a period is recognised together with the expenses incurred to earn it. Which concept is this?",["Going concern","Matching","Consistency","Money measurement"],1,"The matching concept pairs expenses with the revenue they helped earn in the same accounting period."],
+ ["F1","Goods withdrawn by the proprietor for personal use are recorded as:",["Dr Drawings, Cr Purchases","Dr Purchases, Cr Drawings","Dr Capital, Cr Sales","Dr Drawings, Cr Sales"],0,"Drawings increase (debit) and the goods are removed from purchases (credit), since they were never sold."],
+ ["F1","Machinery costing ₹1,00,000 is depreciated at 10% p.a. on written-down value. Depreciation for Year 2 is:",["₹10,000","₹9,000","₹8,100","₹19,000"],1,"Year 1: ₹10,000 → WDV ₹90,000. Year 2: 10% × ₹90,000 = ₹9,000."],
+ ["F2","Under Section 2(h) of the Indian Contract Act, 1872, a contract is:",["Any promise","An agreement enforceable by law","An agreement between two parties","A written promise"],1,"Section 2(h): an agreement enforceable by law is a contract."],
+ ["F2","An agreement with a minor is:",["Voidable at the minor's option","Valid","Void ab initio","Illegal"],2,"Mohori Bibee v. Dharmodas Ghose — a minor's agreement is void from the beginning."],
+ ["F2","Under the Sale of Goods Act, 1930, 'goods' does NOT include:",["Stocks and shares","Growing crops","Actionable claims and money","Things attached to the earth agreed to be severed"],2,"Section 2(7) excludes actionable claims and money from the definition of goods."],
+ ["F3","Simple interest on ₹5,000 at 8% p.a. for 3 years is:",["₹1,000","₹1,200","₹1,299","₹400"],1,"SI = P × R × T / 100 = 5,000 × 8 × 3 / 100 = ₹1,200."],
+ ["F3","The median of 3, 7, 1, 9, 5 is:",["7","5","3","4"],1,"Arrange: 1, 3, 5, 7, 9. The middle value is 5."],
+ ["F3","If A : B = 2 : 3 and B : C = 4 : 5, then A : C is:",["8 : 15","2 : 5","6 : 20","4 : 9"],0,"A : B : C = 8 : 12 : 15, so A : C = 8 : 15."],
+ ["F4","When price elasticity of demand is greater than 1, demand is:",["Inelastic","Unitary elastic","Elastic","Perfectly inelastic"],2,"|e| > 1 means quantity demanded responds more than proportionately to price — elastic demand."],
+ ["F4","A firm under perfect competition is a:",["Price maker","Price taker","Price discriminator","Price leader"],1,"With many sellers and a homogeneous product, each firm accepts the market price."],
+ ["F4","When total utility is at its maximum, marginal utility is:",["Negative","Positive and rising","Zero","Equal to price"],2,"Total utility peaks exactly where the next unit adds nothing — MU = 0."],
+ ["I1","Under AS 2, inventories are measured at:",["Cost","Net realisable value","Lower of cost and net realisable value","Higher of cost and net realisable value"],2,"AS 2 (Valuation of Inventories) requires the lower of cost and NRV."],
+ ["I2","Under the Companies Act, 2013, the minimum number of directors for a public company is:",["1","2","3","7"],2,"Section 149: public company — at least 3 directors; private — 2; OPC — 1."],
+ ["I2","The maximum number of members in a private company (excluding specified employees) is:",["50","200","500","No limit"],1,"Section 2(68) caps members of a private company at 200."],
+ ["I3","Tax levied on an inter-State supply of goods under GST is:",["CGST + SGST","IGST","UTGST","CGST only"],1,"Inter-State supplies attract Integrated GST under the IGST Act, 2017."],
+ ["I3","GST is best described as a:",["Origin-based production tax","Destination-based consumption tax","Direct tax on income","Tax on capital"],1,"GST accrues to the State where goods or services are consumed."],
+ ["I4","Annual demand 20,000 units, ordering cost ₹100 per order, carrying cost ₹4 per unit p.a. EOQ is:",["500 units","1,000 units","1,414 units","2,000 units"],1,"EOQ = √(2AO/C) = √(2 × 20,000 × 100 / 4) = √10,00,000 = 1,000."],
+ ["I4","Sales ₹5,00,000 and variable cost ₹3,00,000. The P/V ratio is:",["60%","40%","30%","66.7%"],1,"Contribution ₹2,00,000 ÷ Sales ₹5,00,000 = 40%."],
+ ["I5","Which Standard on Auditing deals with audit documentation?",["SA 200","SA 230","SA 500","SA 700"],1,"SA 230 covers audit documentation; SA 500 covers audit evidence."],
+ ["I5","Audit risk is a function of:",["Inherent risk and business risk","Risk of material misstatement and detection risk","Control risk and sampling risk","Detection risk alone"],1,"SA 200: audit risk = risk of material misstatement × detection risk."],
+ ["I6","EBIT ₹5,00,000 and interest ₹1,00,000. Degree of financial leverage is:",["1.25","0.8","5","1.5"],0,"DFL = EBIT ÷ EBT = 5,00,000 ÷ 4,00,000 = 1.25."],
+ ["I6","In SWOT analysis, which factors are internal to the organisation?",["Opportunities and threats","Strengths and weaknesses","Threats only","All four"],1,"Strengths and weaknesses are internal; opportunities and threats come from the environment."],
+ ["N1","Which Ind AS deals with leases?",["Ind AS 115","Ind AS 116","Ind AS 109","Ind AS 17"],1,"Ind AS 116 replaced Ind AS 17 for lease accounting."],
+ ["N1","The first step of the Ind AS 115 five-step model is to:",["Determine the transaction price","Identify the performance obligations","Identify the contract with the customer","Recognise revenue"],2,"Step 1 is identifying the contract; revenue recognition is step 5."],
+ ["N2","A portfolio is 60% in a stock with beta 1.2 and 40% in a stock with beta 0.8. Portfolio beta:",["1.00","1.04","0.96","2.00"],1,"0.6 × 1.2 + 0.4 × 0.8 = 0.72 + 0.32 = 1.04."],
+ ["N2","Put-call parity for European options is:",["C + S = P + PV(X)","C + PV(X) = P + S","C − P = PV(X)","C = P"],1,"A call plus the PV of the strike equals a put plus the share: C + PV(X) = P + S₀."],
+ ["N3","Which SA deals with communicating key audit matters?",["SA 700","SA 701","SA 705","SA 706"],1,"SA 701 covers KAMs; SA 705 modified opinions; SA 706 emphasis of matter."],
+ ["N4","Transactions between associated enterprises are benchmarked under transfer pricing at the:",["Book value","Arm's length price","Fair market value on the stock exchange","Cost plus 10%"],1,"Transfer pricing rules require international transactions to be at arm's length price."],
+ ["N5","Rates of basic customs duty are specified in the:",["Customs Act, 1962","Customs Tariff Act, 1975","Central Excise Act, 1944","IGST Act, 2017"],1,"The Customs Act, 1962 levies the duty; the rates sit in the Customs Tariff Act, 1975."],
+ ["N5","Under GST, a supply of goods to an SEZ unit is a:",["Exempt supply","Zero-rated supply","Non-taxable supply","Intra-State supply"],1,"Supplies to SEZ units/developers are zero-rated under Section 16 of the IGST Act."],
+ ["N6","Final Paper 6, Integrated Business Solutions, is:",["A pure MCQ paper","A multidisciplinary case-study paper, open book","An elective with 6 options","A viva"],1,"IBS is an open-book, case-study based paper that integrates multiple subjects."],
+ ["F1","Which of the following is a nominal account?",["Cash A/c","Debtors A/c","Salary A/c","Machinery A/c"],2,"Salary is an expense — a nominal account. Cash and machinery are real; debtors are personal."],
+ ["F1","A trial balance that agrees will NOT reveal:",["An error of complete omission","A casting error in one ledger account","Posting to the wrong side of an account","A wrong balance carried forward"],0,"If a transaction is left out entirely, both debit and credit are missing, so the trial balance still agrees."],
+ ["F1","Cash book shows a bank balance of ₹10,000 (Dr). Cheques issued but not yet presented total ₹2,000. Balance as per pass book is:",["₹8,000","₹10,000","₹12,000","₹6,000"],2,"The cash book has already deducted the cheques; the bank has not, so the pass book balance is higher: ₹12,000."],
+ ["F2","Under the Indian Contract Act, consideration must move at the desire of:",["The promisee","The promisor","Any third party","The court"],1,"Section 2(d): an act done at the desire of the promisor is consideration."],
+ ["F2","Under Section 4 of the Indian Partnership Act, 1932, partnership is the relation between persons who agree to share:",["Losses only","Profits of a business carried on by all or any of them acting for all","Capital equally","Ownership of property"],1,"The definition: sharing profits of a business carried on by all or any of them acting for all."],
+ ["F2","Under the Sale of Goods Act, 1930, a condition is a stipulation:",["Collateral to the main purpose of the contract","Essential to the main purpose of the contract","That can never be waived","That gives rise only to a claim for damages"],1,"Breach of a condition (essential term) lets the buyer repudiate; breach of a warranty (collateral term) gives damages only."],
+ ["F3","log₁₀ 1000 equals:",["2","3","10","100"],1,"10³ = 1000, so log₁₀ 1000 = 3."],
+ ["F3","In how many ways can 5 people be seated in a row?",["25","60","120","720"],2,"5! = 5 × 4 × 3 × 2 × 1 = 120."],
+ ["F3","The standard deviation of the observations 5, 5, 5, 5 is:",["5","2.5","1","0"],3,"All values equal the mean, so there is no dispersion: SD = 0."],
+ ["F4","The demand curve for a normal good slopes:",["Upward from left to right","Downward from left to right","Vertically","Horizontally"],1,"Price and quantity demanded move in opposite directions — the law of demand."],
+ ["F4","Which of these is a fixed cost in the short run?",["Raw material","Electricity for machines","Factory rent","Wages of casual labour"],2,"Rent must be paid regardless of output; the others vary with production."],
+ ["F4","GDP at market price minus net indirect taxes equals:",["GNP at market price","GDP at factor cost","NNP at factor cost","National disposable income"],1,"GDP at factor cost = GDP at market price − indirect taxes + subsidies."],
+ ["I1","Under AS 10, which of these is NOT included in the cost of an item of PPE?",["Import duties","Site preparation cost","Initial delivery and handling","Administration and general overheads"],3,"General administration overheads are expensed; the other three are directly attributable costs."],
+ ["I1","Under AS 9, revenue from the sale of goods is recognised when:",["The order is received","Significant risks and rewards of ownership are transferred to the buyer","Cash is received","The invoice is printed"],1,"AS 9: transfer of significant risks and rewards, no continuing control, and reasonable certainty of collection."],
+ ["I1","Under AS 13, current investments are carried at:",["Cost","Fair value","Lower of cost and fair value","Higher of cost and fair value"],2,"Current investments: lower of cost and fair value; long-term investments: cost less any other-than-temporary decline."],
+ ["I1","Under AS 14, an amalgamation in the nature of merger is accounted for using the:",["Purchase method","Pooling of interests method","Fair value method","Equity method"],1,"Merger → pooling of interests; amalgamation in the nature of purchase → purchase method."],
+ ["I2","A One Person Company can be incorporated only by:",["Any company","A natural person who is an Indian citizen","A partnership firm","A minor"],1,"Only a natural person who is an Indian citizen can be the member of an OPC."],
+ ["I2","The minimum paid-up share capital for a private company under the Companies Act, 2013 is:",["₹1 lakh","₹5 lakh","₹10 lakh","No minimum"],3,"The minimum paid-up capital requirement was removed by the Companies (Amendment) Act, 2015."],
+ ["I2","In interpretation of statutes, the rule of 'ejusdem generis' means:",["Read the statute as a whole","General words following specific words take the same kind","Prefer the literal meaning","Penal statutes are construed strictly"],1,"Ejusdem generis: general words take their meaning from the specific words that precede them."],
+ ["I3","In most States, a supplier dealing exclusively in goods must register under GST once aggregate turnover exceeds:",["₹10 lakh","₹20 lakh","₹40 lakh","₹1 crore"],2,"₹40 lakh for exclusive suppliers of goods (₹20 lakh for services); lower limits apply in special category States."],
+ ["I3","Under reverse charge, GST is paid by the:",["Supplier","Recipient","Government","E-commerce operator only"],1,"Reverse charge shifts the liability to pay tax from the supplier to the recipient."],
+ ["I3","Regular taxpayers report their outward supplies in:",["GSTR-1","GSTR-2A","GSTR-3B","GSTR-9"],0,"GSTR-1 is the statement of outward supplies; GSTR-3B is the summary return with payment."],
+ ["I4","Fixed cost ₹1,20,000 and P/V ratio 40%. Break-even sales are:",["₹48,000","₹3,00,000","₹1,20,000","₹4,80,000"],1,"BEP (sales) = Fixed cost ÷ P/V ratio = 1,20,000 ÷ 0.40 = ₹3,00,000."],
+ ["I4","Margin of safety equals:",["Actual sales − Break-even sales","Break-even sales − Fixed cost","Contribution − Fixed cost","Sales − Variable cost"],0,"Margin of safety is the cushion of sales above break-even."],
+ ["I4","Under FIFO in a period of rising prices, closing inventory is valued at:",["Oldest, lower prices","Recent, higher prices","Average prices","Standard cost"],1,"FIFO issues the oldest stock first, leaving the most recent purchases in closing inventory."],
+ ["I5","SA 580 deals with:",["Analytical procedures","Written representations","External confirmations","Audit sampling"],1,"SA 580 — Written Representations. SA 505 covers external confirmations; SA 520 analytical procedures."],
+ ["I5","SA 505 deals with:",["External confirmations","Related parties","Subsequent events","Going concern"],0,"SA 505 — External Confirmations (e.g. balance confirmations from debtors and banks)."],
+ ["I5","The statutory auditor's report on a company's financial statements is addressed to:",["The Board of Directors","The Registrar of Companies","The members of the company","The CFO"],2,"Under Section 143, the auditor reports to the members (shareholders)."],
+ ["I6","A project costs ₹1,00,000 and the present value of its inflows is ₹1,20,000. NPV is:",["₹20,000","₹1,20,000","−₹20,000","₹2,20,000"],0,"NPV = PV of inflows − initial outlay = 1,20,000 − 1,00,000 = ₹20,000."],
+ ["I6","Degree of operating leverage equals:",["EBIT ÷ EBT","Contribution ÷ EBIT","Sales ÷ Contribution","EBT ÷ EBIT"],1,"DOL = Contribution ÷ EBIT; DFL = EBIT ÷ EBT."],
+ ["I6","Which is NOT one of Porter's five forces?",["Threat of new entrants","Bargaining power of buyers","Government regulation","Threat of substitutes"],2,"The five forces: rivalry, new entrants, substitutes, buyer power and supplier power."],
+ ["N1","Under Ind AS 10, an adjusting event after the reporting period is one that:",["Arises after the reporting period","Provides evidence of conditions existing at the end of the reporting period","Is material in amount","Relates to dividends declared later"],1,"Adjusting events give evidence of conditions at the reporting date; non-adjusting events arise afterwards."],
+ ["N1","Under Ind AS 36, recoverable amount is the higher of:",["Carrying amount and fair value","Fair value less costs of disposal and value in use","Cost and NRV","Value in use and carrying amount"],1,"Recoverable amount = higher of FVLCD and value in use; impairment if carrying amount exceeds it."],
+ ["N1","Under Ind AS 103, goodwill arising on a business combination is:",["Amortised over 5 years","Written off to reserves","Not amortised; tested for impairment annually","Expensed immediately"],2,"Ind AS 103 goodwill is not amortised — it is tested for impairment at least annually under Ind AS 36."],
+ ["N2","Spot USD/INR is ₹83.00; USD interest 5% p.a., INR interest 7% p.a. The one-year forward rate (interest rate parity) is approximately:",["₹81.45","₹83.00","₹84.58","₹86.20"],2,"F = S × (1 + i₹) ÷ (1 + i$) = 83 × 1.07 ÷ 1.05 ≈ ₹84.58."],
+ ["N2","The duration of a zero-coupon bond equals:",["Zero","Half its maturity","Its maturity","Its yield"],2,"With a single cash flow at maturity, Macaulay duration equals the time to maturity."],
+ ["N2","The Sharpe ratio of a portfolio is:",["(Rp − Rf) ÷ βp","(Rp − Rf) ÷ σp","Rp ÷ σp","(Rm − Rf) × βp"],1,"Sharpe uses total risk (σ); Treynor uses systematic risk (β)."],
+ ["N3","SA 600 deals with:",["Using the work of an auditor's expert","Using the work of another auditor","Using the work of internal auditors","Group audits of listed entities only"],1,"SA 600 — Using the Work of Another Auditor. SA 610 covers internal auditors; SA 620 the auditor's expert."],
+ ["N3","SA 610 deals with:",["Using the work of internal auditors","Written representations","Comparative information","Other information"],0,"SA 610 — Using the Work of Internal Auditors."],
+ ["N3","Under SA 570, the auditor evaluates management's assessment of:",["Fraud risk","The entity's ability to continue as a going concern","Related-party transactions","Internal control design"],1,"SA 570 — Going Concern."],
+ ["N3","Under the Companies Act, 2013, an individual (or partner) may be auditor of at most how many companies?",["10","15","20","30"],2,"Section 141(3)(g): a ceiling of 20 companies, subject to the exclusions in the section."],
+ ["N4","The OECD/G20 BEPS project consists of how many action items?",["10","12","15","20"],2,"BEPS has 15 actions, from the digital economy (Action 1) to the multilateral instrument (Action 15)."],
+ ["N4","Under tax treaties, a 'permanent establishment' generally means:",["Any customer in the other State","A fixed place of business through which the enterprise's business is wholly or partly carried on","A registered office only","A bank account in the other State"],1,"Article 5 of the Model Conventions: a fixed place of business through which business is wholly or partly carried on."],
+ ["N5","Under GST, a composite supply is taxed at the rate applicable to:",["The cheapest component","The principal supply","The highest-rated component","An average of the rates"],1,"Composite supply → rate of the principal supply; mixed supply → highest rate among the components."],
+ ["N5","A mixed supply under GST is taxed at:",["The rate of the principal supply","The rate of the component attracting the highest rate","Nil rate","The lowest rate"],1,"Section 8 of the CGST Act: mixed supply takes the highest applicable rate."],
+ ["N5","Safeguard duty under the Customs Tariff Act is imposed to protect domestic industry against:",["Dumped imports","Subsidised imports","A sudden surge in imports causing serious injury","Counterfeit goods"],2,"Anti-dumping duty targets dumping; countervailing duty targets subsidies; safeguard duty targets import surges."]
+].map((r,i)=>({id:"q"+i,p:r[0],q:r[1],o:r[2],a:r[3],w:r[4]}));
+
+const MILESTONES = [
+  ["Foundation cleared","Or direct entry via graduation / postgraduation"],
+  ["Intermediate registration","Register with ICAI Board of Studies"],
+  ["ICITSS — ITT & Orientation","Needed before practical training begins"],
+  ["Intermediate Group I","Pass: 40% per paper, 50% group aggregate"],
+  ["Intermediate Group II","Pass: 40% per paper, 50% group aggregate"],
+  ["Practical training (articleship)","Two years; log it on the SSP portal"],
+  ["Self-Paced Online Modules","Complete all sets before Final"],
+  ["AICITSS — Advanced ITT & MCS","Complete before appearing for Final"],
+  ["Final Group I","FR · AFM · Audit"],
+  ["Final Group II","DT · IDT · IBS"],
+  ["ICAI membership","Apply once all requirements are met"]
+];
+
+/* ---------- state ---------- */
+function iso(d){const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString().slice(0,10)}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+const today=new Date();today.setHours(0,0,0,0);
+function sample(){
+  const log={},mcq=[];const hrs=[6,7,5,0,8,6,7,4,6,7,8,5,6,7];
+  hrs.forEach((h,i)=>{if(h)log[iso(addDays(today,i-13))]=h});
+  const picks=[["I1",1],["I1",1],["I1",0],["I2",1],["I2",1],["I3",0],["I3",0],["I3",1],["I4",1],["I4",1],["I4",1],["I5",1],["I5",0],["I6",0],["I6",1],["I6",0]];
+  picks.forEach((p,i)=>mcq.push({p:p[0],ok:!!p[1],t:iso(addDays(today,-(i%6)))}));
+  return {level:"inter",sample:true,onboarded:true,name:"",exam:{foundation:"",inter:iso(addDays(today,108)),final:""},mcq,log,
+    done:{"I1|Jan 2027|RTP":1,"I2|Jan 2027|RTP":1,"I4|Jan 2027|RTP":1,"I4|Jan 2027|MTP-I":1,"I1|Jan 2027|PYQ":1},
+    ms:{0:"done",1:"done",2:"done",3:"doing",4:"doing"},wrong:{q15:1,q16:1,q21:1,q22:1},
+    tests:[{t:iso(addDays(today,-5)),lv:"inter",n:10,ok:6,secs:540},{t:iso(addDays(today,-1)),lv:"inter",n:10,ok:8,secs:470}],
+    plan:{groups:"both",dur:3,unit:"months",hpd:8,weak:["I3","I6"],rest:true}};
+}
+function blank(level){return {level:level||"inter",sample:false,onboarded:false,name:"",exam:{foundation:"",inter:"",final:""},mcq:[],log:{},done:{},ms:{},wrong:{},tests:[],plan:{groups:"both",dur:3,unit:"months",hpd:8,weak:[],rest:true}}}
+let S;
+try{S=JSON.parse(localStorage.getItem(K))}catch(e){S=null}
+if(!S||!S.level)S=blank();
+else{S.wrong=S.wrong||{};S.tests=S.tests||[];S.name=S.name||"";if(S.onboarded===undefined)S.onboarded=true}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+let tab="dashboard";try{tab=localStorage.getItem(K+".tab")||"dashboard"}catch(e){}
+if(location.hash&&/^#(dashboard|papers|mcq|planner|journey|guidance)$/.test(location.hash))tab=location.hash.slice(1);
+
+const L=()=>LEVELS[S.level];
+const paper=id=>L().papers.find(p=>p.id===id)||Object.values(LEVELS).flatMap(l=>l.papers).find(p=>p.id===id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=d=>d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+
+/* ---------- derived ---------- */
+function accuracy(){
+  const out={};L().papers.forEach(p=>out[p.id]={n:0,ok:0});
+  S.mcq.forEach(m=>{if(out[m.p]){out[m.p].n++;if(m.ok)out[m.p].ok++}});
+  return out;
+}
+function streak(){
+  const active=new Set(Object.keys(S.log).filter(k=>S.log[k]>0).concat(S.mcq.map(m=>m.t)));
+  let n=0,d=new Date(today);if(!active.has(iso(d)))d=addDays(d,-1);
+  while(active.has(iso(d))){n++;d=addDays(d,-1)}return n;
+}
+function resDone(){const a=L().attempts[0];let n=0,t=0;L().papers.forEach(p=>RES.forEach(r=>{t++;if(S.done[p.id+"|"+a+"|"+r[0]])n++}));return {n,t,a}}
+function weakest(){
+  const acc=accuracy();let w=null;
+  for(const id in acc){const x=acc[id];if(x.n>=2){const r=x.ok/x.n;if(!w||r<w.r)w={id,r,n:x.n}}}
+  return w;
+}
+
+/* ---------- planner engine ---------- */
+function alloc(n,weights){
+  const sum=weights.reduce((a,b)=>a+b,0);const raw=weights.map(w=>w/sum*n);
+  const out=raw.map(Math.floor);let left=n-out.reduce((a,b)=>a+b,0);
+  raw.map((r,i)=>[r-Math.floor(r),i]).sort((a,b)=>b[0]-a[0]).forEach(([,i])=>{if(left>0){out[i]++;left--}});
+  return out;
+}
+const PH={concepts:["Concepts","Learn chapters, work ICAI module illustrations"],revision:["Revision","Second reading, solve module questions & past papers"],practice:["RTP · MTP","Timed papers, then review every mistake"],final:["Final revision","Summary notes, amendments, formula sheets"]};
+function buildPlan(opt){
+  const lv=LEVELS[opt.level];
+  let papers=lv.papers.filter(p=>!lv.groups||opt.groups==="both"||(opt.groups==="g1"?p.g===1:p.g===2));
+  const days=Math.max(1,Math.min(730,Math.round(opt.unit==="days"?opt.dur:opt.unit==="weeks"?opt.dur*7:opt.dur*30.4)));
+  const weights=papers.map(p=>opt.weak.includes(p.id)?1.4:1);
+  const wsum=weights.reduce((a,b)=>a+b,0);
+  const restDays=opt.rest&&days>=7?Array.from({length:days},(_,i)=>addDays(opt.start,i).getDay()===0).filter(Boolean).length:0;
+  const hours=Math.round((days-restDays)*opt.hpd+restDays*opt.hpd*0.4);
+  const perPaper=papers.map((p,i)=>({p,h:Math.round(hours*weights[i]/wsum)}));
+  if(days===1)return {days,papers,hours,perPaper,daily:true,list:[{date:opt.start,phase:"daily",main:papers[0],alt:papers[1]||papers[0]}]};
+  let split=days>=60?[["concepts",.55],["revision",.2],["practice",.15],["final",.1]]:days>=21?[["concepts",.4],["revision",.25],["practice",.25],["final",.1]]:[["revision",.5],["practice",.35],["final",.15]];
+  const pd=alloc(days,split.map(s=>s[1]));
+  const phases=split.map((s,i)=>({key:s[0],days:pd[i]})).filter(p=>p.days>0);
+  const list=[];let cursor=0;
+  phases.forEach(ph=>{
+    const idx=[];for(let i=0;i<ph.days;i++){const d=addDays(opt.start,cursor+i);const rest=opt.rest&&days>=7&&d.getDay()===0;list.push({date:d,phase:ph.key,rest});if(!rest)idx.push(list.length-1)}
+    cursor+=ph.days;
+    if(ph.key==="practice"){idx.forEach((li,k)=>list[li].main=papers[k%papers.length])}
+    else{
+      const c=idx.length>=papers.length?alloc(idx.length,weights):papers.map((_,i)=>i<idx.length?1:0);
+      let k=0;papers.forEach((p,pi)=>{for(let j=0;j<c[pi];j++)list[idx[k++]].main=p});
+    }
+    idx.forEach(li=>{const m=list[li].main;const others=papers.filter(p=>p!==m);list[li].alt=others.length?others[(li)%others.length]:m});
+  });
+  return {days,papers,hours,perPaper,phases,list};
+}
+function slotsFor(entry,hpd){
+  const m=entry.main,a=entry.alt||m;const H=Math.max(1,hpd)*60;
+  const ph=entry.phase;
+  const blocks=ph==="practice"?[
+    [0.5,m,"Attempt a full MTP/RTP paper under exam timing"],[0.25,m,"Check against suggested answers; log every mistake"],[0.15,a,"Revise weak chapters from mistake log"],[0.1,null,"MCQ sprint — 15 questions"]]
+   :ph==="final"?[[0.45,m,"Rapid revision from your summary notes"],[0.25,m,"Amendments, formula sheet, key definitions"],[0.2,a,"One mixed question set"],[0.1,null,"MCQ sprint — 15 questions"]]
+   :ph==="revision"?[[0.45,m,"Revise one chapter + solve module questions"],[0.25,a,"Past-paper questions, timed"],[0.15,null,"MCQ sprint — 20 questions"],[0.15,null,"Re-read yesterday's notes"]]
+   :[[0.45,m,"New chapter — read the module, work every illustration"],[0.3,a,"Theory reading and short notes"],[0.125,null,"MCQ sprint — 15 questions"],[0.125,null,"Revise yesterday's work"]];
+  if(entry.rest)return [{t:"Any time",w:"Light day",d:"Revise the week's notes and do one MCQ set. Rest is part of the plan."}];
+  let t=7*60;const out=[];
+  blocks.forEach((b,i)=>{const mins=Math.round(H*b[0]/15)*15;if(mins<=0)return;
+    out.push({t:hm(t)+"–"+hm(t+mins),w:b[1]?"P"+b[1].no+" · "+b[1].name:(b[2].startsWith("MCQ")?"MCQ practice":"Revision"),d:b[2]});t+=mins;
+    if(i<blocks.length-1&&mins>=60){out.push({t:hm(t)+"–"+hm(t+15),w:"Break",d:"",brk:true});t+=15}});
+  return out;
+}
+function hm(m){m=m%(24*60);const h=Math.floor(m/60),mm=m%60;return String(h).padStart(2,"0")+":"+String(mm).padStart(2,"0")}
+function currentPlan(){return buildPlan(Object.assign({level:S.level,start:today},S.plan,{weak:S.plan.weak||[]}))}
+
+/* ---------- render ---------- */
+const TABS=[["dashboard","Dashboard"],["papers","RTP & MTP"],["mcq","MCQ practice"],["planner","Study planner"],["journey","My journey"],["guidance","Guidance"]];
+function renderChrome(){
+  const on=S.onboarded;
+  document.getElementById("levelSeg").innerHTML=on?Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}">${v.label}</button>`).join(""):"";
+  document.getElementById("levelSeg").hidden=!on;
+  document.querySelector(".tabs").hidden=!on;
+  document.getElementById("tabs").innerHTML=TABS.map(([k,v])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${v}</button>`).join("");
+  document.getElementById("bannerWrap").innerHTML=on&&S.sample?`<div class="banner"><span><b>You're looking at sample progress.</b> Explore freely, then start your own tracker.</span><button class="btn sm" data-act="fresh">Start fresh</button></div>`:"";
+}
+let W={level:"inter"};
+function welcome(){
+  return `<div class="welcome">
+    <div><div class="eyebrow">Free · works on any phone</div><h1 style="font-size:2.3rem">Plan it. Practise it. Tick it off.</h1>
+    <p class="muted" style="margin-top:10px;max-width:52ch">A study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final. Tell us where you are and we'll build your first plan.</p>
+    <ul class="feat"><li><b>Study plans</b> for any duration — a day, a month, six months</li><li><b>Every RTP, MTP and past paper</b>, ticked off per attempt</li><li><b>MCQ practice and timed mocks</b> with explanations</li><li><b>Your journey</b> from Foundation to membership</li></ul></div>
+    <div class="card">
+      <div class="field"><label for="wName">Your name <span class="muted">(optional)</span></label><input id="wName" type="text" maxlength="40" placeholder="e.g. Priya" autocomplete="given-name"></div>
+      <div class="field" style="margin-top:14px"><span class="lab">Level</span><div class="lvls">${Object.entries(LEVELS).map(([k,v])=>`<button class="lvl" data-wlevel="${k}" aria-pressed="${W.level===k}"><b>${v.label}</b><span class="muted">${v.papers.length} papers · next: ${v.attempts[0]}</span></button>`).join("")}</div></div>
+      <div class="form" style="margin-top:14px">
+        <div class="field"><label for="wExam">First exam date <span class="muted">(optional)</span></label><input id="wExam" type="date"></div>
+        <div class="field"><label for="wH">Study hours per day</label><input id="wH" type="number" min="1" max="16" step="0.5" value="6"></div>
+      </div>
+      <div class="row" style="margin-top:18px;gap:12px"><button class="btn primary" data-act="start">Start preparing</button><button class="btn ghost" data-act="demo">Or explore with sample data</button></div>
+      <p class="muted" style="font-size:.8rem;margin-top:12px">Your progress is saved on this device. No account needed.</p>
+    </div></div>`;
+}
+function render(){renderChrome();const m=document.getElementById("main");
+  if(!S.onboarded){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
+  m.innerHTML=`<section class="view">${VIEWS[tab]()}</section>`;if(tab==="mcq")paintMcq()}
+
+function examLine(){
+  const d=S.exam[S.level];
+  if(!d)return `<span class="muted">Add your exam date to start a countdown.</span>`;
+  const n=Math.round((new Date(d)-today)/864e5);
+  return n>=0?`<span><b class="num">${n}</b> days to your first paper</span>`:`<span class="muted">Exam date has passed — update it.</span>`;
+}
+function barsHTML(){
+  const acc=accuracy();
+  return `<div class="bars">${L().papers.map(p=>{const x=acc[p.id];const r=x.n?Math.round(x.ok/x.n*100):null;
+    const cls=r===null?"":r<50?"low":r<70?"mid":"";
+    return `<div class="bar-row"><span class="lbl"><span class="pno">P${p.no}</span> ${esc(p.name)}</span><span class="num" style="text-align:right">${r===null?"—":r+"%"}</span><div class="track"><div class="fill ${cls}" style="width:${r||0}%"></div></div></div>`}).join("")}</div>`;
+}
+const VIEWS={
+dashboard(){
+  const acc=accuracy();const tot=S.mcq.length,ok=S.mcq.filter(m=>m.ok).length;const rd=resDone();
+  const wk=Object.entries(S.log).filter(([k])=>new Date(k)>=addDays(today,-6)).reduce((a,[,v])=>a+v,0);
+  const plan=currentPlan();const te=plan.list[0];const w=weakest();
+  const nextMs=MILESTONES.findIndex((_,i)=>S.ms[i]!=="done");
+  return `
+  <div class="hero"><div><div class="eyebrow">CA ${L().label} · ${L().attempts[0]} attempt</div><h1>${S.name?"Keep going, "+esc(S.name):"Your prep, one tick at a time"}</h1>
+  <p class="muted">Today's timetable, how your MCQs are going, and what to fix next.</p></div>
+  <div class="examset"><label for="examDate">Exam date</label><input type="date" id="examDate" value="${S.exam[S.level]||""}"> ${examLine()}</div></div>
+  <div class="stats">
+    <div class="stat"><div class="eyebrow">MCQ accuracy</div><div class="v">${tot?Math.round(ok/tot*100)+"%":"—"}</div><div class="s">${ok} of ${tot} correct</div></div>
+    <div class="stat"><div class="eyebrow">Study streak</div><div class="v">${streak()}</div><div class="s">days in a row</div></div>
+    <div class="stat"><div class="eyebrow">Hours this week</div><div class="v">${wk}</div><div class="s">last 7 days</div></div>
+    <div class="stat"><div class="eyebrow">RTP · MTP · PYQ</div><div class="v">${rd.n}/${rd.t}</div><div class="s">${rd.a} papers ticked</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><div class="card-h"><h2>Today's plan</h2><span class="pill ${te.rest?"":"good"}">${te.rest?"Light day":PH[te.phase]?PH[te.phase][0]:"Daily"}</span></div>
+      <div class="slots">${slotsFor(te,S.plan.hpd).map(s=>`<div class="slot ${s.brk?"brk":""}"><div class="t">${s.t}</div><div class="w">${esc(s.w)}</div>${s.d?`<div class="d">${esc(s.d)}</div>`:""}</div>`).join("")}</div>
+      <div class="row sp" style="margin-top:6px"><span class="muted" style="font-size:.85rem">From your ${S.plan.dur}-${S.plan.unit.replace(/s$/,"")} plan · ${S.plan.hpd} h/day</span><button class="btn ghost sm" data-tab="planner">Change plan</button></div>
+      <div class="row" style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px"><label for="logH" style="font-size:.88rem">Hours studied today</label><input id="logH" type="number" min="0" max="16" step="0.5" value="${S.log[iso(today)]||""}" style="width:80px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)"><button class="btn sm primary" data-act="logh">Log</button></div>
+    </div>
+    <div class="card"><div class="card-h"><h2>Accuracy by paper</h2><button class="btn ghost sm" data-tab="mcq">Practise</button></div>${barsHTML()}</div>
+  </div>
+  <div class="card"><div class="card-h"><h2>What to do next</h2></div>
+    <div style="display:grid;gap:12px">
+      ${w?`<div class="callout"><b>Focus on P${paper(w.id).no} ${esc(paper(w.id).name)}.</b> <span class="muted">You're at ${Math.round(w.r*100)}% on ${w.n} questions — your lowest score. Give it your first study block for the next three days and redo the MCQs you missed.</span></div>`:`<div class="callout"><b>Attempt 10 MCQs per paper.</b> <span class="muted">That gives us enough to spot your weakest paper.</span></div>`}
+      ${rd.n<rd.t?`<div class="callout"><b>${rd.t-rd.n} ICAI papers still to attempt for ${rd.a}.</b> <span class="muted">Start with the RTP for each paper, then MTP Series I under exam timing.</span></div>`:""}
+      ${nextMs>=0?`<div class="callout"><b>Next milestone: ${esc(MILESTONES[nextMs][0])}.</b> <span class="muted">${esc(MILESTONES[nextMs][1])}.</span></div>`:""}
+    </div></div>`;
+},
+papers(){
+  const lv=L();const at=window.__att&&lv.attempts.includes(window.__att)?window.__att:lv.attempts[0];
+  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label}</div><h1>RTP & MTP tracker</h1>
+  <p class="muted">Every ICAI Revision Test Paper, Mock Test Paper and past paper for your attempt. Open it on the ICAI BoS portal, attempt it under exam timing, then tick it off here.</p></div>
+  <div class="field" style="min-width:160px"><label for="att">Attempt</label><select id="att">${lv.attempts.map(a=>`<option ${a===at?"selected":""}>${a}</option>`).join("")}</select></div></div>
+  <div class="tbl-wrap"><table><thead><tr><th>Paper</th><th>Pattern</th><th>Tick when attempted</th><th>Open on ICAI</th></tr></thead><tbody>
+  ${lv.papers.map(p=>`<tr><td><span class="pno">P${p.no}${lv.groups?" · G"+p.g:""}</span><br><b>${esc(p.name)}</b></td><td class="muted" style="white-space:nowrap">${p.type}</td>
+   <td><div class="chips">${RES.map(r=>{const k=p.id+"|"+at+"|"+r[0];const on=!!S.done[k];return `<button class="chip" aria-pressed="${on}" data-done="${k}" title="${r[1]}"><span class="tk">${on?"✓":"·"}</span>${r[0]}</button>`}).join("")}</div></td>
+   <td style="white-space:nowrap"><a href="${BOS}Revision+Test+Papers" target="_blank" rel="noopener">RTP</a> · <a href="${BOS}Mock+Test+Papers" target="_blank" rel="noopener">MTP</a> · <a href="${BOS}Question+Papers+New+Scheme&c=${lv.c}" target="_blank" rel="noopener">PYQ</a></td></tr>`).join("")}
+  </tbody></table></div>
+  <p class="muted" style="font-size:.85rem">Papers open on ICAI's Board of Studies Knowledge Portal. ${lv.label==="Final"?"Final is held in May and November; ":"Foundation and Intermediate are held in January, May and September; "}check ICAI announcements for release dates.</p>`;
+},
+mcq(){
+  const lv=L();const wn=mistakes().length;const total=Q.filter(q=>lv.papers.some(p=>p.id===q.p)).length;
+  const modes=[["practice","Practice"],["test","Timed test"],["mistakes",`Mistakes${wn?" · "+wn:""}`]];
+  let body="";
+  if(mode==="test"){
+    if(T&&T.active)body=`<div id="qbox"></div>`;
+    else if(T&&T.done)body=testResults();
+    else body=`<div class="card"><div class="card-h"><h2>Set up a timed test</h2></div>
+      <div class="form"><div class="field"><label for="tP">Paper</label><select id="tP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}">P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>
+      <div class="field"><label for="tN">Questions</label><select id="tN"><option>10</option><option>15</option><option>20</option><option>30</option></select></div>
+      <div class="field"><label for="tM">Time per question</label><select id="tM"><option value="60">1 min</option><option value="72" selected>1 min 12 s (ICAI pace)</option><option value="90">1 min 30 s</option></select></div></div>
+      <div class="row" style="margin-top:16px"><button class="btn primary" data-act="starttest">Start test</button><span class="muted" style="font-size:.85rem">Answers are locked in when you submit. This test has no negative marking.</span></div></div>`;
+  }else{
+    body=`<div class="card"><div class="mcq-top">${mode==="practice"?`<div class="field" style="min-width:220px"><label for="mcqP">Paper</label><select id="mcqP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}" ${window.__mp===p.id?"selected":""}>P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>`:`<p class="muted" style="max-width:52ch">Questions you last got wrong. Answer one correctly and it leaves this list.</p>`}
+    <div class="num muted" id="sess"></div></div><div id="qbox" style="margin-top:14px"></div></div>`;
+  }
+  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label} · ${total} questions</div><h1>MCQ practice</h1><p class="muted">Every answer is logged against its paper, so your accuracy and weakest-paper guidance stay current.</p></div>
+  <div class="seg" role="group" aria-label="Mode">${modes.map(m=>`<button data-mode="${m[0]}" aria-pressed="${mode===m[0]}">${m[1]}</button>`).join("")}</div></div>${body}`;
+},
+planner(){
+  const lv=L();const P=S.plan;const plan=currentPlan();
+  const phaseBar=plan.daily?`<div class="phasebar"><div class="ph-daily" style="flex:1">One-day plan</div></div>`:`<div class="phasebar">${plan.phases.map(p=>`<div class="ph-${p.key}" style="flex:${p.days}" title="${PH[p.key][0]}: ${p.days} days">${p.days>=Math.max(4,plan.days*.08)?PH[p.key][0]+" · "+p.days+"d":""}</div>`).join("")}</div>
+   <div class="legend">${plan.phases.map(p=>`<span><i class="ph-${p.key}"></i>${PH[p.key][0]} — ${PH[p.key][1]}</span>`).join("")}</div>`;
+  const byWeek=plan.days>21;
+  let rows="";
+  if(plan.daily){rows=""}
+  else if(byWeek){
+    for(let w=0;w*7<plan.list.length;w++){const seg=plan.list.slice(w*7,w*7+7);const phs=[...new Set(seg.map(d=>d.phase))];const ps=[...new Set(seg.filter(d=>d.main).map(d=>d.main))];
+      rows+=`<tr><td class="num" style="white-space:nowrap">Wk ${w+1}</td><td style="white-space:nowrap">${fmt(seg[0].date)} – ${fmt(seg[seg.length-1].date)}</td><td>${phs.map(k=>`<span class="pill ph-${k}" style="color:var(--ink)">${PH[k][0]}</span>`).join(" ")}</td><td>${ps.map(p=>`<b>P${p.no}</b> ${esc(p.name)}`).join("<br>")}</td><td class="muted">${PH[phs[phs.length-1]][1]}</td></tr>`}
+  }else{
+    plan.list.forEach((d,i)=>{rows+=`<tr><td class="num">Day ${i+1}</td><td style="white-space:nowrap">${d.date.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})}</td><td><span class="pill ph-${d.phase}" style="color:var(--ink)">${PH[d.phase][0]}</span></td><td>${d.rest?"Light day — weekly revision":`<b>P${d.main.no}</b> ${esc(d.main.name)}<br><span class="muted">+ P${d.alt.no} ${esc(d.alt.name)}</span>`}</td><td class="muted">${d.rest?"":PH[d.phase][1]}</td></tr>`});
+  }
+  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label}</div><h1>Study planner</h1><p class="muted">Enter how long you have. You get a phased plan, hours per paper, and a timetable for every day.</p></div></div>
+  <div class="card">
+    <div class="form">
+      <div class="field"><span class="lab">Time left</span><div class="dur"><input id="pDur" type="number" min="1" max="730" value="${P.dur}" aria-label="Duration"><select id="pUnit" aria-label="Unit">${["days","weeks","months"].map(u=>`<option ${u===P.unit?"selected":""}>${u}</option>`).join("")}</select></div>
+        <div class="presets">${[[1,"days","1 day"],[30,"days","30 days"],[3,"months","3 months"],[6,"months","6 months"]].map(x=>`<button class="chip" data-preset="${x[0]}|${x[1]}" aria-pressed="${P.dur==x[0]&&P.unit===x[1]}">${x[2]}</button>`).join("")}</div></div>
+      <div class="field"><label for="pH">Study hours per day</label><input id="pH" type="number" min="1" max="16" step="0.5" value="${P.hpd}"></div>
+      ${lv.groups?`<div class="field"><label for="pG">Groups</label><select id="pG">${[["both","Both groups"],["g1","Group I only"],["g2","Group II only"]].map(g=>`<option value="${g[0]}" ${P.groups===g[0]?"selected":""}>${g[1]}</option>`).join("")}</select></div>`:""}
+      <div class="field"><label for="pR">Sundays</label><select id="pR"><option value="1" ${P.rest?"selected":""}>Light revision day</option><option value="0" ${!P.rest?"selected":""}>Full study day</option></select></div>
+    </div>
+    <div class="field" style="margin-top:14px"><span class="lab">Papers you find hardest (get ~40% more time)</span><div class="presets">${lv.papers.filter(p=>plan.papers.includes(p)).map(p=>`<button class="chip" data-weak="${p.id}" aria-pressed="${(P.weak||[]).includes(p.id)}">P${p.no} ${esc(p.name)}</button>`).join("")}</div></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="eyebrow">Plan length</div><div class="v">${plan.days}</div><div class="s">days from today</div></div>
+    <div class="stat"><div class="eyebrow">Study hours</div><div class="v">${plan.hours}</div><div class="s">in total</div></div>
+    <div class="stat"><div class="eyebrow">Papers</div><div class="v">${plan.papers.length}</div><div class="s">${lv.groups?(P.groups==="both"?"both groups":P.groups==="g1"?"Group I":"Group II"):"all four"}</div></div>
+    <div class="stat"><div class="eyebrow">Per paper</div><div class="v">~${Math.round(plan.hours/plan.papers.length)}</div><div class="s">hours on average</div></div>
+  </div>
+  ${plan.days<14&&!plan.daily?`<div class="banner" style="margin-top:0"><span><b>Short runway.</b> With under two weeks, skip new chapters — revise what you know and attempt RTP/MTP papers.</span></div>`:""}
+  <div class="card"><div class="card-h"><h2>Phases</h2><span class="muted num">${fmt(today)} → ${fmt(addDays(today,plan.days-1))}</span></div>${phaseBar}</div>
+  <div class="grid2">
+    <div class="card"><div class="card-h"><h2>${plan.daily?"Today's timetable":"Today's timetable"}</h2></div><div class="slots">${slotsFor(plan.list[0],P.hpd).map(s=>`<div class="slot ${s.brk?"brk":""}"><div class="t">${s.t}</div><div class="w">${esc(s.w)}</div>${s.d?`<div class="d">${esc(s.d)}</div>`:""}</div>`).join("")}</div></div>
+    <div class="card"><div class="card-h"><h2>Hours per paper</h2></div><div class="bars">${plan.perPaper.map(x=>{const mx=Math.max(...plan.perPaper.map(y=>y.h));return `<div class="bar-row"><span class="lbl"><span class="pno">P${x.p.no}</span> ${esc(x.p.name)}</span><span class="num" style="text-align:right">${x.h}h</span><div class="track"><div class="fill" style="width:${x.h/mx*100}%"></div></div></div>`}).join("")}</div></div>
+  </div>
+  ${plan.daily?"":`<div><h2 style="margin-bottom:10px">${byWeek?"Week by week":"Day by day"}</h2><div class="tbl-wrap"><table><thead><tr><th>${byWeek?"Week":"Day"}</th><th>Dates</th><th>Phase</th><th>Focus</th><th>Target</th></tr></thead><tbody>${rows}</tbody></table></div></div>`}`;
+},
+journey(){
+  const doneN=MILESTONES.filter((_,i)=>S.ms[i]==="done").length;
+  const days=[];for(let i=13;i>=0;i--){const d=addDays(today,-i);days.push([d,S.log[iso(d)]||0])}
+  const mx=Math.max(8,...days.map(d=>d[1]));
+  return `<div class="hero"><div><div class="eyebrow">Registration to membership</div><h1>My CA journey</h1><p class="muted">Tap a milestone to move it from upcoming → in progress → done.</p></div><span class="pill good">${doneN} of ${MILESTONES.length} done</span></div>
+  <div class="grid2">
+    <div class="card"><div class="journey">${MILESTONES.map((m,i)=>{const st=S.ms[i]||"todo";return `<div class="ms ${st}"><span class="dot">${st==="done"?"✓":""}</span><div><div class="nm">${esc(m[0])}</div><div class="nt">${esc(m[1])}</div></div><button class="pill ${st==="done"?"good":st==="doing"?"warn":""}" style="border:0;cursor:pointer" data-ms="${i}">${st==="done"?"Done":st==="doing"?"In progress":"Upcoming"}</button></div>`}).join("")}</div></div>
+    <div style="display:grid;gap:20px;align-content:start">
+      <div class="card"><div class="card-h"><h2>Study hours</h2><span class="muted" style="font-size:.85rem">last 14 days</span></div>
+        <div class="log">${days.map(d=>`<div class="b ${d[1]?"":"zero"}" style="height:${d[1]?d[1]/mx*100:2}%" title="${fmt(d[0])}: ${d[1]} h"></div>`).join("")}</div>
+        <div class="logx">${days.map((d,i)=>`<span>${i%2?"":d[0].getDate()}</span>`).join("")}</div>
+        <p class="muted" style="font-size:.85rem;margin-top:8px">Total <b class="num">${days.reduce((a,d)=>a+d[1],0)}</b> hours · log today's hours from the dashboard.</p></div>
+      <div class="card"><div class="card-h"><h2>MCQ accuracy</h2></div>${barsHTML()}</div>
+      <div class="card"><div class="card-h"><h2>Timed tests</h2><button class="btn ghost sm" data-mode="test">Take a test</button></div>
+        ${S.tests.filter(x=>x.lv===S.level).length?`<table><tbody>${S.tests.filter(x=>x.lv===S.level).slice(-5).reverse().map(x=>`<tr><td class="num">${fmt(new Date(x.t))}</td><td class="num">${x.ok}/${x.n}</td><td><span class="pill ${x.ok/x.n>=.7?"good":x.ok/x.n>=.5?"warn":"bad"}">${Math.round(x.ok/x.n*100)}%</span></td><td class="num muted">${hm2(x.secs)}</td></tr>`).join("")}</tbody></table>`:`<p class="muted">No tests yet at this level.</p>`}</div>
+    </div></div>
+  <div class="card"><div class="card-h"><h2>Your data</h2></div>
+    <p class="muted" style="max-width:65ch">Progress is saved in this browser only. To move it to another phone or laptop, copy your backup code and paste it there.</p>
+    <div class="row" style="margin-top:12px"><button class="btn" data-act="backup">Copy backup code</button><span class="muted" id="bkMsg" style="font-size:.85rem"></span></div>
+    <div class="field" style="margin-top:14px"><label for="restoreTxt">Restore from a backup code</label><textarea id="restoreTxt" rows="3" placeholder="Paste your backup code here"></textarea></div>
+    <div class="row sp" style="margin-top:10px"><button class="btn primary" data-act="restore">Restore</button>
+      <span class="row" id="resetBox"><button class="btn ghost" style="color:var(--tick)" data-act="reset1">Reset everything</button></span></div>
+  </div>`;
+},
+guidance(){
+  const w=weakest();const lv=L();
+  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label}</div><h1>Guidance</h1><p class="muted">How to use ICAI material well, and what to change based on your own numbers.</p></div></div>
+  <div class="card"><div class="card-h"><h2>Based on your progress</h2></div><div style="display:grid;gap:10px">
+    ${w?`<div class="callout"><b>Weakest paper: P${paper(w.id).no} ${esc(paper(w.id).name)} (${Math.round(w.r*100)}%).</b> <span class="muted">Mark it as a hard paper in the planner so it gets more hours, and revisit the concept behind each wrong MCQ before attempting new ones.</span></div>`:`<div class="callout">Attempt a few MCQs in each paper and this section will point to where you're losing marks.</div>`}
+    <div class="callout"><b>Pace check.</b> <span class="muted">${streak()>=5?"Your streak is strong — protect it with a fixed start time each day.":"Aim for five study days in a row; consistency beats long weekend sessions."}</span></div>
+  </div></div>
+  <div class="tips">
+    <div class="card"><h3>RTP vs MTP — when to use which</h3><ul>
+      <li><b>RTP</b> covers the amendments and question style for your attempt — read it once your first revision is done.</li>
+      <li><b>MTP Series I & II</b> are full mock papers. Sit them in 3 hours, no notes, then mark yourself against ICAI's suggested answers.</li>
+      <li>Keep a mistake log per paper; re-read it in the final week.</li></ul></div>
+    <div class="card"><h3>Pass criteria</h3><ul>
+      <li>At least <b>40% in each paper</b> and <b>50% aggregate</b> in the group.</li>
+      <li>Planning both groups? A strong paper can carry a weaker one in the aggregate — but never below 40.</li>
+      <li>Check ICAI's exemption rules if you score 60+ in a paper.</li></ul></div>
+    <div class="card"><h3>MCQ strategy</h3><ul>
+      <li>${lv.label==="Foundation"?"Papers 3 and 4 are objective — check ICAI's current rules on negative marking before guessing.":"Most Intermediate and Final papers include an MCQ section; check the current pattern for each paper on ICAI BoS."}</li>
+      <li>Do MCQs daily in short sprints; they reward breadth, so they expose skipped chapters fast.</li>
+      <li>Read all four options — ICAI distractors often differ by one word.</li></ul></div>
+    <div class="card"><h3>Descriptive answers</h3><ul>
+      <li>Law & audit: provision → facts → analysis → conclusion.</li>
+      <li>Numericals: show working notes; step marks add up.</li>
+      <li>Start each answer on a new page and number it exactly as the paper does.</li></ul></div>
+    <div class="card"><h3>The last 30 days</h3><ul>
+      <li>No new chapters in the final fortnight unless they're high-weight.</li>
+      <li>Two full mocks a week, at the same time of day as the exam.</li>
+      <li>Revise amendments applicable to your attempt — ICAI publishes the list.</li></ul></div>
+    <div class="card"><h3>Official sources</h3><ul>
+      <li><a href="https://www.icai.org" target="_blank" rel="noopener">icai.org</a> — notifications, exam dates, results</li>
+      <li><a href="https://boslive.icai.org" target="_blank" rel="noopener">BoS Knowledge Portal</a> — study material, RTP, MTP, past papers</li>
+      <li>Always trust ICAI's notification over any date shown in this app.</li></ul></div>
+  </div>`;
+}};
+
+/* ---------- MCQ engine ---------- */
+let cur=null,answered=false,sess={n:0,ok:0},mode="practice",T=null,tick=null;
+const inLevel=q=>L().papers.some(p=>p.id===q.p);
+function mistakes(){return Q.filter(q=>S.wrong[q.id]&&inLevel(q))}
+function pool(){
+  if(mode==="mistakes")return mistakes();
+  const f=window.__mp&&window.__mp!=="all"?[window.__mp]:L().papers.map(p=>p.id);return Q.filter(q=>f.includes(q.p));
+}
+function pick(){const pl=pool();if(!pl.length){cur=null;return}let n;do{n=pl[Math.floor(Math.random()*pl.length)]}while(pl.length>1&&cur&&n.id===cur.id);cur=n;answered=false}
+function record(q,ok){S.mcq.push({id:q.id,p:q.p,ok,t:iso(today)});if(S.mcq.length>2000)S.mcq=S.mcq.slice(-2000);if(ok)delete S.wrong[q.id];else S.wrong[q.id]=1}
+function paintMcq(){if(mode==="test"){if(T&&T.active)paintTest()}else paintQ()}
+function paintQ(){
+  if(!cur||!pool().includes(cur))pick();
+  const box=document.getElementById("qbox");if(!box)return;
+  const sEl=document.getElementById("sess");if(sEl)sEl.textContent=sess.n?`This session: ${sess.ok}/${sess.n}`:"";
+  if(!cur){box.innerHTML=`<p class="muted">${mode==="mistakes"?"No mistakes to revise — nothing outstanding for this level.":"No questions for this paper yet."}</p>`;return}
+  const p=paper(cur.p);
+  box.innerHTML=`<span class="pill">P${p.no} · ${esc(p.name)}</span><p class="q">${esc(cur.q)}</p>
+   <div class="opts">${cur.o.map((o,i)=>`<button class="opt" data-opt="${i}"><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}</div>
+   <div id="why"></div><div class="mcq-foot"><span class="muted" style="font-size:.85rem">${pool().length} questions in this set</span><button class="btn primary" data-act="nextq">Next question</button></div>`;
+}
+function answer(i){
+  if(answered||!cur)return;answered=true;const ok=i===cur.a;
+  document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j===cur.a)b.classList.add("right");else if(j===i)b.classList.add("wrong")});
+  document.getElementById("why").innerHTML=`<div class="why"><b style="color:${ok?"var(--good)":"var(--tick)"}">${ok?"Correct.":"Not quite — answer "+"ABCD"[cur.a]+"."}</b> ${esc(cur.w)}</div>`;
+  record(cur,ok);sess.n++;if(ok)sess.ok++;save();document.getElementById("sess").textContent=`This session: ${sess.ok}/${sess.n}`;
+}
+/* timed test */
+function startTest(pid,n,per){
+  let pl=Q.filter(q=>inLevel(q)&&(pid==="all"||q.p===pid));
+  for(let i=pl.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pl[i],pl[j]]=[pl[j],pl[i]]}
+  pl=pl.slice(0,Math.min(n,pl.length));if(!pl.length)return;
+  T={qs:pl,ans:pl.map(()=>null),i:0,start:Date.now(),limit:pl.length*per,active:true,done:false};
+  clearInterval(tick);tick=setInterval(()=>{const left=T.limit-Math.floor((Date.now()-T.start)/1000);const el=document.getElementById("tmr");if(el){el.textContent=hm2(Math.max(0,left));el.classList.toggle("bad",left<60)}if(left<=0)finishTest()},500);
+}
+function hm2(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function paintTest(){
+  const box=document.getElementById("qbox");if(!box||!T)return;const q=T.qs[T.i],p=paper(q.p),left=T.limit-Math.floor((Date.now()-T.start)/1000);
+  box.innerHTML=`<div class="card"><div class="mcq-top"><div class="row"><span class="pill">Q ${T.i+1} of ${T.qs.length}</span><span class="pill">P${p.no} · ${esc(p.name)}</span></div><span class="timer num ${left<60?"bad":""}" id="tmr">${hm2(Math.max(0,left))}</span></div>
+   <p class="q">${esc(q.q)}</p><div class="opts">${q.o.map((o,i)=>`<button class="opt ${T.ans[T.i]===i?"sel":""}" data-topt="${i}"><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}</div>
+   <div class="mcq-foot"><div class="row"><button class="btn" data-act="tprev" ${T.i===0?"disabled":""}>Previous</button><button class="btn" data-act="tnext" ${T.i===T.qs.length-1?"disabled":""}>Next</button></div><button class="btn primary" data-act="tsubmit">Submit test</button></div>
+   <div class="pal">${T.qs.map((_,i)=>`<button data-goto="${i}" class="${i===T.i?"cur":""} ${T.ans[i]!==null?"done":""}">${i+1}</button>`).join("")}</div>
+   <p class="muted" style="font-size:.8rem;margin-top:8px">${T.ans.filter(a=>a!==null).length} answered · ${T.ans.filter(a=>a===null).length} left</p></div>`;
+}
+function finishTest(){
+  if(!T||!T.active)return;clearInterval(tick);T.active=false;T.done=true;T.secs=Math.min(T.limit,Math.floor((Date.now()-T.start)/1000));
+  let ok=0;T.qs.forEach((q,i)=>{const r=T.ans[i]===q.a;if(r)ok++;record(q,r)});T.ok=ok;
+  S.tests.push({t:iso(today),lv:S.level,n:T.qs.length,ok,secs:T.secs});if(S.tests.length>50)S.tests=S.tests.slice(-50);save();
+  if(tab==="mcq")render();
+}
+function testResults(){
+  const pct=Math.round(T.ok/T.qs.length*100);const by={};T.qs.forEach((q,i)=>{by[q.p]=by[q.p]||{n:0,ok:0};by[q.p].n++;if(T.ans[i]===q.a)by[q.p].ok++});
+  return `<div class="stats"><div class="stat"><div class="eyebrow">Score</div><div class="v">${T.ok}/${T.qs.length}</div><div class="s">${pct}% correct</div></div>
+   <div class="stat"><div class="eyebrow">Time taken</div><div class="v">${hm2(T.secs)}</div><div class="s">of ${hm2(T.limit)}</div></div>
+   <div class="stat"><div class="eyebrow">Unanswered</div><div class="v">${T.ans.filter(a=>a===null).length}</div><div class="s">questions</div></div>
+   <div class="stat"><div class="eyebrow">Verdict</div><div class="v" style="font-size:1.1rem;padding-top:6px">${pct>=70?"Exam-ready pace":pct>=50?"Getting there":"Revise first"}</div><div class="s">${pct>=70?"keep the rhythm":pct>=50?"fix the misses below":"go back to the module"}</div></div></div>
+   <div class="card"><div class="card-h"><h2>By paper</h2></div><div class="bars">${Object.keys(by).map(id=>{const p=paper(id),x=by[id],r=Math.round(x.ok/x.n*100);return `<div class="bar-row"><span class="lbl"><span class="pno">P${p.no}</span> ${esc(p.name)}</span><span class="num" style="text-align:right">${x.ok}/${x.n}</span><div class="track"><div class="fill ${r<50?"low":r<70?"mid":""}" style="width:${r}%"></div></div></div>`}).join("")}</div></div>
+   <div class="card"><div class="card-h"><h2>Review</h2><div class="row"><button class="btn sm" data-act="newtest">New test</button><button class="btn sm primary" data-mode="mistakes">Revise mistakes</button></div></div>
+   <div class="review">${T.qs.map((q,i)=>{const a=T.ans[i],r=a===q.a;return `<div class="rv ${r?"ok":"no"}"><div class="rv-h"><span class="num muted">${i+1}</span><span class="pill ${r?"good":"bad"}">${r?"Correct":a===null?"Skipped":"Wrong"}</span></div><p><b>${esc(q.q)}</b></p><p class="muted" style="font-size:.9rem">${a!==null&&!r?`You: ${"ABCD"[a]}. ${esc(q.o[a])} · `:""}Answer: ${"ABCD"[q.a]}. ${esc(q.o[q.a])}</p><p style="font-size:.9rem">${esc(q.w)}</p></div>`}).join("")}</div></div>`;
+}
+/* backup */
+function backupCode(){return btoa(unescape(encodeURIComponent(JSON.stringify(S))))}
+function restoreCode(c){try{const o=JSON.parse(decodeURIComponent(escape(atob(c.trim()))));if(!o||!o.level||!LEVELS[o.level])return false;S=o;S.wrong=S.wrong||{};S.tests=S.tests||[];S.onboarded=true;save();return true}catch(e){return false}}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button,[data-tab]");if(!t)return;
+  if(t.dataset.wlevel){W.level=t.dataset.wlevel;document.querySelectorAll("[data-wlevel]").forEach(b=>b.setAttribute("aria-pressed",b===t));return}
+  if(t.dataset.level){if(T&&T.active)return;S.level=t.dataset.level;S.plan.weak=[];cur=null;T=null;sess={n:0,ok:0};window.__mp="all";save();render();return}
+  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;tab="mcq";render();window.scrollTo({top:0});return}
+  if(t.dataset.topt!==undefined){T.ans[T.i]=+t.dataset.topt;paintTest();return}
+  if(t.dataset.goto!==undefined){T.i=+t.dataset.goto;paintTest();return}
+  if(t.dataset.tab){tab=t.dataset.tab;try{localStorage.setItem(K+".tab",tab)}catch(_){}render();window.scrollTo({top:0});return}
+  if(t.dataset.done){const k=t.dataset.done;if(S.done[k])delete S.done[k];else S.done[k]=1;save();render();return}
+  if(t.dataset.ms!==undefined){const i=t.dataset.ms;const st=S.ms[i]||"todo";S.ms[i]=st==="todo"?"doing":st==="doing"?"done":"todo";if(S.ms[i]==="todo")delete S.ms[i];save();render();return}
+  if(t.dataset.weak){const w=new Set(S.plan.weak||[]);w.has(t.dataset.weak)?w.delete(t.dataset.weak):w.add(t.dataset.weak);S.plan.weak=[...w];save();render();return}
+  if(t.dataset.preset){const [d,u]=t.dataset.preset.split("|");S.plan.dur=+d;S.plan.unit=u;save();render();return}
+  if(t.dataset.opt!==undefined){answer(+t.dataset.opt);return}
+  const a=t.dataset.act;
+  if(a==="nextq"){pick();paintQ()}
+  if(a==="fresh"){S=blank(S.level);W.level=S.level;save();render()}
+  if(a==="demo"){S=sample();tab="dashboard";save();render()}
+  if(a==="start"){const lvl=W.level;S=blank(lvl);S.onboarded=true;S.name=(document.getElementById("wName").value||"").trim().slice(0,40);
+    S.exam[lvl]=document.getElementById("wExam").value||"";S.plan.hpd=Math.max(1,Math.min(16,parseFloat(document.getElementById("wH").value)||6));
+    tab="dashboard";save();render();window.scrollTo({top:0})}
+  if(a==="starttest"){startTest(document.getElementById("tP").value,+document.getElementById("tN").value,+document.getElementById("tM").value);render()}
+  if(a==="tprev"&&T){T.i=Math.max(0,T.i-1);paintTest()}
+  if(a==="tnext"&&T){T.i=Math.min(T.qs.length-1,T.i+1);paintTest()}
+  if(a==="tsubmit")finishTest();
+  if(a==="newtest"){T=null;render()}
+  if(a==="backup"){const code=backupCode();const msg=document.getElementById("bkMsg");
+    const fallback=()=>{const ta=document.getElementById("restoreTxt");ta.value=code;ta.select();msg.textContent="Select and copy the code in the box below."};
+    try{navigator.clipboard.writeText(code).then(()=>{msg.textContent="Copied. Paste it somewhere safe, like a note to yourself."},fallback)}catch(_){fallback()}}
+  if(a==="restore"){const v=document.getElementById("restoreTxt").value;if(restoreCode(v)){render();const m=document.getElementById("bkMsg");if(m)m.textContent="Progress restored."}else{document.getElementById("bkMsg").textContent="That code didn't work — check you copied all of it."}}
+  if(a==="reset1"){document.getElementById("resetBox").innerHTML=`<span style="font-size:.85rem">This clears all progress on this device.</span><button class="btn sm" data-act="reset0">Cancel</button><button class="btn sm primary" style="background:var(--tick);border-color:var(--tick)" data-act="reset2">Yes, reset</button>`}
+  if(a==="reset0")render();
+  if(a==="reset2"){clearInterval(tick);T=null;S=blank();tab="dashboard";save();render();window.scrollTo({top:0})}
+  if(a==="logh"){const v=parseFloat(document.getElementById("logH").value);if(!isNaN(v)&&v>=0){S.log[iso(today)]=Math.min(16,v);save();render()}}
+});
+document.addEventListener("change",e=>{
+  const id=e.target.id,v=e.target.value;
+  if(id==="examDate"){S.exam[S.level]=v;save();render()}
+  if(id==="att"){window.__att=v;render()}
+  if(id==="mcqP"){window.__mp=v;cur=null;paintQ()}
+  if(id==="pDur"){const n=Math.max(1,Math.min(730,parseInt(v)||1));S.plan.dur=n;save();render()}
+  if(id==="pUnit"){S.plan.unit=v;save();render()}
+  if(id==="pH"){S.plan.hpd=Math.max(1,Math.min(16,parseFloat(v)||1));save();render()}
+  if(id==="pG"){S.plan.groups=v;S.plan.weak=[];save();render()}
+  if(id==="pR"){S.plan.rest=v==="1";save();render()}
+});
+render();
+})();
+</script>
+</body>
+</html>
