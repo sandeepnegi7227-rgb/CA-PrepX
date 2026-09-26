@@ -8,7 +8,9 @@
 <meta name="theme-color" content="#111111">
 <meta property="og:title" content="CA PrepX">
 <meta property="og:description" content="Plan it. Practise it. Tick it off. Study plans, RTP/MTP tracker and MCQs for CA students.">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/logo-64.png" type="image/png">
+<link rel="apple-touch-icon" href="/logo-180.png">
+<meta property="og:image" content="https://www.caprepx.com/logo-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap">
@@ -396,6 +398,29 @@ a.btn.primary{color:var(--accent-ink)}
 .spset h3{font-size:1.15rem}
 .spsteps{margin:0;padding-left:20px;display:grid;gap:8px}
 .spsteps li::marker{color:var(--gold-deep);font-weight:700}
+/* rtp cards on phones */
+.rtp-links{white-space:nowrap}
+.rtp-links .btn{margin:0 4px 4px 0}
+@media (max-width:719px){
+  .tbl-wrap.rtp{overflow:visible;border:0;background:none}
+  .rtp table,.rtp tbody,.rtp tr,.rtp td{display:block;width:100%}
+  .rtp thead{display:none}
+  .rtp tr{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+  .rtp td{border:0;padding:4px 0}
+  .rtp td[data-l]::before{content:attr(data-l);display:block;font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:6px 0 6px}
+  .rtp .rtp-type{font-size:.82rem}
+  .rtp-links{white-space:normal;display:flex!important;flex-wrap:wrap;gap:6px}
+  .rtp-links .btn{margin:0}
+  .rtp-links::before{flex-basis:100%;margin-bottom:0!important}
+}
+/* gate */
+.gate-perks{display:grid;gap:6px;margin:0 0 14px;padding:0;list-style:none;font-size:.88rem}
+.gate-perks li{display:flex;gap:8px;align-items:flex-start}
+.gate-perks li::before{content:"✓";color:var(--gold-deep);font-weight:700}
+/* logo */
+.logo{width:40px;height:40px;border-radius:10px;background:#fff;object-fit:contain;flex:none;box-shadow:0 0 0 1px var(--line)}
+.mark-logo{width:76px;height:76px;border-radius:18px;background:#fff;object-fit:contain;box-shadow:0 0 0 1px var(--line),0 6px 18px rgba(0,0,0,.08)}
+@media (max-width:719px){.logo{width:34px;height:34px}}
 /* accounts */
 .acct{display:flex;align-items:center;gap:8px;font-size:.85rem}
 .acct:empty{display:none}
@@ -412,7 +437,7 @@ a.btn.primary{color:var(--accent-ink)}
 
 <header class="wrap top">
   <div class="brand">
-    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
+    <img class="logo" src="/logo-180.png" alt="CA PrepX logo" width="40" height="40">
     <div><b>CA PrepX</b><small>CA exam prep, ticked off paper by paper</small></div>
   </div>
   <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div><button class="btn sm about-btn" data-tab="about" id="aboutBtn">About us</button><button class="icon-btn" data-act="theme" id="themeBtn" aria-label="Switch light or dark mode"></button></div>
@@ -795,7 +820,7 @@ async function authDo(kind){
   authBusy=false;
   if(res&&res.error){authMsg=res.error.message;authErr=true;render();return}
   if(kind==="signup"&&res.data&&!res.data.session){authMsg="Account created! Confirm it from your email, then sign in.";authView="signin";render();return}
-  if(res&&res.data&&res.data.session){session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);go("home")}
+  if(res&&res.data&&res.data.session){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);go("home")}
   render();
 }
 async function signOut(){try{await sb.auth.signOut()}catch(e){}session=null;isAdmin=false;S=blank();try{localStorage.removeItem(K);sessionStorage.removeItem("prepx.visit")}catch(e){}authView="signin";authMsg="";go("home");render()}
@@ -806,6 +831,7 @@ function authCard(){
   if(authView==="reset")return `<div class="card"><h2>Forgot your password?</h2><p class="muted" style="margin-top:6px">No stress. We'll email you a reset link.</p>${msg}<div class="field" style="margin-top:14px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" value="${esc(aEmailVal)}"></div><div class="row" style="margin-top:16px"><button class="btn primary" data-auth="reset" ${busy}>Send link</button><button class="btn ghost" data-aview="signin">Back</button></div></div>`;
   const up=authView==="signup";
   return `<div class="card">
+    <ul class="gate-perks"><li>Your study plan, chapter ticks, MCQ scores and SPOM progress saved on every device</li><li>Pick up exactly where you left off</li><li>Takes 20 seconds, just email and password</li></ul>
     <div class="seg" role="group" aria-label="Account" style="margin-bottom:16px"><button data-aview="signin" aria-pressed="${!up}">Sign in</button><button data-aview="signup" aria-pressed="${up}">New here?</button></div>
     ${msg}
     ${up?`<div class="field"><label for="aName">What should we call you?</label><input id="aName" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Priya"></div>`:""}
@@ -813,35 +839,37 @@ function authCard(){
     <div class="field" style="margin-top:12px"><label for="aPw">Password</label><input id="aPw" type="password" minlength="6" autocomplete="${up?"new-password":"current-password"}" placeholder="${up?"6+ characters":""}"></div>
     <button class="btn primary" style="width:100%;margin-top:18px;padding-block:11px" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Hold on…":up?"Create my account":"Sign in"}</button>${up?"":`<div style="text-align:center;margin-top:8px"><button class="btn ghost sm" data-aview="reset">Forgot password?</button></div>`}
     <div class="or"><span>or</span></div>
-    <button class="btn outline" style="width:100%;padding-block:10px" data-tab="home">Just browsing? Skip for now</button>
-    <p class="muted" style="font-size:.8rem;margin-top:12px;text-align:center">No account needed to use CA PrepX. Sign in to keep your progress on every device.</p>
+    <button class="btn outline" style="width:100%;padding-block:10px" data-act="guestgo">Continue as guest</button>
+    <p class="muted" style="font-size:.8rem;margin-top:12px;text-align:center">Guests can look around, but progress stays on this device only.</p>
     <div style="text-align:center;margin-top:6px"><button class="btn ghost sm" data-tab="about">Who's building this? Meet the founder →</button></div>
   </div>`;
 }
+function gateOn(){if(!sb||recovering)return false;if(session&&!isGuest())return false;if(tab==="about")return false;let seen=false;try{seen=sessionStorage.getItem("prepx.gate")==="1"}catch(e){seen=!!window.__gate}return !(seen||window.__gate)}
 function renderChrome(){
+  const gate=gateOn();
   const real=sb&&session&&!isGuest()&&!recovering;
   const ac=document.getElementById("acct");
-  ac.innerHTML=!sb?"":real?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
-  const showLv=S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers"&&tab!=="spom";
+  ac.innerHTML=!sb?"":real?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"||gate?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
+  const showLv=!gate&&S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers"&&tab!=="spom";
   document.getElementById("levelSeg").innerHTML=Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}"><span class="lg">${v.label}</span><span class="sm">${k==="inter"?"Inter":v.label}</span></button>`).join("");
   document.getElementById("levelSeg").hidden=!showLv;
-  document.querySelector(".tabs").hidden=tab==="signin";
+  document.querySelector(".tabs").hidden=tab==="signin"||gate;
   document.getElementById("tabs").innerHTML=TABS.map(([k,v,,i])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${ico(i,18)}${v}</button>`).join("");
-  const bn=document.getElementById("bnav");bn.hidden=tab==="signin";
+  const bn=document.getElementById("bnav");bn.hidden=tab==="signin"||gate;
   bn.innerHTML=TABS.map(([k,,sh,i])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${sh}">${ico(i,22)}<span>${sh}</span></button>`).join("");
   document.getElementById("themeBtn").innerHTML=ico(isDark()?"sun":"moon",19);
   document.getElementById("aboutBtn").setAttribute("aria-pressed",tab==="about");
   document.getElementById("bannerWrap").innerHTML=S.sample&&tab!=="signin"?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:"";
 }
 let W={level:"inter"};
-function welcome(){
+function welcome(gate){
   const auth=sb&&(!session||isGuest()||recovering);
   return `<div class="auth">
-    ${recovering?"":`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back</button></div>`}
-    <div class="auth-head"><span class="mark"><svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true"><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linecap="round"/></svg></span>
+    ${recovering||gate?"":`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back</button></div>`}
+    <div class="auth-head"><img class="mark-logo" src="/logo-180.png" alt="CA PrepX logo" width="76" height="76">
       <h1>${auth?"Hey! Let's get you exam-ready":"Quick setup, then you're in"}</h1>
       <p class="muted">${auth?"CA Foundation, Inter &amp; Final — all in one place":"Takes 20 seconds. Promise."}</p>
-      ${auth?`<div class="chipsrow"><span>Study plans</span><span>RTP · MTP</span><span>MCQs &amp; mocks</span><span>Progress tracker</span></div>`:""}
+      ${auth?`<div class="chipsrow"><span>Study plans</span><span>RTP · MTP</span><span>MCQs &amp; mocks</span><span>SPOM</span><span>Careers &amp; articleship</span><span>Progress tracker</span></div>`:""}
     </div>
     ${auth?authCard():`<div class="card">
       <div class="field"><label for="wName">What should we call you? <span class="muted">(optional)</span></label><input id="wName" type="text" maxlength="40" placeholder="e.g. Priya" autocomplete="given-name" value="${esc(S.name||"")}"></div>
@@ -858,6 +886,7 @@ function welcome(){
 }
 function render(){renderChrome();const m=document.getElementById("main");
   if(!authReady){m.innerHTML=`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
+  if(gateOn()){m.innerHTML=`<section class="view">${welcome(1)}</section>`;return}
   if(recovering||tab==="signin"){
     if(!recovering&&sb&&session&&!isGuest())go("home");
     else if(sb){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
@@ -909,7 +938,7 @@ dashboard(){
     <div class="stat"><div class="eyebrow">${ico("target",15)}MCQ accuracy</div><div class="v">${tot?Math.round(ok/tot*100)+"%":"—"}</div><div class="s">${ok}/${tot} right</div></div>
     <div class="stat"><div class="eyebrow">${ico("flame",15)}Active days</div><div class="v">${activeDays()}<small>/7</small></div><div class="s">this week</div></div>
     <div class="stat"><div class="eyebrow">${ico("clock",15)}This week</div><div class="v">${wk}<small> h</small></div><div class="s">last 7 days</div></div>
-    <div class="stat"><div class="eyebrow">${ico("check",15)}ICAI papers</div><div class="v">${rd.n}/${rd.t}</div><div class="s">${rd.a} ticked off</div></div>
+    <div class="stat"><div class="eyebrow">${ico("check",15)}Chapters read</div><div class="v">${L().papers.reduce((a,p)=>a+chapters(p.id).filter((_,j)=>((S.chap||{})[p.id+"|"+j]||0)>=1).length,0)}<small>/${L().papers.reduce((a,p)=>a+chapters(p.id).length,0)}</small></div><div class="s">from the Syllabus tab</div></div>
   </div>
   <div class="grid2">
     <div class="card"><div class="card-h"><h2>Today's game plan</h2><span class="pill ${te.rest?"":"good"}">${te.rest?"Light day":PH[te.phase]?PH[te.phase][0]:"Daily"}</span></div>
@@ -921,19 +950,18 @@ dashboard(){
   <div class="card"><div class="card-h"><h2>Your next moves</h2></div>
     <div style="display:grid;gap:12px">
       ${w?`<div class="callout"><b>Focus on P${paper(w.id).no} ${esc(paper(w.id).name)}.</b> <span class="muted">You're at ${Math.round(w.r*100)}% on ${w.n} questions — your lowest score. Give it your first study block for the next three days and redo the MCQs you missed.</span></div>`:`<div class="callout"><b>Attempt 10 MCQs per paper.</b> <span class="muted">That gives us enough to spot your weakest paper.</span></div>`}
-      ${rd.n<rd.t?`<div class="callout"><b>${rd.t-rd.n} ICAI papers still to attempt for ${rd.a}.</b> <span class="muted">Start with the RTP for each paper, then MTP Series I under exam timing.</span></div>`:""}
       ${nextMs>=0?`<div class="callout"><b>Next milestone: ${esc(MILESTONES[nextMs][0])}.</b> <span class="muted">${esc(MILESTONES[nextMs][1])}.</span></div>`:""}
     </div></div>`;
 },
 papers(){
   const lv=L();const at=window.__att&&lv.attempts.includes(window.__att)?window.__att:lv.attempts[0];
-  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label}</div><h1>RTP & MTP tracker</h1>
-  <p class="muted">Every ICAI Revision Test Paper, Mock Test Paper and past paper for your attempt. Open it on the ICAI BoS portal, attempt it under exam timing, then tick it off here.</p></div>
+  return `<div class="hero"><div><div class="eyebrow">CA ${lv.label}</div><h1>RTP, MTP &amp; past papers</h1>
+  <p class="muted">Every ICAI Revision Test Paper, Mock Test Paper and past paper for your attempt. Tap to open it on the ICAI BoS portal and attempt it under exam timing.</p></div>
   <div class="field" style="min-width:160px"><label for="att">Attempt</label><select id="att">${lv.attempts.map(a=>`<option ${a===at?"selected":""}>${a}</option>`).join("")}</select></div></div>
-  <div class="tbl-wrap"><table><thead><tr><th>Paper</th><th>Pattern</th><th>Tick when attempted</th><th>Open on ICAI</th></tr></thead><tbody>
-  ${lv.papers.map(p=>`<tr><td><span class="pno">P${p.no}${lv.groups?" · G"+p.g:""}</span><br><b>${esc(p.name)}</b></td><td class="muted" style="white-space:nowrap">${p.type}</td>
-   <td><div class="chips">${RES.map(r=>{const k=p.id+"|"+at+"|"+r[0];const on=!!S.done[k];return `<button class="chip" aria-pressed="${on}" data-done="${k}" title="${r[1]}"><span class="tk">${on?"✓":"·"}</span>${r[0]}</button>`}).join("")}</div></td>
-   <td style="white-space:nowrap"><a href="${BOS}Revision+Test+Papers" target="_blank" rel="noopener">RTP</a> · <a href="${BOS}Mock+Test+Papers" target="_blank" rel="noopener">MTP</a> · <a href="${BOS}Question+Papers+New+Scheme&c=${lv.c}" target="_blank" rel="noopener">PYQ</a></td></tr>`).join("")}
+  <div class="tbl-wrap rtp"><table><thead><tr><th>Paper</th><th>Pattern</th><th>Open on ICAI</th></tr></thead><tbody>
+  ${lv.papers.map(p=>`<tr><td><span class="pno">P${p.no}${lv.groups?" · G"+p.g:""}</span><br><b>${esc(p.name)}</b></td><td class="muted rtp-type" style="white-space:nowrap">${p.type}</td>
+   
+   <td data-l="Open on ICAI" class="rtp-links"><a class="btn sm" href="${BOS}Revision+Test+Papers" target="_blank" rel="noopener">RTP ↗</a><a class="btn sm" href="${BOS}Mock+Test+Papers" target="_blank" rel="noopener">MTP ↗</a><a class="btn sm" href="${BOS}Question+Papers+New+Scheme&c=${lv.c}" target="_blank" rel="noopener">Past papers ↗</a></td></tr>`).join("")}
   </tbody></table></div>
   <p class="muted" style="font-size:.85rem">Papers open on ICAI's Board of Studies Knowledge Portal. ${lv.label==="Final"?"Final is held in May and November; ":"Foundation and Intermediate are held in January, May and September; "}check ICAI announcements for release dates.</p>`;
 },
@@ -1038,7 +1066,7 @@ home(){
     <div id="hres" class="hres" hidden></div>
   </div>
   <div class="tiles">${tiles.map(x=>x[0]==="soon"?`<div class="tile soon" aria-disabled="true">${ico(x[1],22)}<b>${x[2]}</b><span>${x[3]}</span></div>`:`<button class="tile ${x[0]}" ${x[4]}>${ico(x[1],22)}<b>${x[2]}</b><span>${x[3]}</span></button>`).join("")}</div>
-  ${S.mcq.length||Object.keys(S.done).length?`<button class="resume" data-tab="plan" data-sub="progress"><span>${ico("clock",18)}</span><span><b>Welcome back.</b> ${wn?`${wn} mistakes waiting to be fixed.`:"See where you stand."} No pressure, pick up where you left off.</span><span>→</span></button>`:""}
+  ${S.mcq.length||Object.keys(S.chap||{}).length?`<button class="resume" data-tab="plan" data-sub="progress"><span>${ico("clock",18)}</span><span><b>Welcome back.</b> ${wn?`${wn} mistakes waiting to be fixed.`:"See where you stand."} No pressure, pick up where you left off.</span><span>→</span></button>`:""}
   <div class="card tipcard"><div class="eyebrow">Tip of the day · ${esc(tip[0])}</div><p>${esc(tip[1])}</p><button class="btn ghost sm" data-tab="resources" data-sub="tips">More exam tips →</button></div>`;
 },
 resources(){
@@ -1499,6 +1527,7 @@ document.addEventListener("click",e=>{
   if(a==="signout"){signOut();return}
   if(a==="catchup"){catchup=true;const d=S.exam[S.level];const n=d?Math.round((new Date(d)-today)/864e5):null;if(n&&n>0){S.plan.dur=n;S.plan.unit="days";save()}go("plan");planMode="study";render();window.scrollTo({top:0});return}
   if(a==="cuclose"){catchup=false;render();return}
+  if(a==="guestgo"){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}go("home");render();window.scrollTo({top:0});return}
   if(a==="spnext"){spomPick();render();return}
   if(a==="plandocx"){planDocx(t);return}
   if(a==="theme"){THEME=isDark()?"light":"dark";try{localStorage.setItem("prepx.theme",THEME)}catch(_){}applyTheme();renderChrome();return}

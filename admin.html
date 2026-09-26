@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CA PrepX Admin</title>
 <meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/logo-64.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Manrope:wght@400;500;600;700&display=swap">
@@ -79,7 +79,7 @@ input[type=search],input[type=email],input[type=password]{padding:8px 10px;borde
 <body>
 <header class="wrap top">
   <div class="brand">
-    <svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 18l6 6L26 10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 24h6" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
+    <img src="/logo-180.png" alt="CA PrepX logo" width="34" height="34" style="border-radius:9px;background:#fff;box-shadow:0 0 0 1px var(--line)">
     <div><b>CA PrepX</b> <span class="muted">· Admin</span></div>
   </div>
   <div class="row" id="topAct"></div>
@@ -147,21 +147,21 @@ function paint(){
   main.innerHTML=`
   <div><div class="eyebrow">Updated ${d2(now)}</div><h1>Who's using CA PrepX</h1></div>
   <div class="stats">
-    <div class="stat"><div class="eyebrow">Students</div><div class="v">${profiles.length}</div><div class="s">${emails} email · ${guests} guest</div></div>
+    <div class="stat"><div class="eyebrow">Students</div><div class="v">${profiles.length}</div><div class="s">${emails} with account · ${guests} visitors</div></div>
     <div class="stat"><div class="eyebrow">Total logins</div><div class="v">${totalLogins}</div><div class="s">all time</div></div>
     <div class="stat"><div class="eyebrow">Active today</div><div class="v">${todayUsers}</div><div class="s">students</div></div>
     <div class="stat"><div class="eyebrow">Logins · 7 days</div><div class="v">${wkLogins}</div><div class="s">sign-ins and visits</div></div>
     <div class="stat"><div class="eyebrow">New · 7 days</div><div class="v">${newWk}</div><div class="s">students joined</div></div>
   </div>
-  <div class="card"><div class="row sp" style="margin-bottom:12px"><h2>Logins per day</h2><div class="legend"><span><i style="background:var(--accent)"></i>Email</span><span><i style="background:var(--warn)"></i>Guest</span></div></div>
+  <div class="card"><div class="row sp" style="margin-bottom:12px"><h2>Logins per day</h2><div class="legend"><span><i style="background:var(--accent)"></i>Email</span><span><i style="background:var(--warn)"></i>Visitor</span></div></div>
     <div class="chart">${days.map(x=>`<div class="col" title="${x.d.toLocaleDateString("en-GB",{day:"numeric",month:"short"})}: ${x.e} email, ${x.g} guest">${x.g?`<div class="g" style="height:${x.g/mx*100}%"></div>`:""}${x.e?`<div class="e" style="height:${x.e/mx*100}%"></div>`:""}</div>`).join("")}</div>
     <div class="xl">${days.map((x,i)=>`<span>${i%5===4||i===29?x.d.getDate()+" "+x.d.toLocaleDateString("en-GB",{month:"short"}):""}</span>`).join("")}</div>
     <p class="muted" style="font-size:.8rem;margin-top:8px">Last 30 days. Peak: ${Math.max(...days.map(x=>x.e+x.g))} logins in a day.</p></div>
-  <div class="row sp"><h2>Students</h2><div class="row"><input type="search" id="q" placeholder="Search name or email" value="${esc(q)}"><div class="seg">${[["all","All"],["email","Email"],["guest","Guest"]].map(f=>`<button data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("")}</div></div></div>
+  <div class="row sp"><h2>Students</h2><div class="row"><input type="search" id="q" placeholder="Search name or email" value="${esc(q)}"><div class="seg">${[["all","All"],["email","Accounts"],["guest","Visitors"]].map(f=>`<button data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("")}</div></div></div>
   <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Level</th><th style="text-align:right">Logins</th><th>Last login</th><th>Joined</th></tr></thead><tbody>
-  ${rows.length?rows.map(x=>`<tr><td>${esc(x.name)||'<span class="muted">—</span>'}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td><span class="pill ${x.is_guest?"g":""}">${x.is_guest?"Guest":"Email"}</span></td><td>${esc(LV[x.level]||x.level||"—")}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num">${x.last_login?d2(x.last_login):"—"}</td><td class="num">${d2(x.created_at)}</td></tr>`).join(""):`<tr><td colspan="7" class="muted">No students match.</td></tr>`}
+  ${rows.length?rows.map(x=>`<tr><td>${esc(x.name)||'<span class="muted">—</span>'}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td><span class="pill ${x.is_guest?"g":""}">${x.is_guest?"Visitor":"Account"}</span></td><td>${esc(LV[x.level]||x.level||"—")}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num">${x.last_login?d2(x.last_login):"—"}</td><td class="num">${d2(x.created_at)}</td></tr>`).join(""):`<tr><td colspan="7" class="muted">No students match.</td></tr>`}
   </tbody></table></div>
-  <p class="muted" style="font-size:.8rem">A login is counted each time a student signs in, and once per visit when they return already signed in.</p>`;
+  <p class="muted" style="font-size:.8rem">Visitors are people using the site without an account (counted once per visit). Accounts are students who signed up with email.</p>`;
   const qi=document.getElementById("q");qi.oninput=()=>{q=qi.value.trim().toLowerCase();const pos=qi.selectionStart;paint();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos)};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;paint()});
 }
