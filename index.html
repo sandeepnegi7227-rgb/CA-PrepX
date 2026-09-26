@@ -838,15 +838,13 @@ function authCard(){
     <div class="field" style="margin-top:12px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(aEmailVal)}"></div>
     <div class="field" style="margin-top:12px"><label for="aPw">Password</label><input id="aPw" type="password" minlength="6" autocomplete="${up?"new-password":"current-password"}" placeholder="${up?"6+ characters":""}"></div>
     <button class="btn primary" style="width:100%;margin-top:18px;padding-block:11px" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Hold on…":up?"Create my account":"Sign in"}</button>${up?"":`<div style="text-align:center;margin-top:8px"><button class="btn ghost sm" data-aview="reset">Forgot password?</button></div>`}
-    <div class="or"><span>or</span></div>
-    <button class="btn outline" style="width:100%;padding-block:10px" data-act="guestgo">Continue as guest</button>
-    <p class="muted" style="font-size:.8rem;margin-top:12px;text-align:center">Guests can look around, but progress stays on this device only.</p>
+    <p class="muted" style="font-size:.8rem;margin-top:14px;text-align:center">New to CA PrepX? Tap <b>New here?</b> above to create your account.</p>
     <div style="text-align:center;margin-top:6px"><button class="btn ghost sm" data-tab="about">Who's building this? Meet the founder →</button></div>
   </div>`;
 }
-function gateOn(){if(!sb||recovering)return false;if(session&&!isGuest())return false;if(tab==="about")return false;let seen=false;try{seen=sessionStorage.getItem("prepx.gate")==="1"}catch(e){seen=!!window.__gate}return !(seen||window.__gate)}
+function gateOn(){if(!sb||recovering)return false;if(session&&!isGuest())return false;if(tab==="about")return false;return true}
 function renderChrome(){
-  const gate=gateOn();
+  const gate=gateOn()||(tab==="about"&&!!sb&&!(session&&!isGuest()));
   const real=sb&&session&&!isGuest()&&!recovering;
   const ac=document.getElementById("acct");
   ac.innerHTML=!sb?"":real?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"||gate?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
@@ -893,7 +891,8 @@ function render(){renderChrome();const m=document.getElementById("main");
     else go("home");
   }
   if(!VIEWS[tab])go("home");
-  m.innerHTML=`<section class="view">${VIEWS[tab]()}</section>`;if(tab==="practice")paintMcq();if(tab==="home")paintSearch()}
+  const back=tab==="about"&&sb&&!(session&&!isGuest())?`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back to sign in</button></div>`:"";
+  m.innerHTML=`<section class="view">${back}${VIEWS[tab]()}</section>`;if(tab==="practice")paintMcq();if(tab==="home")paintSearch()}
 
 function heroCard(){
   const hr=new Date().getHours();const greet=hr<5?"Late-night grind":hr<12?"Morning":hr<17?"Hey":"Evening grind";
