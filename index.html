@@ -156,6 +156,24 @@ select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;backgroun
 .phasebar div{display:flex;align-items:center;padding-inline:8px;font-size:.75rem;font-weight:600;white-space:nowrap;overflow:hidden;color:var(--ink)}
 .ph-concepts{background:var(--accent-soft)} .ph-revision{background:color-mix(in srgb,var(--accent) 34%,var(--surface))}
 .ph-practice{background:var(--warn-soft)} .ph-final{background:var(--tick-soft)} .ph-daily{background:var(--accent-soft)}
+.ph-classes{background:var(--good-soft)}
+.quiz{max-width:640px;margin:0 auto;display:grid;gap:14px;width:100%}
+.qz-top{display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.qz-top .row{gap:8px}
+.qz-msg{font-family:var(--serif);font-weight:600;font-size:1.1rem}
+.qz-q{font-size:1.45rem;line-height:1.25;margin-top:6px}
+.qz-opts{display:grid;gap:10px}
+.qz-opt{display:flex;align-items:center;gap:12px;text-align:left;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;font-size:.98rem;cursor:pointer;min-height:52px;width:100%}
+.qz-opt:hover{border-color:var(--gold)}
+.qz-opt.sel{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
+.qz-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted);flex:none}
+.qz-opt.sel .qz-dot{border-color:var(--accent);background:radial-gradient(circle,var(--accent) 42%,transparent 48%)}
+.qz-nav{display:flex;justify-content:space-between;gap:10px;margin-top:6px}
+.qz-nav .btn{min-width:120px;justify-content:center}
+.qz-chips{display:flex;flex-wrap:wrap;gap:6px}
+.qz-chips .chip{cursor:default}
+.rchk.bad{border-color:var(--warn)} .rchk.ok{border-color:var(--good)}
+.rchk p{margin:0} .rchk-list{margin:8px 0 0 18px;display:grid;gap:4px}
 .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);margin-top:8px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
 
@@ -732,6 +750,7 @@ function weekCh(seg,p){return [...new Set(seg.flatMap(x=>(x.main===p&&x.ch?x.ch:
 function chLine(pid,c,max){const n=chapters(pid).length;if(!c.length)return "";if(c.length===n&&n>2)return `All ${n} chapters`;if(c.length>6)return `Ch ${rangeStr(c)} (${c.length} chapters)`;const nm=c.map(j=>chShort(pid,j));return `Ch ${rangeStr(c)}: `+(max&&nm.length>max?nm.slice(0,max).join(", ")+"…":nm.join("; "))}
 const weekPapers=seg=>[...new Set(seg.flatMap(x=>x.rest?[]:[x.main,x.phase==="practice"?null:x.alt]).filter(Boolean))];
 function slotsFor(entry,hpd){
+  if(entry&&entry.tasks)return slotsV2(entry);
   const m=entry.main,a=entry.alt||m;const H=Math.max(1,hpd)*60;const ct=chTxt(entry),cta=chTxt(entry,0,1);
   const ph=entry.phase;
   const blocks=ph==="practice"?[
@@ -747,7 +766,214 @@ function slotsFor(entry,hpd){
   return out;
 }
 function hm(m){m=m%(24*60);const h=Math.floor(m/60),mm=m%60;return String(h).padStart(2,"0")+":"+String(mm).padStart(2,"0")}
-function currentPlan(){return buildPlan(Object.assign({level:S.level,start:today},S.plan,{weak:S.plan.weak||[]}))}
+/* ---------- Plan quiz (15 questions per combination) ---------- */
+const COMBOS={
+ F:{level:"foundation",groups:"both",label:"CA Foundation"},
+ I1:{level:"inter",groups:"g1",label:"CA Inter · Group I"},I2:{level:"inter",groups:"g2",label:"CA Inter · Group II"},IB:{level:"inter",groups:"both",label:"CA Inter · Both groups"},
+ N1:{level:"final",groups:"g1",label:"CA Final · Group I"},N2:{level:"final",groups:"g2",label:"CA Final · Group II"},NB:{level:"final",groups:"both",label:"CA Final · Both groups"}
+};
+const HRS=["1–2 hours","3–4 hours","5–6 hours","7–8 hours","9+ hours"],HRS_V=[1.5,3.5,5.5,7.5,9.5],WHEN_V=[25,45,90,150,210];
+const STATUS=["Not started","Classes done, not studied yet","Read once","Revised once","Revised 2+ times"];
+const WEAK_AREAS={
+ F3:{q:"In Quantitative Aptitude, where are you weaker?",o:["Business Mathematics","Logical Reasoning","Statistics","All about the same"],ch:[[0,1,2,3,4,5,6,7],[8,9,10,11],[12,13,14,15,16,17],[]]},
+ I3:{q:"In Taxation, which part is harder for you?",o:["Income Tax","GST","Both about the same"],ch:[[0,1,2,3,4,5,6,7,8,9,10,11,12],[13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],[]]},
+ I1:{q:"In Advanced Accounting, what's harder?",o:["Accounting Standards","Company accounts, amalgamation & branches","About the same"],ch:[[0,1,2,3,4,5,6,7,8,9],[10,11,12,13,14],[]]},
+ I6:{q:"In FM & SM, which half is weaker?",o:["Financial Management","Strategic Management","About the same"],ch:[[0,1,2,3,4,5,6,7,8],[9,10,11,12,13],[]]},
+ I5:{q:"In Audit, what trips you up more?",o:["Remembering SA concepts","Applying them to case questions","About the same"],ch:[[0,1,2,3,4,5,6,7],[],[]],mock:[0,1,0]},
+ N1:{q:"In Financial Reporting, what's harder?",o:["Individual Ind AS","Consolidation & financial instruments","About the same"],ch:[[0,1,2,3,4,5,6,7,8,9,13],[10,11,12],[]]},
+ N3:{q:"In Advanced Audit, what's harder?",o:["Standards on Auditing","Special audits, banks & ethics","About the same"],ch:[[0,1,2,3,4,5,6],[7,8,9,10,11,12,13,14,15,16,17,18],[]]},
+ N5:{q:"In Indirect Tax, which part is weaker?",o:["GST","Customs & FTP","About the same"],ch:[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],[24,25,26,27,28,29,30,31],[]]}
+};
+function quizFor(combo){
+  const cb=COMBOS[combo],lv=LEVELS[cb.level],ps=lv.papers.filter(p=>cb.groups==="both"||!lv.groups||(cb.groups==="g1"?p.g===1:p.g===2));
+  const Q=[
+   {id:"when",q:"When is your first paper?",o:["Less than 1 month","1–2 months","2–4 months","4–6 months","6+ months"],date:1,hint:"Add the exact date if you know it. It makes the plan sharper."},
+   {id:"attempt",q:"Which attempt is this for you?",o:["First attempt","Second attempt","Third or more"]},
+   {id:"side",q:"What else are you doing alongside?",o:["Full-time study","Articleship","College","Job"]},
+   {id:"wd",q:"How many hours can you study on a weekday?",o:HRS,hint:"Be honest. A plan you can keep beats a perfect one."},
+   {id:"we",q:"And on a weekend day?",o:HRS},
+   {id:"slot",q:"When do you study best?",o:["Early morning","Daytime","Evening","Late night"],hint:"Your hardest paper goes in this slot."},
+   {id:"rev",q:"How many revisions do you want before the exam?",o:["1 revision","2 revisions (recommended)","3 revisions"]},
+   {id:"coach",q:"Where are you with coaching classes?",o:["Classes finished","Ongoing — ends within 1 month","Ongoing — 1 to 3 months left","Self-study, no classes"]}
+  ];
+  ps.forEach(p=>Q.push({id:"st_"+p.id,q:`Where do you stand in P${p.no} · ${p.name}?`,o:STATUS,paper:p.id}));
+  const both=cb.groups==="both"&&lv.groups;
+  if(!both){ps.forEach(p=>{if(WEAK_AREAS[p.id])Q.push({id:"wa_"+p.id,q:WEAK_AREAS[p.id].q,o:WEAK_AREAS[p.id].o})})}
+  if(combo==="N2")Q.push({id:"ibs",q:"How many IBS case studies have you practised?",o:["None yet","A few (1–5)","Many (6+)"]});
+  if(combo!=="NB")Q.push({id:"weak",q:"Which paper worries you the most?",o:ps.map(p=>`P${p.no} · ${p.name}`),vals:ps.map(p=>p.id)});
+  if(cb.level==="final"&&(combo==="N2"||combo==="NB"))Q.push({id:"spom",q:"How many SPOM sets have you cleared?",o:["None","1 set","2 sets","3 sets","All 4"]});
+  if(Q.length<15)Q.push({id:"mocks",q:"How many full mock tests per paper do you want before the exam?",o:["1 per paper","2 per paper","3 or more"]});
+  return Q.slice(0,15);
+}
+function qzState(){S.intake=S.intake||{combo:null,a:{},step:0,done:false};return S.intake}
+function quizView(){
+  const I=qzState();
+  if(!I.combo){
+    const pre=S.level==="foundation"?"F":S.level==="final"?"NB":"IB";
+    return `<div class="quiz"><div class="qz-top"><div class="eyebrow">Plan builder · Step 0</div><div class="qz-msg">Let's build your plan</div><div class="track"><div class="fill" style="width:3%"></div></div></div>
+      <h1 class="qz-q">Which exam are you planning for?</h1><p class="muted">Then 15 quick questions. About 2 minutes.</p>
+      <div class="qz-opts">${Object.entries(COMBOS).map(([k,v])=>`<button class="qz-opt ${I._c===k||(!I._c&&k===pre)?"sel":""}" data-qc="${k}"><span class="qz-dot"></span>${v.label}</button>`).join("")}</div>
+      <div class="qz-nav"><span></span><button class="btn primary" data-act="qstart">Start →</button></div></div>`;
+  }
+  const Q=quizFor(I.combo),n=Q.length,i=Math.min(I.step,n-1),q=Q[i],ans=I.a[q.id],answered=Q.filter(x=>I.a[x.id]!=null).length,left=n-answered;
+  const msg=left===0?"All set. Your planner is ready!":left<=3?`Planner almost ready… ${left} to go`:left<=8?`Good going, ${left} questions left`:`${left} questions to go`;
+  return `<div class="quiz"><div class="qz-top"><div class="row sp"><span class="eyebrow">${esc(COMBOS[I.combo].label)} · Question ${i+1} of ${n}</span><button class="btn ghost sm" data-act="qcombo">Change exam</button></div>
+      <div class="qz-msg">${msg}</div><div class="track"><div class="fill" style="width:${Math.round(answered/n*100)}%"></div></div></div>
+    <h1 class="qz-q">${esc(q.q)}</h1>${q.hint?`<p class="muted">${esc(q.hint)}</p>`:""}
+    <div class="qz-opts">${q.o.map((o,k)=>`<button class="qz-opt ${ans===k?"sel":""}" data-qa="${k}"><span class="qz-dot"></span>${esc(o)}</button>`).join("")}</div>
+    ${q.date?`<div class="field" style="max-width:260px;margin-top:12px"><label for="qDate">Exact date of your first paper (optional)</label><input type="date" id="qDate" value="${I.date||""}"></div>`:""}
+    <div class="qz-nav"><button class="btn" data-act="qprev" ${i===0?"disabled":""}>← Previous</button>${i<n-1?`<button class="btn primary" data-act="qnext" ${ans==null?"disabled":""}>Next →</button>`:`<button class="btn primary" data-act="qbuild" ${left>0?"disabled":""}>Build my plan ✓</button>`}</div>
+    ${left>0&&i===n-1?`<p class="muted" style="font-size:.84rem;margin-top:8px">Answer the remaining ${left} question${left>1?"s":""} to build your plan.</p>`:""}</div>`;
+}
+
+/* ---------- Plan engine v2: built from the quiz ---------- */
+const BASE_H={F1:120,F2:80,F3:110,F4:70,I1:170,I2:110,I3:190,I4:140,I5:100,I6:130,N1:200,N2:150,N3:130,N4:190,N5:150,N6:60};
+const REV_F=[0.35,0.25,0.2],SLOT_START=[330,540,960,1200];
+function buildPlan2(){
+  const I=S.intake,a=I.a,cb=COMBOS[I.combo],lv=LEVELS[cb.level];
+  const papers=lv.papers.filter(p=>cb.groups==="both"||!lv.groups||(cb.groups==="g1"?p.g===1:p.g===2));
+  let days=I.date?Math.round((new Date(I.date)-today)/864e5):WHEN_V[a.when||0];days=Math.max(5,Math.min(400,days||30));
+  const wd=HRS_V[a.wd||0],we=HRS_V[a.we||0],rounds=(a.rev??1)+1,repeat=(a.attempt||0)>0,side=a.side||0;
+  const mocks=a.mocks!=null?[1,2,3][a.mocks]:2;
+  const qs=quizFor(I.combo),wq=qs.find(x=>x.id==="weak");let weakest=wq&&a.weak!=null?wq.vals[a.weak]:null;
+  const stOf=p=>a["st_"+p.id]||0;if(!weakest)weakest=[...papers].sort((x,y)=>stOf(x)-stOf(y))[0].id;
+  const cap=d=>{const w=d.getDay();let h=(w===0||w===6)?we:wd;if(side===0&&w===0)h=h*0.6;return h};
+  const C=S.chap||{};
+  // tasks per paper
+  const T={},mockH={},finH={},info={};
+  papers.forEach(p=>{
+    const s=stOf(p),ch=chapters(p.id),W=ch.reduce((x,c)=>x+c[1],0)||1;
+    let pw=p.id===weakest?1.3:1;if(p.id==="N6"&&a.ibs!=null)pw*= [1.4,1,0.75][a.ibs];
+    let rf=[1,0.7,0,0,0][s];if(repeat&&rf>0.45)rf=0.45;
+    const revDone=[0,0,0,1,2][s],mainRev=Math.max(0,rounds-1-revDone);
+    const wa=WEAK_AREAS[p.id],wset=new Set(wa&&a["wa_"+p.id]!=null?wa.ch[a["wa_"+p.id]]:[]);
+    const hOf=j=>BASE_H[p.id]*pw*ch[j][1]/W*(wset.has(j)?1.3:1);
+    const list=[];
+    ch.forEach((c,j)=>{const t=C[p.id+"|"+j]||0;if(rf>0&&t<1)list.push({p,ch:j,kind:"read",hrs:hOf(j)*rf})});
+    const order=ch.map((_,j)=>j).sort((x,y)=>(wset.has(y)?1:0)-(wset.has(x)?1:0));
+    for(let r=0;r<mainRev;r++)order.forEach(j=>{const t=C[p.id+"|"+j]||0;if(r===0&&t>=2)return;list.push({p,ch:j,kind:"rev"+(r+1),hrs:hOf(j)*REV_F[r]})});
+    T[p.id]=list;
+    let m=mocks+(wa&&wa.mock&&a["wa_"+p.id]!=null?wa.mock[a["wa_"+p.id]]:0)+(p.id==="N6"&&a.ibs===0?1:0);
+    mockH[p.id]=m*5;finH[p.id]=BASE_H[p.id]*pw*0.15;info[p.id]={s,rf,mainRev,mocks:m,weak:[...wset]};
+  });
+  // SPOM (Final)
+  let spomLeft=0;const spomSets=[];if(cb.level==="final"&&a.spom!=null){const done=a.spom;[["Set A",40],["Set B",40],["Set C",20],["Set D",20]].slice(done).forEach(x=>{spomSets.push({n:x[0],h:x[1]});spomLeft+=x[1]})}
+  // timeline
+  const dates=[...Array(days)].map((_,i)=>addDays(today,i));const caps=dates.map(cap);const avg=caps.reduce((x,y)=>x+y,0)/days;
+  const needMock=Object.values(mockH).reduce((x,y)=>x+y,0),needFin=Object.values(finH).reduce((x,y)=>x+y,0);
+  let F=Math.max(2,Math.min(Math.round(days*0.2),Math.ceil(needFin/avg)));
+  let M=Math.max(days<10?0:1,Math.min(Math.round(days*0.25),Math.ceil(needMock/avg)));
+  let Cd=Math.round([0,Math.min(30,days*0.3),Math.min(75,days*0.4),0][a.coach||0]);
+  let main=days-F-M-Cd;if(main<0){Cd=Math.max(0,Cd+main);main=days-F-M-Cd;if(main<0){M=Math.max(0,M+main);main=0}}
+  const tracks=[[],[]];[...papers].sort((x,y)=>(y.id===weakest)-(x.id===weakest)||stOf(x)-stOf(y)).forEach((p,i)=>tracks[i%2].push(p));
+  if(papers.length===1)tracks[1]=[];
+  const qOf=tp=>{const out=[];const maxR=Math.max(0,...tp.map(p=>info[p.id].mainRev));tp.forEach(p=>T[p.id].filter(t=>t.kind==="read").forEach(t=>out.push({...t})));for(let r=1;r<=maxR;r++)tp.forEach(p=>T[p.id].filter(t=>t.kind==="rev"+r).forEach(t=>out.push({...t})));return out};
+  const QA=qOf(tracks[0]),QB=qOf(tracks[1]);
+  const need=[...QA,...QB].reduce((x,t)=>x+t.hrs,0);
+  const mainIdx=[...Array(main)].map((_,i)=>Cd+i);
+  let spomIn=spomLeft;const availMain=mainIdx.reduce((x,i)=>x+caps[i]*0.85,0)-Math.min(spomLeft,mainIdx.filter(i=>[0,6].includes(dates[i].getDay())).length*3);
+  const fit=need>0?Math.min(1,availMain/need):1;if(fit<1){QA.forEach(t=>t.hrs*=fit);QB.forEach(t=>t.hrs*=fit)}
+  const list=dates.map((d,i)=>({date:d,cap:caps[i],phase:"concepts",rest:false,tasks:[]}));
+  const push=(day,t)=>{const k=day.tasks.find(x=>x.p===t.p&&x.kind===t.kind&&x.p);if(k&&t.ch!=null){if(!k.ch.includes(t.ch))k.ch.push(t.ch);k.hrs+=t.hrs}else day.tasks.push({...t,ch:t.ch!=null?[t.ch]:(t.chs||[])})};
+  // coaching block
+  for(let i=0;i<Cd;i++){const d=list[i];d.phase="classes";d.tasks.push({kind:"classes",hrs:Math.max(1,caps[i]*0.6),ch:[]});
+    const rp=papers.filter(p=>stOf(p)>=2);if(rp.length){const p=rp[i%rp.length],n=chapters(p.id).length,k=Math.floor(i/rp.length)*2%Math.max(1,n);d.tasks.push({p,kind:"rev1",hrs:caps[i]*0.4,ch:[k,k+1].filter(j=>j<n)})}}
+  // main block: two tracks finish together
+  const take=(q,h,day)=>{while(h>0.05&&q.length){const t=q[0],x=Math.min(h,t.hrs);push(day,{p:t.p,ch:t.ch,kind:t.kind,hrs:x});t.hrs-=x;h-=x;if(t.hrs<=0.05)q.shift()}return h};
+  mainIdx.forEach(i=>{const d=list[i];let h=caps[i]*0.85;
+    if(spomIn>0&&[0,6].includes(d.date.getDay())){const s=Math.min(3,spomIn,h*0.5);const cur=spomSets.find(x=>x.h>0);if(cur){d.tasks.push({kind:"spom",label:cur.n,hrs:s,ch:[]});cur.h-=s;spomIn-=s;h-=s}}
+    const ra=QA.reduce((x,t)=>x+t.hrs,0),rb=QB.reduce((x,t)=>x+t.hrs,0);
+    if(ra+rb<=0.05){const p=papers.find(x=>x.id===weakest);push(d,{p,kind:"rev1",hrs:h,chs:info[p.id].weak.length?info[p.id].weak:chapters(p.id).map((_,j)=>j).slice(0,4)});d.phase="revision";return}
+    const ha=h*(ra/(ra+rb));let left=take(QA,ha,d);left=take(QB,h-ha+left,d);if(left>0.05)take(QA,left,d);
+    d.phase=(d.tasks.find(t=>t.p)||{}).kind==="read"?"concepts":"revision";});
+  // mock block
+  const order=[...papers];let mi=0;const mq=[];order.forEach(p=>{for(let k=0;k<info[p.id].mocks;k++)mq.push(p)});
+  for(let i=Cd+main;i<Cd+main+M;i++){const d=list[i];d.phase="practice";let h=caps[i];while(h>=2.5&&mq.length){const p=mq.shift();d.tasks.push({p,kind:"mock",hrs:Math.min(5,h),ch:[]});h-=5}if(!d.tasks.length){const p=order[mi++%order.length];d.tasks.push({p,kind:"mock",hrs:caps[i],ch:[]})}}
+  // final block: paper-wise in exam order
+  const fdays=alloc(F,papers.map(p=>finH[p.id]));let fi=Cd+main+M;papers.forEach((p,pi)=>{for(let k=0;k<fdays[pi];k++,fi++){if(!list[fi])break;const d=list[fi];d.phase="final";d.tasks.push({p,kind:"final",hrs:caps[fi],ch:chapters(p.id).map((_,j)=>j)})}});
+  // compat fields
+  list.forEach(d=>{d.start=SLOT_START[a.slot||0];const pt=d.tasks.filter(t=>t.p);const u=[...new Set(pt.map(t=>t.p))];d.main=u[0]||papers[0];d.alt=u[1]||d.main;d.ch=pt.filter(t=>t.p===d.main).flatMap(t=>t.ch);d.cha=pt.filter(t=>t.p===d.alt&&d.alt!==d.main).flatMap(t=>t.ch)});
+  const phases=[];list.forEach(d=>{const l=phases[phases.length-1];if(l&&l.key===d.phase)l.days++;else phases.push({key:d.phase,days:1})});
+  const merged=[];phases.forEach(p=>{const m=merged.find(x=>x.key===p.key);if(m)m.days+=p.days;else merged.push({...p})});
+  const perPaper=papers.map(p=>({p,h:Math.round(list.reduce((x,d)=>x+d.tasks.filter(t=>t.p===p).reduce((y,t)=>y+t.hrs,0),0))}));
+  const hours=Math.round(caps.reduce((x,y)=>x+y,0));
+  const needTotal=Math.round(need/(fit||1)+needMock+needFin+spomLeft),availTotal=Math.round(availMain+(M+F)*avg+Cd*avg*0.4);
+  return {days,papers,hours,perPaper,phases:merged,list,daily:false,v2:1,
+    meta:{combo:cb.label,wd,we,rounds,mocks,need:needTotal,avail:Math.max(availTotal,1),fit,weakest,spomLeft,Cd,exam:addDays(today,days),hrsTxt:`${wd} h weekdays · ${we} h weekends`,start:SLOT_START[a.slot||0]}};
+}
+
+PH.classes=["Classes","Attend classes, revise class notes the same day"];
+function v2ok(){const I=S.intake;return !!(I&&I.done&&I.combo&&COMBOS[I.combo]&&COMBOS[I.combo].level===S.level)}
+function taskDesc(t){
+  if(t.kind==="classes")return ["Coaching classes","Attend class, then revise today's class notes the same day"];
+  if(t.kind==="spom")return ["SPOM · "+(t.label||"Set"),"Self-paced module: study the set and attempt its assessment"];
+  const w="P"+t.p.no+" · "+t.p.name,c=t.kind!=="final"&&t.ch&&t.ch.length?chLine(t.p.id,t.ch,2):"";
+  if(t.kind==="read")return [w,(c?c+" — ":"")+"read the module, work every illustration"];
+  if(t.kind==="mock")return [w,"Full mock paper under exam timing, then check it and log every mistake"];
+  if(t.kind==="final")return [w,"Final revision: summary notes, amendments, formula sheet, past-paper favourites"];
+  const r=+t.kind.slice(3);return [w,`Revision ${r}: `+(c?c+" — ":"")+(r===1?"re-read and solve module questions":"fast pass plus past-paper questions")];
+}
+function slotsV2(e){
+  let t=e.start||420;const out=[];const cap=e.cap||1;
+  const tasks=e.tasks.filter(x=>x.hrs>0.1),extra=cap>=2?0.5:0,sum=tasks.reduce((x,y)=>x+y.hrs,0),scale=sum>0?Math.max(0.5,cap-extra)/sum:0;
+  const add=(mins,w,d,brk)=>{out.push({t:hm(t)+"–"+hm(t+mins),w,d,brk:!!brk});t+=mins};
+  tasks.forEach(tk=>{let mins=Math.max(15,Math.round(tk.hrs*scale*60/15)*15);const [w,d]=taskDesc(tk);
+    if(tk.kind==="mock"&&mins>=240){add(180,w,"Attempt the full mock under exam timing. No notes, no phone");add(15,"Break","");add(mins-180,w,"Check against suggested answers; log every mistake");add(15,"Break","",1);return}
+    if(tk.kind==="classes"){add(mins,w,d);add(15,"Break","",1);return}
+    let part=0;while(mins>0){const m=mins>180?Math.min(150,Math.ceil(mins/2/15)*15):mins;add(m,w,part?"Keep going: same chapters, now solve the module questions and past-paper Qs":d);part++;mins-=m;if(m>=60)add(15,"Break","",1)}});
+  if(out.length&&out[out.length-1].brk)out.pop();
+  if(extra){if(out.length)add(15,"Break","",1);add(30,"MCQ practice","MCQ sprint — 15 questions from today's chapters")}
+  out.forEach(s=>{if(s.w==="Break")s.brk=true});
+  return out;
+}
+const KLAB={read:"Read",rev1:"Revision 1",rev2:"Revision 2",rev3:"Revision 3",mock:"Mock",final:"Final revision"};
+function focusV2(seg){
+  const P=[],by={};let cls=0,spom=[];
+  seg.forEach(d=>d.tasks.forEach(t=>{if(t.kind==="classes"){cls++;return}if(t.kind==="spom"){if(!spom.includes(t.label))spom.push(t.label);return}
+    const k=t.p.id;if(!by[k]){by[k]={p:t.p,k:{},ch:new Set()};P.push(k)}by[k].k[t.kind]=(by[k].k[t.kind]||0)+1;if(t.kind!=="final")t.ch.forEach(j=>by[k].ch.add(j))}));
+  let h=cls?`<div class="wf"><b>Classes</b> <span class="muted">${cls} day${cls>1?"s":""}</span></div>`:"";
+  P.forEach(k=>{const x=by[k],ks=Object.keys(x.k).map(q=>q==="mock"?`${x.k[q]} mock${x.k[q]>1?"s":""}`:KLAB[q]).join(" · "),c=[...x.ch].sort((a,b)=>a-b);
+    h+=`<div class="wf"><b>P${x.p.no}</b> ${esc(x.p.name)} <span class="pill">${esc(ks)}</span>${c.length?`<span class="chl">${esc(chLine(x.p.id,c,3))}</span>`:""}</div>`});
+  if(spom.length)h+=`<div class="wf"><b>SPOM</b> <span class="muted">${esc(spom.join(", "))}</span></div>`;
+  return h;
+}
+function plannerV2(){
+  const pl=currentPlan(),m=pl.meta,I=S.intake,a=I.a,Q=quizFor(I.combo),lv=L();
+  const lab=id=>{const q=Q.find(x=>x.id===id);return q&&a[id]!=null?q.o[a[id]]:""};
+  const wp=pl.papers.find(p=>p.id===m.weakest);
+  const short=m.fit<0.97,gap=Math.max(0,m.need-m.avail),extraH=Math.ceil(gap/pl.days*2)/2;
+  const rc=short?`<div class="card rchk bad"><div class="card-h"><h2>Reality check</h2><span class="pill warn">Tight</span></div>
+      <p>Everything you asked for needs about <b>${m.need} h</b>. You have about <b>${m.avail} h</b> before your first paper. We've compressed reading and revision to ${Math.round(m.fit*100)}% so mocks and final revision still happen.</p>
+      <ul class="rchk-list">${extraH<=3?`<li>Add about <b>${extraH} h a day</b> to cover it fully</li>`:`<li>The gap is big (${extraH} h a day). Honestly weigh the next attempt</li>`}${m.rounds>2?`<li>Go for ${m.rounds-2} fewer revision${m.rounds-2>1?"s":""}</li>`:""}${COMBOS[I.combo].groups==="both"&&lv.groups?`<li>Consider one group this attempt, the other next</li>`:""}<li>Prioritise chapters with high past-paper weight</li></ul></div>`
+    :`<div class="card rchk ok"><div class="card-h"><h2>Reality check</h2><span class="pill good">Doable</span></div><p>You need about <b>${m.need} h</b> and have about <b>${m.avail} h</b>. There's room for buffer days, so spend spare time on ${wp?`P${wp.no} ${esc(wp.name)}`:"your weakest paper"}.</p></div>`;
+  const chips=[lab("side"),m.hrsTxt,`${m.rounds-1} revision${m.rounds-1===1?"":"s"}`,`${m.mocks} mock${m.mocks>1?"s":""} per paper`,wp?`Focus: P${wp.no}`:"",lab("coach"),m.spomLeft?`SPOM: ${m.spomLeft} h left`:""].filter(Boolean);
+  const phaseBar=`<div class="phasebar">${pl.phases.map(p=>`<div class="ph-${p.key}" style="flex:${p.days}" title="${PH[p.key][0]}: ${p.days} days">${p.days>=Math.max(4,pl.days*.08)?PH[p.key][0]+" · "+p.days+"d":""}</div>`).join("")}</div>
+   <div class="legend">${pl.phases.map(p=>`<span><i class="ph-${p.key}"></i>${PH[p.key][0]} — ${PH[p.key][1]}</span>`).join("")}</div>`;
+  const byWeek=pl.days>21;let rows="";
+  if(byWeek){for(let w=0;w*7<pl.list.length;w++){const seg=pl.list.slice(w*7,w*7+7),phs=[...new Set(seg.map(d=>d.phase))];
+    rows+=`<tr><td class="num" style="white-space:nowrap">Wk ${w+1}</td><td style="white-space:nowrap">${fmt(seg[0].date)} – ${fmt(seg[seg.length-1].date)}</td><td>${phs.map(k=>`<span class="pill ph-${k}" style="color:var(--ink)">${PH[k][0]}</span>`).join(" ")}</td><td>${focusV2(seg)}</td><td class="muted">${PH[phs[phs.length-1]][1]}</td></tr>`}}
+  else pl.list.forEach((d,i)=>{rows+=`<tr><td class="num">Day ${i+1}</td><td style="white-space:nowrap">${d.date.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})}</td><td><span class="pill ph-${d.phase}" style="color:var(--ink)">${PH[d.phase][0]}</span></td><td>${focusV2([d])}</td><td class="muted">${PH[d.phase][1]}</td></tr>`});
+  const mx=Math.max(1,...pl.perPaper.map(y=>y.h));
+  return `<div class="hero"><div><div class="eyebrow">${esc(m.combo)} · built from your 15 answers</div><h1>Your study plan</h1><p class="muted">${pl.days} days to ${fmt(m.exam)}. Chapter-wise, paper-wise, with mocks and final revision locked in.</p></div>
+    <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn primary" data-act="plandocx">${ico("papers",18)} Download as Word</button><button class="btn" data-act="qretake">Retake quiz</button></div></div>
+  <div class="qz-chips">${chips.map(c=>`<span class="chip" aria-pressed="false">${esc(c)}</span>`).join("")}</div>
+  ${rc}
+  <div class="stats">
+    <div class="stat"><div class="eyebrow">Days left</div><div class="v">${pl.days}</div><div class="s">to your first paper</div></div>
+    <div class="stat"><div class="eyebrow">Study hours</div><div class="v">${pl.hours}</div><div class="s">${esc(m.hrsTxt)}</div></div>
+    <div class="stat"><div class="eyebrow">Papers</div><div class="v">${pl.papers.length}</div><div class="s">${esc(m.combo.replace(/^CA \w+ · /,""))}</div></div>
+    <div class="stat"><div class="eyebrow">Mock tests</div><div class="v">${pl.list.reduce((x,d)=>x+d.tasks.filter(t=>t.kind==="mock").length,0)}</div><div class="s">full papers, timed</div></div>
+  </div>
+  <div class="card"><div class="card-h"><h2>Phases</h2><span class="muted num">${fmt(today)} → ${fmt(addDays(today,pl.days-1))}</span></div>${phaseBar}</div>
+  <div class="grid2">
+    <div class="card"><div class="card-h"><h2>Today's timetable</h2><span class="pill">${PH[pl.list[0].phase][0]}</span></div><div class="slots">${slotsFor(pl.list[0]).map(s=>`<div class="slot ${s.brk?"brk":""}"><div class="t">${s.t}</div><div class="w">${esc(s.w)}</div>${s.d?`<div class="d">${esc(s.d)}</div>`:""}</div>`).join("")}</div></div>
+    <div class="card"><div class="card-h"><h2>Hours per paper</h2></div><div class="bars">${pl.perPaper.map(x=>`<div class="bar-row"><span class="lbl"><span class="pno">P${x.p.no}</span> ${esc(x.p.name)}${x.p.id===m.weakest?" ★":""}</span><span class="num" style="text-align:right">${x.h}h</span><div class="track"><div class="fill" style="width:${x.h/mx*100}%"></div></div></div>`).join("")}</div>
+      <p class="muted" style="font-size:.82rem;margin-top:10px">★ your focus paper gets about 30% more time. Tick chapters in the Syllabus tab and they drop out of your plan.</p></div>
+  </div>
+  <div><h2 style="margin-bottom:10px">${byWeek?"Week by week":"Day by day"}</h2><div class="tbl-wrap"><table><thead><tr><th>${byWeek?"Week":"Day"}</th><th>Dates</th><th>Phase</th><th>Focus</th><th>Target</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
+
+function currentPlan(){if(v2ok())return buildPlan2();return buildPlan(Object.assign({level:S.level,start:today},S.plan,{weak:S.plan.weak||[]}))}
 
 /* ---------- render ---------- */
 const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["plan","Plan","Plan","plan"],["spom","SPOM","SPOM","school"],["careers","Careers","Careers","brief"]];
@@ -942,7 +1168,7 @@ dashboard(){
   <div class="grid2">
     <div class="card"><div class="card-h"><h2>Today's game plan</h2><span class="pill ${te.rest?"":"good"}">${te.rest?"Light day":PH[te.phase]?PH[te.phase][0]:"Daily"}</span></div>
       <div class="slots">${slotsFor(te,S.plan.hpd).map(s=>`<div class="slot ${s.brk?"brk":""}"><div class="t">${s.t}</div><div class="w">${esc(s.w)}</div>${s.d?`<div class="d">${esc(s.d)}</div>`:""}</div>`).join("")}</div>
-      <div class="row sp" style="margin-top:6px"><span class="muted" style="font-size:.85rem">From your ${S.plan.dur}-${S.plan.unit.replace(/s$/,"")} plan · ${S.plan.hpd} h/day</span><button class="btn ghost sm" data-tab="planner">Tweak plan</button></div>
+      <div class="row sp" style="margin-top:6px"><span class="muted" style="font-size:.85rem">${plan.v2?"From your quiz plan · "+plan.meta.hrsTxt:"Sample day · take the 2-minute quiz for your own plan"}</span><button class="btn ghost sm" data-tab="planner">${plan.v2?"View plan":"Build my plan"}</button></div>
     </div>
     <div class="card"><div class="card-h"><h2>Where you stand</h2><button class="btn ghost sm" data-tab="mcq">Practice now</button></div>${barsHTML()}</div>
   </div>
@@ -984,6 +1210,11 @@ mcq(){
   <div class="seg" role="group" aria-label="Mode">${modes.map(m=>`<button data-mode="${m[0]}" aria-pressed="${mode===m[0]}">${m[1]}</button>`).join("")}</div></div>${body}`;
 },
 planner(){
+  const I=qzState();if(I.done&&!v2ok()){if(I.combo&&COMBOS[I.combo].level!==S.level){I.combo=null;I.done=false;I.step=0}}
+  if(v2ok())return plannerV2();
+  return quizView();
+},
+plannerOld(){
   const lv=L();const P=S.plan;const plan=currentPlan();
   const phaseBar=plan.daily?`<div class="phasebar"><div class="ph-daily" style="flex:1">One-day plan</div></div>`:`<div class="phasebar">${plan.phases.map(p=>`<div class="ph-${p.key}" style="flex:${p.days}" title="${PH[p.key][0]}: ${p.days} days">${p.days>=Math.max(4,plan.days*.08)?PH[p.key][0]+" · "+p.days+"d":""}</div>`).join("")}</div>
    <div class="legend">${plan.phases.map(p=>`<span><i class="ph-${p.key}"></i>${PH[p.key][0]} — ${PH[p.key][1]}</span>`).join("")}</div>`;
@@ -1344,36 +1575,36 @@ async function planDocx(btn){
   const fmtL=dt=>dt.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
   const endD=addDays(today,plan.days-1);
   const grp=lv.groups?(P.groups==="both"?"Both groups":P.groups==="g1"?"Group I":"Group II"):"All papers";
-  const PHC={concepts:["FFF4D6","141414"],revision:["F1ECDF","141414"],practice:["FBE4D8","7A2A0C"],final:["111111","E0B43A"],daily:["FFF4D6","141414"]};
+  const PHC={concepts:["FFF4D6","141414"],revision:["F1ECDF","141414"],practice:["FBE4D8","7A2A0C"],final:["111111","E0B43A"],daily:["FFF4D6","141414"],classes:["E2F1E7","1E5A36"]};
   let B="";
   // cover band
   B+=d.tbl([W],[{c:[{fill:"111111",mar:360,x:
     d.p([d.r("CA PREPX",{f:"Georgia",b:1,sz:18,c:"E0B43A",sp:40})],{af:120})+
     d.p([d.r(plan.daily?"Your plan for today":"Your study plan",{f:"Georgia",b:1,sz:52,c:"FFFFFF"})],{af:80,ln:240})+
-    d.p([d.r(`CA ${lv.label} · ${lv.attempts[0]} attempt${S.name?" · Prepared for "+S.name:""}`,{sz:21,c:"D8D1BE"})],{af:40})+
-    d.p([d.r(`${fmtL(today)} → ${fmtL(endD)} · ${grp} · ${P.hpd} h a day`,{sz:18,c:"B5AE9C"})],{af:0})}]}],{nob:1,pad:0,padx:0});
+    d.p([d.r(`${plan.v2?plan.meta.combo:"CA "+lv.label} · ${lv.attempts[0]} attempt${S.name?" · Prepared for "+S.name:""}`,{sz:21,c:"D8D1BE"})],{af:40})+
+    d.p([d.r(`${fmtL(today)} → ${fmtL(endD)} · ${grp} · ${plan.v2?plan.meta.hrsTxt:P.hpd+" h a day"}`,{sz:18,c:"B5AE9C"})],{af:0})}]}],{nob:1,pad:0,padx:0});
   B+=d.gap(200);
   // key facts
   const exD=plan.list.find(x=>!x.rest)||plan.list[0];const kf=plan.daily?[[today.toLocaleDateString("en-GB",{day:"numeric",month:"short"}),"today"],[String(P.hpd),"study hours"],[String(new Set([exD.main,exD.alt].filter(Boolean)).size),"papers in focus"],[String(slotsFor(exD,P.hpd).filter(x=>!x.brk).length),"study blocks"]]:[[String(plan.days),"days in the plan"],[String(plan.hours),"study hours"],[String(plan.papers.length),"papers"],[String(Math.round(plan.hours/Math.max(1,plan.papers.length))),"hours per paper (avg)"]];
   B+=d.tbl([2409,2410,2410,2409],[{c:kf.map(k=>({fill:"FAF7EF",mar:160,x:d.p(d.r(k[0],{f:"Georgia",b:1,sz:40,c:"141414"}),{af:0,ln:240})+d.p(d.r(k[1],{sz:16,c:"6B6558",caps:1,sp:10}),{af:0})}))}],{bc:"E6DFCC",noV:0});
   if(!plan.daily){
     // phases
-    B+=d.h2("Your phases","Four stages, from learning to exam-ready. Dates are worked out from today.");
+    B+=d.h2("Your phases",plan.v2?"From learning to exam-ready, built from your quiz answers. Dates run from today.":"Four stages, from learning to exam-ready. Dates are worked out from today.");
     let cur=0;const rows=[{h:1,c:["Phase","Dates","Days","What to do"].map(t=>({fill:"111111",x:d.p(d.r(t,{b:1,sz:18,c:"E0B43A"}),{af:0})}))}];
     plan.phases.forEach(ph=>{const s=addDays(today,cur),e=addDays(today,cur+ph.days-1);cur+=ph.days;const col=PHC[ph.key];
       rows.push({c:[{fill:col[0],x:d.p(d.r(PH[ph.key][0],{b:1,sz:20,c:col[1]}),{af:0})},{x:d.p(d.r(`${fmt(s)} – ${fmt(e)}`,{sz:19}),{af:0})},{x:d.p(d.r(String(ph.days),{b:1,sz:19}),{af:0,jc:"center"})},{x:d.p(d.r(PH[ph.key][1],{sz:19,c:"3A3630"}),{af:0})}]})});
     B+=d.tbl([2000,2100,900,4638],rows);
   }
   // hours per paper
-  if(!plan.daily){B+=d.h2("Hours per paper",(P.weak||[]).length?"Papers you marked as hard get about 40% more time.":"Split evenly. Mark hard papers in the planner to give them more time.");
+  if(!plan.daily){B+=d.h2("Hours per paper",plan.v2?"Includes reading, revisions, mocks and final revision. Your focus paper gets about 30% more time.":(P.weak||[]).length?"Papers you marked as hard get about 40% more time.":"Split evenly. Mark hard papers in the planner to give them more time.");
   const mx=Math.max(...plan.perPaper.map(x=>x.h),1);
   B+=d.tbl([3900,900,4838],plan.perPaper.map((x,i)=>({c:[
-    {fill:i%2?"FFFFFF":"FAF7EF",x:d.p([d.r(`P${x.p.no}  `,{sz:17,c:"9C7400",b:1}),d.r(x.p.name,{sz:19}),(P.weak||[]).includes(x.p.id)?d.r("  ★ hard",{sz:16,c:"C2410C",b:1}):""],{af:0})},
+    {fill:i%2?"FFFFFF":"FAF7EF",x:d.p([d.r(`P${x.p.no}  `,{sz:17,c:"9C7400",b:1}),d.r(x.p.name,{sz:19}),(plan.v2?x.p.id===plan.meta.weakest:(P.weak||[]).includes(x.p.id))?d.r(plan.v2?"  ★ focus":"  ★ hard",{sz:16,c:"C2410C",b:1}):""],{af:0})},
     {fill:i%2?"FFFFFF":"FAF7EF",x:d.p(d.r(x.h+" h",{b:1,sz:19}),{af:0,jc:"right"})},
     {fill:i%2?"FFFFFF":"FAF7EF",x:d.bar(x.h/mx,4558)}]})),{noV:1});}
   // a day
   const ex=plan.list.find(x=>!x.rest)||plan.list[0];
-  B+=d.h2(plan.daily?"Your timetable for today":"What a study day looks like",`Built for ${P.hpd} hours. Move the blocks around — just keep the order: hardest work first.`);
+  B+=d.h2(plan.daily?"Your timetable for today":"What a study day looks like",`Built for ${plan.v2?plan.meta.hrsTxt:P.hpd+" hours"}. Move the blocks around — just keep the order: hardest work first.`);
   const sl=slotsFor(ex,P.hpd);
   B+=d.tbl([1900,3100,4638],[{h:1,c:["Time","Block","Focus"].map(t=>({fill:"111111",x:d.p(d.r(t,{b:1,sz:18,c:"E0B43A"}),{af:0})}))}].concat(sl.map(s=>({c:[
     {fill:s.brk?"F7F4EC":"FFFFFF",x:d.p(d.r(s.t,{sz:18,c:s.brk?"9A937F":"141414",b:!s.brk}),{af:0})},
@@ -1503,6 +1734,8 @@ document.addEventListener("click",e=>{
   if(t.dataset.tab){if(t.dataset.open)window.__sylOpen=t.dataset.open;go(t.dataset.tab);if(t.dataset.sub){if(tab==="plan")planMode=t.dataset.sub;if(tab==="resources")resMode=t.dataset.sub}render();window.scrollTo({top:0});
     if(t.dataset.jump)setTimeout(()=>{const el=document.getElementById(t.dataset.jump);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})},60);return}
   if(t.dataset.plan){planMode=t.dataset.plan;render();return}
+  if(t.dataset.qc){qzState()._c=t.dataset.qc;render();return}
+  if(t.dataset.qa!==undefined){const I=qzState();const Q=quizFor(I.combo);const q=Q[Math.min(I.step,Q.length-1)];I.a[q.id]=+t.dataset.qa;save();render();return}
   if(t.dataset.res){resMode=t.dataset.res;render();return}
   if(t.dataset.pick){S.level=t.dataset.pick;S.onboarded=true;save();render();return}
   if(t.dataset.chk){const [pid,j,l]=t.dataset.chk.split("|");S.chap=S.chap||{};const k=pid+"|"+j,cur0=S.chap[k]||0,L2=+l;S.chap[k]=cur0>=L2?L2-1:L2;if(!S.chap[k])delete S.chap[k];window.__sylOpen=pid;save();render();const el=document.getElementById("syl-"+pid);if(el)el.open=true;return}
@@ -1524,7 +1757,13 @@ document.addEventListener("click",e=>{
   if(t.dataset.auth){authDo(t.dataset.auth);return}
   const a=t.dataset.act;
   if(a==="signout"){signOut();return}
-  if(a==="catchup"){catchup=true;const d=S.exam[S.level];const n=d?Math.round((new Date(d)-today)/864e5):null;if(n&&n>0){S.plan.dur=n;S.plan.unit="days";save()}go("plan");planMode="study";render();window.scrollTo({top:0});return}
+  if(a==="catchup"){const I=qzState();const d=S.exam[S.level];if(d)I.date=d;I.done=false;I.step=0;go("plan");planMode="study";save();render();window.scrollTo({top:0});toast("15 quick questions and your catch-up plan is ready");return}
+  if(a==="qstart"){const I=qzState();const pre=S.level==="foundation"?"F":S.level==="final"?"NB":"IB";const c=I._c||pre;if(c!==I.combo){delete I.a.weak;Object.keys(I.a).filter(k=>k.startsWith("wa_")).forEach(k=>delete I.a[k])}I.combo=c;I.step=0;I.done=false;S.level=COMBOS[c].level;S.plan.groups=COMBOS[c].groups;save();render();window.scrollTo({top:0});return}
+  if(a==="qnext"){const I=qzState();I.step=Math.min(quizFor(I.combo).length-1,I.step+1);save();render();window.scrollTo({top:0});return}
+  if(a==="qprev"){const I=qzState();I.step=Math.max(0,I.step-1);render();window.scrollTo({top:0});return}
+  if(a==="qcombo"){const I=qzState();I._c=I.combo;I.combo=null;render();return}
+  if(a==="qretake"){const I=qzState();I.done=false;I.step=0;save();render();window.scrollTo({top:0});return}
+  if(a==="qbuild"){const I=qzState();const Q=quizFor(I.combo);if(Q.some(x=>I.a[x.id]==null)){toast("Answer every question first");return}I.done=true;I.built=iso(today);S.plan.hpd=HRS_V[I.a.wd||0];if(I.date)S.exam[S.level]=I.date;save();toast("Building your plan…");render();window.scrollTo({top:0});return}
   if(a==="cuclose"){catchup=false;render();return}
   if(a==="guestgo"){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}go("home");render();window.scrollTo({top:0});return}
   if(a==="spnext"){spomPick();render();return}
@@ -1559,6 +1798,7 @@ document.addEventListener("change",e=>{
   if(id==="mcqP"){window.__mp=v;window.__mc="all";cur=null;render()}
   if(id==="mcqC"){window.__mc=v;cur=null;paintQ()}
   if(id==="spSC"||id==="spSD"){const sp=spomS();if(id==="spSC")sp.c=v;else sp.d=v;save();render()}
+  if(id==="qDate"){const I=qzState();I.date=v;if(v){const n=Math.round((new Date(v)-today)/864e5);I.a.when=n<30?0:n<60?1:n<120?2:n<180?3:4}save();render();return}
   if(id==="pDur"){const n=Math.max(1,Math.min(730,parseInt(v)||1));S.plan.dur=n;save();render()}
   if(id==="pUnit"){S.plan.unit=v;save();render()}
   if(id==="pH"){S.plan.hpd=Math.max(1,Math.min(16,parseFloat(v)||1));save();render()}
