@@ -1567,6 +1567,172 @@ const DX={
   bar(pct,w){const a=Math.max(60,Math.round(w*pct)),b=Math.max(0,w-a);const cells=[{x:DX.p("",{af:0}),fill:"E0B43A"}];if(b>0)cells.push({x:DX.p("",{af:0}),fill:"F1ECDF"});
     return DX.tbl(b>0?[a,b]:[a],[{ht:150,c:cells}],{nob:1,pad:0,padx:0})+DX.p("",{af:0,ln:20})}
 };
+/* ---------- Word export v2: minimal black & white (month → week → sample day) ---------- */
+const PSH={F1:"Accounts",F2:"Law",F3:"Quant",F4:"Economics",I1:"Adv Accounts",I2:"Law",I3:"Tax",I4:"Costing",I5:"Audit",I6:"FM & SM",N1:"FR",N2:"AFM",N3:"Audit",N4:"DT",N5:"IDT",N6:"IBS"};
+async function planDocx2(btn){
+  const old=btn?btn.innerHTML:"";if(btn){btn.disabled=true;btn.textContent="Preparing…"}
+  try{
+  await loadJSZip();
+  const plan=currentPlan(),m=plan.meta,I=S.intake,a=I.a,lv=L();
+  const F="Georgia",K="000000",G="555555",LG="9A9A9A",RULE="BFBFBF",W=9506;
+  const x=t=>String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  const r=(t,o={})=>`<w:r><w:rPr><w:rFonts w:ascii="${o.f||F}" w:hAnsi="${o.f||F}" w:cs="${o.f||F}"/>${o.b?"<w:b/><w:bCs/>":""}${o.i?"<w:i/><w:iCs/>":""}${o.caps?"<w:caps/>":""}<w:color w:val="${o.c||K}"/>${o.sp?`<w:spacing w:val="${o.sp}"/>`:""}<w:sz w:val="${o.sz||21}"/><w:szCs w:val="${o.sz||21}"/></w:rPr><w:t xml:space="preserve">${x(t)}</w:t></w:r>`;
+  const p=(runs,o={})=>`<w:p><w:pPr>${o.st?`<w:pStyle w:val="${o.st}"/>`:""}${o.kn?"<w:keepNext/>":""}${o.pb?"<w:pageBreakBefore/>":""}${o.bb?`<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="8" w:color="${K}"/></w:pBdr>`:""}${o.tabs||""}<w:spacing w:before="${o.bf||0}" w:after="${o.af==null?120:o.af}" w:line="${o.ln||300}" w:lineRule="auto"/>${o.ind?`<w:ind w:left="${o.ind}"/>`:""}${o.jc?`<w:jc w:val="${o.jc}"/>`:""}</w:pPr>${Array.isArray(runs)?runs.join(""):runs}</w:p>`;
+  let bmN=0;const bm=(id,inner)=>{bmN++;return `<w:bookmarkStart w:id="${bmN}" w:name="${id}"/>${inner}<w:bookmarkEnd w:id="${bmN}"/>`};
+  const link=(id,t,o={})=>`<w:hyperlink w:anchor="${id}" w:history="1">${r(t,o)}</w:hyperlink>`;
+  const PG={};const pref=(id,o={})=>{const rp=`<w:rPr><w:rFonts w:ascii="${F}" w:hAnsi="${F}" w:cs="${F}"/><w:color w:val="${G}"/><w:sz w:val="${o.sz||19}"/><w:szCs w:val="${o.sz||19}"/></w:rPr>`;return `<w:r>${rp}<w:fldChar w:fldCharType="begin"/></w:r><w:r>${rp}<w:instrText xml:space="preserve"> PAGEREF ${id} \\h </w:instrText></w:r><w:r>${rp}<w:fldChar w:fldCharType="separate"/></w:r><w:r>${rp}<w:t>@@PG_${id}@@</w:t></w:r><w:r>${rp}<w:fldChar w:fldCharType="end"/></w:r>`};
+  const none=`w:val="nil"`;
+  const tbl=(widths,head,rows,o={})=>{const cell=(c,w,bot,mar)=>`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/><w:tcBorders><w:top ${none}/><w:left ${none}/><w:bottom ${bot}/><w:right ${none}/></w:tcBorders><w:tcMar><w:top w:w="${mar[0]}" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:bottom w:w="${mar[1]}" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tcMar></w:tcPr>${Array.isArray(c)?c.join(""):c}</w:tc>`;
+    const mar=o.mar||[100,100];
+    let h=head?`<w:tr><w:trPr><w:cantSplit/><w:tblHeader/></w:trPr>${head.map((t,i)=>cell(p(r(t,{sz:16,b:1,caps:1,sp:20,c:G}),{af:0,jc:o.center&&o.center.includes(i)?"center":undefined}),widths[i],`w:val="single" w:sz="8" w:space="0" w:color="${K}"`,[60,80])).join("")}</w:tr>`:"";
+    h+=rows.map(rw=>`<w:tr><w:trPr><w:cantSplit/></w:trPr>${rw.map((c,i)=>cell(c,widths[i],`w:val="single" w:sz="4" w:space="0" w:color="${RULE}"`,mar)).join("")}</w:tr>`).join("");
+    return `<w:tbl><w:tblPr><w:tblW w:w="${widths.reduce((s,v)=>s+v,0)}" w:type="dxa"/><w:tblBorders><w:top ${none}/><w:left ${none}/><w:bottom ${none}/><w:right ${none}/><w:insideH ${none}/><w:insideV ${none}/></w:tblBorders><w:tblLayout w:type="fixed"/><w:tblLook w:val="0000" w:firstRow="0" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:noHBand="1" w:noVBand="1"/></w:tblPr><w:tblGrid>${widths.map(v=>`<w:gridCol w:w="${v}"/>`).join("")}</w:tblGrid>${h}</w:tbl>`};
+  const box=()=>p(r("☐",{sz:24,f:"Segoe UI Symbol"}),{af:0,jc:"center",ln:240});
+  const empty=(bf)=>p("",{af:0,bf:bf||0,ln:120});
+  const H1=(t,id,sub,pb=true)=>p(id?bm(id,r(t,{sz:44})):r(t,{sz:44}),{st:"Heading1",pb,kn:1,af:80})+(sub?p(r(sub,{i:1,c:G}),{af:160,kn:1}):"")+p("",{bb:1,af:320,ln:120});
+  const H2=(t,id,sub,o={})=>p(id?bm(id,r(t,{sz:30})):r(t,{sz:30}),{st:"Heading2",pb:o.pb,kn:1,bf:o.bf==null?360:o.bf,af:sub?40:160})+(sub?p(r(sub,{i:1,c:G,sz:19}),{af:180,kn:1}):"");
+  const label=t=>p(r(t,{sz:16,b:1,caps:1,sp:30,c:G}),{bf:280,af:100,kn:1});
+  const tabs=(...t)=>`<w:tabs>${t.map(([v,pos,ld])=>`<w:tab w:val="${v}"${ld?` w:leader="${ld}"`:""} w:pos="${pos}"/>`).join("")}</w:tabs>`;
+  const fmtL=d=>d.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  const hmm=v=>String(Math.floor(v/60)%24).padStart(2,"0")+":"+String(v%60).padStart(2,"0");
+  const PHN={classes:"Classes",concepts:"Concepts",revision:"Revision",practice:"Mock tests",final:"Final revision"};
+  const PHD={classes:"Attend classes; revise class notes the same day.",concepts:"Read each chapter once, work every module illustration.",revision:"Re-read, solve module questions and past papers.",practice:"Full papers under exam timing. Review every mistake.",final:"One paper at a time, in exam order. Summaries and amendments."};
+  const KW={read:"First reading",rev1:"Revision 1",rev2:"Revision 2",rev3:"Revision 3",final:"Final revision",mock:"Mock papers"};
+  const sh=pp=>PSH[pp.id]||pp.name;
+  const chN=(pp,c)=>c.map(j=>chShort(pp.id,j));
+  const days=plan.list,weeks=[];for(let i=0;i<days.length;i+=7)weeks.push(days.slice(i,i+7));
+  const months=[];for(let i=0;i<weeks.length;i+=4)months.push(weeks.slice(i,i+4).map((w,k)=>({w,no:i+k+1})));
+  const agg=seg=>{const by=new Map();const extra={classes:0,spom:[]};seg.forEach(d=>d.tasks.forEach(t=>{if(t.kind==="classes"){extra.classes++;return}if(t.kind==="spom"){if(!extra.spom.includes(t.label))extra.spom.push(t.label);return}
+      if(!by.has(t.p))by.set(t.p,{p:t.p,k:{},hrs:0});const o=by.get(t.p);const q=o.k[t.kind]=o.k[t.kind]||{n:0,ch:new Set(),hrs:0};q.n++;q.hrs+=t.hrs;o.hrs+=t.hrs;(t.ch||[]).forEach(j=>q.ch.add(j))}));
+    return {list:[...by.values()].sort((u,v)=>v.hrs-u.hrs),extra}};
+  const what=(pp,k,q)=>{const c=[...q.ch];if(k==="mock")return `${q.n} full mock paper${q.n>1?"s":""}`;if(k==="final"||c.length===chapters(pp.id).length)return `${KW[k]} — all chapters`;return `${KW[k]} — Ch ${rangeStr(c)}`};
+  // sittings: depend on what the student does alongside and their best time
+  const side=a.side||0,late=a.slot===3,early=a.slot===0;
+  const busy=["","articleship","college","work"][side];
+  const WIN=side===0?{wd:[["Morning",early?360:480,.4],["Afternoon",780,.35],["Evening",late?1230:1020,.25]],we:[["Morning",early?360:480,.4],["Afternoon",780,.35],["Evening",late?1230:1020,.25]]}
+    :{wd:[["Morning",early?330:390,.45],["Evening",late?1260:1110,.55]],we:[["Morning",early?360:450,.4],["Afternoon",690,.35],["Evening",late?1230:1020,.25]]};
+  function sit(d){const we=[0,6].includes(d.date.getDay());const cap=Math.round(d.cap*60);const wins=WIN[we?"we":"wd"].map(([n,s,f])=>[n,s,Math.max(30,Math.round(cap*f/15)*15)]);
+    const tasks=d.tasks.filter(t=>t.hrs>0.1),sum=tasks.reduce((s,t)=>s+t.hrs,0)||1,mcq=cap>=120?30:0,avail=wins.reduce((s,w)=>s+w[2],0)-mcq;
+    const q=tasks.map(t=>({t,mins:Math.max(15,Math.round(t.hrs/sum*avail/15)*15),part:0}));const out={};
+    wins.forEach(([n,st,len],wi)=>{let tt=st,left=len-(wi===wins.length-1?mcq:0);const it=[];while(left>=15&&q.length){const k=q[0],v=Math.min(left,k.mins);it.push({from:tt,to:tt+v,task:k.t,part:k.part});tt+=v;left-=v;k.mins-=v;k.part++;if(k.mins<15)q.shift()}out[n]=it});
+    return {out,we,wins,mcq}}
+  const tS=it=>{const t=it.task;if(t.kind==="classes")return "Classes";if(t.kind==="spom")return "SPOM · "+(t.label||"set");const pp=t.p;
+    if(t.kind==="mock")return `${sh(pp)} · ${it.part?"check the mock":"mock paper"}`;if(t.kind==="final")return `${sh(pp)} · final revision`;return `${sh(pp)} · ${t.kind==="read"?"Ch":"revise Ch"} ${rangeStr(t.ch)}`};
+  const nMock=days.reduce((s,d)=>s+d.tasks.filter(t=>t.kind==="mock").length,0);
+  // page estimate (each week and month is one page)
+  let pg=5;PG.glance=4;months.forEach((_,i)=>PG["m"+(i+1)]=pg++);PG.weeks=pg++;weeks.forEach((_,i)=>PG["w"+(i+1)]=pg++);PG.day=pg;pg+=2;PG.syl=pg;const sylPages=pp=>chapters(pp.id).reduce((s,c)=>s+(c[0].length>62?2:1),0)>32?2:1;plan.papers.forEach(pp=>pg+=sylPages(pp));PG.tips=pg;PG.idx=3;
+  let B="";
+  // cover
+  B+=empty(1400)+p(r("CA PREPX",{sz:18,sp:80,c:G}),{af:240})+p(r("Study Plan",{sz:80}),{af:120,ln:240})+p(r(m.combo.replace(" · "," — "),{i:1,sz:28,c:G}),{af:600})+p("",{bb:1,af:360,ln:120});
+  [["Prepared for",S.name||"You"],["Plan runs",`${fmtL(today)} → ${fmtL(m.exam)}`],["Study time",m.hrsTxt.replace(/ h /g," hours ")],["Attempt",lv.attempts[0]]].forEach(([k,v])=>B+=p([r(k,{i:1,c:G}),r("\t"+v)],{af:160,tabs:tabs(["left",2400])}));
+  B+=empty(600)+tbl([2376,2377,2377,2376],null,[[[plan.days,"days to go"],[plan.hours,"study hours"],[weeks.length,"weekly targets"],[nMock,"mock papers"]].map(([n,l])=>p(r(n,{sz:48}),{af:0,ln:240})+p(r(l,{i:1,c:G,sz:19}),{af:0}))]);
+  // how to use
+  B+=H1("How to use this plan",null,"Three layers. Read top-down, work bottom-up.");
+  [["Month","The finish line. What must be done by the end of each month."],["Week","Your working page. Seven-day targets and a slot for every sitting."],["Day","Yours to shape. One worked example and a simple method are in section 4."]].forEach(([k,v])=>B+=p(r(k,{sz:26}),{af:40,kn:1})+p(r(v,{c:G}),{af:280}));
+  B+=label("Reality check")+p(r(m.fit<0.97?`Covering everything properly needs about ${m.need} hours. You have about ${m.avail}. Reading and revision have been trimmed to ${Math.round(m.fit*100)}% so that mocks and final revision still happen.`:`You need about ${m.need} hours and have about ${m.avail}. There is room for buffer days.`),{af:120});
+  if(m.fit<0.97)B+=p(r(`To close the gap: add about ${Math.ceil((m.need-m.avail)/plan.days*2)/2} hours a day, or give priority to chapters with high past-paper weight.`,{i:1,c:G}),{af:0});
+  // contents
+  B+=H1("Contents","idx");
+  const ix=(no,t,id,sub)=>p([...(sub?[]:[r(no+"\t",{sz:23})]),link(id,t,{sz:sub?19:23,i:!!sub}),r("\t",{sz:sub?19:23}),pref(id,{sz:sub?19:23})],{bf:sub?0:220,af:sub?40:60,tabs:tabs(["left",600],["right",W,"dot"]),ind:sub?600:undefined});
+  B+=ix("1","Plan at a glance","glance")+ix("2","Month-wise plan","m1");
+  months.forEach((mo,i)=>B+=ix("",`Month ${i+1}   ${fmt(mo[0].w[0].date)} – ${fmt(mo[mo.length-1].w.slice(-1)[0].date)}   ·   Weeks ${mo[0].no}–${mo[mo.length-1].no}`,"m"+(i+1),1));
+  B+=ix("3","Week-wise plan","weeks")+ix("4","Sample day, and how to plan yours","day")+ix("5","Syllabus checklist","syl")+ix("6","Exam-season rules","tips");
+  B+=p(r("Each month page links to its weeks; each week page links back to its month.",{i:1,c:G,sz:19}),{bf:360});
+  // glance
+  B+=H1("1   Plan at a glance","glance","From first reading to exam day.");
+  let cur=0;const segs=[];days.forEach((d,i)=>{const l=segs[segs.length-1];if(l&&l.k===d.phase)l.e=i;else segs.push({k:d.phase,s:i,e:i})});
+  B+=tbl([2300,2500,800,3906],["Phase","Dates","Days","Focus"],segs.map(s=>[p(r(PHN[s.k],{b:1}),{af:0}),p(r(`${fmt(days[s.s].date)} – ${fmt(days[s.e].date)}`),{af:0}),p(r(s.e-s.s+1),{af:0}),p(r(PHD[s.k],{i:1,c:G,sz:19}),{af:0})]));
+  B+=H2("Hours per paper",null,"Reading, revision, mocks and final revision. The paper marked * gets about 30% more time.");
+  const tot=plan.perPaper.reduce((s,v)=>s+v.h,0)||1;
+  B+=tbl([6506,1500,1500],["Paper","Hours","Share"],plan.perPaper.map(v=>[p([r(`P${v.p.no}   `,{c:G}),r(v.p.name+(v.p.id===m.weakest?"  *":""))],{af:0}),p(r(v.h),{af:0}),p(r(Math.round(v.h/tot*100)+"%",{c:G}),{af:0})]));
+  // months
+  months.forEach((mo,i)=>{const seg=mo.flatMap(o=>o.w);const phs=[...new Set(seg.map(d=>d.phase))].map(k=>PHN[k]).join(" → ");
+    B+=i===0?H1("2   Month-wise plan",null,"Hit the finish line each month and you are on track, whatever happened on individual days.",true).replace("<w:pageBreakBefore/>","<w:pageBreakBefore/>")+H2(`Month ${i+1}`,"m"+(i+1),`${fmt(seg[0].date)} – ${fmt(seg[seg.length-1].date)}   ·   ${phs}`,{bf:0}):H2(`Month ${i+1}`,"m"+(i+1),`${fmt(seg[0].date)} – ${fmt(seg[seg.length-1].date)}   ·   ${phs}`,{pb:1,bf:0});
+    const g=agg(seg);B+=label("By the end of this month");
+    const rows=g.list.map(o=>[p(r(`P${o.p.no}  ${sh(o.p)}`,{b:1}),{af:0}),Object.entries(o.k).map(([k,q],j,arr)=>p(r(what(o.p,k,q)),{af:j<arr.length-1?60:0})).join(""),box()]);
+    if(g.extra.classes)rows.unshift([p(r("Classes",{b:1}),{af:0}),p(r(`Coaching classes on ${g.extra.classes} days`),{af:0}),box()]);
+    if(g.extra.spom.length)rows.push([p(r("SPOM",{b:1}),{af:0}),p(r(g.extra.spom.join(", ")),{af:0}),box()]);
+    B+=tbl([2800,5906,800],null,rows);
+    B+=label("Weeks in this month");
+    mo.forEach(({w,no})=>B+=p([link("w"+no,`Week ${no}`,{b:1}),r(`\t${fmt(w[0].date)} – ${fmt(w[w.length-1].date)}`,{c:G,i:1}),r("\tp. ",{c:G,sz:19}),pref("w"+no)],{af:80,tabs:tabs(["left",1500],["right",W,"dot"])}));
+  });
+  // weeks
+  B+=H1("3   Week-wise plan","weeks","One page per week. Targets first, then every sitting.");
+  [["Targets","What must be finished this week, paper by paper. Tick each one on the right."],["Sittings","When to study each day. The time shows when each sitting starts."],["Done","Tick the day once every sitting is complete."]].forEach(([k,v])=>B+=p(r(k,{sz:24}),{af:20,kn:1})+p(r(v,{i:1,c:G}),{af:240}));
+  B+=p(r("Fell behind? Unfinished work moves to the first free sitting next week. Two slips in a row: retake the quiz on caprepx.com.",{i:1,c:G,sz:19}),{bf:240});
+  weeks.forEach((w,wi)=>{const no=wi+1,mo=Math.floor(wi/4)+1;const phs=[...new Set(w.map(d=>d.phase))].map(k=>PHN[k]).join(" → ");
+    B+=p(bm("w"+no,r(`Week ${no}`,{sz:36})),{st:"Heading2",pb:1,kn:1,af:40});
+    B+=p([r(`${fmt(w[0].date)} – ${fmt(w[w.length-1].date)}   ·   ${phs}   ·   `,{i:1,c:G,sz:19}),link("m"+mo,`Month ${mo}`,{i:1,sz:19}),r("   ·   ",{c:G,sz:19}),link("idx","Contents",{i:1,sz:19})],{af:80,bb:1});
+    B+=label("Targets");const g=agg(w);const rows=[];
+    if(g.extra.classes)rows.push([p(r("Classes",{b:1}),{af:0}),p(r(`Attend classes on ${g.extra.classes} days; revise notes the same day`),{af:0}),box()]);
+    g.list.forEach(o=>Object.entries(o.k).forEach(([k,q])=>{const c=[...q.ch].sort((u,v)=>u-v),all=k==="final"||c.length===chapters(o.p.id).length,nm=chN(o.p,c);
+      rows.push([p(r(`P${o.p.no}  ${sh(o.p)}`,{b:1}),{af:0}),p(r(what(o.p,k,q)),{af:k==="mock"||all?0:40})+(k==="mock"||all?"":p(r(nm.length>3?nm.slice(0,3).join("; ")+` + ${nm.length-3} more`:nm.join("; "),{i:1,c:G,sz:18}),{af:0,ln:260})),box()])}));
+    if(g.extra.spom.length)rows.push([p(r("SPOM",{b:1}),{af:0}),p(r(g.extra.spom.join(", ")),{af:0}),box()]);
+    const sits=w.map(sit);const load=rows.length*2+sits.reduce((t,s)=>t+Math.max(1,...Object.values(s.out).map(v=>v.length)),0);const tight=load>24;
+    if(tight)rows.forEach(rw=>{rw[1]=rw[1].replace(/<w:p><w:pPr>(?:(?!<w:p>).)*?<w:i\/>(?:(?!<w:p>).)*?<\/w:p>$/,"")});
+    B+=tbl([2300,6406,800],null,rows,tight?{mar:[70,70]}:{});
+    B+=label("Sittings");
+    const grid=w.map((d,di)=>{const s=sits[di];const cell=n=>{const it=s.out[n];if(!it)return p(r(n==="Afternoon"&&!s.we&&busy?busy:"",{i:1,c:LG,sz:18}),{af:0});if(!it.length)return p("",{af:0});
+        return it.map((v,j)=>p([r(`${hmm(v.from)}  `,{i:1,c:G,sz:15}),r(tS(v),{sz:18})],{af:j<it.length-1?50:0,ln:250})).join("")};
+      return [p(r(d.date.toLocaleDateString("en-GB",{weekday:"short"}),{b:1}),{af:0})+p(r(fmt(d.date),{i:1,c:G,sz:16}),{af:0}),cell("Morning"),cell("Afternoon"),cell("Evening"),box()]});
+    B+=tbl([1200,2550,2150,2806,800],["Day","Morning","Afternoon","Evening","Done"],grid,{center:[4],mar:tight?[60,60]:[90,90]});
+    B+=p(r("Times show when each sitting starts. End every day with 15 MCQs; carry anything unfinished into next week.",{i:1,c:G,sz:17}),{bf:160,af:0});
+  });
+  // sample day
+  const sd=days.find((d,i)=>i>=7&&![0,6].includes(d.date.getDay())&&["concepts","revision"].includes(d.phase))||days.find(d=>![0,6].includes(d.date.getDay()))||days[0];const ss=sit(sd);
+  B+=H1("4   Sample day","day","One worked example. Build the rest yourself from the week's targets.");
+  B+=p([r(sd.date.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"}),{b:1}),r(`   ·   Week ${Math.floor(days.indexOf(sd)/7)+1}   ·   ${sd.cap} hours`,{i:1,c:G})],{af:200});
+  const dr=[];let lastEnd=0;
+  ss.wins.forEach(([n])=>{const it=ss.out[n]||[];if(!it.length)return;
+    if(n==="Evening"&&busy&&!ss.we)dr.push([p(r("Day"),{af:0}),p(r(busy[0].toUpperCase()+busy.slice(1)),{b:1,af:40})+p(r("Nothing new to study. Rest your eyes on the commute.",{i:1,c:G,sz:19}),{af:0})]);
+    it.forEach(v=>{const t=v.task;lastEnd=Math.max(lastEnd,v.to);let det;
+      if(t.kind==="read")det=v.part?"Solve the module's practice questions for these chapters. Note your doubts.":`Read ${chN(t.p,t.ch).join("; ")} from the ICAI module. Attempt every illustration before looking at the solution.`;
+      else if(t.kind==="mock")det=v.part?"Check against the suggested answers and log every mistake.":"Full paper, exam timing, no notes, phone away.";
+      else if(t.kind==="final")det="Summary notes, amendments and formula sheet. No new material.";
+      else if(t.kind==="classes")det="Attend class, then revise today's notes the same day.";
+      else if(t.kind==="spom")det="Study the set and attempt its assessment.";
+      else det=`Revise ${chN(t.p,t.ch).join("; ")}. Solve module and past-paper questions.`;
+      dr.push([p(r(`${hmm(v.from)}–${hmm(v.to)}`),{af:0}),p(r(tS(v),{b:1}),{af:40})+p(r(det,{i:1,c:G,sz:19}),{af:0})])})});
+  if(ss.mcq)dr.push([p(r(`${hmm(lastEnd)}–${hmm(lastEnd+30)}`),{af:0}),p(r("MCQs",{b:1}),{af:40})+p(r("15 questions from today's chapters on caprepx.com. Note every wrong answer.",{i:1,c:G,sz:19}),{af:0})]);
+  dr.push([p(r(hmm(lastEnd+ss.mcq)),{af:0}),p(r("Wind down",{b:1}),{af:40})+p(r("Write down three things you learnt today. Phone away.",{i:1,c:G,sz:19}),{af:0})]);
+  B+=tbl([1900,7606],["Time","Task"],dr);
+  B+=H2("Plan your own day in five steps",null,null,{pb:1,bf:0});
+  [["Open this week's page.","The targets are your finish line for seven days."],["Divide by the days left.","Five chapters, five days: one a day. Heavier chapters go on weekends."],["Hardest work first.","New chapters in your best sitting. Practice and revision later in the day."],["Work in 50/10 blocks.","Fifty minutes of focus, ten minutes off. Finish with 15 MCQs."],["Carry forward, never pile up.","Unfinished work moves to the first free sitting. Slipped two weeks in a row? Retake the quiz on caprepx.com."]]
+    .forEach(([k,v],i)=>B+=p([r(`${i+1}.   `,{sz:24}),r(k,{sz:22})],{af:20,kn:1})+p(r(v,{i:1,c:G,sz:19}),{af:200,ind:480}));
+  B+=H2("Your day",null,"Print this page, or copy it into your notebook.",{bf:400});
+  B+=p([r("Date  ",{i:1,c:G}),r("______________________",{c:LG}),r("     Week  ",{i:1,c:G}),r("______",{c:LG})],{af:240});
+  B+=tbl([1700,2400,4406,1000],["Time","Paper","Chapter / target","Done"],Array.from({length:10},()=>[p("",{af:0,ln:360}),p("",{af:0}),p("",{af:0}),box()]),{center:[3]});
+  // syllabus
+  plan.papers.forEach((pp,pi)=>{if(pi===0)B+=H1("5   Syllabus checklist","syl","Every chapter from ICAI's study material. Tick in pencil.");
+    B+=H2(`P${pp.no}   ${pp.name}`,null,null,{pb:pi>0,bf:pi?0:120});
+    B+=tbl([600,6106,900,950,950],["","Chapter","Read","Rev 1","Rev 2"],chapters(pp.id).map((c,j)=>{const st=(S.chap||{})[pp.id+"|"+j]||0;const bx=v=>p(r(v?"☑":"☐",{sz:24,f:"Segoe UI Symbol"}),{af:0,jc:"center",ln:240});return [p(r(j+1,{c:G,sz:18}),{af:0,ln:250}),p(r(c[0],{sz:19}),{af:0,ln:250}),bx(st>=1),bx(st>=2),box()]}),{center:[2,3,4],mar:[55,55]})});
+  // rules
+  B+=H1("6   Exam-season rules","tips");
+  [["Mocks are sacred.","Three hours, exam timing, no notes. Checking the paper matters as much as writing it."],["Amendments last.","Read ICAI's amendment list for your attempt in the final 30 days."],["Sleep is revision.","Seven hours a night in the final month."],["One source per paper.","The ICAI module plus one set of notes. No new books in the last month."],["Presentation earns marks.","Working notes, headings, and a line after every answer."]]
+    .forEach(([k,v])=>B+=p(r(k,{sz:24}),{af:40,kn:1})+p(r(v,{i:1,c:G}),{af:280}));
+  B+=p([r("Made with CA PrepX · caprepx.com",{i:1,c:LG,sz:18})],{bf:480,jc:"center"});
+  B=B.replace(/@@PG_(\w+)@@/g,(q,id)=>PG[id]||"–");
+  const NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w10="urn:schemas-microsoft-com:office:word"';
+  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${NS}><w:body>${B}<w:sectPr><w:headerReference w:type="default" r:id="rIdH"/><w:headerReference w:type="first" r:id="rIdH1"/><w:footerReference w:type="default" r:id="rIdF"/><w:footerReference w:type="first" r:id="rIdF1"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1300" w:right="1200" w:bottom="1200" w:left="1200" w:header="600" w:footer="600" w:gutter="0"/><w:titlePg/></w:sectPr></w:body></w:document>`;
+  const WM=`<w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:noProof/></w:rPr><w:pict><v:shapetype id="_x0000_t136" coordsize="21600,21600" o:spt="136" adj="10800" path="m@7,l@8,m@5,21600l@6,21600e"><v:formulas><v:f eqn="sum #0 0 10800"/><v:f eqn="prod #0 2 1"/><v:f eqn="sum 21600 0 @1"/><v:f eqn="sum 0 0 @2"/><v:f eqn="sum 21600 0 @3"/><v:f eqn="if @0 @3 0"/><v:f eqn="if @0 21600 @1"/><v:f eqn="if @0 0 @2"/><v:f eqn="if @0 @4 21600"/><v:f eqn="mid @5 @6"/><v:f eqn="mid @8 @5"/><v:f eqn="mid @7 @8"/><v:f eqn="mid @6 @7"/><v:f eqn="sum @6 0 @5"/></v:formulas><v:path textpathok="t" o:connecttype="custom" o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0"/><v:textpath on="t" fitshape="t"/><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"/></v:handles><o:lock v:ext="edit" text="t" shapetype="t"/></v:shapetype><v:shape id="PowerPlusWaterMarkObject1" o:spid="_x0000_s2049" type="#_x0000_t136" style="position:absolute;margin-left:0;margin-top:0;width:440pt;height:110pt;rotation:315;z-index:-251655168;mso-position-horizontal:center;mso-position-horizontal-relative:margin;mso-position-vertical:center;mso-position-vertical-relative:margin" o:allowincell="f" fillcolor="#000000" stroked="f"><v:fill opacity="3277f"/><v:textpath style="font-family:&quot;Georgia&quot;;font-size:1pt;font-weight:bold" string="CA PrepX"/><w10:wrap anchorx="margin" anchory="margin"/></v:shape></w:pict></w:r></w:p>`;
+  const hdr=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:hdr ${NS}>${p([r("CA PrepX",{sz:17,sp:20}),r(`\tStudy Plan${S.name?" · "+S.name:""}`,{sz:17,i:1,c:G})],{af:0,tabs:tabs(["right",W])})}${WM}</w:hdr>`;
+  const hdr1=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:hdr ${NS}><w:p/></w:hdr>`;
+  const ftr=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr ${NS}><w:p><w:pPr><w:spacing w:after="0"/><w:jc w:val="center"/></w:pPr><w:fldSimple w:instr=" PAGE ">${r("1",{sz:17,c:G})}</w:fldSimple></w:p></w:ftr>`;
+  const ftr1=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr ${NS}><w:p/></w:ftr>`;
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${F}" w:hAnsi="${F}" w:eastAsia="${F}" w:cs="${F}"/><w:color w:val="${K}"/><w:sz w:val="21"/><w:szCs w:val="21"/><w:lang w:val="en-GB"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="300" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:sz w:val="44"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:outlineLvl w:val="1"/></w:pPr><w:rPr><w:sz w:val="30"/></w:rPr></w:style><w:style w:type="character" w:styleId="Hyperlink"><w:name w:val="Hyperlink"/><w:rPr><w:color w:val="${K}"/></w:rPr></w:style></w:styles>`;
+  const z=new JSZip();
+  z.file("[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/><Override PartName="/word/header2.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/><Override PartName="/word/footer2.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>`);
+  z.file("_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/></Relationships>`);
+  z.file("docProps/core.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>CA PrepX study plan</dc:title><dc:creator>CA PrepX</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${new Date().toISOString().slice(0,19)}Z</dcterms:created></cp:coreProperties>`);
+  z.file("word/document.xml",doc);z.file("word/styles.xml",styles);z.file("word/header1.xml",hdr);z.file("word/header2.xml",hdr1);z.file("word/footer1.xml",ftr);z.file("word/footer2.xml",ftr1);
+  z.file("word/_rels/document.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdS" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdH" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header1.xml"/><Relationship Id="rIdH1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header2.xml"/><Relationship Id="rIdF" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/><Relationship Id="rIdF1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer2.xml"/></Relationships>`);
+  const blob=await z.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:6},mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+  const el=document.createElement("a");el.href=URL.createObjectURL(blob);el.download=`CA-PrepX-${lv.label}-study-plan-${iso(today)}.docx`;document.body.appendChild(el);el.click();setTimeout(()=>{URL.revokeObjectURL(el.href);el.remove()},1500);
+  toast("Plan downloaded. Print it, stick it up, crush it.");
+  }catch(e){console.error(e);toast("Couldn't create the file. Check your connection and try again.")}
+  if(btn){btn.disabled=false;btn.innerHTML=old}
+}
+
 async function planDocx(btn){
   const old=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="Preparing…"}
   try{
@@ -1767,7 +1933,7 @@ document.addEventListener("click",e=>{
   if(a==="cuclose"){catchup=false;render();return}
   if(a==="guestgo"){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}go("home");render();window.scrollTo({top:0});return}
   if(a==="spnext"){spomPick();render();return}
-  if(a==="plandocx"){planDocx(t);return}
+  if(a==="plandocx"){(currentPlan().v2?planDocx2:planDocx)(t);return}
   if(a==="theme"){THEME=isDark()?"light":"dark";try{localStorage.setItem("prepx.theme",THEME)}catch(_){}applyTheme();renderChrome();return}
   if(a==="nextq"){pick();paintQ()}
   if(a==="fresh"){const keepUid=S.uid;S=blank(S.level);S.uid=keepUid;W.level=S.level;save();render()}
