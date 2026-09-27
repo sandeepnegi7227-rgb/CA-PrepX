@@ -1315,7 +1315,7 @@ function ixNew(s,rtpMin){const P=ixPat(s.pid),pn=paperName(s.pid);
   const a={id:"x"+Date.now(),kind:s.exam?"icai":"rtp",doc:s.key,src:s.source,url:s.url,ans:s.ans,pid:s.pid,level:s.level,title:`${s.attempt} · ${IXSRC[s.source]} · P${pn.no} ${pn.name}`,started:new Date().toISOString(),status:"in-progress",
     left:(s.exam?P.min:(rtpMin||0))*60,readLeft:s.exam?P.read*60:0,used:0,untimed:!s.exam&&!rtpMin,practice:ixMode==="practice"||!s.exam,sh:{},fl:{},dd:{},n:{},done:{}};
   P.mcq.forEach(x=>a.n[x.id]=x.n);mocks().push(a);if(mocks().length>150)S.mocks=mocks().slice(-150);save();return a}
-function ixGo(key){const s=ixFind(key);if(!s)return toast("Paper not found");ixSel=null;
+function ixGo(key){const s=ixFind(key);if(!s)return toast("Paper not found");track(s.exam?"exam.start":"rtp.start");ixSel=null;
   let a=mocks().filter(x=>x.doc===key&&x.status==="in-progress").slice(-1)[0];
   if(!a){const pr=document.getElementById("ixPractice");ixMode=pr&&pr.checked?"practice":"exam";const m=document.getElementById("ixRtpMin");a=ixNew(s,m?+m.value:0)}
   ixOpen(a)}
@@ -1356,7 +1356,7 @@ function paintIx(part){const el=document.getElementById("ixam");const a=IXA;if(!
 function ixConfirmBox(a,P){if(a.kind==="rtp")return `<div class="ex-confirm"><div class="card"><h2>Finish this RTP?</h2><p style="margin:8px 0">You've ticked ${Object.keys(a.done).filter(k=>a.done[k]).length} questions as done in ${mm(a.used)}.</p><div class="row"><button class="btn primary" data-act="ixsubmit">Finish and check answers</button><button class="btn" data-act="ixcancel">Keep going</button></div></div></div>`;
   const mt=P.mcq.reduce((t,s)=>t+(a.n[s.id]||s.n),0),mg=P.mcq.reduce((t,s)=>t+Object.values(a.sh[s.id]||{}).filter(v=>v!=null).length,0),dt=Object.keys(a.dd).filter(k=>a.dd[k]).length,fl=P.mcq.reduce((t,s)=>t+Object.values(a.fl[s.id]||{}).filter(Boolean).length,0);
   return `<div class="ex-confirm"><div class="card"><h2>Submit this paper?</h2><p style="margin:8px 0">${mt?`MCQs marked: <b>${mg} of ${mt}</b>. `:""}${P.desc.length?`Written questions attempted: <b>${dt}</b>. `:""}${fl?`${fl} MCQ${fl>1?"s are":" is"} flagged for review.`:""}</p><p class="muted" style="font-size:.88rem">${a.untimed?"":mm(a.left)+" left. "}You can't change the answer sheet after submitting.</p><div class="row" style="margin-top:12px"><button class="btn primary" data-act="ixsubmit">Submit paper</button><button class="btn" data-act="ixcancel">Keep writing</button></div></div></div>`}
-function ixSubmit(auto){const a=IXA;if(!a)return;a.submitted=new Date().toISOString();const P=ixPat(a.pid);
+function ixSubmit(auto){const a=IXA;if(!a)return;track(a.kind==="rtp"?"rtp.finish":"exam.submit");a.submitted=new Date().toISOString();const P=ixPat(a.pid);
   if(a.kind==="rtp"){a.status="done";a.mcqMax=0;a.selfMax=0}
   else{a.mcqMax=P.caseChoose?P.caseChoose*10:P.mcq.reduce((t,s)=>t+s.max,0);a.selfMax=ixMarks(P)-a.mcqMax;const k=(S.ixKeys||{})[a.doc];if(k){a.key=JSON.parse(JSON.stringify(k.key||{}));a.mk=JSON.parse(JSON.stringify(k.mk||{}))}a.status="needs-review"}
   save();ixClose();mockMode="result";mockRes=a.id;prMode="mock";go("practice");render();window.scrollTo({top:0});toast(auto?"Time's up. Your paper has been submitted.":a.kind==="rtp"?"Done. Check your answers in the RTP.":"Submitted. ICAI's answers are now unlocked.")}
@@ -1467,7 +1467,7 @@ async function startPaper(id,resumeId){const p=PAPERS.find(x=>x.id===id);if(!p){
   let a=resumeId?mocks().find(x=>x.id===resumeId):mocks().filter(x=>x.paper===id&&x.status==="in-progress").slice(-1)[0];
   if(!a)a=newAttempt(p,qs,"full",p.title||`${p.attempt} · CA ${L().label} ${paperName(p.pid).name}`);
   openExam(a,qs)}
-async function startChapter(){const f=mf();const lp=L().papers;const pid=f.chPid&&lp.some(p=>p.id===f.chPid)?f.chPid:lp[0].id;const cs=document.getElementById("ctC");if(cs)f.ch=cs.value;const ch=+(f.ch||0),n=+f.n||10;
+async function startChapter(){track("chapter.start");const f=mf();const lp=L().papers;const pid=f.chPid&&lp.some(p=>p.id===f.chPid)?f.chPid:lp[0].id;const cs=document.getElementById("ctC");if(cs)f.ch=cs.value;const ch=+(f.ch||0),n=+f.n||10;
   let pool=Q.filter(q=>q.p===pid&&q.c===ch).map(q=>({id:"b"+q.id,sec:"mcq",pid,ch,text:q.q,opts:q.o,ans:q.a,sol:q.e,marks:1,src:"CA PrepX question bank"}));
   if(sb){try{const {data}=await sb.from("mquestions").select("*").eq("pid",pid).eq("ch",ch).eq("sec","mcq").limit(400);(data||[]).forEach(q=>{if(f.law&&q.law==="outdated")return;pool.push({...q,marks:1,caseText:q.case_text,caseId:q.case_id,src:q.src_label||""})})}catch(_){}}
   if(!pool.length){toast("No MCQs for this chapter yet. Try another chapter.");return}
@@ -1558,6 +1558,21 @@ function playVid(yt){const v=(VIDS[S.level]||[]).find(x=>x.yt===yt);vidPlay=yt;S
   document.body.classList.add("modal-on")}
 function closeVid(){const el=document.getElementById("vmodal");if(el)el.remove();document.body.classList.remove("modal-on");vidPlay=null;if(tab==="resources"&&resMode==="videos")paintVids()}
 
+
+/* ---------- usage analytics (time per section, key actions) ---------- */
+const TR={p:{},act:Date.now(),busy:false};
+function trSection(){if(typeof IXA!=="undefined"&&IXA)return "exam";if(typeof EX!=="undefined"&&EX)return "exam";if(typeof vidPlay!=="undefined"&&vidPlay)return "video.watch";
+  if(!session||gateOn())return "signin";
+  const sub={resources:resMode,practice:prMode,plan:planMode,spom:spomMode}[tab];return sub?tab+"."+sub:tab}
+function track(k,n){if(!sb)return;const r=TR.p[k]=TR.p[k]||{t:0,h:0};r.h+=(n||1)}
+["pointerdown","keydown","scroll","touchstart"].forEach(ev=>addEventListener(ev,()=>{TR.act=Date.now()},{passive:true}));
+setInterval(()=>{if(!sb||!session)return;const sec=trSection();const always=sec==="exam"||sec==="video.watch";
+  if(sec==="signin")return;if(!always&&(document.visibilityState!=="visible"||Date.now()-TR.act>120000))return;
+  const r=TR.p[sec]=TR.p[sec]||{t:0,h:0};r.t+=5},5000);
+async function trFlush(){if(!sb||!session||TR.busy)return;const rows=Object.entries(TR.p).filter(([,v])=>v.t||v.h).map(([s,v])=>({s,t:v.t,h:v.h}));if(!rows.length)return;
+  TR.p={};TR.busy=true;try{const {error}=await sb.rpc("track_usage",{p:rows});if(error&&!/track_usage/.test(error.message||""))rows.forEach(x=>{const r=TR.p[x.s]=TR.p[x.s]||{t:0,h:0};r.t+=x.t;r.h+=x.h})}catch(_){rows.forEach(x=>{const r=TR.p[x.s]=TR.p[x.s]||{t:0,h:0};r.t+=x.t;r.h+=x.h})}TR.busy=false}
+setInterval(trFlush,60000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")trFlush()});addEventListener("pagehide",trFlush);
+document.addEventListener("click",e=>{const a=e.target.closest(".job-act a");if(a)track(/careers/i.test(a.textContent)?"jobs.careers":"jobs.apply");const l=e.target.closest(".job-li a");if(l)track("jobs.linkedin")},true);
 /* ---------- render ---------- */
 const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["plan","Plan","Plan","plan"],["spom","SPOM","SPOM","school"],["careers","Careers","Careers","brief"]];
 const IC={
@@ -2150,7 +2165,7 @@ const DX={
 };
 /* ---------- Word export v2: minimal black & white (month → week → sample day) ---------- */
 const PSH={F1:"Accounts",F2:"Law",F3:"Quant",F4:"Economics",I1:"Adv Accounts",I2:"Law",I3:"Tax",I4:"Costing",I5:"Audit",I6:"FM & SM",N1:"FR",N2:"AFM",N3:"Audit",N4:"DT",N5:"IDT",N6:"IBS"};
-async function planDocx2(btn){
+async function planDocx2(btn){track("plan.download");
   const old=btn?btn.innerHTML:"";if(btn){btn.disabled=true;btn.textContent="Preparing…"}
   try{
   await loadJSZip();
@@ -2426,7 +2441,7 @@ function paintQ(){
    <div class="opts">${cur.o.map((o,i)=>`<button class="opt" data-opt="${i}"><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}</div>
    <div id="why"></div><div class="mcq-foot"><span class="muted" style="font-size:.85rem">${pool().length} questions in this set</span><button class="btn primary" data-act="nextq">Next one</button></div>`;
 }
-function answer(i){
+function answer(i){track("mcq.answer");
   if(answered||!cur)return;answered=true;const ok=i===cur.a;
   document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j===cur.a)b.classList.add("right");else if(j===i)b.classList.add("wrong")});
   document.getElementById("why").innerHTML=`<div class="why"><b style="color:${ok?"var(--good)":"var(--tick)"}">${ok?["Nailed it!","Sahi jawab!","Correct!","Spot on!"][Math.floor(Math.random()*4)]:"Not quite — it's "+"ABCD"[cur.a]+"."}</b> ${esc(cur.w)}</div>`;
@@ -2513,7 +2528,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.vl){vf().lang=t.dataset.vl;vidShown=18;render();return}
   if(t.dataset.vk){vf().kind=t.dataset.vk;vidShown=18;render();return}
   if(t.dataset.vc){vf().ch=t.dataset.vc;vidShown=18;render();return}
-  if(t.dataset.vplay){playVid(t.dataset.vplay);return}
+  if(t.dataset.vplay){track("video.play");playVid(t.dataset.vplay);return}
   if(t.dataset.vsave){S.vs=S.vs||{};const k=t.dataset.vsave;if(S.vs[k])delete S.vs[k];else S.vs[k]=1;save();paintVids();return}
   if(t.dataset.jc){jf().city=t.dataset.jc;jobsShown=12;document.querySelectorAll("[data-jc]").forEach(b=>b.setAttribute("aria-pressed",b===t));paintJobs();return}
   if(t.dataset.js){jf().stage=t.dataset.js;jobsShown=12;document.querySelectorAll("[data-js]").forEach(b=>b.setAttribute("aria-pressed",b===t));paintJobs();return}
@@ -2547,7 +2562,7 @@ document.addEventListener("click",e=>{
   if(a==="qprev"){const I=qzState();I.step=Math.max(0,I.step-1);render();window.scrollTo({top:0});return}
   if(a==="qcombo"){const I=qzState();I._c=I.combo;I.combo=null;render();return}
   if(a==="qretake"){const I=qzState();I.done=false;I.step=0;save();render();window.scrollTo({top:0});return}
-  if(a==="qbuild"){const I=qzState();const Q=quizFor(I.combo);if(Q.some(x=>I.a[x.id]==null)){toast("Answer every question first");return}I.done=true;I.built=iso(today);S.plan.hpd=HRS_V[I.a.wd||0];if(I.date)S.exam[S.level]=I.date;save();toast("Building your plan…");render();window.scrollTo({top:0});return}
+  if(a==="qbuild"){track("plan.build");const I=qzState();const Q=quizFor(I.combo);if(Q.some(x=>I.a[x.id]==null)){toast("Answer every question first");return}I.done=true;I.built=iso(today);S.plan.hpd=HRS_V[I.a.wd||0];if(I.date)S.exam[S.level]=I.date;save();toast("Building your plan…");render();window.scrollTo({top:0});return}
   if(a==="cuclose"){catchup=false;render();return}
   if(a==="guestgo"){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}go("home");render();window.scrollTo({top:0});return}
   if(a==="spnext"){spomPick();render();return}

@@ -74,6 +74,19 @@ input[type=search],input[type=email],input[type=password]{padding:8px 10px;borde
 .field{display:grid;gap:5px}
 .field label{font-size:.8rem;font-weight:600;color:var(--muted)}
 .msg{font-size:.88rem;padding:9px 12px;border-radius:8px;background:var(--tick-soft);color:var(--tick)}
+.an-grid{display:grid;gap:20px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.an-grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}}
+.an-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:6px 0;font-size:.88rem}
+.an-t{grid-column:1/-1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.an-t i{display:block;height:100%;background:var(--accent);border-radius:0 4px 4px 0}
+.an-s{grid-column:1/-1;font-size:.75rem}
+.an-heat{display:grid;grid-template-columns:34px repeat(24,minmax(0,1fr));gap:3px;font-size:.68rem;color:var(--muted)}
+.an-heat i{display:block;aspect-ratio:1;border-radius:3px;min-height:10px}
+.an-hy{align-self:center}.an-hx{text-align:center}
+.an-row:hover td{background:var(--surface-2)}
+:root{--heat:#9C7400}
+@media (prefers-color-scheme: dark){:root{--heat:#E0B43A}}
+#topAct{min-width:0;max-width:100%}#vw{display:flex;max-width:100%;overflow-x:auto}#vw button{white-space:nowrap;flex:none}
 </style>
 </head>
 <body>
@@ -117,13 +130,14 @@ async function start(){
   const r=await sb.rpc("is_admin");
   if(!r.data){top.innerHTML=`<button class="btn" id="so">Sign out</button>`;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
     main.innerHTML=`<div class="card"><h2>This account isn't an admin</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(data.session.user.email||"a guest")}. Run the "make yourself admin" line in supabase-setup.sql for your account, then reload.</p></div>`;return}
-  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Students</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
+  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Students</button><button data-v="analytics" aria-pressed="false">Analytics</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
   document.querySelectorAll("#vw [data-v]").forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll("#vw [data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b));load()});
   document.getElementById("rf").onclick=load;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
   load();
 }
 async function load(){
   main.innerHTML=`<p class="muted">Loading…</p>`;
+  if(view==="analytics")return loadAnalytics();
   if(view==="jobs")return loadJobs();
   if(view==="papers")return loadPapersA();
   if(view==="videos")return loadVideosA();
@@ -260,6 +274,65 @@ function paintVideosA(total){
   document.getElementById("vlv").onchange=e=>{vlv=e.target.value;loadVideosA()};
   let tmo;document.getElementById("vq").oninput=e=>{clearTimeout(tmo);tmo=setTimeout(()=>{vq=e.target.value.trim();loadVideosA().then(()=>{const n=document.getElementById("vq");n.focus();n.setSelectionRange(n.value.length,n.value.length)})},350)};
 }
+
+/* ---------- Analytics: time per section and key actions ---------- */
+const SECN={home:"Home","resources.papers":"RTP · MTP library","resources.syllabus":"Syllabus tracker","resources.tips":"Exam tips","resources.videos":"Videos · browsing","video.watch":"Videos · watching","practice.mcq":"MCQ practice","practice.mock":"Mock tests · exam hall","exam":"Mock exam · writing","plan.study":"Study plan","plan.progress":"My progress","plan.journey":"CA journey","spom.overview":"SPOM overview","spom.syllabus":"SPOM syllabus","spom.mcq":"SPOM MCQs","spom.test":"SPOM test booking",careers:"Careers · jobs",about:"About us"};
+const ACTN={"exam.start":"Mock exams started","exam.submit":"Mock exams submitted","rtp.start":"RTP practice started","rtp.finish":"RTPs finished","chapter.start":"Chapter tests started","mcq.answer":"MCQs answered","video.play":"Videos played","plan.build":"Study plans built","plan.download":"Plans downloaded (Word)","jobs.apply":"Job apply clicks","jobs.careers":"Company careers clicks","jobs.linkedin":"LinkedIn searches"};
+let anRange=30,anVisitors=false,anData=null,anOpen=null;
+const hrs=s=>{const h=s/3600;return h>=10?Math.round(h)+" h":h>=1?h.toFixed(1)+" h":Math.round(s/60)+" min"};
+async function loadAnalytics(){const since=new Date(Date.now()-anRange*864e5);since.setMinutes(0,0,0);
+  const [u,p]=await Promise.all([sb.from("usage").select("user_id,hour,section,secs,hits").gte("hour",since.toISOString()).limit(100000),sb.from("profiles").select("id,name,email,level,is_guest,last_login").limit(10000)]);
+  if(u.error){main.innerHTML=`<div class="card"><h2>Analytics not set up</h2><p class="muted" style="margin-top:6px">Run <b>analytics-setup.sql</b> in Supabase → SQL Editor, then click Refresh. Time starts counting from then.</p><p class="msg" style="margin-top:10px">${esc(u.error.message)}</p></div>`;return}
+  anData={u:u.data||[],p:Object.fromEntries((p.data||[]).map(x=>[x.id,x]))};paintAnalytics()}
+function paintAnalytics(){const P=anData.p;const U=anData.u.filter(r=>anVisitors||!(P[r.user_id]&&P[r.user_id].is_guest));
+  const dk=d=>{const x=new Date(d);return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0")};
+  const T=U.filter(r=>r.secs>0&&!ACTN[r.section]),A=U.filter(r=>r.hits>0);
+  const total=T.reduce((a,r)=>a+r.secs,0);const users={},days=[],sec={},act={},heat=[...Array(7)].map(()=>Array(24).fill(0)),lvl={};
+  for(let i=anRange-1;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push({d,k:dk(d),s:0,u:new Set()})}const di=Object.fromEntries(days.map((x,i)=>[x.k,i]));
+  T.forEach(r=>{const k=dk(r.hour),h=new Date(r.hour);const us=users[r.user_id]=users[r.user_id]||{s:0,days:new Set(),sec:{},last:r.hour};us.s+=r.secs;us.days.add(k);us.sec[r.section]=(us.sec[r.section]||0)+r.secs;if(r.hour>us.last)us.last=r.hour;
+    const x=sec[r.section]=sec[r.section]||{s:0,u:new Set()};x.s+=r.secs;x.u.add(r.user_id);if(di[k]!=null){days[di[k]].s+=r.secs;days[di[k]].u.add(r.user_id)}
+    heat[(h.getDay()+6)%7][h.getHours()]+=r.secs;const l=(P[r.user_id]||{}).level||"unknown";lvl[l]=(lvl[l]||0)+r.secs});
+  A.forEach(r=>{const x=act[r.section]=act[r.section]||{h:0,u:new Set()};x.h+=r.hits;x.u.add(r.user_id)});
+  const nU=Object.keys(users).length,ud=Object.values(users).reduce((a,x)=>a+x.days.size,0),ret=Object.values(users).filter(x=>x.days.size>=2).length;
+  const today=days[days.length-1],wk=new Set(days.slice(-7).flatMap(x=>[...x.u]));
+  const secRows=Object.entries(sec).sort((a,b)=>b[1].s-a[1].s),mxS=Math.max(1,...secRows.map(x=>x[1].s));
+  const mxD=Math.max(1,...days.map(x=>x.s)),mxH=Math.max(1,...heat.flat());
+  const top=Object.entries(users).sort((a,b)=>b[1].s-a[1].s).slice(0,50);
+  const LV={foundation:"Foundation",inter:"Intermediate",final:"Final",unknown:"Not set"};
+  main.innerHTML=`<div class="row sp"><div><div class="eyebrow">Usage analytics</div><h1>Where students spend their time</h1></div>
+    <div class="row"><div class="seg">${[7,30,90].map(n=>`<button data-an="${n}" aria-pressed="${anRange===n}">${n} days</button>`).join("")}</div><label class="row" style="font-size:.85rem;gap:6px"><input type="checkbox" id="anV" ${anVisitors?"checked":""}> Include visitors</label></div></div>
+  <div class="stats">
+    <div class="stat"><div class="eyebrow">Study time</div><div class="v">${hrs(total)}</div><div class="s">last ${anRange} days</div></div>
+    <div class="stat"><div class="eyebrow">Active students</div><div class="v">${nU}</div><div class="s">${ret} came back on 2+ days</div></div>
+    <div class="stat"><div class="eyebrow">Per student per day</div><div class="v">${ud?Math.round(total/ud/60):0} min</div><div class="s">average on days they used it</div></div>
+    <div class="stat"><div class="eyebrow">Today</div><div class="v">${hrs(today.s)}</div><div class="s">${today.u.size} student${today.u.size===1?"":"s"}</div></div>
+    <div class="stat"><div class="eyebrow">Last 7 days</div><div class="v">${wk.size}</div><div class="s">active students</div></div>
+  </div>
+  ${total?"":`<div class="card"><p class="muted">No time recorded yet. Time starts counting once analytics-setup.sql has been run and students use the site.</p></div>`}
+  <div class="card"><div class="row sp" style="margin-bottom:12px"><h2>Study time per day</h2><span class="muted" style="font-size:.8rem">peak ${hrs(mxD)}</span></div>
+    <div class="chart">${days.map(x=>`<div class="col" title="${x.d.toLocaleDateString("en-GB",{day:"numeric",month:"short"})}: ${hrs(x.s)} · ${x.u.size} students">${x.s?`<div class="e" style="height:${x.s/mxD*100}%"></div>`:""}</div>`).join("")}</div>
+    <div class="xl">${days.map((x,i)=>`<span>${(i%Math.ceil(anRange/6)===0||i===days.length-1)?x.d.getDate()+" "+x.d.toLocaleDateString("en-GB",{month:"short"}):""}</span>`).join("")}</div></div>
+  <div class="an-grid">
+    <div class="card"><div class="row sp" style="margin-bottom:10px"><h2>Time by section</h2><span class="muted" style="font-size:.8rem">share of study time</span></div>
+      ${secRows.length?secRows.map(([k,x])=>`<div class="an-bar" title="${esc(SECN[k]||k)}: ${hrs(x.s)}, ${x.u.size} students"><span class="an-l">${esc(SECN[k]||k)}</span><span class="an-v num">${hrs(x.s)} <span class="muted">· ${Math.round(x.s/Math.max(1,total)*100)}%</span></span><div class="an-t"><i style="width:${x.s/mxS*100}%"></i></div><span class="an-s muted">${x.u.size} student${x.u.size===1?"":"s"} · ${Math.round(x.s/x.u.size/60)} min each</span></div>`).join(""):`<p class="muted">No data yet.</p>`}</div>
+    <div class="card"><div class="row sp" style="margin-bottom:10px"><h2>Key actions</h2><span class="muted" style="font-size:.8rem">count · students</span></div>
+      <table><tbody>${Object.keys(ACTN).map(k=>{const x=act[k];return `<tr><td>${ACTN[k]}</td><td class="num" style="text-align:right"><b>${x?x.h:0}</b></td><td class="num muted" style="text-align:right">${x?x.u.size:0}</td></tr>`}).join("")}</tbody></table>
+      <h2 style="margin:16px 0 8px">Time by level</h2>${Object.entries(lvl).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="an-bar"><span class="an-l">${LV[k]||k}</span><span class="an-v num">${hrs(v)}</span><div class="an-t"><i style="width:${v/Math.max(1,total)*100}%"></i></div></div>`).join("")||`<p class="muted">No data yet.</p>`}</div>
+  </div>
+  <div class="card"><div class="row sp" style="margin-bottom:10px"><h2>When students study</h2><span class="muted" style="font-size:.8rem">your local time · darker = more time</span></div>
+    <div class="an-heat"><span></span>${[...Array(24)].map((_,h)=>`<span class="an-hx">${h%3===0?h:""}</span>`).join("")}${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map((d,i)=>`<span class="an-hy">${d}</span>${heat[i].map((v,h)=>`<i title="${d} ${String(h).padStart(2,"0")}:00 · ${hrs(v)}" style="background:${v?`color-mix(in srgb,var(--heat) ${Math.round(12+v/mxH*88)}%,var(--surface-2))`:"var(--surface-2)"}"></i>`).join("")}`).join("")}</div></div>
+  <div class="row sp"><h2>Students by time spent</h2><span class="muted" style="font-size:.8rem">tap a row for their section breakdown</span></div>
+  <div class="tbl"><table><thead><tr><th>Student</th><th>Level</th><th style="text-align:right">Time</th><th style="text-align:right">Active days</th><th>Most time on</th><th>Last active</th></tr></thead><tbody>
+  ${top.length?top.map(([id,x])=>{const pr=P[id]||{};const fav=Object.entries(x.sec).sort((a,b)=>b[1]-a[1])[0];const open=anOpen===id;
+    return `<tr class="an-row" data-au="${id}" style="cursor:pointer"><td>${esc(pr.name)||'<span class="muted">—</span>'}<span class="muted" style="display:block;font-size:.78rem">${esc(pr.email||(pr.is_guest?"Visitor":""))}</span></td><td>${esc(LV[pr.level]||"—")}</td><td class="num" style="text-align:right"><b>${hrs(x.s)}</b></td><td class="num" style="text-align:right">${x.days.size}</td><td>${esc(SECN[fav[0]]||fav[0])}</td><td class="num">${new Date(x.last).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</td></tr>
+    ${open?`<tr><td colspan="6" style="white-space:normal;background:var(--surface-2)">${Object.entries(x.sec).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="an-bar"><span class="an-l">${esc(SECN[k]||k)}</span><span class="an-v num">${hrs(v)}</span><div class="an-t"><i style="width:${v/x.s*100}%"></i></div></div>`).join("")}</td></tr>`:""}`}).join(""):`<tr><td colspan="6" class="muted">No activity yet.</td></tr>`}
+  </tbody></table></div>
+  <p class="muted" style="font-size:.8rem">Time counts only while a student is actively using the site (page open and used in the last 2 minutes). Mock exams and videos count for as long as they're open.</p>`;
+  document.querySelectorAll("[data-an]").forEach(b=>b.onclick=()=>{anRange=+b.dataset.an;main.innerHTML=`<p class="muted">Loading…</p>`;loadAnalytics()});
+  document.getElementById("anV").onchange=e=>{anVisitors=e.target.checked;paintAnalytics()};
+  document.querySelectorAll("[data-au]").forEach(r=>r.onclick=()=>{anOpen=anOpen===r.dataset.au?null:r.dataset.au;paintAnalytics()});
+}
+
 start();
 })();
 </script>
