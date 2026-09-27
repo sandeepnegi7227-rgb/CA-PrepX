@@ -212,8 +212,21 @@ function paintPapersA(){
   ${amsg?`<p class="msg" style="background:var(--accent-soft);color:var(--ink)">${esc(amsg)}</p>`:""}
   <div class="card"><h2>Upload papers (JSON)</h2><p class="muted" style="font-size:.85rem;margin-top:6px">Choose the .json file(s) Claude sends you. Re-uploading the same paper updates it.</p>
     <div class="row" style="margin-top:10px"><input type="file" id="pf" accept=".json,application/json" multiple><button class="btn primary" id="pup">Upload</button></div></div>
+  <div class="card"><h2>Add an ICAI file (e.g. an MTP)</h2><p class="muted" style="font-size:.85rem;margin-top:6px">Paste the link of an ICAI PDF from the BoS portal. It appears in the Exam hall straight away. Add the answers PDF as a separate row (source ending in "answers").</p>
+    <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:10px">
+      <select id="dL" style="padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)"><option value="final">Final</option><option value="inter">Intermediate</option><option value="foundation">Foundation</option></select>
+      <input id="dP" placeholder="Paper code, e.g. N1, I3, F2" style="padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)">
+      <input id="dA" placeholder="Attempt, e.g. November 2026" style="padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)">
+      <input id="dD" placeholder="Sort date, e.g. 2026-11" style="padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)">
+      <select id="dS" style="padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)"><option value="mtp1">MTP Series I (questions)</option><option value="mtp1_ans">MTP Series I (answers)</option><option value="mtp2">MTP Series II (questions)</option><option value="mtp2_ans">MTP Series II (answers)</option><option value="pyq">Past paper (questions)</option><option value="pyq_ans">Past paper (answers)</option><option value="rtp">RTP</option></select>
+    </div>
+    <input id="dU" placeholder="https://resource.cdn.icai.org/....pdf" style="width:100%;margin-top:8px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:16px">
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="dAdd">Add file</button></div></div>
   <div class="tbl"><table><thead><tr><th>Attempt</th><th>Paper</th><th>Source</th><th>Questions</th><th>Status</th><th></th></tr></thead><tbody>
   ${papersA.length?papersA.map(p=>`<tr><td>${esc(p.attempt)}</td><td style="white-space:normal">${esc(p.title||p.pid)}<span class="muted" style="display:block;font-size:.78rem">${esc(p.id)}</span></td><td>${esc(p.source)}</td><td class="num">${qcount[p.id]||0}</td><td><span class="pill ${p.active?"":"g"}">${p.active?"Live":"Hidden"}</span></td><td><div class="row"><button class="btn" data-ptog="${esc(p.id)}">${p.active?"Hide":"Show"}</button><button class="btn" data-pdel="${esc(p.id)}">Delete</button></div></td></tr>`).join(""):`<tr><td colspan="6" class="muted">No papers yet.</td></tr>`}</tbody></table></div>`;
+  document.getElementById("dAdd").onclick=async()=>{const g=id=>document.getElementById(id).value.trim();const row={level:g("dL"),pid:g("dP").toUpperCase(),attempt:g("dA"),adate:g("dD"),source:g("dS"),url:g("dU")};
+    if(!/^[FIN][1-6]$/.test(row.pid)||!row.attempt||!/^\d{4}-\d{2}$/.test(row.adate)||!/^https:\/\/.+\.pdf$/i.test(row.url)){amsg="Fill all fields: paper code like N1, attempt, date like 2026-11 and a https link ending in .pdf.";return paintPapersA()}
+    const r=await sb.from("icai_docs").insert(row);amsg=r.error?"Couldn't add: "+r.error.message:"Added. It shows in the Exam hall now.";paintPapersA()};
   document.getElementById("pup").onclick=async()=>{const files=[...document.getElementById("pf").files];if(!files.length){amsg="Choose a file first.";return paintPapersA()}
     let n=0,qn=0;for(const f of files){let d;try{d=JSON.parse(await f.text())}catch(e){amsg=`${f.name} isn't valid JSON.`;return paintPapersA()}
       for(const item of (Array.isArray(d)?d:[d])){const {paper,questions}=item;if(!paper||!paper.id){amsg=`${f.name}: missing paper details.`;return paintPapersA()}
