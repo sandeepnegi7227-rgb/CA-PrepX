@@ -95,7 +95,7 @@ const main=document.getElementById("main"),top=document.getElementById("topAct")
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 if(!CFG.url||!CFG.anonKey||!window.supabase){main.innerHTML=`<div class="card"><h2>Not connected yet</h2><p class="muted" style="margin-top:6px">Add your Supabase URL and key to <b>config.js</b>, then reload.</p></div>`;return}
 const sb=window.supabase.createClient(CFG.url,CFG.anonKey);
-let profiles=[],logins=[],filter="all",q="";
+let profiles=[],logins=[],filter="all",q="",view="students",jobs=[],jq="",jmsg="";
 const LV={foundation:"Foundation",inter:"Intermediate",final:"Final"};
 const d2=d=>new Date(d).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
 const dayKey=d=>{const x=new Date(d);return x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()};
@@ -117,12 +117,14 @@ async function start(){
   const r=await sb.rpc("is_admin");
   if(!r.data){top.innerHTML=`<button class="btn" id="so">Sign out</button>`;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
     main.innerHTML=`<div class="card"><h2>This account isn't an admin</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(data.session.user.email||"a guest")}. Run the "make yourself admin" line in supabase-setup.sql for your account, then reload.</p></div>`;return}
-  top.innerHTML=`<a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
+  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Students</button><button data-v="jobs" aria-pressed="false">Jobs</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
+  document.querySelectorAll("#vw [data-v]").forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll("#vw [data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b));load()});
   document.getElementById("rf").onclick=load;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
   load();
 }
 async function load(){
   main.innerHTML=`<p class="muted">Loading…</p>`;
+  if(view==="jobs")return loadJobs();
   const since=new Date(Date.now()-29*864e5);since.setHours(0,0,0,0);
   const [p,l]=await Promise.all([
     sb.from("profiles").select("*").order("last_login",{ascending:false,nullsFirst:false}).limit(5000),
@@ -164,6 +166,40 @@ function paint(){
   <p class="muted" style="font-size:.8rem">Visitors are people using the site without an account (counted once per visit). Accounts are students who signed up with email.</p>`;
   const qi=document.getElementById("q");qi.oninput=()=>{q=qi.value.trim().toLowerCase();const pos=qi.selectionStart;paint();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos)};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;paint()});
+}
+const JF=[["title","Job title",1],["company","Company",1],["short","Short name for LinkedIn search (e.g. EY)",0],["type","Employer type (Big 4, Mid-tier firm, Corporate, GCC / MNC, Bank / NBFC, Investment bank, Fintech)",0],["domain","Area: audit, ia, dt, gst, fpa, ctrl, ta, cons, forensic, ib, articleship",1],["city","City: delhi, mumbai, bengaluru, pune, hyderabad, dubai, india",1],["location","Location shown (e.g. Gurugram, Haryana)",0],["stage","Level: student, fresher, exp (comma-separated)",1],["exp","Experience / eligibility",0],["apply","Apply link",1],["careers","Company careers page (optional)",0],["email","Official recruitment email (optional)",0],["seen","Date seen (YYYY-MM-DD)",0]];
+async function loadJobs(){
+  const r=await sb.from("jobs").select("*").order("seen",{ascending:false}).limit(2000);
+  if(r.error){main.innerHTML=`<div class="card"><h2>Jobs table not set up</h2><p class="muted" style="margin-top:6px">Run <b>jobs-setup.sql</b> in Supabase → SQL Editor, then click Refresh.</p><p class="msg" style="margin-top:10px">${esc(r.error.message)}</p></div>`;return}
+  jobs=r.data||[];paintJobs();
+}
+function clean(o){const x={};JF.forEach(([k])=>{let v=o[k];if(v===undefined||v===null||v==="")return;if(k==="stage")v=Array.isArray(v)?v:String(v).split(",").map(t=>t.trim()).filter(Boolean);x[k]=v});if(!x.seen)x.seen=new Date().toISOString().slice(0,10);return x}
+function paintJobs(){
+  const live=jobs.filter(j=>j.active).length;
+  const rows=jobs.filter(j=>!jq||(j.title+" "+j.company+" "+j.city).toLowerCase().includes(jq));
+  main.innerHTML=`
+  <div><div class="eyebrow">Careers tab</div><h1>Jobs board</h1><p class="muted" style="margin-top:4px">${live} live · ${jobs.length-live} hidden. Hide a job when it closes; it disappears from the site straight away.</p></div>
+  ${jmsg?`<p class="msg" style="background:var(--accent-soft);color:var(--ink)">${esc(jmsg)}</p>`:""}
+  <details class="card"><summary style="cursor:pointer;font-weight:600">Add a job</summary>
+    <div style="display:grid;gap:10px;margin-top:12px">${JF.map(([k,l,req])=>`<div class="field"><label for="f_${k}">${esc(l)}${req?" *":""}</label><input id="f_${k}" type="text" style="padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:16px" ${k==="seen"?`value="${new Date().toISOString().slice(0,10)}"`:""}></div>`).join("")}
+    <div><button class="btn primary" id="addJob">Add job</button></div></div></details>
+  <details class="card"><summary style="cursor:pointer;font-weight:600">Import many (paste JSON)</summary>
+    <p class="muted" style="font-size:.85rem;margin-top:8px">Paste a list of jobs in JSON (for example, the weekly update Claude prepares for you). Fields: ${JF.map(f=>f[0]).join(", ")}.</p>
+    <textarea id="bulk" rows="7" style="width:100%;margin-top:8px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font:inherit;font-size:.85rem"></textarea>
+    <div class="row" style="margin-top:8px"><label style="font-size:.85rem"><input type="checkbox" id="bulkHide"> Hide all current jobs first</label><button class="btn primary" id="doBulk">Import</button></div></details>
+  <div class="row sp"><h2>All jobs</h2><input type="search" id="jq" placeholder="Search jobs" value="${esc(jq)}"></div>
+  <div class="tbl"><table><thead><tr><th>Seen</th><th>Title</th><th>Company</th><th>City</th><th>Status</th><th></th></tr></thead><tbody>
+  ${rows.length?rows.map(j=>`<tr><td class="num">${esc(j.seen)}</td><td style="white-space:normal;min-width:220px"><a href="${esc(j.apply)}" target="_blank" rel="noopener" style="color:var(--ink)">${esc(j.title)}</a></td><td>${esc(j.company)}</td><td>${esc(j.city)}</td><td><span class="pill ${j.active?"":"g"}">${j.active?"Live":"Hidden"}</span></td><td><div class="row"><button class="btn" data-tog="${j.id}">${j.active?"Hide":"Show"}</button><button class="btn" data-del="${j.id}">Delete</button></div></td></tr>`).join(""):`<tr><td colspan="6" class="muted">No jobs yet.</td></tr>`}
+  </tbody></table></div>`;
+  const qi=document.getElementById("jq");qi.oninput=()=>{jq=qi.value.trim().toLowerCase();const pos=qi.selectionStart;paintJobs();const n=document.getElementById("jq");n.focus();n.setSelectionRange(pos,pos)};
+  document.getElementById("addJob").onclick=async()=>{const o={};JF.forEach(([k])=>o[k]=document.getElementById("f_"+k).value.trim());const miss=JF.filter(f=>f[2]&&!o[f[0]]).map(f=>f[0]);if(miss.length){jmsg="Please fill: "+miss.join(", ");return paintJobs()}
+    const r=await sb.from("jobs").insert(clean(o));jmsg=r.error?"Couldn't add: "+r.error.message:"Job added.";loadJobs()};
+  document.getElementById("doBulk").onclick=async()=>{let arr;try{arr=JSON.parse(document.getElementById("bulk").value)}catch(e){jmsg="That isn't valid JSON.";return paintJobs()}
+    if(!Array.isArray(arr)||!arr.length){jmsg="Paste a list of jobs.";return paintJobs()}
+    if(document.getElementById("bulkHide").checked){const h=await sb.from("jobs").update({active:false}).eq("active",true);if(h.error){jmsg=h.error.message;return paintJobs()}}
+    const r=await sb.from("jobs").insert(arr.map(clean));jmsg=r.error?"Import failed: "+r.error.message:`Imported ${arr.length} jobs.`;loadJobs()};
+  document.querySelectorAll("[data-tog]").forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>String(x.id)===b.dataset.tog);const r=await sb.from("jobs").update({active:!j.active}).eq("id",j.id);jmsg=r.error?r.error.message:"";loadJobs()});
+  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Sure?";return}const r=await sb.from("jobs").delete().eq("id",b.dataset.del);jmsg=r.error?r.error.message:"Deleted.";loadJobs()});
 }
 start();
 })();
