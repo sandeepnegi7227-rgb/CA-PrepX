@@ -95,7 +95,7 @@ const main=document.getElementById("main"),top=document.getElementById("topAct")
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 if(!CFG.url||!CFG.anonKey||!window.supabase){main.innerHTML=`<div class="card"><h2>Not connected yet</h2><p class="muted" style="margin-top:6px">Add your Supabase URL and key to <b>config.js</b>, then reload.</p></div>`;return}
 const sb=window.supabase.createClient(CFG.url,CFG.anonKey);
-let profiles=[],logins=[],filter="all",q="",view="students",jobs=[],jq="",jmsg="";
+let profiles=[],logins=[],filter="all",q="",view="students",jobs=[],jq="",jmsg="",papersA=[],qcount={},vidsA=[],chansA=[],vq="",vlv="all",amsg="";
 const LV={foundation:"Foundation",inter:"Intermediate",final:"Final"};
 const d2=d=>new Date(d).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
 const dayKey=d=>{const x=new Date(d);return x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()};
@@ -117,7 +117,7 @@ async function start(){
   const r=await sb.rpc("is_admin");
   if(!r.data){top.innerHTML=`<button class="btn" id="so">Sign out</button>`;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
     main.innerHTML=`<div class="card"><h2>This account isn't an admin</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(data.session.user.email||"a guest")}. Run the "make yourself admin" line in supabase-setup.sql for your account, then reload.</p></div>`;return}
-  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Students</button><button data-v="jobs" aria-pressed="false">Jobs</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
+  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Students</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
   document.querySelectorAll("#vw [data-v]").forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll("#vw [data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b));load()});
   document.getElementById("rf").onclick=load;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
   load();
@@ -125,6 +125,8 @@ async function start(){
 async function load(){
   main.innerHTML=`<p class="muted">Loading…</p>`;
   if(view==="jobs")return loadJobs();
+  if(view==="papers")return loadPapersA();
+  if(view==="videos")return loadVideosA();
   const since=new Date(Date.now()-29*864e5);since.setHours(0,0,0,0);
   const [p,l]=await Promise.all([
     sb.from("profiles").select("*").order("last_login",{ascending:false,nullsFirst:false}).limit(5000),
@@ -200,6 +202,50 @@ function paintJobs(){
     const r=await sb.from("jobs").insert(arr.map(clean));jmsg=r.error?"Import failed: "+r.error.message:`Imported ${arr.length} jobs.`;loadJobs()};
   document.querySelectorAll("[data-tog]").forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>String(x.id)===b.dataset.tog);const r=await sb.from("jobs").update({active:!j.active}).eq("id",j.id);jmsg=r.error?r.error.message:"";loadJobs()});
   document.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Sure?";return}const r=await sb.from("jobs").delete().eq("id",b.dataset.del);jmsg=r.error?r.error.message:"Deleted.";loadJobs()});
+}
+const inp='style="padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:16px"';
+async function loadPapersA(){const r=await sb.from("mpapers").select("*").order("adate",{ascending:false}).limit(3000);
+  if(r.error){main.innerHTML=`<div class="card"><h2>Mock tests not set up</h2><p class="muted" style="margin-top:6px">Run <b>setup-mock-videos.sql</b> in Supabase → SQL Editor, then click Refresh.</p><p class="msg" style="margin-top:10px">${esc(r.error.message)}</p></div>`;return}
+  papersA=r.data||[];const c=await sb.from("mquestions").select("paper").limit(100000);qcount={};(c.data||[]).forEach(x=>qcount[x.paper]=(qcount[x.paper]||0)+1);paintPapersA()}
+function paintPapersA(){
+  main.innerHTML=`<div><div class="eyebrow">Practice tab</div><h1>Mock papers</h1><p class="muted" style="margin-top:4px">${papersA.length} papers · ${Object.values(qcount).reduce((a,b)=>a+b,0)} questions. Upload a paper file Claude prepares for you, or hide a paper to take it off the site.</p></div>
+  ${amsg?`<p class="msg" style="background:var(--accent-soft);color:var(--ink)">${esc(amsg)}</p>`:""}
+  <div class="card"><h2>Upload papers (JSON)</h2><p class="muted" style="font-size:.85rem;margin-top:6px">Choose the .json file(s) Claude sends you. Re-uploading the same paper updates it.</p>
+    <div class="row" style="margin-top:10px"><input type="file" id="pf" accept=".json,application/json" multiple><button class="btn primary" id="pup">Upload</button></div></div>
+  <div class="tbl"><table><thead><tr><th>Attempt</th><th>Paper</th><th>Source</th><th>Questions</th><th>Status</th><th></th></tr></thead><tbody>
+  ${papersA.length?papersA.map(p=>`<tr><td>${esc(p.attempt)}</td><td style="white-space:normal">${esc(p.title||p.pid)}<span class="muted" style="display:block;font-size:.78rem">${esc(p.id)}</span></td><td>${esc(p.source)}</td><td class="num">${qcount[p.id]||0}</td><td><span class="pill ${p.active?"":"g"}">${p.active?"Live":"Hidden"}</span></td><td><div class="row"><button class="btn" data-ptog="${esc(p.id)}">${p.active?"Hide":"Show"}</button><button class="btn" data-pdel="${esc(p.id)}">Delete</button></div></td></tr>`).join(""):`<tr><td colspan="6" class="muted">No papers yet.</td></tr>`}</tbody></table></div>`;
+  document.getElementById("pup").onclick=async()=>{const files=[...document.getElementById("pf").files];if(!files.length){amsg="Choose a file first.";return paintPapersA()}
+    let n=0,qn=0;for(const f of files){let d;try{d=JSON.parse(await f.text())}catch(e){amsg=`${f.name} isn't valid JSON.`;return paintPapersA()}
+      for(const item of (Array.isArray(d)?d:[d])){const {paper,questions}=item;if(!paper||!paper.id){amsg=`${f.name}: missing paper details.`;return paintPapersA()}
+        const r1=await sb.from("mpapers").upsert(paper);if(r1.error){amsg=`${f.name}: ${r1.error.message}`;return paintPapersA()}
+        await sb.from("mquestions").delete().eq("paper",paper.id);
+        const qs=(questions||[]).map((q,i)=>({ord:i,level:paper.level,pid:paper.pid,...q,paper:paper.id}));
+        for(let i=0;i<qs.length;i+=200){const r2=await sb.from("mquestions").insert(qs.slice(i,i+200));if(r2.error){amsg=`${f.name}: ${r2.error.message}`;return paintPapersA()}}
+        n++;qn+=qs.length}}
+    amsg=`Uploaded ${n} paper${n>1?"s":""} with ${qn} questions.`;loadPapersA()};
+  document.querySelectorAll("[data-ptog]").forEach(b=>b.onclick=async()=>{const p=papersA.find(x=>x.id===b.dataset.ptog);const r=await sb.from("mpapers").update({active:!p.active}).eq("id",p.id);amsg=r.error?r.error.message:"";loadPapersA()});
+  document.querySelectorAll("[data-pdel]").forEach(b=>b.onclick=async()=>{if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Sure?";return}const r=await sb.from("mpapers").delete().eq("id",b.dataset.pdel);amsg=r.error?r.error.message:"Deleted.";loadPapersA()});
+}
+async function loadVideosA(){let qy=sb.from("videos").select("*").order("created_at",{ascending:false}).limit(300);if(vlv!=="all")qy=qy.eq("level",vlv);if(vq)qy=qy.or(`title.ilike.%${vq.replace(/[%,()]/g," ")}%,teacher.ilike.%${vq.replace(/[%,()]/g," ")}%`);
+  const [r,c,n]=await Promise.all([qy,sb.from("vchannels").select("*").order("channel"),sb.from("videos").select("yt",{count:"exact",head:true})]);
+  if(r.error){main.innerHTML=`<div class="card"><h2>Videos not set up</h2><p class="muted" style="margin-top:6px">Run <b>setup-mock-videos.sql</b> in Supabase → SQL Editor, then click Refresh.</p><p class="msg" style="margin-top:10px">${esc(r.error.message)}</p></div>`;return}
+  vidsA=r.data||[];chansA=c.data||[];paintVideosA(n.count||0)}
+function paintVideosA(total){
+  main.innerHTML=`<div><div class="eyebrow">Resources tab</div><h1>Videos</h1><p class="muted" style="margin-top:4px">${total} videos in the library. They refresh automatically every day. Pin the best ones to the top, hide weak ones, and boost or block teachers.</p></div>
+  ${amsg?`<p class="msg" style="background:var(--accent-soft);color:var(--ink)">${esc(amsg)}</p>`:""}
+  <div class="card"><h2>Teachers</h2><p class="muted" style="font-size:.85rem;margin-top:6px">Type the channel name exactly as on YouTube. Boosted teachers rank higher; blocked channels never appear.</p>
+    <div class="row" style="margin-top:10px"><input id="chn" placeholder="Channel name" ${inp}><select id="chs" ${inp}><option value="boost">Boost</option><option value="block">Block</option></select><button class="btn primary" id="chadd">Save</button></div>
+    <div class="row" style="margin-top:10px">${chansA.map(c=>`<span class="pill ${c.status==="block"?"g":""}">${esc(c.channel)} · ${c.status} <button class="btn" style="padding:0 6px;border:0;background:none" data-chdel="${esc(c.channel)}" aria-label="Remove">×</button></span>`).join("")||`<span class="muted">No teachers boosted or blocked yet.</span>`}</div></div>
+  <div class="row sp"><h2>Latest videos</h2><div class="row"><select id="vlv" ${inp}>${[["all","All levels"],["foundation","Foundation"],["inter","Inter"],["final","Final"]].map(x=>`<option value="${x[0]}" ${vlv===x[0]?"selected":""}>${x[1]}</option>`).join("")}</select><input type="search" id="vq" placeholder="Search title or teacher" value="${esc(vq)}"></div></div>
+  <div class="tbl"><table><thead><tr><th></th><th>Title</th><th>Teacher</th><th>Paper · Ch</th><th>Views</th><th></th></tr></thead><tbody>
+  ${vidsA.length?vidsA.map(v=>`<tr><td><img src="https://i.ytimg.com/vi/${encodeURIComponent(v.yt)}/default.jpg" width="64" height="48" style="border-radius:6px;object-fit:cover" alt=""></td><td style="white-space:normal;min-width:240px"><a href="https://www.youtube.com/watch?v=${encodeURIComponent(v.yt)}" target="_blank" rel="noopener" style="color:var(--ink)">${esc(v.title)}</a></td><td>${esc(v.teacher)}</td><td>${esc(v.pid)} · ${v.ch!=null?v.ch+1:"—"}</td><td class="num">${(v.views||0).toLocaleString("en-IN")}</td><td><div class="row"><button class="btn" data-vpin="${esc(v.yt)}">${v.pinned?"Unpin":"Pin"}</button><button class="btn" data-vtog="${esc(v.yt)}">${v.active?"Hide":"Show"}</button><button class="btn" data-vblock="${esc(v.teacher)}">Block teacher</button></div></td></tr>`).join(""):`<tr><td colspan="6" class="muted">No videos yet. They appear after the first daily refresh runs.</td></tr>`}</tbody></table></div>`;
+  document.getElementById("chadd").onclick=async()=>{const n=document.getElementById("chn").value.trim();if(!n)return;const r=await sb.from("vchannels").upsert({channel:n,status:document.getElementById("chs").value});amsg=r.error?r.error.message:"Saved.";loadVideosA()};
+  document.querySelectorAll("[data-chdel]").forEach(b=>b.onclick=async()=>{await sb.from("vchannels").delete().eq("channel",b.dataset.chdel);loadVideosA()});
+  document.querySelectorAll("[data-vpin]").forEach(b=>b.onclick=async()=>{const v=vidsA.find(x=>x.yt===b.dataset.vpin);await sb.from("videos").update({pinned:!v.pinned}).eq("yt",v.yt);loadVideosA()});
+  document.querySelectorAll("[data-vtog]").forEach(b=>b.onclick=async()=>{const v=vidsA.find(x=>x.yt===b.dataset.vtog);await sb.from("videos").update({active:!v.active}).eq("yt",v.yt);loadVideosA()});
+  document.querySelectorAll("[data-vblock]").forEach(b=>b.onclick=async()=>{if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Sure?";return}const t=b.dataset.vblock;await sb.from("vchannels").upsert({channel:t,status:"block"});await sb.from("videos").update({active:false}).eq("teacher",t);amsg=`Blocked ${t}; their videos are hidden.`;loadVideosA()});
+  document.getElementById("vlv").onchange=e=>{vlv=e.target.value;loadVideosA()};
+  let tmo;document.getElementById("vq").oninput=e=>{clearTimeout(tmo);tmo=setTimeout(()=>{vq=e.target.value.trim();loadVideosA().then(()=>{const n=document.getElementById("vq");n.focus();n.setSelectionRange(n.value.length,n.value.length)})},350)};
 }
 start();
 })();
