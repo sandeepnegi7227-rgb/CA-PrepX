@@ -330,6 +330,7 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .ab-photo span{font-family:var(--serif);font-size:2.2rem;font-weight:600;color:var(--accent-ink)}
 .ab-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ab-name{font-size:1.5rem}
+.ab-tags{display:flex;flex-wrap:wrap;gap:8px;padding-top:14px;border-top:1px solid var(--line)}.ab-tags span{background:var(--accent-soft);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600}
 .ab-bio{max-width:68ch}
 .ab-steps{display:grid;gap:12px;grid-template-columns:1fr;margin-top:6px;padding-top:16px;border-top:1px solid var(--line)}
 @media (min-width:760px){.ab-steps{grid-template-columns:repeat(4,1fr)}}
@@ -2001,11 +2002,24 @@ about(){
   <div class="card ab-founder">
     <div class="ab-fhead">
       <div class="ab-photo"><img src="founder.jpg" alt="CA Sandeep Negi, founder of CA PrepX" onerror="this.remove()"><span>S</span></div>
-      <div><div class="eyebrow">Meet the founder</div><h2 class="ab-name">CA Sandeep Negi</h2><p class="muted">Chartered Accountant · Management consultant, Dubai</p></div>
+      <div><div class="eyebrow">Meet the founder</div><h2 class="ab-name">CA Sandeep Negi</h2><p class="muted">Founder · Part-time corporate slave, full-time innovator 💅</p></div>
     </div>
-    <p class="ab-bio">Hey, I'm Sandeep. I grew up in Delhi, did my schooling at BBPS Rohini, then Keshav Mahavidyalaya at DU. I started my career in business consulting at EY India, and today I work in management consulting with Protiviti Middle East in Dubai.</p>
-    <p class="ab-bio">Years of audit and advisory work taught me one thing: talent is everywhere, but structure isn't. CA PrepX is my way of giving back: the planner, tracker and practice space I wish every student had.</p>
+    <p class="ab-bio">Consultant in Dubai by day, secretly building a CA app by night. That's Sandeep. 🫡</p>
+    <p class="ab-bio">Raised in Delhi (BBPS Rohini → Keshav Mahavidyalaya), he did the EY India era, then packed his bags for Dubai and Protiviti Middle East. 45°C? Handled. Client deadlines? Handled. Sleep? Still buffering. ⏳</p>
+    <p class="ab-bio">Somewhere between PowerPoints and Excel crashes, it clicked: CA students have the grind, they just don't have the game plan. So he made the game plan. 🎯</p>
+    <p class="ab-bio">The goal? You walk out of that exam hall with "CA" before your name. Everything else is just side quests. 🎮</p>
+    <div class="ab-tags"><span>🎓 Chartered Accountant</span><span>💼 9-to-6 corporate slay</span><span>🚀 6-to-9 builder mode</span><span>☕ chai &gt; sleep</span></div>
     <div class="ab-steps">${steps.map((x,i)=>`<div class="ab-step"><span class="ab-dot">${ico(x[0],18)}</span><div><b>${x[1]}</b><span class="muted">${x[2]}</span></div></div>`).join("")}</div>
+  </div>
+  <div class="card ab-founder">
+    <div class="ab-fhead">
+      <div class="ab-photo"><img src="cofounder.jpg" alt="Shivam Gupta, co-founder of CA PrepX" onerror="this.remove()"><span>S</span></div>
+      <div><div class="eyebrow">Meet the co-founder</div><h2 class="ab-name">Shivam Gupta</h2><p class="muted">Co-founder · Chief vibe officer, full-time idea machine 🤪</p></div>
+    </div>
+    <p class="ab-bio">Idea machine, vibe manager and Sandeep's partner-in-crime. That's Shivam. 😎</p>
+    <p class="ab-bio">The certified masti-khor of CA PrepX, he looks at every boring problem and sees a side quest waiting to be made fun. While everyone else asks "why?", he's already on "why not?" 💡</p>
+    <p class="ab-bio">His job? Making sure CA prep never feels like reading a textbook at 2 am. If it's boring, it's not done yet. 🔥</p>
+    <div class="ab-tags"><span>💡 Idea machine</span><span>😎 Chief vibe officer</span><span>🤝 Founder's bestie</span><span>🎉 Masti-khor certified</span></div>
   </div>
   <section class="ab-comm">
     <div class="eyebrow" style="color:var(--hero-muted)">Grow together</div>
