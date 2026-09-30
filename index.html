@@ -1992,7 +1992,7 @@ careers(){
   <div class="card"><div class="card-h"><h2>Career tools</h2><span class="pill">Coming soon</span></div><div class="skills"><span>CV review</span><span>Mock interviews</span><span>Referral network</span><span>Salary insights</span></div></div>`;
 },
 about(){
-  const steps=[["school","Bal Bharati Public School","Rohini, Delhi"],["school","Keshav Mahavidyalaya","University of Delhi"],["brief","EY India","Business consulting"],["brief","Protiviti Middle East","Management consulting · Dubai"]];
+  const steps=[["brief","Protiviti Middle East","Management consulting · Dubai"],["brief","EY India","Business consulting"],["school","Keshav Mahavidyalaya","University of Delhi"],["school","Bal Bharati Public School","Rohini, Delhi"]];
   return `<div class="ab-hero"><div class="eyebrow">About CA PrepX</div><h1>CA prep, but make it a team sport.</h1>
     <p class="muted">Smart tools, clear plans and a community that pushes each other forward, so no CA aspirant has to grind alone.</p></div>
   <div class="ab-two">
@@ -2002,13 +2002,12 @@ about(){
   <div class="card ab-founder">
     <div class="ab-fhead">
       <div class="ab-photo"><img src="founder.jpg" alt="CA Sandeep Negi, founder of CA PrepX" onerror="this.remove()"><span>S</span></div>
-      <div><div class="eyebrow">Meet the founder</div><h2 class="ab-name">CA Sandeep Negi</h2><p class="muted">Founder · Part-time corporate slave, full-time innovator 💅</p></div>
+      <div><div class="eyebrow">Meet the founder</div><h2 class="ab-name">CA Sandeep Negi</h2><p class="muted">Founder · Chartered Accountant · Consultant by day, builder by night</p></div>
     </div>
-    <p class="ab-bio">Consultant in Dubai by day, secretly building a CA app by night. That's Sandeep. 🫡</p>
-    <p class="ab-bio">Raised in Delhi (BBPS Rohini → Keshav Mahavidyalaya), he did the EY India era, then packed his bags for Dubai and Protiviti Middle East. 45°C? Handled. Client deadlines? Handled. Sleep? Still buffering. ⏳</p>
-    <p class="ab-bio">Somewhere between PowerPoints and Excel crashes, it clicked: CA students have the grind, they just don't have the game plan. So he made the game plan. 🎯</p>
-    <p class="ab-bio">The goal? You walk out of that exam hall with "CA" before your name. Everything else is just side quests. 🎮</p>
-    <div class="ab-tags"><span>🎓 Chartered Accountant</span><span>💼 9-to-6 corporate slay</span><span>🚀 6-to-9 builder mode</span><span>☕ chai &gt; sleep</span></div>
+    <p class="ab-bio">Sandeep is a Chartered Accountant who grew up in Delhi, did his schooling at BBPS Rohini, then Keshav Mahavidyalaya at DU. He started his career in business consulting at EY India, and today he's a management consultant with Protiviti Middle East in Dubai.</p>
+    <p class="ab-bio">Years of audit and advisory work taught him one thing: talent is everywhere, but structure isn't. Somewhere between PowerPoints and Excel crashes, it clicked: CA students have the grind, they just don't have the game plan. So he made the game plan.</p>
+    <p class="ab-bio">CA PrepX is his way of giving back: the planner, practice and guidance he wishes he'd had. The goal? One place for everything CA: mock tests, ICAI resources, study plans, lectures and trackers, plus articleship, industrial training and job openings when you're ready for the next step. No more 10 tabs. ✨</p>
+    <div class="ab-tags"><span>Chartered Accountant</span><span>Corporate by day</span><span>Builder by night</span><span>Chai &gt; sleep</span></div>
     <div class="ab-steps">${steps.map((x,i)=>`<div class="ab-step"><span class="ab-dot">${ico(x[0],18)}</span><div><b>${x[1]}</b><span class="muted">${x[2]}</span></div></div>`).join("")}</div>
   </div>
   <div class="card ab-founder">
