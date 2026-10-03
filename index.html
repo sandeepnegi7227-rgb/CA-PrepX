@@ -804,6 +804,25 @@ main{padding-bottom:120px}
 .pta{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
 .mtbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding:8px 12px;border-radius:12px;background:var(--accent-soft);font-size:.88rem}
 .mtbar .btn{margin-left:auto}
+
+/* v11 history tab */
+.hist{display:grid;gap:12px}
+.hrow{display:grid;gap:10px}
+.hr-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hr-t{display:grid;gap:3px;min-width:0}.hr-t b{font-size:1rem}
+.hr-pct{font-family:var(--serif);font-weight:700;font-size:1.6rem;line-height:1}
+.hr-pct.good{color:var(--good)}.hr-pct.mid{color:var(--warn)}.hr-pct.low{color:var(--tick)}
+.hr-bar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--surface-2);gap:2px}
+.hr-bar i{display:block;min-width:0}.hr-bar i.r{background:var(--good)}.hr-bar i.w{background:var(--tick)}.hr-bar i.s{background:var(--line)}
+.hr-chips{display:flex;flex-wrap:wrap;gap:6px}
+.hr-chips span{font-size:.8rem;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--ink)}
+.hr-chips span.r{background:var(--good-soft);color:var(--good)}.hr-chips span.w{background:var(--tick-soft);color:var(--tick)}
+.hr-act{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hist-link{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:14px 16px;font:inherit;color:var(--ink);cursor:pointer}
+.hist-link:hover{border-color:var(--gold)}
+.hist-link span{display:grid;gap:2px;flex:1}.hist-link small{color:var(--muted);font-size:.82rem}
+.hist-link em{font-style:normal;font-weight:800;color:var(--gold-deep)}
+@media (max-width:719px){.seg.mcq-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;border-radius:16px;gap:4px}.seg.mcq-modes button{white-space:nowrap;padding:9px 6px;border-radius:12px}}
 </style>
 </head>
 <body>
@@ -1974,22 +1993,23 @@ papers(){
 },
 mcq(){
   const lv=L();const wn=mistakes().length;const total=Q.filter(q=>lv.papers.some(p=>p.id===q.p)).length;
-  const modes=[["practice","Practice"],["test","Timed test"],["mistakes",`My mistakes${wn?" · "+wn:""}`]];
+  const modes=[["practice","Practice"],["test","Timed test"],["mistakes",`My mistakes${wn?" · "+wn:""}`],["history",`History${pastTests().length?" · "+pastTests().length:""}`]];
   let body="";
-  if(mode==="test"){
+  if(mode==="history"){body=historyView()}
+  else if(mode==="test"){
     if(T&&T.active)body=`<div id="qbox"></div>`;
     else if(T&&T.done)body=testResults();
     else body=`<div class="card"><div class="card-h"><h2>Set up a timed test</h2></div>
       <div class="form"><div class="field"><label for="tP">Paper</label><select id="tP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}">P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>
       <div class="field"><label for="tN">Questions</label><select id="tN"><option>10</option><option>15</option><option>20</option><option>30</option></select></div>
       <div class="field"><label for="tM">Time per question</label><select id="tM"><option value="60">1 min</option><option value="72" selected>1 min 12 s (ICAI pace)</option><option value="90">1 min 30 s</option></select></div></div>
-      <div class="row" style="margin-top:16px"><button class="btn primary" data-act="starttest">Start the test</button><span class="muted" style="font-size:.85rem">Answers are locked in when you submit. This test has no negative marking.</span></div></div>${pastTestsCard()}`;
+      <div class="row" style="margin-top:16px"><button class="btn primary" data-act="starttest">Start the test</button><span class="muted" style="font-size:.85rem">Answers are locked in when you submit. This test has no negative marking.</span></div></div>${pastTests().length?`<button class="hist-link" data-mode="history">${ico("trophy",22)}<span><b>Test history</b><small>${pastTests().length} saved attempts · see every past result</small></span><em>→</em></button>`:""}`;
   }else{
     body=`<div class="card"><div class="mcq-top">${mode==="practice"?`<div class="field" style="min-width:220px"><label for="mcqP">Paper</label><select id="mcqP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}" ${window.__mp===p.id?"selected":""}>P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>${window.__mp&&window.__mp!=="all"?`<div class="field" style="min-width:220px;flex:1"><label for="mcqC">Chapter</label><select id="mcqC"><option value="all">All chapters (${Q.filter(q=>q.p===window.__mp).length} Qs)</option>${chapters(window.__mp).map((c,j)=>{const n=Q.filter(q=>q.p===window.__mp&&q.c===j).length;return n?`<option value="${j}" ${String(window.__mc)===String(j)?"selected":""}>Ch ${j+1} · ${esc(chShort(window.__mp,j))} (${n})</option>`:""}).join("")}</select></div>`:""}`:`<p class="muted" style="max-width:52ch">Questions you last got wrong. Answer one correctly and it leaves this list.</p>`}
     <div class="num muted" id="sess"></div></div>${mode==="mistakes"&&window.__mt?`<div class="mtbar">${ico("target",18)}<span>Showing mistakes from <b>${esc(window.__mt.title)}</b></span><button class="btn ghost sm" data-act="mtall">Show all</button></div>`:""}<div id="qbox" style="margin-top:14px"></div></div>${mode==="mistakes"?testMistakesCard():""}`;
   }
   return `<div class="hero"><div><div class="eyebrow">CA ${lv.label} · ${total} questions</div><h1>MCQ practice</h1><p class="muted">Every answer is logged against its paper, so your accuracy and weakest-paper guidance stay current.</p></div>
-  <div class="seg" role="group" aria-label="Mode">${modes.map(m=>`<button data-mode="${m[0]}" aria-pressed="${mode===m[0]}">${m[1]}</button>`).join("")}</div></div>${body}`;
+  <div class="seg mcq-modes" role="group" aria-label="Mode">${modes.map(m=>`<button data-mode="${m[0]}" aria-pressed="${mode===m[0]}">${m[1]}</button>`).join("")}</div></div>${body}`;
 },
 planner(){
   const I=qzState();if(I.done&&!v2ok()){if(I.combo&&COMBOS[I.combo].level!==S.level){I.combo=null;I.done=false;I.step=0}}
@@ -2658,15 +2678,30 @@ function answer(i){track("mcq.answer");
 
 function pastTests(){const qmap=new Map(Q.map(q=>[String(q.id),q]));const out=[];
   S.tests.filter(x=>x.lv===S.level).forEach(x=>{const ids=(x.qs||[]).map(String);const wrong=ids.filter((id,i)=>x.ans&&x.ans[i]!==null&&qmap.get(id)&&x.ans[i]!==qmap.get(id).a);
-    out.push({key:x.id||("old"+x.t),kind:"Timed test",title:x.pid&&x.pid!=="all"&&paper(x.pid)?`P${paper(x.pid).no} · ${paper(x.pid).name}`:"All papers",when:x.at||x.t,n:x.n,ok:x.ok,secs:x.secs,review:!!(x.qs&&x.qs.length),wrong})});
+    const sk=x.ans?x.ans.filter(v=>v===null).length:0;out.push({key:x.id||("old"+x.t),kind:"Timed test",title:x.pid&&x.pid!=="all"&&paper(x.pid)?`P${paper(x.pid).no} · ${paper(x.pid).name}`:"All papers",when:x.at||x.t,n:x.n,ok:x.ok,bad:x.ans?x.n-x.ok-sk:x.n-x.ok,skip:sk,secs:x.secs,review:!!(x.qs&&x.qs.length),wrong})});
   mocks().filter(a=>a.kind==="chapter"&&a.submitted&&(a.level||S.level)===S.level&&a.qs).forEach(a=>{const wrong=a.qs.filter(q=>q.sec!=="desc"&&a.ans[q.id]!=null&&a.ans[q.id]!==q.ans).map(q=>String(q.id).charAt(0)==="b"?String(q.id).slice(1):"x"+q.id);
-    const ok=a.qs.filter(q=>a.ans[q.id]===q.ans).length;out.push({key:a.id,kind:"Chapter test",title:a.title.replace(/^Chapter test · /,""),when:a.submitted,n:a.qs.length,ok,secs:a.used||0,review:false,chapter:a.id,wrong})});
+    const ok=a.qs.filter(q=>a.ans[q.id]===q.ans).length,sk=a.qs.filter(q=>a.ans[q.id]==null).length;out.push({key:a.id,kind:"Chapter test",title:a.title.replace(/^Chapter test · /,""),when:a.submitted,n:a.qs.length,ok,bad:a.qs.length-ok-sk,skip:sk,secs:a.used||0,review:false,chapter:a.id,wrong})});
   return out.sort((x,y)=>String(y.when).localeCompare(String(x.when)))}
 function pastTestsCard(){const L2=pastTests();if(!L2.length)return "";const d=w=>{const x=new Date(w);return isNaN(x)?"":x.toLocaleDateString("en-GB",{day:"numeric",month:"short"})+(String(w).length>10?" · "+x.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}):"")};
   return `<div class="card"><div class="card-h"><h2>${ico("trophy",20)} Past tests</h2><span class="muted" style="font-size:.85rem">${L2.length} saved</span></div><div class="ptl">${L2.slice(0,30).map(x=>{const pct=x.n?Math.round(x.ok/x.n*100):0;return `<div class="ptr"><div class="ptm"><b>${esc(x.title)}</b><span class="muted">${x.kind} · ${d(x.when)}</span></div><span class="ptsc ${pct>=70?"good":pct>=50?"mid":"low"}">${x.ok}/${x.n}</span><div class="pta">${x.review?`<button class="btn sm" data-tview="${x.key}">Review</button>`:x.chapter?`<button class="btn sm" data-mkview="${x.chapter}">Review</button>`:""}${x.wrong.length?`<button class="btn sm primary" data-tredo="${x.key}">Redo ${x.wrong.length} wrong</button>`:""}</div></div>`}).join("")}</div></div>`}
 function testMistakesCard(){const L2=pastTests().map(x=>({...x,pend:x.wrong.filter(isWrong)})).filter(x=>x.wrong.length);if(!L2.length)return "";
   const d=w=>{const x=new Date(w);return isNaN(x)?"":x.toLocaleDateString("en-GB",{day:"numeric",month:"short"})};const cur=window.__mt;
   return `<div class="card"><div class="card-h"><h2>${ico("target",20)} Mistakes by test</h2>${cur?`<button class="btn sm" data-act="mtall">Show all mistakes</button>`:""}</div><div class="ptl">${L2.slice(0,30).map(x=>`<div class="ptr ${cur&&cur.key===x.key?"on":""}"><div class="ptm"><b>${esc(x.title)}</b><span class="muted">${x.kind} · ${d(x.when)} · ${x.wrong.length} wrong${x.pend.length<x.wrong.length?` · ${x.wrong.length-x.pend.length} fixed`:""}</span></div>${x.pend.length?`<button class="btn sm primary" data-tredo="${x.key}">Practise ${x.pend.length}</button>`:`<span class="pill good">All fixed</span>`}</div>`).join("")}</div></div>`}
+
+function historyView(){const L2=pastTests();
+  if(!L2.length)return `<div class="card"><div class="card-h"><h2>${ico("trophy",20)} No tests yet</h2></div><p class="muted">Take a timed test or a chapter test. Every attempt is saved here with the full result, so you can come back to it any time.</p><div class="row" style="margin-top:12px"><button class="btn primary" data-mode="test">Take a timed test</button></div></div>`;
+  const tq=L2.reduce((a,x)=>a+x.n,0),tr=L2.reduce((a,x)=>a+x.ok,0),best=Math.max(...L2.map(x=>x.n?Math.round(x.ok/x.n*100):0));
+  const d=w=>{const x=new Date(w);return isNaN(x)?"":x.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})+(String(w).length>10?" · "+x.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}):"")};
+  const mmss=s=>s?`${Math.floor(s/60)}m ${String(s%60).padStart(2,"0")}s`:"";
+  return `<div class="stats"><div class="stat"><div class="eyebrow">${ico("trophy",15)}Tests taken</div><div class="v">${L2.length}</div><div class="s">timed + chapter</div></div>
+   <div class="stat"><div class="eyebrow">${ico("check",15)}Questions</div><div class="v">${tq}</div><div class="s">${tr} right overall</div></div>
+   <div class="stat"><div class="eyebrow">${ico("chart",15)}Average</div><div class="v">${tq?Math.round(tr/tq*100):0}%</div><div class="s">across all tests</div></div>
+   <div class="stat"><div class="eyebrow">${ico("target",15)}Best</div><div class="v">${best}%</div><div class="s">single test</div></div></div>
+  <div class="hist">${L2.map(x=>{const pct=x.n?Math.round(x.ok/x.n*100):0;return `<div class="card hrow">
+    <div class="hr-top"><div class="hr-t"><span class="eyebrow">${x.kind} · ${d(x.when)}</span><b>${esc(x.title)}</b></div><span class="hr-pct ${pct>=70?"good":pct>=50?"mid":"low"}">${pct}%</span></div>
+    <div class="hr-bar" role="img" aria-label="${x.ok} right, ${x.bad} wrong, ${x.skip} skipped"><i class="r" style="flex:${x.ok}"></i><i class="w" style="flex:${x.bad}"></i><i class="s" style="flex:${x.skip}"></i></div>
+    <div class="hr-chips"><span><b>${x.n}</b> questions</span><span class="r"><b>${x.ok}</b> right</span><span class="w"><b>${x.bad}</b> wrong</span>${x.skip?`<span class="s"><b>${x.skip}</b> skipped</span>`:""}${x.secs?`<span>${mmss(x.secs)}</span>`:""}</div>
+    <div class="hr-act">${x.review?`<button class="btn sm" data-tview="${x.key}">See full result</button>`:x.chapter?`<button class="btn sm" data-mkview="${x.chapter}">See full result</button>`:`<span class="muted" style="font-size:.8rem">Detailed answers weren't saved for this older test</span>`}${x.wrong.filter(isWrong).length?`<button class="btn sm primary" data-tredo="${x.key}">Redo ${x.wrong.filter(isWrong).length} wrong</button>`:""}</div></div>`}).join("")}</div>`}
 function startTest(pid,n,per){
   let pl=Q.filter(q=>inLevel(q)&&(pid==="all"||q.p===pid));
   for(let i=pl.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pl[i],pl[j]]=[pl[j],pl[i]]}
@@ -2696,7 +2731,7 @@ function testResults(){
    <div class="stat"><div class="eyebrow">Unanswered</div><div class="v">${T.ans.filter(a=>a===null).length}</div><div class="s">questions</div></div>
    <div class="stat"><div class="eyebrow">Verdict</div><div class="v" style="font-size:1.1rem;padding-top:6px">${pct>=70?"Exam-ready":pct>=50?"Almost there":"Revise first"}</div><div class="s">${pct>=70?"keep this energy":pct>=50?"fix the misses below":"ho jayega — back to the module"}</div></div></div>
    <div class="card"><div class="card-h"><h2>By paper</h2></div><div class="bars">${Object.keys(by).map(id=>{const p=paper(id),x=by[id],r=Math.round(x.ok/x.n*100);return `<div class="bar-row"><span class="lbl"><span class="pno">P${p.no}</span> ${esc(p.name)}</span><span class="num" style="text-align:right">${x.ok}/${x.n}</span><div class="track"><div class="fill ${r<50?"low":r<70?"mid":""}" style="width:${r}%"></div></div></div>`}).join("")}</div></div>
-   <div class="card"><div class="card-h"><h2>Review</h2><div class="row"><button class="btn sm" data-act="newtest">New test</button><button class="btn sm primary" data-mode="mistakes">Fix my mistakes</button></div></div>
+   <div class="card"><div class="card-h"><h2>Review</h2><div class="row"><button class="btn sm" data-mode="history">History</button><button class="btn sm" data-act="newtest">New test</button><button class="btn sm primary" data-mode="mistakes">Fix my mistakes</button></div></div>
    <div class="review">${T.qs.map((q,i)=>{const a=T.ans[i],r=a===q.a;return `<div class="rv ${r?"ok":"no"}"><div class="rv-h"><span class="num muted">${i+1}</span><span class="pill ${r?"good":"bad"}">${r?"Correct":a===null?"Skipped":"Wrong"}</span></div><p><b>${esc(q.q)}</b></p><p class="muted" style="font-size:.9rem">${a!==null&&!r?`You: ${"ABCD"[a]}. ${esc(q.o[a])} · `:""}Answer: ${"ABCD"[q.a]}. ${esc(q.o[q.a])}</p><p style="font-size:.9rem">${esc(q.w)}</p></div>`}).join("")}</div></div>`;
 }
 function toast(msg){const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
@@ -2711,7 +2746,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.level){if(T&&T.active)return;S.level=t.dataset.level;S.plan.weak=[];cur=null;T=null;sess={n:0,ok:0};window.__mp="all";save();render();return}
   if(t.dataset.tview){const x=S.tests.find(z=>(z.id||("old"+z.t))===t.dataset.tview);if(x&&x.qs){const qm=new Map(Q.map(q=>[String(q.id),q]));const keep=x.qs.map((id,i)=>[qm.get(String(id)),x.ans[i]]).filter(r=>r[0]);T={qs:keep.map(r=>r[0]),ans:keep.map(r=>r[1]),i:0,limit:x.limit||x.secs,secs:x.secs,ok:keep.filter(r=>r[1]===r[0].a).length,active:false,done:true,past:true};mode="test";go("practice");prMode="mcq";render();window.scrollTo({top:0})}return}
   if(t.dataset.tredo){const x=pastTests().find(z=>z.key===t.dataset.tredo);if(x){const ids=x.wrong.filter(isWrong);if(!ids.length){toast("All fixed from this test. Nice!");return}window.__mt={key:x.key,title:x.kind+" · "+x.title,ids};mode="mistakes";cur=null;go("practice");prMode="mcq";render();window.scrollTo({top:0})}return}
-  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;if(t.dataset.mode!=="mistakes"||mode!=="mistakes")window.__mt=null;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
+  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;if(t.dataset.mode!=="mistakes"||mode!=="mistakes")window.__mt=null;if(T&&T.past)T=null;if(T&&T.done&&t.dataset.mode==="history")T=null;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
   if(t.dataset.topt!==undefined){T.ans[T.i]=+t.dataset.topt;paintTest();return}
   if(t.dataset.goto!==undefined){T.i=+t.dataset.goto;paintTest();return}
   if(t.dataset.tab){if(t.dataset.open)window.__sylOpen=t.dataset.open;go(t.dataset.tab);if(t.dataset.sub){if(tab==="plan")planMode=t.dataset.sub;if(tab==="resources")resMode=t.dataset.sub;if(tab==="practice")prMode=t.dataset.sub}render();window.scrollTo({top:0});
