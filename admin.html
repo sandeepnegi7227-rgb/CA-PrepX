@@ -130,10 +130,34 @@ async function start(){
   const r=await sb.rpc("is_admin");
   if(!r.data){top.innerHTML=`<button class="btn" id="so">Sign out</button>`;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
     main.innerHTML=`<div class="card"><h2>This account isn't an admin</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(data.session.user.email||"a guest")}. Run the "make yourself admin" line in supabase-setup.sql for your account, then reload.</p></div>`;return}
-  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Students</button><button data-v="analytics" aria-pressed="false">Analytics</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
+  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Students</button><button data-v="analytics" aria-pressed="false">Analytics</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button><button data-v="checkers" aria-pressed="false">Checkers</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
   document.querySelectorAll("#vw [data-v]").forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll("#vw [data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b));load()});
   document.getElementById("rf").onclick=load;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
   load();
+}
+
+/* ---------- Teacher checkers ---------- */
+let cmsg="";
+async function loadCheckers(){
+  const [c,s]=await Promise.all([sb.from("checkers").select("*").order("added_at",{ascending:true}),sb.from("submissions").select("id,status,checker_id,created_at,checked_at").limit(5000)]);
+  if(c.error){main.innerHTML=`<div class="card"><h2>Teacher checking isn't set up</h2><p class="muted" style="margin-top:6px">Run <b>teacher-check-setup.sql</b> in Supabase → SQL Editor, then click Refresh.</p><p class="msg" style="margin-top:8px">${esc(c.error.message)}</p></div>`;return}
+  const C=c.data||[],S=s.data||[];const by=id=>S.filter(x=>x.checker_id===id);
+  const wait=S.filter(x=>x.status==="submitted").length,rev=S.filter(x=>x.status==="in_review").length,done=S.filter(x=>x.status==="checked").length;
+  main.innerHTML=`<div class="row sp"><div><div class="eyebrow">Teacher checking</div><h1>Checkers</h1></div><a class="btn" href="/checker">Open teacher portal</a></div>
+  <div class="stats"><div class="stat"><div class="eyebrow">Teachers</div><div class="v">${C.length}</div><div class="s">with checker access</div></div>
+   <div class="stat"><div class="eyebrow">Waiting</div><div class="v">${wait}</div><div class="s">answer sheets not picked up</div></div>
+   <div class="stat"><div class="eyebrow">Being checked</div><div class="v">${rev}</div><div class="s">in progress</div></div>
+   <div class="stat"><div class="eyebrow">Checked</div><div class="v">${done}</div><div class="s">all time</div></div>
+   <div class="stat"><div class="eyebrow">Uploads</div><div class="v">${S.length}</div><div class="s">total</div></div></div>
+  <div class="card"><h2>Add a teacher</h2><p class="muted" style="margin:4px 0 12px">They first create a normal account on caprepx.com with this email. Then add it here and they can sign in at <b>caprepx.com/checker</b>.</p>
+   <div class="row"><input type="email" id="ce" placeholder="teacher@email.com" style="min-width:240px"><input type="search" id="cn" placeholder="Name shown to students (optional)" style="min-width:220px"><button class="btn primary" id="cadd">Add teacher</button></div>
+   ${cmsg?`<p class="${cmsg.startsWith("!")?"msg":"muted"}" style="margin-top:8px">${esc(cmsg.replace(/^!/,""))}</p>`:""}</div>
+  <div class="tbl"><table><thead><tr><th>Teacher</th><th>Email</th><th>Added</th><th style="text-align:right">Checked</th><th style="text-align:right">In progress</th><th></th></tr></thead><tbody>
+  ${C.length?C.map(x=>`<tr><td>${esc(x.name||"—")}</td><td>${esc(x.email||"")}</td><td class="num">${new Date(x.added_at).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}</td><td class="num" style="text-align:right">${by(x.user_id).filter(z=>z.status==="checked").length}</td><td class="num" style="text-align:right">${by(x.user_id).filter(z=>z.status==="in_review").length}</td><td><button class="btn" data-crm="${x.user_id}">Remove</button></td></tr>`).join(""):`<tr><td colspan="6" class="muted">No teachers yet. Add one above.</td></tr>`}
+  </tbody></table></div>`;
+  document.getElementById("cadd").onclick=async()=>{const e=document.getElementById("ce").value.trim(),n=document.getElementById("cn").value.trim();if(!e){cmsg="!Enter the teacher's email.";return loadCheckers()}
+    const r=await sb.rpc("add_checker",{p_email:e,p_name:n||null});cmsg=r.error?"!"+r.error.message:r.data==="not_found"?`!No account found for ${e}. Ask them to sign up on caprepx.com first, then add them again.`:`Added ${e}. They can sign in at caprepx.com/checker.`;loadCheckers()};
+  document.querySelectorAll("[data-crm]").forEach(b=>b.onclick=async()=>{if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Tap again to remove";return}const r=await sb.rpc("remove_checker",{p_user:b.dataset.crm});cmsg=r.error?"!"+r.error.message:"Removed.";loadCheckers()});
 }
 async function load(){
   main.innerHTML=`<p class="muted">Loading…</p>`;
@@ -141,6 +165,7 @@ async function load(){
   if(view==="jobs")return loadJobs();
   if(view==="papers")return loadPapersA();
   if(view==="videos")return loadVideosA();
+  if(view==="checkers")return loadCheckers();
   const since=new Date(Date.now()-29*864e5);since.setHours(0,0,0,0);
   const [p,l]=await Promise.all([
     sb.from("profiles").select("*").order("last_login",{ascending:false,nullsFirst:false}).limit(5000),
@@ -277,7 +302,7 @@ function paintVideosA(total){
 
 /* ---------- Analytics: time per section and key actions ---------- */
 const SECN={home:"Home","resources.papers":"RTP · MTP library","resources.syllabus":"Syllabus tracker","resources.tips":"Exam tips","resources.videos":"Videos · browsing","video.watch":"Videos · watching","practice.mcq":"MCQ practice","practice.mock":"Mock tests · exam hall","exam":"Mock exam · writing","plan.study":"Study plan","plan.progress":"My progress","plan.journey":"CA journey","spom.overview":"SPOM overview","spom.syllabus":"SPOM syllabus","spom.mcq":"SPOM MCQs","spom.test":"SPOM test booking",careers:"Careers · jobs",about:"About us"};
-const ACTN={"exam.start":"Mock exams started","exam.submit":"Mock exams submitted","rtp.start":"RTP practice started","rtp.finish":"RTPs finished","chapter.start":"Chapter tests started","mcq.answer":"MCQs answered","video.play":"Videos played","plan.build":"Study plans built","plan.download":"Plans downloaded (Word)","jobs.apply":"Job apply clicks","jobs.careers":"Company careers clicks","jobs.linkedin":"LinkedIn searches"};
+const ACTN={"exam.start":"Mock exams started","exam.submit":"Mock exams submitted","rtp.start":"RTP practice started","rtp.finish":"RTPs finished","chapter.start":"Chapter tests started","mcq.answer":"MCQs answered","video.play":"Videos played","plan.build":"Study plans built","plan.download":"Plans downloaded (Word)","jobs.apply":"Job apply clicks","jobs.careers":"Company careers clicks","jobs.linkedin":"LinkedIn searches","guest.start":"Guest entries"};
 let anRange=30,anVisitors=false,anData=null,anOpen=null;
 const hrs=s=>{const h=s/3600;return h>=10?Math.round(h)+" h":h>=1?h.toFixed(1)+" h":Math.round(s/60)+" min"};
 async function loadAnalytics(){const since=new Date(Date.now()-anRange*864e5);since.setMinutes(0,0,0);

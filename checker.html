@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CA PrepX Teachers</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/logo-64.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#FAF7EF; --surface:#FFFFFF; --surface-2:#F3EEE1; --ink:#141414; --muted:#6B6558;
+  --line:#E6DFCC; --gold:#E0B43A; --gold-ink:#1A1405; --gold-deep:#9C7400; --soft:#F6EDD2;
+  --good:#2F7D4F; --good-soft:#E2F1E7; --tick:#C2410C; --tick-soft:#FBE4D8; --warn:#A86A00; --warn-soft:#F6EBCB;
+  --serif:"Fraunces",Georgia,serif; --sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root{color-scheme:dark;
+  --bg:#0B0B0C; --surface:#161617; --surface-2:#1F1F22; --ink:#F3EEDF; --muted:#A39C88;
+  --line:#2C2921; --gold-deep:#E0B43A; --soft:#2A2414;
+  --good:#5FC08A; --good-soft:#15291E; --tick:#F2845C; --tick-soft:#3A2016; --warn:#E3B04F; --warn-soft:#33290F;}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+[hidden]{display:none!important}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px}
+@media (min-width:720px){.wrap{padding-inline:28px}}
+h1,h2{font-family:var(--serif);font-weight:700;margin:0;letter-spacing:-.01em}
+h1{font-size:1.7rem} h2{font-size:1.15rem}
+p{margin:0}
+.muted{color:var(--muted)}
+.eyebrow{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-block:16px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand b{font-family:var(--serif);font-size:1.2rem}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:700;font-size:.88rem;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--gold)}
+.btn.primary{background:var(--gold);color:var(--gold-ink);border-color:var(--gold);box-shadow:0 6px 16px rgba(224,180,58,.3)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--gold-deep)}
+.btn:disabled{opacity:.5;cursor:default}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+main{display:grid;gap:16px;padding-block:4px 60px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+@media (min-width:760px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{background:var(--surface);padding:14px 16px}
+.stat .v{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-top:2px}
+.stat .s{font-size:.8rem;color:var(--muted)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{flex:none;border:0;background:none;padding:10px 14px 11px;cursor:pointer;color:var(--muted);font-weight:600;border-bottom:3px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);font-weight:800;border-bottom-color:var(--gold)}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+input[type=search],input[type=email],input[type=password],input[type=number],select,textarea{padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:16px}
+input[type=search]{flex:1;min-width:180px}
+textarea{width:100%;resize:vertical}
+.pill{display:inline-block;font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--ink)}
+.pill.new{background:var(--soft);color:var(--gold-deep)}.pill.rev{background:var(--warn-soft);color:var(--warn)}.pill.done{background:var(--good-soft);color:var(--good)}
+.sub{display:grid;gap:10px}
+.sub-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.sub-t{display:grid;gap:2px;min-width:0}.sub-t b{font-size:1rem}
+.note{background:var(--surface-2);border-radius:12px;padding:8px 12px;font-size:.88rem;white-space:pre-line}
+.score{font-family:var(--serif);font-weight:700;font-size:1.5rem;line-height:1}.score small{font-size:.85rem;color:var(--muted)}
+.mark{display:grid;gap:10px;border-top:1px dashed var(--line);padding-top:12px}
+.mark-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr))}
+.field{display:grid;gap:4px}.field label{font-size:.8rem;font-weight:700;color:var(--muted)}
+.file{padding:10px;border:1.5px dashed var(--gold);border-radius:12px;background:var(--soft)}
+.msg{color:var(--tick);font-size:.88rem}
+.ok{color:var(--good);font-size:.88rem}
+.login{max-width:420px;margin:30px auto 0;display:grid;gap:12px}
+.empty{text-align:center;padding:30px 18px}
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand">
+    <img src="/logo-180.png" alt="CA PrepX logo" width="34" height="34" style="border-radius:9px;background:#fff;box-shadow:0 0 0 1px var(--line)">
+    <div><b>CA PrepX</b> <span class="muted">· Teachers</span></div>
+  </div>
+  <div class="row" id="topAct"></div>
+</header>
+<main class="wrap" id="main"><p class="muted">Loading…</p></main>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.js"></script>
+<script>
+(function(){
+const CFG=window.PREPX_CONFIG||{};
+const main=document.getElementById("main"),top=document.getElementById("topAct");
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+if(!CFG.url||!CFG.anonKey||!window.supabase){main.innerHTML=`<div class="card"><h2>Not connected yet</h2><p class="muted" style="margin-top:6px">Add your Supabase URL and key to <b>config.js</b>, then reload.</p></div>`;return}
+const sb=window.supabase.createClient(CFG.url,CFG.anonKey);
+const BUCKET="answer-sheets",LV={foundation:"Foundation",inter:"Intermediate",final:"Final"};
+let me=null,myName="",isAdmin=false,subs=[],view="new",lvF="all",q="",open=null,flash={};
+const d2=d=>d?new Date(d).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"";
+const ago=d=>{const m=Math.round((Date.now()-new Date(d))/60000);return m<60?`${m} min ago`:m<1440?`${Math.round(m/60)} h ago`:`${Math.round(m/1440)} d ago`};
+
+function loginForm(err){
+  top.innerHTML=`<a class="btn" href="/">Open site</a>`;
+  main.innerHTML=`<div class="card login"><div class="eyebrow">Teacher portal</div><h1>Sign in to check papers</h1><p class="muted">Use the email and password of your CA PrepX account. The admin adds teacher access to it.</p>${err?`<p class="msg">${esc(err)}</p>`:""}
+   <div class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="email"></div>
+   <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password"></div>
+   <button class="btn primary" id="go" style="justify-content:center">Sign in</button></div>`;
+  const go=async()=>{const b=document.getElementById("go");b.disabled=true;b.textContent="Signing in…";
+    const {error}=await sb.auth.signInWithPassword({email:document.getElementById("em").value.trim(),password:document.getElementById("pw").value});
+    if(error)return loginForm(error.message);start()};
+  document.getElementById("go").onclick=go;document.getElementById("pw").onkeydown=e=>{if(e.key==="Enter")go()};
+}
+async function start(){
+  const {data}=await sb.auth.getSession();
+  if(!data.session)return loginForm();
+  me=data.session.user;
+  const [c,a]=await Promise.all([sb.rpc("is_checker"),sb.rpc("is_admin")]);isAdmin=!!a.data;
+  if(!c.data&&!isAdmin){top.innerHTML=`<button class="btn" id="so">Sign out</button>`;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
+    main.innerHTML=`<div class="card"><h2>This isn't a teacher account yet</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(me.email||"a guest")}. Ask the CA PrepX admin to add this email under Admin → Checkers, then reload.</p></div>`;return}
+  try{const r=await sb.from("checkers").select("name,email").eq("user_id",me.id).maybeSingle();myName=(r.data&&r.data.name)||(me.user_metadata&&me.user_metadata.name)||(me.email||"").split("@")[0]}catch(_){myName=(me.email||"").split("@")[0]}
+  top.innerHTML=`<span class="muted" style="font-size:.85rem">${esc(myName)}${isAdmin?" · admin":""}</span><button class="btn" id="rf">Refresh</button><a class="btn" href="/">Open site</a><button class="btn" id="so">Sign out</button>`;
+  document.getElementById("rf").onclick=load;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
+  load();
+}
+async function load(){
+  main.innerHTML=`<p class="muted">Loading…</p>`;
+  const {data,error}=await sb.from("submissions").select("*").order("created_at",{ascending:true}).limit(2000);
+  if(error){main.innerHTML=`<div class="card"><p class="msg">${esc(error.message)}</p><p class="muted" style="margin-top:6px">If this says a table doesn't exist, run teacher-check-setup.sql in Supabase first.</p></div>`;return}
+  subs=data||[];paint();
+}
+function lists(){
+  const f=x=>(lvF==="all"||x.level===lvF)&&(!q||[x.student_name,x.student_email,x.paper,x.attempt_label].join(" ").toLowerCase().includes(q));
+  return {new:subs.filter(x=>x.status==="submitted").filter(f),
+    mine:subs.filter(x=>x.status==="in_review"&&(x.checker_id===me.id||isAdmin)).filter(f),
+    done:subs.filter(x=>x.status==="checked").filter(f).sort((a,b)=>String(b.checked_at).localeCompare(String(a.checked_at)))};
+}
+function paint(){
+  const L=lists();const wk=Date.now()-7*864e5;
+  const doneWk=subs.filter(x=>x.status==="checked"&&new Date(x.checked_at)>wk),mineDone=doneWk.filter(x=>x.checker_id===me.id);
+  const tat=doneWk.length?Math.round(doneWk.reduce((t,x)=>t+(new Date(x.checked_at)-new Date(x.created_at)),0)/doneWk.length/36e5):null;
+  const cur=L[view]||[];
+  main.innerHTML=`<div><div class="eyebrow">Teacher portal</div><h1>Answer sheets to check</h1></div>
+  <div class="stats"><div class="stat"><div class="eyebrow">Waiting</div><div class="v">${L.new.length}</div><div class="s">not picked up yet</div></div>
+   <div class="stat"><div class="eyebrow">With me</div><div class="v">${subs.filter(x=>x.status==="in_review"&&x.checker_id===me.id).length}</div><div class="s">in progress</div></div>
+   <div class="stat"><div class="eyebrow">Checked this week</div><div class="v">${doneWk.length}</div><div class="s">${mineDone.length} by you</div></div>
+   <div class="stat"><div class="eyebrow">Turnaround</div><div class="v">${tat==null?"—":tat<48?tat+" h":Math.round(tat/24)+" d"}</div><div class="s">average, last 7 days</div></div></div>
+  <div class="tabs" role="tablist">${[["new","Waiting",L.new.length],["mine",isAdmin?"Being checked":"With me",L.mine.length],["done","Checked",L.done.length]].map(t=>`<button role="tab" data-v="${t[0]}" aria-selected="${view===t[0]}">${t[1]} · ${t[2]}</button>`).join("")}</div>
+  <div class="filters"><input type="search" id="q" placeholder="Search student, email or paper" value="${esc(q)}"><select id="lv"><option value="all">All levels</option>${Object.entries(LV).map(([k,v])=>`<option value="${k}" ${lvF===k?"selected":""}>${v}</option>`).join("")}</select></div>
+  <div style="display:grid;gap:12px">${cur.length?cur.map(card).join(""):`<div class="card empty"><p class="muted">${view==="new"?"No answer sheets waiting. Nice work.":view==="mine"?"Nothing in progress. Pick one from Waiting.":"No checked papers yet."}</p></div>`}</div>`;
+  document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{view=b.dataset.v;paint()});
+  const qi=document.getElementById("q");qi.oninput=()=>{q=qi.value.trim().toLowerCase();const pos=qi.selectionStart;paint();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos)};
+  document.getElementById("lv").onchange=e=>{lvF=e.target.value;paint()};
+}
+function card(x){
+  const pill=x.status==="checked"?`<span class="pill done">Checked</span>`:x.status==="in_review"?`<span class="pill rev">Being checked${x.checker_name?" · "+esc(x.checker_name):""}</span>`:`<span class="pill new">Waiting · ${ago(x.created_at)}</span>`;
+  const mineRev=x.status==="in_review"&&(x.checker_id===me.id||isAdmin),editing=open===x.id;
+  const fl=flash[x.id]||"";
+  return `<div class="card sub" id="s-${x.id}">
+   <div class="sub-top"><div class="sub-t"><span class="eyebrow">${esc(LV[x.level]||x.level||"")} · uploaded ${d2(x.created_at)}</span><b>${esc(x.paper)}${x.attempt_label?` · ${esc(x.attempt_label)}`:""}</b><span class="muted" style="font-size:.88rem">${esc(x.student_name||"Student")}${x.student_email?" · "+esc(x.student_email):""}</span></div>
+     ${x.status==="checked"?`<span class="score">${+x.marks}<small>/${+x.max_marks}</small></span>`:pill}</div>
+   ${x.note?`<div class="note"><b>Student's note:</b> ${esc(x.note)}</div>`:""}
+   ${x.status==="checked"?`${pill}${x.feedback?`<div class="note"><b>Your feedback:</b> ${esc(x.feedback)}</div>`:""}`:""}
+   <div class="row"><button class="btn" data-dl="${x.id}|file">Download answer sheet</button>
+     ${x.checked_path?`<button class="btn" data-dl="${x.id}|checked">Checked copy</button>`:""}
+     ${x.status==="submitted"?`<button class="btn primary" data-claim="${x.id}">Start checking</button>`:""}
+     ${mineRev&&!editing?`<button class="btn primary" data-open="${x.id}">Enter marks &amp; upload</button><button class="btn ghost" data-release="${x.id}">Put back</button>`:""}
+     ${x.status==="checked"&&(x.checker_id===me.id||isAdmin)&&!editing?`<button class="btn ghost" data-open="${x.id}">Edit result</button>`:""}</div>
+   ${fl?`<p class="${fl.startsWith("!")?"msg":"ok"}">${esc(fl.replace(/^!/,""))}</p>`:""}
+   ${editing?`<div class="mark"><div class="mark-grid">
+       <div class="field"><label for="cf-${x.id}">Checked copy (PDF${x.checked_path?", leave empty to keep the current one":""})</label><input class="file" id="cf-${x.id}" type="file" accept="application/pdf,.pdf"></div>
+       <div class="field"><label for="mk-${x.id}">Marks given</label><input id="mk-${x.id}" type="number" min="0" step="0.5" value="${x.marks!=null?+x.marks:""}" placeholder="e.g. 56"></div>
+       <div class="field"><label for="mx-${x.id}">Out of</label><input id="mx-${x.id}" type="number" min="1" step="0.5" value="${x.max_marks!=null?+x.max_marks:100}"></div></div>
+     <div class="field"><label for="fb-${x.id}">Feedback for the student</label><textarea id="fb-${x.id}" rows="4" maxlength="2000" placeholder="What went well, where marks were lost, what to fix before the exam">${esc(x.feedback||"")}</textarea></div>
+     <div class="row"><button class="btn primary" data-send="${x.id}">Send result to student</button><button class="btn ghost" data-close="${x.id}">Cancel</button></div></div>`:""}
+  </div>`;
+}
+async function dl(v){const [id,k]=v.split("|");const x=subs.find(s=>s.id===id);if(!x)return;const path=k==="checked"?x.checked_path:x.file_path;
+  const w=window.open("","_blank");const {data,error}=await sb.storage.from(BUCKET).createSignedUrl(path,900,{download:k!=="checked"?`${(x.student_name||"student").replace(/\W+/g,"-")}-${(x.paper||"paper").replace(/\W+/g,"-")}.pdf`:false});
+  if(error){if(w)w.close();flash[id]="!Couldn't open the file: "+error.message;paint();return}if(w)w.location=data.signedUrl;else location.href=data.signedUrl}
+async function claim(id){const {data,error}=await sb.from("submissions").update({status:"in_review",checker_id:me.id,checker_name:myName,claimed_at:new Date().toISOString()}).eq("id",id).eq("status","submitted").select();
+  if(error){flash[id]="!"+error.message;return paint()}
+  if(!data||!data.length){flash[id]="!Another teacher just picked this one.";await load();return}
+  Object.assign(subs.find(s=>s.id===id),data[0]);open=id;view="mine";paint();document.getElementById("s-"+id)&&document.getElementById("s-"+id).scrollIntoView({behavior:"smooth",block:"start"})}
+async function release(id){const {error}=await sb.from("submissions").update({status:"submitted",checker_id:null,checker_name:null,claimed_at:null}).eq("id",id);if(error){flash[id]="!"+error.message;return paint()}const x=subs.find(s=>s.id===id);Object.assign(x,{status:"submitted",checker_id:null,checker_name:null});open=null;paint()}
+async function send(id){const x=subs.find(s=>s.id===id);const f=document.getElementById("cf-"+id).files[0];const mk=parseFloat(document.getElementById("mk-"+id).value),mx=parseFloat(document.getElementById("mx-"+id).value),fb=document.getElementById("fb-"+id).value.trim();
+  const err=t=>{flash[id]="!"+t;paint()};
+  if(!f&&!x.checked_path)return err("Attach the checked copy as a PDF.");
+  if(f&&!(f.type==="application/pdf"||/\.pdf$/i.test(f.name)))return err("The checked copy must be a PDF.");
+  if(f&&f.size>20*1024*1024)return err("That file is over 20 MB.");
+  if(!(mx>0))return err("Enter the total marks (e.g. 100).");
+  if(!(mk>=0)||mk>mx)return err(`Marks must be between 0 and ${mx}.`);
+  const b=document.querySelector(`[data-send="${id}"]`);if(b){b.disabled=true;b.textContent="Sending…"}
+  let path=x.checked_path;
+  if(f){path=`checked/${id}.pdf`;const up=await sb.storage.from(BUCKET).upload(path,f,{contentType:"application/pdf",upsert:true});if(up.error)return err("Upload failed: "+up.error.message)}
+  const {data,error}=await sb.from("submissions").update({status:"checked",checked_path:path,marks:mk,max_marks:mx,feedback:fb||null,checked_at:new Date().toISOString(),checker_id:x.checker_id||me.id,checker_name:x.checker_name||myName}).eq("id",id).select();
+  if(error)return err(error.message);
+  Object.assign(x,(data&&data[0])||{status:"checked",checked_path:path,marks:mk,max_marks:mx,feedback:fb});open=null;flash[id]="Sent. The student can see their marks now.";view="done";paint()}
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;
+  if(t.dataset.dl)return dl(t.dataset.dl);if(t.dataset.claim)return claim(t.dataset.claim);if(t.dataset.release)return release(t.dataset.release);
+  if(t.dataset.open){open=t.dataset.open;flash[open]="";return paint()}if(t.dataset.close){open=null;return paint()}if(t.dataset.send)return send(t.dataset.send)});
+start();
+})();
+</script>
+</body>
+</html>
