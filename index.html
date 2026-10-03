@@ -840,6 +840,19 @@ main{padding-bottom:120px}
 .hr-pct small{font-size:.9rem;color:var(--muted)}
 .tch-fb{background:var(--surface-2);border-radius:12px;padding:10px 12px;display:grid;gap:4px}.tch-fb p{margin:0;white-space:pre-line}
 .tch-cta{margin-top:4px}
+
+/* v13 per-test teacher check + answer book */
+.hx-acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.tchgo,.tchst{gap:5px}
+.tchst{background:var(--accent-soft)}.tchst.ok{background:var(--good-soft);color:var(--good);border-color:transparent}
+.tch-how{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.tch-how p{flex:1;min-width:200px;margin:0;font-size:.92rem}
+.tchbox{gap:12px}.tchbox .field{display:grid;gap:4px}.tchbox textarea{width:100%;box-sizing:border-box}
+.abook .ab-tabs{display:flex;gap:0;border-bottom:1px solid var(--line);overflow-x:auto;margin-bottom:10px}
+.abook .ab-tabs button{flex:none;border:0;background:none;padding:9px 12px 10px;cursor:pointer;color:var(--muted);font:inherit;font-weight:600;border-bottom:3px solid transparent}
+.abook .ab-tabs button[aria-selected="true"]{color:var(--ink);font-weight:800;border-bottom-color:var(--gold)}
+.ab-frame{position:relative;height:min(75vh,820px);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.ab-frame iframe{width:100%;height:100%;border:0}
+.abq{margin-left:6px;padding:2px 8px}
 </style>
 </head>
 <body>
@@ -1491,7 +1504,7 @@ function hallView(){ixLoad();const lp=L().papers;if(!ixPid||!lp.some(p=>p.id===i
   const S2=ixSets(ixPid),pn=paperName(ixPid),P=ixPat(ixPid);
   const row=s=>{const last=ixLast(s.key);const st=last?(last.status==="in-progress"?"In progress":last.status==="needs-review"?"Needs marking":`Scored ${(last.mcqScore||0)+(last.selfScore||0)}/${(last.mcqMax||0)+(last.selfMax||0)}`):"";
     return `<div class="hx-row"><div class="hx-rt"><b>${esc(s.attempt)}</b><span class="muted">${IXSRC[s.source]||s.source}${s.exam?` · ${s.ans.length?"ICAI answers ✓":"answers not published yet"}`:" · questions with answers"}</span>${st?`<span class="pill ${last.status==="done"?"good":"warn"}">${st}</span>`:""}</div>
-      <button class="btn sm ${s.exam?"primary":""}" data-ixset="${esc(s.key)}">${last&&last.status==="in-progress"?"Resume":s.exam?"Take exam":"Practise"}</button></div>`};
+      <div class="hx-acts">${s.exam?tchBtn(s.key,s.key):""}<button class="btn sm ${s.exam?"primary":""}" data-ixset="${esc(s.key)}">${last&&last.status==="in-progress"?"Resume":s.exam?"Take exam":"Practise"}</button></div></div>`};
   const ex=S2.filter(s=>s.exam),rt=S2.filter(s=>!s.exam);
   return `<div class="hx-grid">${cards}</div>
   <div class="card hx-list"><div class="card-h"><div><div class="eyebrow">P${pn.no} · ${esc(pn.name)}</div><h2 style="margin-top:2px">Full-length papers</h2></div><span class="pill">${ixMarks(P)} marks · ${P.min} min</span></div>
@@ -1574,6 +1587,15 @@ function ixScore(a){const P=ixPat(a.pid);const csM={},csD={};let mcq=0,desc=0;
   if(P.caseChoose){const cs=[...Array(P.cases)].map((_,i)=>({m:csM[i+1]||0,d:csD[i+1]||0})).sort((x,y)=>(y.m+y.d)-(x.m+x.d)).slice(0,P.caseChoose);mcq=cs.reduce((t,c)=>t+c.m,0);desc=cs.reduce((t,c)=>t+c.d,0)}
   const r=x=>Math.round(x*100)/100;return {mcq:r(mcq),desc:r(desc),total:r(mcq+desc)}}
 function ixKeyDone(a){const P=ixPat(a.pid);return P.mcq.every(s=>{const n=a.n[s.id]||s.n;for(let q=1;q<=n;q++)if(((a.key||{})[s.id]||{})[q]==null)return false;return true})}
+
+function abook(a){if(a.kind==="rtp")return "";const parts=(a.ans||[]);
+  if(!parts.length)return `<div class="card abook"><div class="card-h"><h2>${ico("papers",20)} Answer book</h2></div><p class="muted">ICAI hasn't published suggested answers for this paper yet. We only show ICAI's official answers, so this unlocks as soon as ICAI releases them.</p></div>`;
+  const tabs=[...parts.map((u,i)=>["a"+i,parts.length>1?`ICAI answers · part ${i+1}`:"ICAI suggested answers",u]),["q","Question paper",a.url]];
+  const cur=(window.__ab||{})[a.id]||"a0";const t=tabs.find(x=>x[0]===cur)||tabs[0];
+  return `<div class="card abook" id="ab-${a.id}"><div class="card-h"><div><h2>${ico("papers",20)} Answer book</h2><p class="muted" style="font-size:.85rem;margin-top:2px">ICAI's own suggested answers for ${esc(a.title)}. Check every answer against it before you mark yourself below.</p></div></div>
+    <div class="ab-tabs" role="tablist">${tabs.map(x=>`<button role="tab" aria-selected="${x[0]===t[0]}" data-abtab="${a.id}|${x[0]}">${x[1]}</button>`).join("")}</div>
+    <div class="ab-frame"><iframe src="${esc(ixPdf(t[2]))}" title="${esc(t[1])}" loading="lazy"></iframe><a class="ix-newtab" href="${esc(t[2])}" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    <p class="muted" style="font-size:.78rem;margin-top:8px">Source: ICAI Board of Studies (official PDF, opened from icai.org).</p></div>`}
 function ixReview(a){const P=ixPat(a.pid);const sc=ixScore(a),tot=ixMarks(P);
   if(a.kind==="rtp")return `<div class="card mksum"><div class="eyebrow">${esc(a.title)}</div><h2 style="margin-top:4px">RTP practice done</h2><div class="mkfacts"><div><b>${Object.keys(a.done).filter(k=>a.done[k]).length}</b><span>Questions done</span></div><div><b>${mm(a.used)}</b><span>Time taken</span></div></div><p class="muted" style="font-size:.9rem">Answers are in the same ICAI file, right after the questions.</p><div class="row"><a class="btn primary sm" href="${esc(a.url)}" target="_blank" rel="noopener">Open RTP with answers ↗</a><button class="btn sm" data-mk="mine">All my tests</button></div></div>`;
   const ansBtns=(a.ans&&a.ans.length?a.ans:[]).map((u,i)=>`<a class="btn sm ${i?"":"primary"}" href="${esc(u)}" target="_blank" rel="noopener">ICAI suggested answers${a.ans.length>1?" · part "+(i+1):""} ↗</a>`).join("")||`<span class="muted" style="font-size:.88rem">ICAI hasn't published suggested answers for this paper yet.</span>`;
@@ -1585,12 +1607,12 @@ function ixReview(a){const P=ixPat(a.pid);const sc=ixScore(a),tot=ixMarks(P);
     <p class="muted" style="font-size:.8rem;margin-top:8px">Your answer is outlined; the key is filled in gold.</p></div>`:"";
   const wUI=P.desc.length?`<div class="card"><div class="card-h"><h2>${P.mcq.length?"Step 2 · ":""}Written answers</h2><span class="pill ${a.status==="done"?"good":""}">${sc.desc}/${a.selfMax}</span></div>
     <p class="muted" style="font-size:.88rem;margin-bottom:10px">Compare each answer with ICAI's and give yourself marks honestly: steps, working notes and presentation count. Only the questions the paper lets you count are added up.</p>
-    ${P.desc.map(g=>`<div class="ix-sh" style="margin-top:8px"><b>${esc(g.label)}</b>${g.choose?`<span class="muted">best ${g.choose} optional count</span>`:""}</div>${g.qs.map(q=>{const k=g.id+"|"+q.no,att=a.dd[k];return `<div class="ix-wrow"><span><b>${/^CS/.test(q.no)?"Written":"Q"+esc(q.no)}</b> <span class="muted">${q.m} marks${q.comp?" · compulsory":""}${att?"":" · not attempted"}</span></span><input type="number" min="0" max="${q.m}" step="0.5" inputmode="decimal" id="ixw-${a.id}-${g.id}-${q.no}" value="${(a.wm||{})[k]??""}" placeholder="0" aria-label="Marks for ${q.no}"></div>`}).join("")}`).join("")}</div>`:"";
+    ${P.desc.map(g=>`<div class="ix-sh" style="margin-top:8px"><b>${esc(g.label)}</b>${g.choose?`<span class="muted">best ${g.choose} optional count</span>`:""}</div>${g.qs.map(q=>{const k=g.id+"|"+q.no,att=a.dd[k];return `<div class="ix-wrow"><span><b>${/^CS/.test(q.no)?"Written":"Q"+esc(q.no)}</b> <span class="muted">${q.m} marks${q.comp?" · compulsory":""}${att?"":" · not attempted"}</span>${a.ans&&a.ans.length?`<button class="btn ghost sm abq" data-abgo="${a.id}">Answer book</button>`:""}</span><input type="number" min="0" max="${q.m}" step="0.5" inputmode="decimal" id="ixw-${a.id}-${g.id}-${q.no}" value="${(a.wm||{})[k]??""}" placeholder="0" aria-label="Marks for ${q.no}"></div>`}).join("")}`).join("")}</div>`:"";
   return `<div class="card mksum"><div><div class="eyebrow">${esc(a.title)}</div><h2 style="margin-top:4px">${a.status==="done"?"Your result":"Submitted. ICAI's answers are unlocked."}</h2></div>
     <div class="mkfacts">${P.mcq.length?`<div><b>${kd?sc.mcq:"—"}/${a.mcqMax}</b><span>MCQs</span></div>`:""}${P.desc.length?`<div><b>${a.status==="done"?sc.desc:"—"}/${a.selfMax}</b><span>Written</span></div>`:""}<div><b>${a.status==="done"?sc.total:"—"}/${tot}</b><span>Total</span></div><div><b>${mm(a.used)}</b><span>Time taken</span></div></div>
     ${a.status==="done"?`<p class="ix-verdict ${pass?"pass":"fail"}">${pass?(sc.total>=60?"Exemption level (60+). Excellent.":"Pass level (40+). Keep pushing for 60."):"Below the 40-mark pass line. Revise the weak areas and retake."}</p>`:""}
     <div class="row">${ansBtns}<a class="btn sm" href="${esc(a.url)}" target="_blank" rel="noopener">Question paper ↗</a></div></div>
-  ${keyUI}${wUI}
+  ${abook(a)}${keyUI}${wUI}
   <div class="row"><button class="btn primary" data-ixscore="${a.id}">Save my marks</button><button class="btn" data-mk="mine">All my tests</button><button class="btn ghost" data-ixretake="${esc(a.doc)}">Retake paper</button></div>`}
 function ixSaveMarks(id){const a=mocks().find(x=>x.id===id);if(!a)return;const P=ixPat(a.pid);a.wm=a.wm||{};
   P.desc.forEach(g=>g.qs.forEach(q=>{const el=document.getElementById(`ixw-${a.id}-${g.id}-${q.no}`);if(el&&el.value!=="")a.wm[g.id+"|"+q.no]=Math.max(0,Math.min(q.m,+el.value||0))}));
@@ -1612,19 +1634,13 @@ async function tchLoad(force){if(!sb||!session||isGuest()||TCH.loading)return;if
   TCH.loading=false;if(tab==="practice"&&prMode==="mock")render()}
 function teacherView(){
   const head=`<div class="card tch-head"><div class="tch-hd">${ico("teacher",40)}<div><h2>Get your answers checked by a teacher</h2><p class="muted">Write the paper on A4 sheets, scan them into one PDF and upload it here. A CA PrepX teacher marks it like an ICAI examiner and sends back the checked copy with marks and feedback.</p></div></div>
-    <ol class="tch-steps"><li><b>Attempt</b><span>Sit an RTP, MTP or past paper on paper, in 3 hours</span></li><li><b>Upload</b><span>One PDF, up to 20 MB</span></li><li><b>Get marks</b><span>Checked copy, marks and feedback appear here</span></li></ol></div>`;
+    <ol class="tch-steps"><li><b>Attempt</b><span>Sit an RTP, MTP or past paper on paper, in 3 hours</span></li><li><b>Get checked</b><span>Tap it on the paper and upload one PDF, up to 20 MB</span></li><li><b>Get marks</b><span>Checked copy, marks and feedback appear here</span></li></ol></div>`;
   if(!sb)return head+`<div class="card"><p class="muted">Teacher checking works on the live site at caprepx.com.</p></div>`;
   if(!session||isGuest())return head+`<div class="card"><h2>Sign in to upload</h2><p class="muted" style="margin-top:4px">Your checked copy and marks are saved to your account, so you can see them on any phone or laptop.</p><div class="row" style="margin-top:12px"><button class="btn primary" data-tab="signin">Sign in or create account</button></div></div>`;
   tchLoad();
   if(TCH.err==="setup")return head+`<div class="card"><p class="muted">Teacher checking is being set up. Check back soon.</p></div>`;
-  const pre=window.__tchPre||{};const lp=L().papers;
   S.tchSeen=S.tchSeen||[];let seenChanged=false;(TCH.list||[]).forEach(x=>{if(x.status==="checked"&&!S.tchSeen.includes(x.id)){S.tchSeen.push(x.id);seenChanged=true}});if(seenChanged)save();
-  const form=`<div class="card"><div class="card-h"><h2>${ico("papers",20)} Upload your answer sheet</h2></div>
-    <div class="form tch-form"><div class="field"><label for="tchP">Paper</label><select id="tchP">${lp.map(p=>`<option value="${p.id}" ${pre.pid===p.id?"selected":""}>P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>
-    <div class="field"><label for="tchA">Which paper did you attempt?</label><input id="tchA" type="text" maxlength="80" placeholder="e.g. RTP May 2025, MTP Series 1, Nov 2024 past paper" value="${esc(pre.label||"")}"></div>
-    <div class="field tch-file"><label for="tchF">Answer sheet (PDF, up to 20 MB)</label><input id="tchF" type="file" accept="application/pdf,.pdf"></div>
-    <div class="field tch-note"><label for="tchN">Note for the teacher (optional)</label><textarea id="tchN" rows="2" maxlength="400" placeholder="e.g. Please focus on Q3 and Q5. I skipped Q6."></textarea></div></div>
-    <div class="row" style="margin-top:14px"><button class="btn primary" data-act="tchsend" ${TCH.busy?"disabled":""}>${TCH.busy?"Uploading…":"Send for checking"}</button><span class="muted" id="tchMsg" style="font-size:.85rem">${esc(TCH.msg)}</span></div></div>`;
+  const form=`<div class="card tch-how">${ico("papers",28)}<p><b>To send a paper:</b> tap <b>Get checked</b> next to any paper in the Exam hall or in My tests, or right after you submit a paper.</p><button class="btn sm" data-mk="papers">Go to Exam hall</button></div>`;
   const pill=x=>x.status==="checked"?`<span class="pill good">Checked</span>`:x.status==="in_review"?`<span class="pill warn">Being checked${x.checker_name?" by "+esc(x.checker_name):""}</span>`:`<span class="pill">Waiting for a teacher</span>`;
   const d=w=>w?new Date(w).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}):"";
   const list=TCH.list==null?`<p class="muted">Loading your papers…</p>`:!TCH.list.length?`<p class="muted">Nothing uploaded yet. Your checked papers will show up here.</p>`:TCH.list.map(x=>{const pct=x.status==="checked"&&x.max_marks?Math.round(x.marks/x.max_marks*100):null;
@@ -1632,17 +1648,33 @@ function teacherView(){
       ${x.status==="checked"?`<div class="hr-bar"><i class="r" style="flex:${+x.marks}"></i><i class="s" style="flex:${Math.max(0,x.max_marks-x.marks)}"></i></div>${pill(x)}${x.feedback?`<div class="tch-fb"><span class="eyebrow">Teacher's feedback${x.checker_name?" · "+esc(x.checker_name):""}</span><p>${esc(x.feedback)}</p></div>`:""}`:""}
       <div class="hr-act">${x.checked_path?`<button class="btn sm primary" data-tchget="checked|${x.id}">Download checked copy</button>`:""}<button class="btn sm" data-tchget="mine|${x.id}">My upload</button>${x.status==="submitted"?`<button class="btn sm ghost" data-tchdel="${x.id}">${TCH.del===x.id?"Tap again to withdraw":"Withdraw"}</button>`:""}</div></div>`}).join("");
   return head+form+`<div class="card-h" style="margin-top:6px"><h2>My checked papers</h2><button class="btn sm ghost" data-act="tchrefresh">Refresh</button></div><div class="hist">${list}</div>`}
-async function tchSend(){if(TCH.busy)return;const f=document.getElementById("tchF"),file=f&&f.files&&f.files[0];const msg=t=>{TCH.msg=t;const m=document.getElementById("tchMsg");if(m)m.textContent=t};
+function tchFor(key){return (TCH.list||[]).filter(x=>x.test_key===key)[0]}
+function tchCtx(v){if(v.startsWith("att:")){const a=mocks().find(z=>z.id===v.slice(4));if(!a)return null;return {key:a.doc||a.id,pid:a.pid,label:a.title,att:a.id}}
+  const st=ixFind(v);if(!st)return null;return {key:st.key,pid:st.pid,label:`${st.attempt} · ${IXSRC[st.source]||st.source}`}}
+function tchBtn(v,key){if(!sb)return "";const x=session&&!isGuest()?tchFor(key):null;
+  if(x)return `<button class="btn sm tchst ${x.status==="checked"?"ok":""}" data-mk="teacher">${ico("teacher",16)}${x.status==="checked"?`Checked · ${+x.marks}/${+x.max_marks}`:x.status==="in_review"?"With a teacher":"Sent for checking"}</button>`;
+  return `<button class="btn sm tchgo" data-tchopen="${esc(v)}">${ico("teacher",16)}Get checked</button>`}
+function tchOpen(v){if(!sb){toast("Teacher checking works on the live site.");return}
+  if(!session||isGuest()){toast("Sign in first so your marks come back to your account.");go("signin");render();return}
+  const c=tchCtx(v);if(!c){toast("Couldn't find that paper.");return}window.__tchCtx=c;TCH.msg="";
+  let m=document.getElementById("tchModal");if(m)m.remove();m=document.createElement("div");m.id="tchModal";m.className="lvmodal";const p=paper(c.pid);
+  m.innerHTML=`<div class="lvbox tchbox" role="dialog" aria-modal="true" aria-labelledby="tchT"><div class="tch-hd">${ico("teacher",34)}<div><div class="eyebrow">Send to a teacher</div><h2 id="tchT">${esc(p?`P${p.no} · ${p.name}`:"Paper")}</h2><p class="muted" style="margin:2px 0 0">${esc(c.label)}</p></div></div>
+    <p class="muted" style="font-size:.88rem">Scan your handwritten answer sheets for this paper into one PDF (up to 20 MB). A CA PrepX teacher marks it and you get the checked copy, marks and feedback under Mock tests → Teacher check.</p>
+    <div class="field tch-file"><label for="tchF">Answer sheet (PDF)</label><input id="tchF" type="file" accept="application/pdf,.pdf"></div>
+    <div class="field"><label for="tchN">Note for the teacher (optional)</label><textarea id="tchN" rows="2" maxlength="400" placeholder="e.g. Please focus on Q3. I skipped Q6."></textarea></div>
+    <p class="msg" id="tchMsg" role="status"></p>
+    <div class="row"><button class="btn primary" data-act="tchsend">Send for checking</button><button class="btn ghost" data-act="tchclose">Cancel</button></div></div>`;
+  document.body.appendChild(m);m.addEventListener("click",e=>{if(e.target===m)m.remove()})}
+async function tchSend(){if(TCH.busy)return;const c=window.__tchCtx;if(!c)return;const f=document.getElementById("tchF"),file=f&&f.files&&f.files[0];const msg=t=>{const m=document.getElementById("tchMsg");if(m)m.textContent=t};
   if(!file)return msg("Choose your PDF first.");if(!(file.type==="application/pdf"||/\.pdf$/i.test(file.name)))return msg("Only PDF files, please. Scan your sheets into one PDF.");if(file.size>20*1024*1024)return msg("That file is over 20 MB. Try a lower scan quality.");
-  const pid=document.getElementById("tchP").value,p=paper(pid),label=(document.getElementById("tchA").value||"").trim(),note=(document.getElementById("tchN").value||"").trim();
-  if(!label)return msg("Tell the teacher which paper you attempted (e.g. RTP May 2025).");
+  const p=paper(c.pid),note=(document.getElementById("tchN").value||"").trim();
   const btn=document.querySelector('[data-act="tchsend"]');TCH.busy=true;if(btn){btn.disabled=true;btn.textContent="Uploading…"}msg("");
-  const id=(crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{const r=Math.random()*16|0;return (c==="x"?r:(r&3|8)).toString(16)}));
+  const id=(crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,ch=>{const r=Math.random()*16|0;return (ch==="x"?r:(r&3|8)).toString(16)}));
   const uid=session.user.id,path=`student/${uid}/${id}.pdf`;
   try{const up=await sb.storage.from("answer-sheets").upload(path,file,{contentType:"application/pdf",upsert:false});if(up.error)throw up.error;
-    const row={id,user_id:uid,student_name:S.name||(session.user.user_metadata||{}).name||null,student_email:session.user.email||null,level:S.level,paper:`P${p.no} · ${p.name}`,attempt_label:label,note:note||null,file_path:path};
+    const row={id,user_id:uid,student_name:S.name||(session.user.user_metadata||{}).name||null,student_email:session.user.email||null,level:S.level,paper:p?`P${p.no} · ${p.name}`:"Paper",attempt_label:c.label,test_key:c.key,note:note||null,file_path:path};
     const ins=await sb.from("submissions").insert(row).select().single();if(ins.error){try{await sb.storage.from("answer-sheets").remove([path])}catch(_){}throw ins.error}
-    TCH.list=[ins.data||row,...(TCH.list||[])];window.__tchPre=null;TCH.msg="";TCH.busy=false;track("teacher.upload");render();toast("Uploaded. A teacher will check it soon.")}
+    TCH.list=[ins.data||row,...(TCH.list||[])];TCH.busy=false;const m=document.getElementById("tchModal");if(m)m.remove();track("teacher.upload");render();toast("Sent. A teacher will check it soon.")}
   catch(e){TCH.busy=false;if(btn){btn.disabled=false;btn.textContent="Send for checking"}msg("Upload failed: "+(e.message||e)+". Try again.")}}
 async function tchGet(v){const [k,id]=v.split("|");const x=(TCH.list||[]).find(z=>z.id===id);if(!x)return;const path=k==="checked"?x.checked_path:x.file_path;if(!path)return;
   const w=window.open("","_blank");try{const {data,error}=await sb.storage.from("answer-sheets").createSignedUrl(path,600);if(error)throw error;if(w)w.location=data.signedUrl;else location.href=data.signedUrl}catch(e){if(w)w.close();toast("Couldn't open the file. Try again.")}}
@@ -1652,7 +1684,7 @@ async function tchDel(id){if(TCH.del!==id){TCH.del=id;render();setTimeout(()=>{i
 function mockView(){loadPapers();const f=mf();if(sb&&session&&!isGuest())tchLoad();const tu=tchUnseen();
   const seg=chipNav("Mock tests","mk",[["papers","Exam hall","clock"],["chapter","Chapter tests","target"],["mine","My tests","trophy"],["analysis","Analysis","chart"],["teacher",`Teacher check${tu?` <span class="cbadge">${tu}</span>`:""}`,"teacher"]],k=>mockMode===k||(mockMode==="result"&&k==="mine"));
   let body="";
-  if(mockMode==="result"&&mockRes){const ra=mocks().find(a=>a.id===mockRes);body=mockResult(ra);if(ra&&ra.kind!=="chapter")body+=`<button class="hist-link tch-cta" data-tchfrom="${ra.id}">${ico("teacher",30)}<span><b>Get your written answers checked</b><small>Upload your answer sheet as a PDF and a CA PrepX teacher will mark it</small></span><em>→</em></button>`}
+  if(mockMode==="result"&&mockRes){const ra=mocks().find(a=>a.id===mockRes);body=mockResult(ra);if(ra&&ra.kind!=="chapter"){const sx=session&&!isGuest()?tchFor(ra.doc||ra.id):null;body=(sx?`<button class="hist-link tch-cta" data-mk="teacher">${ico("teacher",30)}<span><b>${sx.status==="checked"?`Checked by a teacher · ${+sx.marks}/${+sx.max_marks}`:"Sent to a teacher"}</b><small>${sx.status==="checked"?"See the checked copy and feedback":"You'll see marks and feedback here once it's checked"}</small></span><em>→</em></button>`:`<button class="hist-link tch-cta" data-tchopen="att:${ra.id}">${ico("teacher",30)}<span><b>Get this paper checked by a teacher</b><small>Upload your handwritten answers as one PDF. Marks, feedback and the checked copy come back here.</small></span><em>→</em></button>`)+body}}
   else if(mockMode==="chapter")body=chapterView();
   else if(mockMode==="mine")body=mineView();
   else if(mockMode==="analysis")body=analysisView();
@@ -1682,11 +1714,11 @@ function chapterView(){const f=mf();const lp=L().papers;const pid=f.chPid&&lp.so
       <div class="field"><label for="ctN">Questions</label><select id="ctN">${[10,15,20,30].map(n=>`<option ${+f.n===n?"selected":""}>${n}</option>`).join("")}</select></div></div>
     <label class="row" style="margin-top:14px;font-size:.9rem;gap:8px"><input type="checkbox" id="ctL" ${f.law?"checked":""}> Current law only (hide questions affected by later amendments)</label>
     <div class="row" style="margin-top:16px"><button class="btn primary" data-act="ctstart">Start chapter test</button></div></div>`}
-function attScore(a){const obj=a.mcqMax?`${a.mcqScore}/${a.mcqMax}`:"—";const self=a.selfMax?(a.selfScore!=null?`${a.selfScore}/${a.selfMax}`:"—"):"—";const tot=a.status==="done"?`${(a.mcqScore||0)+(a.selfScore||0)}/${(a.mcqMax||0)+(a.selfMax||0)}`:"—";return {obj,self,tot}}
+function attScore(a){const obj=a.mcqMax?(a.mcqScore!=null?`${a.mcqScore}/${a.mcqMax}`:`—/${a.mcqMax}`):"—";const self=a.selfMax?(a.selfScore!=null?`${a.selfScore}/${a.selfMax}`:"—"):"—";const tot=a.status==="done"?`${(a.mcqScore||0)+(a.selfScore||0)}/${(a.mcqMax||0)+(a.selfMax||0)}`:"—";return {obj,self,tot}}
 function mineView(){const A=mocks().slice().reverse();
   if(!A.length)return `<div class="card"><h2>No attempts yet</h2><p class="muted" style="margin-top:6px">Take a full paper or a chapter test. Your attempts, marks and reviews show up here.</p><div class="row" style="margin-top:12px"><button class="btn primary sm" data-mk="papers">Browse papers</button></div></div>`;
   return `<div class="tbl-wrap"><table class="mktbl"><thead><tr><th>Paper</th><th>Date</th><th>Objective</th><th>Self-assessed</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>${A.map(a=>{const s=attScore(a);const st=a.status;
-    return `<tr><td><b>${esc(a.title)}</b><span class="muted" style="display:block;font-size:.8rem">${a.kind==="chapter"?"Chapter test":a.kind==="rtp"?"RTP practice":"Full paper"}</span></td><td class="num" style="white-space:nowrap">${new Date(a.started).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</td><td class="num">${s.obj}</td><td class="num">${s.self}</td><td class="num">${s.tot}</td><td><span class="pill ${st==="done"?"good":"warn"}">${st==="done"?"Completed":st==="needs-review"?"Needs review":"In progress"}</span></td><td>${st==="in-progress"?`<button class="btn sm primary" data-mkresume="${a.id}">Resume</button>`:`<button class="btn sm" data-mkview="${a.id}">${st==="needs-review"?"Mark yourself":"Review"}</button>`}</td></tr>`}).join("")}</tbody></table></div>`}
+    return `<tr><td><b>${esc(a.title)}</b><span class="muted" style="display:block;font-size:.8rem">${a.kind==="chapter"?"Chapter test":a.kind==="rtp"?"RTP practice":"Full paper"}</span></td><td class="num" style="white-space:nowrap">${new Date(a.started).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</td><td class="num">${s.obj}</td><td class="num">${s.self}</td><td class="num">${s.tot}</td><td><span class="pill ${st==="done"?"good":"warn"}">${st==="done"?"Completed":st==="needs-review"?"Needs review":"In progress"}</span></td><td><div class="hx-acts">${st==="in-progress"?`<button class="btn sm primary" data-mkresume="${a.id}">Resume</button>`:`<button class="btn sm" data-mkview="${a.id}">${st==="needs-review"?"Mark yourself":"Review"}</button>`}${a.kind!=="chapter"&&st!=="in-progress"?tchBtn("att:"+a.id,a.doc||a.id):""}</div></td></tr>`}).join("")}</tbody></table></div>`}
 function analysisView(){const A=mocks().filter(a=>a.status!=="in-progress");
   if(!A.length)return `<div class="card"><h2>Nothing to analyse yet</h2><p class="muted" style="margin-top:6px">Submit a paper or a chapter test and your subject-wise and chapter-wise results appear here.</p></div>`;
   const by={};A.forEach(a=>{const k=a.pid||"mix";by[k]=by[k]||{n:0,o:0,om:0,t:0,tm:0,tn:0};const b=by[k];b.n++;if(a.mcqMax){b.o+=a.mcqScore;b.om+=a.mcqMax}if(a.status==="done"){b.t+=(a.mcqScore||0)+(a.selfScore||0);b.tm+=(a.mcqMax||0)+(a.selfMax||0);b.tn++}});
@@ -2811,7 +2843,8 @@ document.addEventListener("click",e=>{
   if(lvOpen&&!e.target.closest("#levelSeg")){lvOpen=false;renderChrome()}const t=e.target.closest("button,[data-tab]");if(!t)return;if(t.dataset.act==="lvlopen"){lvOpen=!lvOpen;renderChrome();return}if(t.dataset.level)lvOpen=false;if(t.dataset.act==="snopen"){snOpen=!snOpen;render();return}if(t.dataset.res||t.dataset.prm||t.dataset.plan||t.dataset.spm||t.dataset.tab)snOpen=false;if(t.dataset.prm||t.dataset.tab)window.__mt=null;
   if(t.dataset.wlevel){W.level=t.dataset.wlevel;document.querySelectorAll("[data-wlevel]").forEach(b=>b.setAttribute("aria-pressed",b===t));return}
   if(t.dataset.level){if(T&&T.active)return;S.level=t.dataset.level;S.plan.weak=[];cur=null;T=null;sess={n:0,ok:0};window.__mp="all";save();render();return}
-  if(t.dataset.act==="tchsend"){tchSend();return}if(t.dataset.act==="tchrefresh"){tchLoad(true);return}if(t.dataset.tchget){tchGet(t.dataset.tchget);return}if(t.dataset.tchdel){tchDel(t.dataset.tchdel);return}if(t.dataset.tchfrom){const ra=mocks().find(a=>a.id===t.dataset.tchfrom);window.__tchPre=ra?{pid:ra.pid,label:ra.title}:null;mockMode="teacher";render();window.scrollTo({top:0});return}
+  if(t.dataset.act==="tchsend"){tchSend();return}if(t.dataset.act==="tchrefresh"){tchLoad(true);return}if(t.dataset.tchget){tchGet(t.dataset.tchget);return}if(t.dataset.tchdel){tchDel(t.dataset.tchdel);return}if(t.dataset.abtab){const [id,k]=t.dataset.abtab.split("|");window.__ab=window.__ab||{};window.__ab[id]=k;render();const el=document.getElementById("ab-"+id);if(el)el.scrollIntoView({block:"start"});return}if(t.dataset.abgo){const el=document.getElementById("ab-"+t.dataset.abgo);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return}
+  if(t.dataset.tchopen){tchOpen(t.dataset.tchopen);return}if(t.dataset.act==="tchclose"){const m=document.getElementById("tchModal");if(m)m.remove();return}
   if(t.dataset.tview){const x=S.tests.find(z=>(z.id||("old"+z.t))===t.dataset.tview);if(x&&x.qs){const qm=new Map(Q.map(q=>[String(q.id),q]));const keep=x.qs.map((id,i)=>[qm.get(String(id)),x.ans[i]]).filter(r=>r[0]);T={qs:keep.map(r=>r[0]),ans:keep.map(r=>r[1]),i:0,limit:x.limit||x.secs,secs:x.secs,ok:keep.filter(r=>r[1]===r[0].a).length,active:false,done:true,past:true};mode="test";go("practice");prMode="mcq";render();window.scrollTo({top:0})}return}
   if(t.dataset.tredo){const x=pastTests().find(z=>z.key===t.dataset.tredo);if(x){const ids=x.wrong.filter(isWrong);if(!ids.length){toast("All fixed from this test. Nice!");return}window.__mt={key:x.key,title:x.kind+" · "+x.title,ids};mode="mistakes";cur=null;go("practice");prMode="mcq";render();window.scrollTo({top:0})}return}
   if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;if(t.dataset.mode!=="mistakes"||mode!=="mistakes")window.__mt=null;if(T&&T.past)T=null;if(T&&T.done&&t.dataset.mode==="history")T=null;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
