@@ -18,7 +18,7 @@
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 :root{
   --bg:#FAF7EF; --surface:#FFFFFF; --surface-2:#F3EEE1; --ink:#141414; --muted:#6B6558;
-  --line:#E6DFCC; --accent:#111111; --accent-ink:#E0B43A; --accent-soft:#F6EDD2;
+  --line:#E6DFCC; --accent:#E0B43A; --accent-ink:#1A1405; --accent-soft:#F6EDD2;
   --gold:#E0B43A; --gold-deep:#9C7400; --gold-ink:#1A1405;
   --tick:#C2410C; --tick-soft:#FBE4D8; --good:#2F7D4F; --good-soft:#E2F1E7; --warn:#A86A00; --warn-soft:#F6EBCB;
   --serif:"Fraunces",Georgia,"Times New Roman",serif;
@@ -723,18 +723,75 @@ body.exam-on,body.modal-on{overflow:hidden}
 @media (max-width:899px){
 .sn{padding:0;border:0;background:transparent}
 .sn-h{display:none}
-.sn-list{grid-template-columns:repeat(var(--c,2),minmax(0,1fr));gap:8px}
-.sn-it{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:8px 10px;min-height:52px;gap:8px}
+.sn-list{display:flex;gap:0;margin:0 -16px;padding:0 10px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.sn-list::-webkit-scrollbar{display:none}
+.sn-it{flex:1 0 auto;width:auto;justify-content:center;background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;padding:10px 8px 10px;min-height:50px;gap:7px;color:var(--muted)}
+.sn-it:hover{background:transparent}
 .sn-it small{display:none}
-.sn-it b{font-size:.88rem;line-height:1.2}
-.sn-it[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 6px 14px rgba(20,20,20,.16)}
-.sn-list.c3 .sn-it{flex-direction:column;justify-content:center;text-align:center;padding:10px 6px;gap:4px}
-.sn-list.c3 .sn-it>span{justify-items:center}
+.sn-it b{font-size:.9rem;font-weight:600;white-space:nowrap}
+.sn-it .pic{width:24px!important;height:24px!important}
+.sn-it:not([aria-pressed="true"]) .pic{opacity:.7}
+.sn-it[aria-pressed="true"]{background:transparent;border-color:var(--gold);color:var(--ink);box-shadow:0 7px 10px -9px rgba(224,180,58,.95)}
+.sn-it[aria-pressed="true"] b{font-weight:800}
+.sn-list.n3 .sn-it,.sn-list.n4 .sn-it{flex:1 1 0;min-width:0;flex-direction:column;gap:3px;padding:8px 2px 8px}
+.sn-list.n3 .sn-it b,.sn-list.n4 .sn-it b{font-size:.78rem}
 }
 .chipnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
 .chipnav button{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 14px 5px 7px;font:inherit;font-weight:700;font-size:.88rem;color:var(--ink);cursor:pointer;min-height:40px}
 .chipnav button:hover{border-color:var(--gold)}
 .chipnav button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* v8 night/day polish */
+.btn.ghost{color:var(--gold-deep)}
+.btn.primary,.today-go,.guest-btn{box-shadow:0 6px 16px rgba(224,180,58,.32)}
+.card,.tile,.jobrow{border-radius:18px}
+@media (max-width:719px){
+.bnav{left:10px!important;right:10px!important;bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;border:1px solid var(--line)!important;border-radius:24px;padding:5px!important;gap:2px;box-shadow:0 10px 26px rgba(20,20,20,.14)!important}
+.bnav button{border-radius:16px;padding:7px 0 6px!important}
+.bnav button[aria-selected="true"]{background:var(--accent-soft)}
+main{padding-bottom:120px}
+}
+:root[data-theme="dark"] .bnav{background:#141414;box-shadow:0 12px 30px rgba(0,0,0,.5)!important}
+:root[data-theme="dark"] .bnav button[aria-selected="true"]{color:var(--gold);box-shadow:0 0 14px rgba(224,180,58,.25)}
+:root[data-theme="dark"] .today{background:linear-gradient(160deg,#1C1A14,#121212);border-color:#3A3220}
+:root[data-theme="dark"] .tring{box-shadow:0 0 18px rgba(224,180,58,.35)}
+:root[data-theme="dark"] .btn.primary,:root[data-theme="dark"] .today-go{box-shadow:0 0 22px rgba(224,180,58,.3)}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]) .bnav{background:#141414;box-shadow:0 12px 30px rgba(0,0,0,.5)!important}
+:root:not([data-theme="light"]) .bnav button[aria-selected="true"]{color:var(--gold);box-shadow:0 0 14px rgba(224,180,58,.25)}
+:root:not([data-theme="light"]) .today{background:linear-gradient(160deg,#1C1A14,#121212);border-color:#3A3220}
+:root:not([data-theme="light"]) .tring{box-shadow:0 0 18px rgba(224,180,58,.35)}
+:root:not([data-theme="light"]) .btn.primary,:root:not([data-theme="light"]) .today-go{box-shadow:0 0 22px rgba(224,180,58,.3)}
+}
+
+/* v9 level chip + one-time picker */
+#levelSeg.lvw{position:relative;display:flex;width:auto!important;order:0!important;background:none;padding:0}
+.lvchip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 10px 0 8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;font:inherit;font-weight:800;font-size:.85rem;color:var(--ink);cursor:pointer}
+.lvchip b{font-size:.7rem;color:var(--muted)}
+.lvchip:hover{border-color:var(--gold)}
+.lvmenu{position:absolute;right:0;top:calc(100% + 8px);z-index:40;min-width:230px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:6px;display:grid;gap:2px;box-shadow:0 14px 32px rgba(20,20,20,.18)}
+.lvmenu button{display:flex;align-items:center;gap:10px;border:0;background:transparent;border-radius:12px;padding:9px 10px;font:inherit;font-weight:700;font-size:.92rem;color:var(--ink);cursor:pointer;text-align:left}
+.lvmenu button:hover{background:var(--surface-2)}
+.lvmenu button[aria-checked="true"]{background:var(--accent-soft)}
+.lvmenu em{margin-left:auto;font-style:normal;color:var(--gold-deep);font-weight:800}
+.lvmodal{position:fixed;inset:0;z-index:300;background:rgba(10,10,10,.55);display:grid;place-items:end center;padding:16px;animation:lvf .2s ease}
+@media (min-width:720px){.lvmodal{place-items:center}}
+.lvbox{width:min(440px,100%);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:24px;padding:22px 20px 18px;display:grid;gap:8px;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:lvu .25s ease}
+.lvbox h2{font-family:var(--serif);font-size:1.5rem;margin:0}
+.lvbox p{margin:0 0 6px;font-size:.92rem}
+.lvopts{display:grid;gap:8px}
+.lvopts button{display:flex;align-items:center;gap:12px;text-align:left;border:1.5px solid var(--line);background:var(--bg);border-radius:16px;padding:12px 14px;font:inherit;color:var(--ink);cursor:pointer;min-height:64px}
+.lvopts button:hover{border-color:var(--gold);background:var(--accent-soft);box-shadow:0 6px 16px rgba(224,180,58,.25)}
+.lvopts span{display:grid;gap:1px;flex:1}
+.lvopts b{font-size:1rem}
+.lvopts small{font-size:.8rem;color:var(--muted)}
+.lvopts em{font-style:normal;font-weight:800;color:var(--gold-deep)}
+@keyframes lvf{from{opacity:0}to{opacity:1}}
+@keyframes lvu{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+@media (max-width:719px){#levelSeg.lvw{order:1!important}.lvchip{padding:0 7px 0 6px;gap:3px}.lvchip span{display:none}.lvmenu{position:fixed;left:16px;right:16px;top:64px;min-width:0}}
+.ab-i{display:none}
+@media (max-width:719px){#aboutBtn{min-width:0!important;width:34px;height:34px;padding:0!important;display:inline-grid;place-items:center}#aboutBtn .ab-l{display:none}#aboutBtn .ab-i{display:block}}
+@media (max-width:379px){.brand b{display:none}}
 </style>
 </head>
 <body>
@@ -744,7 +801,7 @@ body.exam-on,body.modal-on{overflow:hidden}
     <img class="logo" src="/logo-180.png" alt="CA PrepX logo" width="40" height="40">
     <div><b>CA PrepX</b><small>CA exam prep, ticked off paper by paper</small></div>
   </div>
-  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div><button class="btn sm about-btn" data-tab="about" id="aboutBtn">About us</button><button class="icon-btn" data-act="theme" id="themeBtn" aria-label="Switch light or dark mode"></button></div>
+  <div class="row" style="gap:12px"><div class="seg" role="group" aria-label="CA level" id="levelSeg"></div><div id="acct" class="acct"></div><button class="btn sm about-btn" data-tab="about" id="aboutBtn" aria-label="About us"><span class="ab-l">About us</span><svg class="ab-i" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button><button class="icon-btn" data-act="theme" id="themeBtn" aria-label="Switch light or dark mode"></button></div>
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
 <div class="wrap" id="bannerWrap"></div>
@@ -1698,10 +1755,10 @@ const IC={
 };
 const PICS=new Set(["chart","brief", "bulb", "check", "clock", "eye", "flame", "guide", "home", "journey", "mcq", "office", "papers", "plan", "rocket", "school", "spark", "target", "trophy", "users", "video"]);
 const ico=(n,sz)=>{sz=sz||20;if(PICS.has(n)&&sz>=15){const w=Math.round(sz*1.3);return `<i class="ic pic p-${n}" style="width:${w}px;height:${w}px" aria-hidden="true"></i>`}return icoSvg(n,sz)};
-let snOpen=false;
+let snOpen=false,lvOpen=false;
 function sideNav(label,attr,items,cur,body){const c=items.find(x=>x[0]===cur)||items[0];
   const list=items.map(x=>`<button class="sn-it" data-${attr}="${x[0]}" aria-pressed="${x[0]===c[0]}">${ico(x[3],28)}<span><b>${x[1]}</b><small>${x[2]}</small></span></button>`).join("");
-  return `<div class="snw"><nav class="sn" aria-label="${label} sections"><div class="sn-h">In ${label}</div><div class="sn-list c${items.length===4?2:items.length}" style="--c:${items.length===4?2:items.length}">${list}</div></nav><div class="sn-main">${body}</div></div>`}
+  return `<div class="snw"><nav class="sn" aria-label="${label} sections"><div class="sn-h">In ${label}</div><div class="sn-list n${items.length}">${list}</div></nav><div class="sn-main">${body}</div></div>`}
 function chipNav(label,attr,items,isOn){return `<div class="chipnav" role="group" aria-label="${label}">${items.map(x=>`<button data-${attr}="${x[0]}" aria-pressed="${isOn(x[0])}">${ico(x[2],20)}${x[1]}</button>`).join("")}</div>`}
 const icoSvg=(n,sz)=>`<svg class="ic" width="${sz||20}" height="${sz||20}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 /* theme */
@@ -1782,8 +1839,12 @@ function renderChrome(){
   const ac=document.getElementById("acct");
   ac.innerHTML=!sb?"":real?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"||gate?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
   const showLv=!gate&&S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers"&&tab!=="spom";
-  document.getElementById("levelSeg").innerHTML=Object.entries(LEVELS).map(([k,v])=>`<button data-level="${k}" aria-pressed="${S.level===k}"><span class="lg">${v.label}</span><span class="sm">${k==="inter"?"Inter":v.label}</span></button>`).join("");
+  const lvEl=document.getElementById("levelSeg");lvEl.className="lvw";lvEl.removeAttribute("role");const LVPIC={foundation:"papers",inter:"mcq",final:"school"};
+  lvEl.innerHTML=`<button class="lvchip" data-act="lvlopen" aria-expanded="${lvOpen}" aria-label="Change CA level">${ico(LVPIC[S.level]||"mcq",16)}<span>${S.level==="inter"?"Inter":LEVELS[S.level].label}</span><b aria-hidden="true">▾</b></button>${lvOpen?`<div class="lvmenu" role="menu">${Object.entries(LEVELS).map(([k,v])=>`<button role="menuitemradio" data-level="${k}" aria-checked="${S.level===k}">${ico(LVPIC[k],22)}<span>CA ${v.label}</span>${S.level===k?"<em>✓</em>":""}</button>`).join("")}</div>`:""}`;
   document.getElementById("levelSeg").hidden=!showLv;
+  {let lvm=document.getElementById("lvModal");const need=authReady&&!S.onboarded&&!gateOn()&&!recovering&&tab!=="signin"&&tab!=="about";
+   if(need&&!lvm){lvm=document.createElement("div");lvm.id="lvModal";lvm.className="lvmodal";lvm.innerHTML=`<div class="lvbox" role="dialog" aria-modal="true" aria-labelledby="lvT"><div class="eyebrow">Quick one</div><h2 id="lvT">Which level are you at?</h2><p class="muted">We'll show the right papers, mocks and plan. You can change it any time from the top bar.</p><div class="lvopts">${[["foundation","papers","CA Foundation","4 papers"],["inter","mcq","CA Intermediate","Group I & II"],["final","school","CA Final","Group I & II + SPOM"]].map(x=>`<button data-pick="${x[0]}">${ico(x[1],34)}<span><b>${x[2]}</b><small>${x[3]}</small></span><em aria-hidden="true">→</em></button>`).join("")}</div></div>`;document.body.appendChild(lvm)}
+   else if(!need&&lvm)lvm.remove()}
   document.querySelector(".tabs").hidden=tab==="signin"||gate;
   document.getElementById("tabs").innerHTML=TABS.map(([k,v,,i])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${ico(i,18)}${v}</button>`).join("");
   const bn=document.getElementById("bnav");bn.hidden=tab==="signin"||gate;
@@ -1997,7 +2058,7 @@ home(){
     ["rocket","I'm behind",n&&n>0?`Catch-up plan for ${n} days`:"Catch-up plan in one tap",`data-act="catchup"`],
     ["target","Fix weak spots",wn?`${wn} questions to redo`:"Redo what you got wrong",`data-mode="mistakes"`]
   ];
-  return `${S.onboarded?"":`<div class="card pick"><div><b>Which level are you at?</b><span class="muted">We'll show papers and resources for it.</span></div><div class="row">${Object.entries(LEVELS).map(([k,v])=>`<button class="btn ${k===S.level?"primary":""}" data-pick="${k}">${v.label}</button>`).join("")}</div></div>`}
+  return `
   <div class="home-top">
   <div class="home-hero">
       <div class="eyebrow">${greet}${S.name?", "+esc(S.name):""} · CA ${lv.label}${n&&n>0?` · ${n} days to exam`:""}</div>
@@ -2618,7 +2679,7 @@ function restoreCode(c){try{const o=JSON.parse(decodeURIComponent(escape(atob(c.
 
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
-  const t=e.target.closest("button,[data-tab]");if(!t)return;if(t.dataset.act==="snopen"){snOpen=!snOpen;render();return}if(t.dataset.res||t.dataset.prm||t.dataset.plan||t.dataset.spm||t.dataset.tab)snOpen=false;
+  if(lvOpen&&!e.target.closest("#levelSeg")){lvOpen=false;renderChrome()}const t=e.target.closest("button,[data-tab]");if(!t)return;if(t.dataset.act==="lvlopen"){lvOpen=!lvOpen;renderChrome();return}if(t.dataset.level)lvOpen=false;if(t.dataset.act==="snopen"){snOpen=!snOpen;render();return}if(t.dataset.res||t.dataset.prm||t.dataset.plan||t.dataset.spm||t.dataset.tab)snOpen=false;
   if(t.dataset.wlevel){W.level=t.dataset.wlevel;document.querySelectorAll("[data-wlevel]").forEach(b=>b.setAttribute("aria-pressed",b===t));return}
   if(t.dataset.level){if(T&&T.active)return;S.level=t.dataset.level;S.plan.weak=[];cur=null;T=null;sess={n:0,ok:0};window.__mp="all";save();render();return}
   if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
@@ -2667,7 +2728,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.qc){qzState()._c=t.dataset.qc;render();return}
   if(t.dataset.qa!==undefined){const I=qzState();const Q=quizFor(I.combo);const q=Q[Math.min(I.step,Q.length-1)];I.a[q.id]=+t.dataset.qa;save();render();return}
   if(t.dataset.res){resMode=t.dataset.res;render();return}
-  if(t.dataset.pick){S.level=t.dataset.pick;S.onboarded=true;save();render();return}
+  if(t.dataset.pick){S.level=t.dataset.pick;S.onboarded=true;save();render();try{track("level."+t.dataset.pick)}catch(_){}return}
   if(t.dataset.chk){const [pid,j,l]=t.dataset.chk.split("|");S.chap=S.chap||{};const k=pid+"|"+j,cur0=S.chap[k]||0,L2=+l;S.chap[k]=cur0>=L2?L2-1:L2;if(!S.chap[k])delete S.chap[k];window.__sylOpen=pid;save();render();const el=document.getElementById("syl-"+pid);if(el)el.open=true;return}
   if(t.dataset.chq){const [pid,j]=t.dataset.chq.split("|");mode="practice";window.__mp=pid;window.__mc=j;cur=null;go("practice");render();window.scrollTo({top:0});return}
   if(t.dataset.spm){spomMode=t.dataset.spm;if(t.dataset.sps){spomSet=t.dataset.sps;spomCur=null}go("spom");render();window.scrollTo({top:0});return}
