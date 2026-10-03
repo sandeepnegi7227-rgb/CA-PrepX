@@ -707,8 +707,8 @@ body.exam-on,body.modal-on{overflow:hidden}
 @media (max-width:719px){.card.pick{padding:14px 16px;gap:10px}.card.pick>div:first-child{display:grid;gap:2px}.card.pick .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%}.card.pick .btn{padding:9px 6px;font-size:.85rem}}
 
 /* v7 side nav */
-.snw{display:grid;gap:16px}
-.sn-main{display:grid;gap:18px;min-width:0;align-content:start}
+.snw{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+.sn-main{display:grid;gap:18px;min-width:0;align-content:start;grid-template-columns:minmax(0,1fr)}
 .sn{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:8px;display:grid;gap:2px}
 .sn-h{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:6px 10px 4px}
 .sn-list{display:grid;gap:2px}
@@ -792,6 +792,18 @@ main{padding-bottom:120px}
 .ab-i{display:none}
 @media (max-width:719px){#aboutBtn{min-width:0!important;width:34px;height:34px;padding:0!important;display:inline-grid;place-items:center}#aboutBtn .ab-l{display:none}#aboutBtn .ab-i{display:block}}
 @media (max-width:379px){.brand b{display:none}}
+
+/* v10 test history + mistakes by test */
+.ptl{display:grid;gap:0}
+.ptr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.ptr:first-child{border-top:0}
+.ptr.on{background:var(--accent-soft);margin:0 -12px;padding-inline:12px;border-radius:12px}
+.ptm{display:grid;gap:2px;min-width:0}.ptm b{font-size:.95rem}.ptm .muted{font-size:.8rem}
+.ptsc{font-family:var(--serif);font-weight:700;font-size:1.15rem}
+.ptsc.good{color:var(--good)}.ptsc.mid{color:var(--warn)}.ptsc.low{color:var(--tick)}
+.pta{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.mtbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding:8px 12px;border-radius:12px;background:var(--accent-soft);font-size:.88rem}
+.mtbar .btn{margin-left:auto}
 </style>
 </head>
 <body>
@@ -1137,7 +1149,7 @@ function quizFor(combo){
    {id:"we",q:"And on a weekend day?",o:HRS},
    {id:"slot",q:"When do you study best?",o:["Early morning","Daytime","Evening","Late night"],hint:"Your hardest paper goes in this slot."},
    {id:"rev",q:"How many revisions do you want before the exam?",o:["1 revision","2 revisions (recommended)","3 revisions"]},
-   {id:"coach",q:"Where are you with coaching classes?",o:["Classes finished","Ongoing — ends within 1 month","Ongoing — 1 to 3 months left","Self-study, no classes"]}
+   {id:"coach",q:"Where are you with coaching classes?",o:["Classes finished","Ongoing — ends within 1 month","Ongoing — 1 to 3 months left","Ongoing — 3 to 6 months left","Ongoing — 6+ months left","Not started yet — joining soon","Self-study, no classes"],hint:"Pick the closest one. Your plan keeps class time free until they finish."}
   ];
   ps.forEach(p=>Q.push({id:"st_"+p.id,q:`Where do you stand in P${p.no} · ${p.name}?`,o:STATUS,paper:p.id}));
   const both=cb.groups==="both"&&lv.groups;
@@ -1148,7 +1160,8 @@ function quizFor(combo){
   if(Q.length<15)Q.push({id:"mocks",q:"How many full mock tests per paper do you want before the exam?",o:["1 per paper","2 per paper","3 or more"]});
   return Q.slice(0,15);
 }
-function qzState(){S.intake=S.intake||{combo:null,a:{},step:0,done:false};return S.intake}
+function coachFix(I){if(I&&I.a&&!I.cv){if(I.a.coach===3)I.a.coach=6;I.cv=2}}
+function qzState(){S.intake=S.intake||{combo:null,a:{},step:0,done:false,cv:2};coachFix(S.intake);;return S.intake}
 function quizView(){
   const I=qzState();
   if(!I.combo){
@@ -1173,10 +1186,10 @@ function quizView(){
 const BASE_H={F1:120,F2:80,F3:110,F4:70,I1:170,I2:110,I3:190,I4:140,I5:100,I6:130,N1:200,N2:150,N3:130,N4:190,N5:150,N6:60};
 const REV_F=[0.35,0.25,0.2],SLOT_START=[330,540,960,1200];
 function buildPlan2(){
-  const I=S.intake,a=I.a,cb=COMBOS[I.combo],lv=LEVELS[cb.level];
+  const I=S.intake;coachFix(I);const a=I.a,cb=COMBOS[I.combo],lv=LEVELS[cb.level];
   const papers=lv.papers.filter(p=>cb.groups==="both"||!lv.groups||(cb.groups==="g1"?p.g===1:p.g===2));
-  let days=I.date?Math.round((new Date(I.date)-today)/864e5):WHEN_V[a.when||0];days=Math.max(5,Math.min(400,days||30));
-  const wd=HRS_V[a.wd||0],we=HRS_V[a.we||0],rounds=(a.rev??1)+1,repeat=(a.attempt||0)>0,side=a.side||0;
+  let days=I.date?Math.round((new Date(I.date)-today)/864e5):WHEN_V[a.when||0];days=Math.max(5,Math.min(730,days||30));
+  const wd=HRS_V[a.wd||0],we=HRS_V[a.we||0],rounds=(a.rev??1)+2,repeat=(a.attempt||0)>0,side=a.side||0;
   const mocks=a.mocks!=null?[1,2,3][a.mocks]:2;
   const qs=quizFor(I.combo),wq=qs.find(x=>x.id==="weak");let weakest=wq&&a.weak!=null?wq.vals[a.weak]:null;
   const stOf=p=>a["st_"+p.id]||0;if(!weakest)weakest=[...papers].sort((x,y)=>stOf(x)-stOf(y))[0].id;
@@ -1187,7 +1200,7 @@ function buildPlan2(){
   papers.forEach(p=>{
     const s=stOf(p),ch=chapters(p.id),W=ch.reduce((x,c)=>x+c[1],0)||1;
     let pw=p.id===weakest?1.3:1;if(p.id==="N6"&&a.ibs!=null)pw*= [1.4,1,0.75][a.ibs];
-    let rf=[1,0.7,0,0,0][s];if(repeat&&rf>0.45)rf=0.45;
+    let rf=[1,0.7,0,0,0][s];if(repeat&&rf>0.45)rf=0.45;const inClass=[1,2,3,4,5].includes(a.coach);if(inClass&&s<=1)rf=Math.min(rf,0.65);
     const revDone=[0,0,0,1,2][s],mainRev=Math.max(0,rounds-1-revDone);
     const wa=WEAK_AREAS[p.id],wset=new Set(wa&&a["wa_"+p.id]!=null?wa.ch[a["wa_"+p.id]]:[]);
     const hOf=j=>BASE_H[p.id]*pw*ch[j][1]/W*(wset.has(j)?1.3:1);
@@ -1206,7 +1219,7 @@ function buildPlan2(){
   const needMock=Object.values(mockH).reduce((x,y)=>x+y,0),needFin=Object.values(finH).reduce((x,y)=>x+y,0);
   let F=Math.max(2,Math.min(Math.round(days*0.2),Math.ceil(needFin/avg)));
   let M=Math.max(days<10?0:1,Math.min(Math.round(days*0.25),Math.ceil(needMock/avg)));
-  let Cd=Math.round([0,Math.min(30,days*0.3),Math.min(75,days*0.4),0][a.coach||0]);
+  coachFix(I);let Cd=Math.round([0,Math.min(30,days*0.3),Math.min(75,days*0.4),Math.min(150,days*0.45),Math.min(240,days*0.5),Math.min(270,days*0.55),0][a.coach||0]);
   let main=days-F-M-Cd;if(main<0){Cd=Math.max(0,Cd+main);main=days-F-M-Cd;if(main<0){M=Math.max(0,M+main);main=0}}
   const tracks=[[],[]];[...papers].sort((x,y)=>(y.id===weakest)-(x.id===weakest)||stOf(x)-stOf(y)).forEach((p,i)=>tracks[i%2].push(p));
   if(papers.length===1)tracks[1]=[];
@@ -1215,14 +1228,15 @@ function buildPlan2(){
   const need=[...QA,...QB].reduce((x,t)=>x+t.hrs,0);
   const mainIdx=[...Array(main)].map((_,i)=>Cd+i);
   let spomIn=spomLeft;const availMain=mainIdx.reduce((x,i)=>x+caps[i]*0.85,0)-Math.min(spomLeft,mainIdx.filter(i=>[0,6].includes(dates[i].getDay())).length*3);
-  const fit=need>0?Math.min(1,availMain/need):1;if(fit<1){QA.forEach(t=>t.hrs*=fit);QB.forEach(t=>t.hrs*=fit)}
+  const classAvail=papers.some(p=>stOf(p)>=2)?0:[...Array(Cd)].reduce((x,_,i)=>x+caps[i]*0.35,0);const fit=need>0?Math.min(1,(availMain+classAvail)/need):1;if(fit<1){QA.forEach(t=>t.hrs*=fit);QB.forEach(t=>t.hrs*=fit)}
   const list=dates.map((d,i)=>({date:d,cap:caps[i],phase:"concepts",rest:false,tasks:[]}));
   const push=(day,t)=>{const k=day.tasks.find(x=>x.p===t.p&&x.kind===t.kind&&x.p);if(k&&t.ch!=null){if(!k.ch.includes(t.ch))k.ch.push(t.ch);k.hrs+=t.hrs}else day.tasks.push({...t,ch:t.ch!=null?[t.ch]:(t.chs||[])})};
-  // coaching block
-  for(let i=0;i<Cd;i++){const d=list[i];d.phase="classes";d.tasks.push({kind:"classes",hrs:Math.max(1,caps[i]*0.6),ch:[]});
-    const rp=papers.filter(p=>stOf(p)>=2);if(rp.length){const p=rp[i%rp.length],n=chapters(p.id).length,k=Math.floor(i/rp.length)*2%Math.max(1,n);d.tasks.push({p,kind:"rev1",hrs:caps[i]*0.4,ch:[k,k+1].filter(j=>j<n)})}}
   // main block: two tracks finish together
   const take=(q,h,day)=>{while(h>0.05&&q.length){const t=q[0],x=Math.min(h,t.hrs);push(day,{p:t.p,ch:t.ch,kind:t.kind,hrs:x});t.hrs-=x;h-=x;if(t.hrs<=0.05)q.shift()}return h};
+  // coaching block: class time first, then self-study of what's been taught
+  for(let i=0;i<Cd;i++){const d=list[i];d.phase="classes";d.tasks.push({kind:"classes",hrs:Math.max(1,caps[i]*0.6),ch:[]});
+    const rp=papers.filter(p=>stOf(p)>=2);if(rp.length){const p=rp[i%rp.length],n=chapters(p.id).length,k=Math.floor(i/rp.length)*2%Math.max(1,n);d.tasks.push({p,kind:"rev1",hrs:caps[i]*0.35,ch:[k,k+1].filter(j=>j<n)})}
+    else{const h=caps[i]*0.35,ra=QA.reduce((x,t)=>x+t.hrs,0),rb=QB.reduce((x,t)=>x+t.hrs,0);if(ra+rb>0.05){const ha=h*(ra/(ra+rb));let left=take(QA,ha,d);left=take(QB,h-ha+left,d)}}}
   mainIdx.forEach(i=>{const d=list[i];let h=caps[i]*0.85;
     if(spomIn>0&&[0,6].includes(d.date.getDay())){const s=Math.min(3,spomIn,h*0.5);const cur=spomSets.find(x=>x.h>0);if(cur){d.tasks.push({kind:"spom",label:cur.n,hrs:s,ch:[]});cur.h-=s;spomIn-=s;h-=s}}
     const ra=QA.reduce((x,t)=>x+t.hrs,0),rb=QB.reduce((x,t)=>x+t.hrs,0);
@@ -1240,7 +1254,7 @@ function buildPlan2(){
   const merged=[];phases.forEach(p=>{const m=merged.find(x=>x.key===p.key);if(m)m.days+=p.days;else merged.push({...p})});
   const perPaper=papers.map(p=>({p,h:Math.round(list.reduce((x,d)=>x+d.tasks.filter(t=>t.p===p).reduce((y,t)=>y+t.hrs,0),0))}));
   const hours=Math.round(caps.reduce((x,y)=>x+y,0));
-  const needTotal=Math.round(need/(fit||1)+needMock+needFin+spomLeft),availTotal=Math.round(availMain+(M+F)*avg+Cd*avg*0.4);
+  const needTotal=Math.round(need+needMock+needFin+spomLeft),availTotal=Math.round(availMain+(M+F)*avg+Cd*avg*0.35);
   return {days,papers,hours,perPaper,phases:merged,list,daily:false,v2:1,
     meta:{combo:cb.label,wd,we,rounds,mocks,need:needTotal,avail:Math.max(availTotal,1),fit,weakest,spomLeft,Cd,exam:addDays(today,days),hrsTxt:`${wd} h weekdays · ${we} h weekends`,start:SLOT_START[a.slot||0]}};
 }
@@ -1285,7 +1299,7 @@ function plannerV2(){
   const lab=id=>{const q=Q.find(x=>x.id===id);return q&&a[id]!=null?q.o[a[id]]:""};
   const wp=pl.papers.find(p=>p.id===m.weakest);
   const short=m.fit<0.97,gap=Math.max(0,m.need-m.avail),extraH=Math.ceil(gap/pl.days*2)/2;
-  const rc=short?`<div class="card rchk bad"><div class="card-h"><h2>Reality check</h2><span class="pill warn">Tight</span></div>
+  const rc=short?`<div class="card rchk bad"><div class="card-h"><h2>Reality check</h2><span class="pill warn">${m.fit>=0.85?"Nearly there":"Tight"}</span></div>
       <p>Everything you asked for needs about <b>${m.need} h</b>. You have about <b>${m.avail} h</b> before your first paper. We've compressed reading and revision to ${Math.round(m.fit*100)}% so mocks and final revision still happen.</p>
       <ul class="rchk-list">${extraH<=3?`<li>Add about <b>${extraH} h a day</b> to cover it fully</li>`:`<li>The gap is big (${extraH} h a day). Honestly weigh the next attempt</li>`}${m.rounds>2?`<li>Go for ${m.rounds-2} fewer revision${m.rounds-2>1?"s":""}</li>`:""}${COMBOS[I.combo].groups==="both"&&lv.groups?`<li>Consider one group this attempt, the other next</li>`:""}<li>Prioritise chapters with high past-paper weight</li></ul></div>`
     :`<div class="card rchk ok"><div class="card-h"><h2>Reality check</h2><span class="pill good">Doable</span></div><p>You need about <b>${m.need} h</b> and have about <b>${m.avail} h</b>. There's room for buffer days, so spend spare time on ${wp?`P${wp.no} ${esc(wp.name)}`:"your weakest paper"}.</p></div>`;
@@ -1297,7 +1311,7 @@ function plannerV2(){
     rows+=`<tr><td class="num" style="white-space:nowrap">Wk ${w+1}</td><td style="white-space:nowrap">${fmt(seg[0].date)} – ${fmt(seg[seg.length-1].date)}</td><td>${phs.map(k=>`<span class="pill ph-${k}" style="color:var(--ink)">${PH[k][0]}</span>`).join(" ")}</td><td>${focusV2(seg)}</td><td class="muted">${PH[phs[phs.length-1]][1]}</td></tr>`}}
   else pl.list.forEach((d,i)=>{rows+=`<tr><td class="num">Day ${i+1}</td><td style="white-space:nowrap">${d.date.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})}</td><td><span class="pill ph-${d.phase}" style="color:var(--ink)">${PH[d.phase][0]}</span></td><td>${focusV2([d])}</td><td class="muted">${PH[d.phase][1]}</td></tr>`});
   const mx=Math.max(1,...pl.perPaper.map(y=>y.h));
-  return `<div class="hero"><div><div class="eyebrow">${esc(m.combo)} · built from your 15 answers</div><h1>Your study plan</h1><p class="muted">${pl.days} days to ${fmt(m.exam)}. Chapter-wise, paper-wise, with mocks and final revision locked in.</p></div>
+  return `<div class="hero"><div><div class="eyebrow">${esc(m.combo)} · built from your 15 answers</div><h1>Your study plan</h1><p class="muted">${pl.days} days to ${m.exam.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}. Chapter-wise, paper-wise, with mocks and final revision locked in.</p></div>
     <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn primary" data-act="plandocx">${ico("papers",18)} Download as Word</button><button class="btn" data-act="qretake">Retake quiz</button></div></div>
   <div class="qz-chips">${chips.map(c=>`<span class="chip" aria-pressed="false">${esc(c)}</span>`).join("")}</div>
   ${rc}
@@ -1658,7 +1672,7 @@ function paintExam(){const el=document.getElementById("exam");if(!el||!EX)return
 function submitExam(auto){if(!EX)return;const a=EX.a,qs=EX.qs;const mc=qs.filter(q=>q.sec==="mcq"),dc=qs.filter(q=>q.sec==="desc");
   a.mcqMax=mc.reduce((t,q)=>t+(q.marks||1),0);a.mcqScore=mc.reduce((t,q)=>t+(a.ans[q.id]===q.ans?(q.marks||1):0),0);
   a.res=mc.map(q=>({pid:q.pid||a.pid,ch:q.ch,ok:a.ans[q.id]===q.ans}));
-  mc.forEach(q=>{if(a.ans[q.id]!=null)S.mcq.push({p:q.pid||a.pid,c:q.ch,ok:a.ans[q.id]===q.ans,t:iso(today)})});if(S.mcq.length>3000)S.mcq=S.mcq.slice(-3000);
+  mc.forEach(q=>{if(a.ans[q.id]!=null){const ok=a.ans[q.id]===q.ans,bid=String(q.id).charAt(0)==="b"?String(q.id).slice(1):null;S.mcq.push({id:bid||undefined,p:q.pid||a.pid,c:q.ch,ok,t:iso(today)});if(bid&&Q.some(x=>String(x.id)===bid)){if(ok)delete S.wrong[bid];else S.wrong[bid]=1}else if(!bid&&q.text&&q.opts){S.xwrong=S.xwrong||{};const k=String(q.id);if(ok)delete S.xwrong[k];else S.xwrong[k]={id:"x"+k,p:q.pid||a.pid,c:q.ch,q:q.text,o:q.opts,a:q.ans,w:q.sol||""}}}});if(S.mcq.length>3000)S.mcq=S.mcq.slice(-3000);
   if(dc.length){const r=a.rules||{};const comp=dc.filter(q=>(r.compulsory||[]).includes(String(q.grp||q.no)));const opt=dc.filter(q=>!comp.includes(q));
     a.selfMax=comp.reduce((t,q)=>t+q.marks,0)+(r.choose?opt.map(q=>q.marks).sort((x,y)=>y-x).slice(0,r.choose).reduce((t,m)=>t+m,0):opt.reduce((t,q)=>t+q.marks,0));a.status="needs-review"}else{a.selfMax=0;a.status="done"}
   a.submitted=new Date().toISOString();save();closeExam();mockMode="result";mockRes=a.id;prMode="mock";go("practice");render();window.scrollTo({top:0});toast(auto?"Time's up. Your paper has been submitted.":"Submitted. Here's how you did.")}
@@ -1969,10 +1983,10 @@ mcq(){
       <div class="form"><div class="field"><label for="tP">Paper</label><select id="tP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}">P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>
       <div class="field"><label for="tN">Questions</label><select id="tN"><option>10</option><option>15</option><option>20</option><option>30</option></select></div>
       <div class="field"><label for="tM">Time per question</label><select id="tM"><option value="60">1 min</option><option value="72" selected>1 min 12 s (ICAI pace)</option><option value="90">1 min 30 s</option></select></div></div>
-      <div class="row" style="margin-top:16px"><button class="btn primary" data-act="starttest">Start the test</button><span class="muted" style="font-size:.85rem">Answers are locked in when you submit. This test has no negative marking.</span></div></div>`;
+      <div class="row" style="margin-top:16px"><button class="btn primary" data-act="starttest">Start the test</button><span class="muted" style="font-size:.85rem">Answers are locked in when you submit. This test has no negative marking.</span></div></div>${pastTestsCard()}`;
   }else{
     body=`<div class="card"><div class="mcq-top">${mode==="practice"?`<div class="field" style="min-width:220px"><label for="mcqP">Paper</label><select id="mcqP"><option value="all">All papers</option>${lv.papers.map(p=>`<option value="${p.id}" ${window.__mp===p.id?"selected":""}>P${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>${window.__mp&&window.__mp!=="all"?`<div class="field" style="min-width:220px;flex:1"><label for="mcqC">Chapter</label><select id="mcqC"><option value="all">All chapters (${Q.filter(q=>q.p===window.__mp).length} Qs)</option>${chapters(window.__mp).map((c,j)=>{const n=Q.filter(q=>q.p===window.__mp&&q.c===j).length;return n?`<option value="${j}" ${String(window.__mc)===String(j)?"selected":""}>Ch ${j+1} · ${esc(chShort(window.__mp,j))} (${n})</option>`:""}).join("")}</select></div>`:""}`:`<p class="muted" style="max-width:52ch">Questions you last got wrong. Answer one correctly and it leaves this list.</p>`}
-    <div class="num muted" id="sess"></div></div><div id="qbox" style="margin-top:14px"></div></div>`;
+    <div class="num muted" id="sess"></div></div>${mode==="mistakes"&&window.__mt?`<div class="mtbar">${ico("target",18)}<span>Showing mistakes from <b>${esc(window.__mt.title)}</b></span><button class="btn ghost sm" data-act="mtall">Show all</button></div>`:""}<div id="qbox" style="margin-top:14px"></div></div>${mode==="mistakes"?testMistakesCard():""}`;
   }
   return `<div class="hero"><div><div class="eyebrow">CA ${lv.label} · ${total} questions</div><h1>MCQ practice</h1><p class="muted">Every answer is logged against its paper, so your accuracy and weakest-paper guidance stay current.</p></div>
   <div class="seg" role="group" aria-label="Mode">${modes.map(m=>`<button data-mode="${m[0]}" aria-pressed="${mode===m[0]}">${m[1]}</button>`).join("")}</div></div>${body}`;
@@ -2615,13 +2629,14 @@ async function planDocx(btn){
 /* ---------- MCQ engine ---------- */
 let cur=null,answered=false,sess={n:0,ok:0},mode="practice",T=null,tick=null;
 const inLevel=q=>L().papers.some(p=>p.id===q.p);
-function mistakes(){return Q.filter(q=>S.wrong[q.id]&&inLevel(q))}
+function mistakes(){S.xwrong=S.xwrong||{};return Q.filter(q=>S.wrong[q.id]&&inLevel(q)).concat(Object.values(S.xwrong).filter(q=>inLevel(q)))}
+function isWrong(id){id=String(id);if(id.charAt(0)==="x"){S.xwrong=S.xwrong||{};return !!S.xwrong[id.slice(1)]}return !!S.wrong[id]}
 function pool(){
-  if(mode==="mistakes")return mistakes();
+  if(mode==="mistakes"){const m=mistakes();if(window.__mt&&window.__mt.ids){const set=new Set(window.__mt.ids.map(String));return m.filter(q=>set.has(String(q.id)))}return m}
   const f=window.__mp&&window.__mp!=="all"?[window.__mp]:L().papers.map(p=>p.id);const mc=window.__mc;return Q.filter(q=>f.includes(q.p)&&(mc==null||mc==="all"||window.__mp==="all"||!window.__mp||String(q.c)===String(mc)));
 }
 function pick(){const pl=pool();if(!pl.length){cur=null;return}let n;do{n=pl[Math.floor(Math.random()*pl.length)]}while(pl.length>1&&cur&&n.id===cur.id);cur=n;answered=false}
-function record(q,ok){S.mcq.push({id:q.id,p:q.p,ok,t:iso(today)});if(S.mcq.length>2000)S.mcq=S.mcq.slice(-2000);if(ok)delete S.wrong[q.id];else S.wrong[q.id]=1}
+function record(q,ok){S.mcq.push({id:q.id,p:q.p,ok,t:iso(today)});if(S.mcq.length>2000)S.mcq=S.mcq.slice(-2000);if(String(q.id).charAt(0)==="x"){S.xwrong=S.xwrong||{};if(ok)delete S.xwrong[String(q.id).slice(1)];return}if(ok)delete S.wrong[q.id];else S.wrong[q.id]=1}
 function paintMcq(){if(mode==="test"){if(T&&T.active)paintTest()}else paintQ()}
 function paintQ(){
   if(!cur||!pool().includes(cur))pick();
@@ -2631,7 +2646,7 @@ function paintQ(){
   const p=paper(cur.p);
   box.innerHTML=`<span class="pill">P${p.no} · ${esc(p.name)}</span>${cur.c!=null?`<span class="pill chp">Ch ${cur.c+1} · ${esc(chShort(cur.p,cur.c))}</span>`:""}<p class="q">${esc(cur.q)}</p>
    <div class="opts">${cur.o.map((o,i)=>`<button class="opt" data-opt="${i}"><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}</div>
-   <div id="why"></div><div class="mcq-foot"><span class="muted" style="font-size:.85rem">${pool().length} questions in this set</span><button class="btn primary" data-act="nextq">Next one</button></div>`;
+   <div id="why"></div><div class="mcq-foot"><span class="muted" style="font-size:.85rem">${pool().length} question${pool().length===1?"":"s"} in this set</span><button class="btn primary" data-act="nextq">Next one</button></div>`;
 }
 function answer(i){track("mcq.answer");
   if(answered||!cur)return;answered=true;const ok=i===cur.a;
@@ -2640,11 +2655,23 @@ function answer(i){track("mcq.answer");
   record(cur,ok);sess.n++;if(ok)sess.ok++;save();document.getElementById("sess").textContent=`This session: ${sess.ok}/${sess.n}`;
 }
 /* timed test */
+
+function pastTests(){const qmap=new Map(Q.map(q=>[String(q.id),q]));const out=[];
+  S.tests.filter(x=>x.lv===S.level).forEach(x=>{const ids=(x.qs||[]).map(String);const wrong=ids.filter((id,i)=>x.ans&&x.ans[i]!==null&&qmap.get(id)&&x.ans[i]!==qmap.get(id).a);
+    out.push({key:x.id||("old"+x.t),kind:"Timed test",title:x.pid&&x.pid!=="all"&&paper(x.pid)?`P${paper(x.pid).no} · ${paper(x.pid).name}`:"All papers",when:x.at||x.t,n:x.n,ok:x.ok,secs:x.secs,review:!!(x.qs&&x.qs.length),wrong})});
+  mocks().filter(a=>a.kind==="chapter"&&a.submitted&&(a.level||S.level)===S.level&&a.qs).forEach(a=>{const wrong=a.qs.filter(q=>q.sec!=="desc"&&a.ans[q.id]!=null&&a.ans[q.id]!==q.ans).map(q=>String(q.id).charAt(0)==="b"?String(q.id).slice(1):"x"+q.id);
+    const ok=a.qs.filter(q=>a.ans[q.id]===q.ans).length;out.push({key:a.id,kind:"Chapter test",title:a.title.replace(/^Chapter test · /,""),when:a.submitted,n:a.qs.length,ok,secs:a.used||0,review:false,chapter:a.id,wrong})});
+  return out.sort((x,y)=>String(y.when).localeCompare(String(x.when)))}
+function pastTestsCard(){const L2=pastTests();if(!L2.length)return "";const d=w=>{const x=new Date(w);return isNaN(x)?"":x.toLocaleDateString("en-GB",{day:"numeric",month:"short"})+(String(w).length>10?" · "+x.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}):"")};
+  return `<div class="card"><div class="card-h"><h2>${ico("trophy",20)} Past tests</h2><span class="muted" style="font-size:.85rem">${L2.length} saved</span></div><div class="ptl">${L2.slice(0,30).map(x=>{const pct=x.n?Math.round(x.ok/x.n*100):0;return `<div class="ptr"><div class="ptm"><b>${esc(x.title)}</b><span class="muted">${x.kind} · ${d(x.when)}</span></div><span class="ptsc ${pct>=70?"good":pct>=50?"mid":"low"}">${x.ok}/${x.n}</span><div class="pta">${x.review?`<button class="btn sm" data-tview="${x.key}">Review</button>`:x.chapter?`<button class="btn sm" data-mkview="${x.chapter}">Review</button>`:""}${x.wrong.length?`<button class="btn sm primary" data-tredo="${x.key}">Redo ${x.wrong.length} wrong</button>`:""}</div></div>`}).join("")}</div></div>`}
+function testMistakesCard(){const L2=pastTests().map(x=>({...x,pend:x.wrong.filter(isWrong)})).filter(x=>x.wrong.length);if(!L2.length)return "";
+  const d=w=>{const x=new Date(w);return isNaN(x)?"":x.toLocaleDateString("en-GB",{day:"numeric",month:"short"})};const cur=window.__mt;
+  return `<div class="card"><div class="card-h"><h2>${ico("target",20)} Mistakes by test</h2>${cur?`<button class="btn sm" data-act="mtall">Show all mistakes</button>`:""}</div><div class="ptl">${L2.slice(0,30).map(x=>`<div class="ptr ${cur&&cur.key===x.key?"on":""}"><div class="ptm"><b>${esc(x.title)}</b><span class="muted">${x.kind} · ${d(x.when)} · ${x.wrong.length} wrong${x.pend.length<x.wrong.length?` · ${x.wrong.length-x.pend.length} fixed`:""}</span></div>${x.pend.length?`<button class="btn sm primary" data-tredo="${x.key}">Practise ${x.pend.length}</button>`:`<span class="pill good">All fixed</span>`}</div>`).join("")}</div></div>`}
 function startTest(pid,n,per){
   let pl=Q.filter(q=>inLevel(q)&&(pid==="all"||q.p===pid));
   for(let i=pl.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pl[i],pl[j]]=[pl[j],pl[i]]}
   pl=pl.slice(0,Math.min(n,pl.length));if(!pl.length)return;
-  T={qs:pl,ans:pl.map(()=>null),i:0,start:Date.now(),limit:pl.length*per,active:true,done:false};
+  T={qs:pl,ans:pl.map(()=>null),i:0,start:Date.now(),limit:pl.length*per,active:true,done:false,pid};
   clearInterval(tick);tick=setInterval(()=>{const left=T.limit-Math.floor((Date.now()-T.start)/1000);const el=document.getElementById("tmr");if(el){el.textContent=hm2(Math.max(0,left));el.classList.toggle("bad",left<60)}if(left<=0)finishTest()},500);
 }
 function hm2(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
@@ -2658,8 +2685,8 @@ function paintTest(){
 }
 function finishTest(){
   if(!T||!T.active)return;clearInterval(tick);T.active=false;T.done=true;T.secs=Math.min(T.limit,Math.floor((Date.now()-T.start)/1000));
-  let ok=0;T.qs.forEach((q,i)=>{const r=T.ans[i]===q.a;if(r)ok++;record(q,r)});T.ok=ok;
-  S.tests.push({t:iso(today),lv:S.level,n:T.qs.length,ok,secs:T.secs});if(S.tests.length>50)S.tests=S.tests.slice(-50);save();
+  let ok=0;T.qs.forEach((q,i)=>{const a=T.ans[i],r=a===q.a;if(r)ok++;if(a!==null)record(q,r)});T.ok=ok;
+  S.tests.push({id:"t"+Date.now(),t:iso(today),at:new Date().toISOString(),lv:S.level,pid:T.pid||"all",n:T.qs.length,ok,secs:T.secs,limit:T.limit,qs:T.qs.map(q=>q.id),ans:T.ans.slice()});if(S.tests.length>60)S.tests=S.tests.slice(-60);save();
   if(tab==="practice")render();
 }
 function testResults(){
@@ -2679,10 +2706,12 @@ function restoreCode(c){try{const o=JSON.parse(decodeURIComponent(escape(atob(c.
 
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
-  if(lvOpen&&!e.target.closest("#levelSeg")){lvOpen=false;renderChrome()}const t=e.target.closest("button,[data-tab]");if(!t)return;if(t.dataset.act==="lvlopen"){lvOpen=!lvOpen;renderChrome();return}if(t.dataset.level)lvOpen=false;if(t.dataset.act==="snopen"){snOpen=!snOpen;render();return}if(t.dataset.res||t.dataset.prm||t.dataset.plan||t.dataset.spm||t.dataset.tab)snOpen=false;
+  if(lvOpen&&!e.target.closest("#levelSeg")){lvOpen=false;renderChrome()}const t=e.target.closest("button,[data-tab]");if(!t)return;if(t.dataset.act==="lvlopen"){lvOpen=!lvOpen;renderChrome();return}if(t.dataset.level)lvOpen=false;if(t.dataset.act==="snopen"){snOpen=!snOpen;render();return}if(t.dataset.res||t.dataset.prm||t.dataset.plan||t.dataset.spm||t.dataset.tab)snOpen=false;if(t.dataset.prm||t.dataset.tab)window.__mt=null;
   if(t.dataset.wlevel){W.level=t.dataset.wlevel;document.querySelectorAll("[data-wlevel]").forEach(b=>b.setAttribute("aria-pressed",b===t));return}
   if(t.dataset.level){if(T&&T.active)return;S.level=t.dataset.level;S.plan.weak=[];cur=null;T=null;sess={n:0,ok:0};window.__mp="all";save();render();return}
-  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
+  if(t.dataset.tview){const x=S.tests.find(z=>(z.id||("old"+z.t))===t.dataset.tview);if(x&&x.qs){const qm=new Map(Q.map(q=>[String(q.id),q]));const keep=x.qs.map((id,i)=>[qm.get(String(id)),x.ans[i]]).filter(r=>r[0]);T={qs:keep.map(r=>r[0]),ans:keep.map(r=>r[1]),i:0,limit:x.limit||x.secs,secs:x.secs,ok:keep.filter(r=>r[1]===r[0].a).length,active:false,done:true,past:true};mode="test";go("practice");prMode="mcq";render();window.scrollTo({top:0})}return}
+  if(t.dataset.tredo){const x=pastTests().find(z=>z.key===t.dataset.tredo);if(x){const ids=x.wrong.filter(isWrong);if(!ids.length){toast("All fixed from this test. Nice!");return}window.__mt={key:x.key,title:x.kind+" · "+x.title,ids};mode="mistakes";cur=null;go("practice");prMode="mcq";render();window.scrollTo({top:0})}return}
+  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;if(t.dataset.mode!=="mistakes"||mode!=="mistakes")window.__mt=null;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
   if(t.dataset.topt!==undefined){T.ans[T.i]=+t.dataset.topt;paintTest();return}
   if(t.dataset.goto!==undefined){T.i=+t.dataset.goto;paintTest();return}
   if(t.dataset.tab){if(t.dataset.open)window.__sylOpen=t.dataset.open;go(t.dataset.tab);if(t.dataset.sub){if(tab==="plan")planMode=t.dataset.sub;if(tab==="resources")resMode=t.dataset.sub;if(tab==="practice")prMode=t.dataset.sub}render();window.scrollTo({top:0});
@@ -2795,6 +2824,7 @@ document.addEventListener("click",e=>{
   if(a==="tnext"&&T){T.i=Math.min(T.qs.length-1,T.i+1);paintTest()}
   if(a==="tsubmit")finishTest();
   if(a==="newtest"){T=null;render()}
+  if(a==="mtall"){window.__mt=null;cur=null;render();return}
   if(a==="backup"){const code=backupCode();const msg=document.getElementById("bkMsg");
     const fallback=()=>{const ta=document.getElementById("restoreTxt");ta.value=code;ta.select();msg.textContent="Select and copy the code in the box below."};
     try{navigator.clipboard.writeText(code).then(()=>{msg.textContent="Copied. Paste it somewhere safe, like a note to yourself."},fallback)}catch(_){fallback()}}
