@@ -644,6 +644,7 @@ body.exam-on,body.modal-on{overflow:hidden}
 .ix-verdict{font-weight:600;padding:8px 12px;border-radius:10px;margin:0}
 .ix-verdict.pass{background:var(--good-soft);color:var(--good)}
 .ix-verdict.fail{background:var(--tick-soft);color:var(--tick)}
+@media (max-width:720px){#acct a[href="/checker"]{display:none}}
 </style>
 <style>
 .p-brief{background-image:url(data:image/webp;base64,UklGRpYFAABXRUJQVlA4WAoAAAAQAAAAXwAAXwAAQUxQSNUBAAABkCPZtmo3+5wrZsiZOVeoSKVJSHMwpuxQoZmdfg9AuZmZ2c4Yf73377nb9P4XXDNFxATgD6siIhHTMgcArkzj5ASAVFUJAHHxEQXG1+TO3r1zNrdmHFCJjAJT856Zfn4K0Kg4tB4i6b2ZmfckD7XCRcSh7zLNBwbz3gKDN17ug0ZD0XafKRk8v+gDmfJ+GzQSolUnWCADyQdHjz4gGcgCT1SpxMFhHVPS6HdO1AA1EzuNRqZcBxcFRcc7CzQ+mUTm5BMag73rgMagDFtYYLBnIyh3IiKuHCPPLLDAzShbUqILXX0jGD1nUKmZlZihp4Ub1brQshDqsODDIdDzBEo8Qc8QhrHgTktSoL6rd0EHOlfQ6DnXOdBb5EDnHD2NKzoHehe0qx7QEhRD+5/kk4XNGz9P8knR+YSfWz5Z2PyTfUPQohTTrxjZl9PQIlS6XzENC54RSswIC57yVbdolsNWpoxsyq1wGYLym8FiY+FmBSSr+QVDbAJfNBfT8jJGL1v++++XssanMXramAVxZ8zHxtsZJ8gsw1omsUm4FmVZInXnmXpv0fQ+5fk6kSwI2o4yskfaIChWUD57+PjJaB7PzZZDULwguoJSxbmYOCdYSIkofqQCAFZQOCCaAwAAcBUAnQEqYABgAD5hKJFFpCKhlHpudEAGBKAMlKVV2+gRTF/XZ3/znqv2z3iuesh/cv2A92HkgdYB6AH7Adat+43oof/QwqbOXmLbiAjKbKjT501yqJ2cQ94p/+md7vutYa/wB4QuDRtB2+GlhxvOqth8ZoCzT5oWJ47YmCD0VPVtA9Og5uR47snNH7dFTio+n09bRz+JaPWOHVWqiJR3IFA4VEEmr+9/qqb2LGdO1g81eBkAAP79bkgSv//r40+5FU3uH7bmVGhns/oouCX4WaHOtIF54jRJx1yfCgjDL/+2meT1cul78mp6yFofwPanb9U1IsWLfo8cVePtbog3zj9UOH9v9qrNgReMU98ta39cqiSUTIMnaWC/yrbSaYIcn2sFefSOI368orWTE5lph7EJFZHafDZ9C8bZ9ScDuNEe6ndTqW+8rHRWEko2NjCBpvLtGFcuBHfi1BeMcanbmKG90uuDwrUPjrnxzWcvknYM/sUJvDGyYC4xhPekBLN5NtEV/XHnbVbmebcUpgEAhgr2j/4x2hYJ50SUXHiyWox6nqM1L8vFP2bwXxrEV6XW7SXNLXZU8nVjo6SvryxJyVBsRA3j5xHpxlZp5Cu2Mqa9is56i/p8uQea8Zb3B40mNWVBhSVq9tc/v2c9X9+8Ocg5geYhaRZrxnpYP3wqCF9ny++Kobyx0pgr+OxMAAAaXjYrE/okO+KuJbB2NN3vR3WZbqeWHdZ7a46bah3IUcE0o52opnI77wV9VW1wbmb1JzR51t2BpZwZVtyj9hyp0gOlfOC/PCIKtYsicqvkyley0nAOs9UoHGmbs1flZ/aOTnVg1OLBPtNBnfqC6HP/oJMcW+3op3+kjDXKNvxPQQLrhNlY9xfmrwMPqQfkr3kzLIvHEhOWSrbUkyNDcW8OAzMQEnZ31w1iJO3Kx1dbBqE3vZ5SD95V+Z55icNFMpB+RF62uwRX1QUFHag83EjKPR6EI9jTmOGW/Z/3/2BS+V47dhp93UdEyHWb82azSC/QMwwfM8upeIdu0oMk+XNTiBJTsnEM+rJyhhejgw90VW1BPcJ9Z//tzKmYBecm5IoYSzsEnuOfH8TH5LJud+TJ1YjxwwJRGDrYXFtMWiUMa85Oey6AVN0v5+oal+Pf23T+MMO7nimKcFLsChDhY4xyV+Rhk8Xl2hNmvFPfiH65iQaNa0ScVa9y6fwHe9QFMo1H9zwazmEzqe0AAA==)}
@@ -1079,7 +1080,7 @@ else{S.wrong=S.wrong||{};S.tests=S.tests||[];S.name=S.name||"";if(S.onboarded===
 function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}if(typeof cloudSave==="function")cloudSave()}
 let tab="home",resMode="papers",planMode="study",catchup=false;
 function go(t){const map={dashboard:["home"],papers:["resources","papers"],guidance:["resources","tips"],mcq:["practice"],planner:["plan","study"],journey:["plan","journey"],progress:["plan","progress"]};
-  const m=map[t];if(m){tab=m[0];if(m[0]==="resources")resMode=m[1];if(m[0]==="plan")planMode=m[1]}else tab=t;
+  const m=map[t];if(t==="mcq")prMode="mcq";if(m){tab=m[0];if(m[0]==="resources")resMode=m[1];if(m[0]==="plan")planMode=m[1]}else tab=t;
   if(tab!=="signin"){try{localStorage.setItem(K+".tab",tab)}catch(e){}}}
 try{go(localStorage.getItem(K+".tab")||"home")}catch(e){}
 if(location.hash&&/^#(home|resources|practice|plan|careers|spom|dashboard|papers|mcq|planner|journey|guidance|about)$/.test(location.hash))go(location.hash.slice(1));
@@ -1198,7 +1199,7 @@ function quizFor(combo){
    {id:"we",q:"And on a weekend day?",o:HRS},
    {id:"slot",q:"When do you study best?",o:["Early morning","Daytime","Evening","Late night"],hint:"Your hardest paper goes in this slot."},
    {id:"rev",q:"How many revisions do you want before the exam?",o:["1 revision","2 revisions (recommended)","3 revisions"]},
-   {id:"coach",q:"Where are you with coaching classes?",o:["Classes finished","Ongoing — ends within 1 month","Ongoing — 1 to 3 months left","Ongoing — 3 to 6 months left","Ongoing — 6+ months left","Not started yet — joining soon","Self-study, no classes"],hint:"Pick the closest one. Your plan keeps class time free until they finish."}
+   {id:"coach",q:"Where are you with coaching classes?",o:["Classes finished","Ongoing — ends within 1 month","Ongoing — 1 to 3 months left","Ongoing — 3 to 6 months left","Ongoing — 6+ months left","Not started yet — joining soon","Self-study, no classes"],hint:"Pick the closest one. Your plan keeps class time clear until they finish."}
   ];
   ps.forEach(p=>Q.push({id:"st_"+p.id,q:`Where do you stand in P${p.no} · ${p.name}?`,o:STATUS,paper:p.id}));
   const both=cb.groups==="both"&&lv.groups;
@@ -1451,7 +1452,7 @@ function mf(){S.mf=S.mf||{att:"all",src:"all",pid:"all",law:true,chPid:"",ch:"",
 function mocks(){S.mocks=S.mocks||[];return S.mocks}
 async function loadPapers(){if(papersFetched||!sb)return;papersFetched=true;
   try{const {data,error}=await sb.from("mpapers").select("*").eq("active",true).order("adate",{ascending:false}).limit(2000);
-    if(!error&&data&&data.length){PAPERS=data.map(p=>({...p,rules:p.rules||{}}));if(tab==="practice"&&prMode==="mock")render()}}catch(_){}}
+    if(!error&&data&&data.length){PAPERS=data.map(p=>({...p,rules:p.rules||{}}));if((tab==="practice"&&prMode==="mock")||(tab==="resources"&&resMode==="papers"))render()}}catch(_){}}
 async function paperQs(p){if(QCACHE[p.id])return QCACHE[p.id];
   const {data,error}=await sb.from("mquestions").select("*").eq("paper",p.id).order("ord",{ascending:true}).limit(500);
   if(error)throw error;QCACHE[p.id]=(data||[]).map(q=>({...q,caseText:q.case_text,caseId:q.case_id}));return QCACHE[p.id]}
@@ -1484,7 +1485,7 @@ const IXSRC={pyq:"Past exam paper",mtp1:"MTP · Series I",mtp2:"MTP · Series II
 function ixAll(){if(IXDOCS)return IXDOCS;return ICAI_CAT.map(r=>({level:r[0],pid:r[1],attempt:r[2],adate:r[3],source:r[4],url:r[5]}))}
 async function ixLoad(){if(ixDocsFetched||!sb)return;ixDocsFetched=true;
   try{const {data,error}=await sb.from("icai_docs").select("level,pid,attempt,adate,source,url").eq("active",true).limit(5000);
-    if(!error&&data&&data.length){const seen=new Set(ICAI_CAT.map(r=>r[5]));IXDOCS=ixAll().concat(data.filter(d=>!seen.has(d.url)));if(tab==="practice"&&prMode==="mock")render()}}catch(_){}}
+    if(!error&&data&&data.length){const seen=new Set(ICAI_CAT.map(r=>r[5]));IXDOCS=ixAll().concat(data.filter(d=>!seen.has(d.url)));if((tab==="practice"&&prMode==="mock")||(tab==="resources"&&resMode==="papers"))render()}}catch(_){}}
 // Sets for one paper: exams (pyq/mtp with answer files) and RTPs
 function ixSets(pid){const D=ixAll().filter(d=>d.pid===pid);const sets=[];
   D.filter(d=>["pyq","mtp1","mtp2","rtp"].includes(d.source)).forEach(d=>{const ans=D.filter(x=>x.adate===d.adate&&x.source===d.source+"_ans").map(x=>x.url);
@@ -1499,7 +1500,7 @@ function ixLast(key){return mocks().filter(a=>a.doc===key).slice(-1)[0]}
 /* ---- hall ---- */
 function hallView(){ixLoad();const lp=L().papers;if(!ixPid||!lp.some(p=>p.id===ixPid))ixPid=lp[0].id;
   if(ixSel){const s=ixFind(ixSel);if(s)return ixInstr(s);ixSel=null}
-  const cards=lp.map(p=>{const P=ixPat(p.id),S2=ixSets(p.id),ne=S2.filter(s=>s.exam).length,nr=S2.length-ne,mq=P.mcq.reduce((t,s)=>t+s.max,0);
+  const cards=lp.map(p=>{const P=ixPat(p.id),S2=ixSets(p.id),ne=S2.filter(s=>s.exam).length,nr=S2.length-ne,mq=P.caseChoose?P.caseChoose*10:P.mcq.reduce((t,s)=>t+s.max,0);
     return `<button class="hx-card ${p.id===ixPid?"on":""}" data-ixp="${p.id}"><span class="pno">P${p.no}</span><b>${esc(p.name)}</b><span class="hx-sub">${P.min/60} h${P.read?` + ${P.read} min reading`:""} · ${mq?(mq===100?"100 MCQs":`${mq} MCQ + ${100-mq} written`):"100 written"}</span><span class="hx-n">${ne} paper${ne===1?"":"s"} · ${nr} RTP${nr===1?"":"s"}</span></button>`}).join("");
   const S2=ixSets(ixPid),pn=paperName(ixPid),P=ixPat(ixPid);
   const row=s=>{const last=ixLast(s.key);const st=last?(last.status==="in-progress"?"In progress":last.status==="needs-review"?"Needs marking":`Scored ${(last.mcqScore||0)+(last.selfScore||0)}/${(last.mcqMax||0)+(last.selfMax||0)}`):"";
@@ -1515,7 +1516,7 @@ function hallView(){ixLoad();const lp=L().papers;if(!ixPid||!lp.some(p=>p.id===i
     <p class="muted" style="font-size:.88rem;margin-bottom:6px">RTPs are longer question banks, not 100-mark papers. Practise them with a timer you choose; answers are inside the same file.</p>${rt.map(row).join("")}</div>`:""}
   <p class="muted" style="font-size:.8rem">Papers open straight from ICAI's website (© ICAI), so you always get the official, latest file.</p>`}
 function ixInstr(s){const pn=paperName(s.pid),P=ixPat(s.pid),last=ixLast(s.key),res=last&&last.status==="in-progress";
-  const mq=P.mcq.reduce((t,x)=>t+x.max,0);
+  const mq=P.caseChoose?P.caseChoose*10:P.mcq.reduce((t,x)=>t+x.max,0);
   return `<div class="card hx-instr"><button class="btn ghost sm" data-act="ixback">← All papers</button>
     <div class="eyebrow" style="margin-top:14px">CA ${esc(L().label)} · ${IXSRC[s.source]} · ${esc(s.attempt)}</div>
     <h1 class="hx-h1">P${pn.no} · ${esc(pn.name)}</h1>
@@ -1690,7 +1691,7 @@ function mockView(){loadPapers();const f=mf();if(sb&&session&&!isGuest())tchLoad
   else if(mockMode==="analysis")body=analysisView();
   else if(mockMode==="teacher")body=teacherView();
   else body=hallView();
-  return `<div class="hero"><div><div class="eyebrow">Mock tests · CA ${esc(L().label)}</div><h1>Sit a real ICAI paper.</h1><p class="muted">Full-length ICAI past papers and RTPs: 100 marks, reading time, a 3-hour timer, an OMR answer sheet, and ICAI's answers locked until you submit.</p></div></div>${seg}${body}`}
+  return `<div class="hero"><div><div class="eyebrow">Mock tests · CA ${esc(L().label)}</div><h1>Sit a real ICAI paper.</h1><p class="muted">Full-length ICAI past papers and RTPs with each paper's real timing and reading time, an OMR answer sheet, and ICAI's answers locked until you submit.</p></div></div>${seg}${body}`}
 function papersView(){const f=mf();const all=levelPapers();
   const atts=[...new Set(all.filter(p=>p.source!=="demo").map(p=>p.attempt))];
   const list=all.filter(p=>(f.att==="all"||p.attempt===f.att)&&(f.src==="all"||p.source===f.src||(f.src==="mtp"&&/^mtp/.test(p.source)))&&(f.pid==="all"||p.pid===f.pid)).sort((a,b)=>(a.source==="demo")-(b.source==="demo")||String(b.adate).localeCompare(String(a.adate))||String(a.pid).localeCompare(String(b.pid)));
@@ -1755,7 +1756,7 @@ async function startPaper(id,resumeId){const p=PAPERS.find(x=>x.id===id);if(!p){
   if(!a)a=newAttempt(p,qs,"full",p.title||`${p.attempt} · CA ${L().label} ${paperName(p.pid).name}`);
   openExam(a,qs)}
 async function startChapter(){track("chapter.start");const f=mf();const lp=L().papers;const pid=f.chPid&&lp.some(p=>p.id===f.chPid)?f.chPid:lp[0].id;const cs=document.getElementById("ctC");if(cs)f.ch=cs.value;const ch=+(f.ch||0),n=+f.n||10;
-  let pool=Q.filter(q=>q.p===pid&&q.c===ch).map(q=>({id:"b"+q.id,sec:"mcq",pid,ch,text:q.q,opts:q.o,ans:q.a,sol:q.e,marks:1,src:"CA PrepX question bank"}));
+  let pool=Q.filter(q=>q.p===pid&&q.c===ch).map(q=>({id:"b"+q.id,sec:"mcq",pid,ch,text:q.q,opts:q.o,ans:q.a,sol:q.w,marks:1,src:"CA PrepX question bank"}));
   if(sb){try{const {data}=await sb.from("mquestions").select("*").eq("pid",pid).eq("ch",ch).eq("sec","mcq").limit(400);(data||[]).forEach(q=>{if(f.law&&q.law==="outdated")return;pool.push({...q,marks:1,caseText:q.case_text,caseId:q.case_id,src:q.src_label||""})})}catch(_){}}
   if(!pool.length){toast("No MCQs for this chapter yet. Try another chapter.");return}
   pool=pool.sort(()=>Math.random()-.5).slice(0,n);
@@ -1901,7 +1902,7 @@ applyTheme();
 /* ---------- accounts (Supabase) ---------- */
 const CFG=window.PREPX_CONFIG||{};
 const sb=(CFG.url&&CFG.anonKey&&window.supabase)?window.supabase.createClient(CFG.url,CFG.anonKey):null;
-let aEmailVal="",recovering=false,session=null,authReady=!sb,authView="signin",authMsg="",authErr=false,authBusy=false,isAdmin=false,cloudTimer=null;
+let aEmailVal="",recovering=false,session=null,authReady=!sb,authView="signin",authMsg="",authErr=false,authBusy=false,isAdmin=false,isChecker=false,cloudTimer=null;
 const isGuest=()=>!!(session&&session.user&&session.user.is_anonymous);
 function cloudSave(){
   if(!sb||!session)return;clearTimeout(cloudTimer);
@@ -1921,6 +1922,8 @@ async function afterSignIn(fresh){
   let visited=false;try{visited=sessionStorage.getItem("prepx.visit")===uid}catch(e){}
   if(fresh||!visited){try{await sb.rpc("record_login",{p_name:S.name||null,p_level:S.onboarded?S.level:null});sessionStorage.setItem("prepx.visit",uid)}catch(e){}}
   try{const r=await sb.rpc("is_admin");isAdmin=!!r.data}catch(e){isAdmin=false}
+  try{const r=await sb.rpc("is_checker");isChecker=!r.error&&!!r.data}catch(e){isChecker=false}
+  try{render()}catch(e){}
   S.fromGuest=isGuest();
   try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}
 }
@@ -1942,7 +1945,7 @@ async function authDo(kind){
   if(res&&res.data&&res.data.session){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);go("home")}
   render();
 }
-async function signOut(){try{await sb.auth.signOut()}catch(e){}session=null;isAdmin=false;S=blank();try{localStorage.removeItem(K);localStorage.removeItem("prepx.guest");sessionStorage.removeItem("prepx.visit")}catch(e){}window.__guest=0;authView="signin";authMsg="";go("home");render()}
+async function signOut(){try{await sb.auth.signOut()}catch(e){}session=null;isAdmin=false;isChecker=false;S=blank();try{localStorage.removeItem(K);localStorage.removeItem("prepx.guest");sessionStorage.removeItem("prepx.visit")}catch(e){}window.__guest=0;authView="signin";authMsg="";go("home");render()}
 function authCard(){
   const busy=authBusy?"disabled":"";
   const msg=authMsg?`<p class="amsg ${authErr?"err":""}">${esc(authMsg)}</p>`:"";
@@ -1969,7 +1972,7 @@ function renderChrome(){
   const gate=gateOn()||(tab==="about"&&!!sb&&!(session&&!isGuest()));
   const real=sb&&session&&!isGuest()&&!recovering;
   const ac=document.getElementById("acct");
-  ac.innerHTML=!sb?"":real?`${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"||gate?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
+  ac.innerHTML=!sb?"":real?`${isChecker||isAdmin?`<a class="btn sm primary" href="/checker">Check papers</a>`:""}${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"||gate?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
   const showLv=!gate&&S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers"&&tab!=="spom";
   const lvEl=document.getElementById("levelSeg");lvEl.className="lvw";lvEl.removeAttribute("role");const LVPIC={foundation:"papers",inter:"mcq",final:"school"};
   lvEl.innerHTML=`<button class="lvchip" data-act="lvlopen" aria-expanded="${lvOpen}" aria-label="Change CA level">${ico(LVPIC[S.level]||"mcq",16)}<span>${S.level==="inter"?"Inter":LEVELS[S.level].label}</span><b aria-hidden="true">▾</b></button>${lvOpen?`<div class="lvmenu" role="menu">${Object.entries(LEVELS).map(([k,v])=>`<button role="menuitemradio" data-level="${k}" aria-checked="${S.level===k}">${ico(LVPIC[k],22)}<span>CA ${v.label}</span>${S.level===k?"<em>✓</em>":""}</button>`).join("")}</div>`:""}`;
@@ -1983,7 +1986,7 @@ function renderChrome(){
   bn.innerHTML=TABS.map(([k,,sh,i])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${sh}">${ico(i,22)}<span>${sh}</span></button>`).join("");
   document.getElementById("themeBtn").innerHTML=ico(isDark()?"sun":"moon",19);
   document.getElementById("aboutBtn").setAttribute("aria-pressed",tab==="about");
-  document.getElementById("bannerWrap").innerHTML=S.sample&&tab!=="signin"?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:"";
+  document.getElementById("bannerWrap").innerHTML=real&&isChecker&&tab!=="signin"?`<div class="banner"><span><b>Teacher account.</b> Students' answer sheets are waiting in the checking portal.</span><a class="btn sm primary" href="/checker">Check papers</a></div>`:S.sample&&tab!=="signin"?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:"";
 }
 let W={level:"inter"};
 function welcome(gate){
@@ -2079,17 +2082,19 @@ dashboard(){
     </div></div>`;
 },
 papers(){
-  const lv=L();const at=window.__att&&lv.attempts.includes(window.__att)?window.__att:lv.attempts[0];
+  ixLoad();const lv=L();
+  const short=a=>String(a||"").replace(/^(January|February|March|April|June|July|August|October|November|December)\b/,m=>m.slice(0,3)).replace(/^September\b/,"Sept");
+  const btn=(u,t,cls)=>`<a class="btn sm${cls?" "+cls:""}" href="${esc(u)}" target="_blank" rel="noopener">${t} ↗</a>`;
+  const rows=lv.papers.map(p=>{const X=ixSets(p.id);const r=X.find(x=>x.source==="rtp"),m=X.find(x=>x.source==="mtp1"||x.source==="mtp2"),y=X.find(x=>x.source==="pyq");
+    return `<tr><td><span class="pno">P${p.no}${lv.groups?" · G"+p.g:""}</span><br><b>${esc(p.name)}</b></td><td class="muted rtp-type" style="white-space:nowrap">${p.type}</td>
+    <td data-l="Latest from ICAI" class="rtp-links">${r?btn(r.url,"RTP · "+esc(short(r.attempt)),"primary"):btn(BOS+"Revision+Test+Papers","RTP")}${m?btn(m.url,"MTP · "+esc(short(m.attempt))):btn(BOS+"Mock+Test+Papers","MTP on ICAI")}${y?btn(y.url,"Past paper · "+esc(short(y.attempt))):""}${y&&y.ans.length?btn(y.ans[0],"Answers"):""}</td></tr>`}).join("");
   return `<div class="hero"><div><div class="eyebrow">CA ${lv.label}</div><h1>RTP, MTP &amp; past papers</h1>
-  <p class="muted">Every ICAI Revision Test Paper, Mock Test Paper and past paper for your attempt. Tap to open it on the ICAI BoS portal and attempt it under exam timing.</p></div>
-  <div class="field" style="min-width:160px"><label for="att">Attempt</label><select id="att">${lv.attempts.map(a=>`<option ${a===at?"selected":""}>${a}</option>`).join("")}</select></div></div>
-  <div class="tbl-wrap rtp"><table><thead><tr><th>Paper</th><th>Pattern</th><th>Open on ICAI</th></tr></thead><tbody>
-  ${lv.papers.map(p=>`<tr><td><span class="pno">P${p.no}${lv.groups?" · G"+p.g:""}</span><br><b>${esc(p.name)}</b></td><td class="muted rtp-type" style="white-space:nowrap">${p.type}</td>
-   
-   <td data-l="Open on ICAI" class="rtp-links"><a class="btn sm" href="${BOS}Revision+Test+Papers" target="_blank" rel="noopener">RTP ↗</a><a class="btn sm" href="${BOS}Mock+Test+Papers" target="_blank" rel="noopener">MTP ↗</a><a class="btn sm" href="${BOS}Question+Papers+New+Scheme&c=${lv.c}" target="_blank" rel="noopener">Past papers ↗</a></td></tr>`).join("")}
-  </tbody></table></div>
-  <p class="muted" style="font-size:.85rem">Papers open on ICAI's Board of Studies Knowledge Portal. ${lv.label==="Final"?"Final is held in May and November; ":"Foundation and Intermediate are held in January, May and September; "}check ICAI announcements for release dates.</p>`;
+  <p class="muted">The latest ICAI Revision Test Paper, Mock Test Paper and past paper for each subject, opened straight from ICAI. For older attempts, or to sit a paper under exam timing, use Practice → Mock tests.</p></div>
+  <button class="btn" data-act="gohall">All papers &amp; timed exams →</button></div>
+  <div class="tbl-wrap rtp"><table><thead><tr><th>Paper</th><th>Pattern</th><th>Latest from ICAI</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <p class="muted" style="font-size:.85rem">${lv.label==="Final"?"Final is held in May and November.":"Foundation and Intermediate are held in January, May and September."} ICAI releases each attempt's RTP about two months before the exam, and we add it here as soon as it's out.</p>`;
 },
+
 mcq(){
   const lv=L();const wn=mistakes().length;const total=Q.filter(q=>lv.papers.some(p=>p.id===q.p)).length;
   const modes=[["practice","Practice"],["test","Timed test"],["mistakes",`My mistakes${wn?" · "+wn:""}`],["history",`History${pastTests().length?" · "+pastTests().length:""}`]];
@@ -2170,7 +2175,7 @@ journey(){
         ${S.tests.filter(x=>x.lv===S.level).length?`<table><tbody>${S.tests.filter(x=>x.lv===S.level).slice(-5).reverse().map(x=>`<tr><td class="num">${fmt(new Date(x.t))}</td><td class="num">${x.ok}/${x.n}</td><td><span class="pill ${x.ok/x.n>=.7?"good":x.ok/x.n>=.5?"warn":"bad"}">${Math.round(x.ok/x.n*100)}%</span></td><td class="num muted">${hm2(x.secs)}</td></tr>`).join("")}</tbody></table>`:`<p class="muted">No tests yet at this level.</p>`}</div>
     </div></div>
   <div class="card"><div class="card-h"><h2>Your data</h2></div>
-    <p class="muted" style="max-width:65ch">Progress is saved in this browser only. To move it to another phone or laptop, copy your backup code and paste it there.</p>
+    <p class="muted" style="max-width:65ch">${sb&&session&&!isGuest()?"Your progress syncs to your account, so it follows you to any phone or laptop you sign in on. The backup code is an extra copy.":"As a guest, progress is saved on this device. Sign in to keep it on every device, or copy your backup code and paste it there."}</p>
     <div class="row" style="margin-top:12px"><button class="btn" data-act="backup">Copy backup code</button><span class="muted" id="bkMsg" style="font-size:.85rem"></span></div>
     <div class="field" style="margin-top:14px"><label for="restoreTxt">Restore from a backup code</label><textarea id="restoreTxt" rows="3" placeholder="Paste your backup code here"></textarea></div>
     <div class="row sp" style="margin-top:10px"><button class="btn primary" data-act="restore">Restore</button>
@@ -2847,7 +2852,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.tchopen){tchOpen(t.dataset.tchopen);return}if(t.dataset.act==="tchclose"){const m=document.getElementById("tchModal");if(m)m.remove();return}
   if(t.dataset.tview){const x=S.tests.find(z=>(z.id||("old"+z.t))===t.dataset.tview);if(x&&x.qs){const qm=new Map(Q.map(q=>[String(q.id),q]));const keep=x.qs.map((id,i)=>[qm.get(String(id)),x.ans[i]]).filter(r=>r[0]);T={qs:keep.map(r=>r[0]),ans:keep.map(r=>r[1]),i:0,limit:x.limit||x.secs,secs:x.secs,ok:keep.filter(r=>r[1]===r[0].a).length,active:false,done:true,past:true};mode="test";go("practice");prMode="mcq";render();window.scrollTo({top:0})}return}
   if(t.dataset.tredo){const x=pastTests().find(z=>z.key===t.dataset.tredo);if(x){const ids=x.wrong.filter(isWrong);if(!ids.length){toast("All fixed from this test. Nice!");return}window.__mt={key:x.key,title:x.kind+" · "+x.title,ids};mode="mistakes";cur=null;go("practice");prMode="mcq";render();window.scrollTo({top:0})}return}
-  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;if(t.dataset.mode!=="mistakes"||mode!=="mistakes")window.__mt=null;if(T&&T.past)T=null;if(T&&T.done&&t.dataset.mode==="history")T=null;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
+  if(t.dataset.mode){if(T&&T.active&&t.dataset.mode!=="test")return;prMode="mcq";if(t.dataset.mode!=="mistakes"||mode!=="mistakes")window.__mt=null;if(T&&T.past)T=null;if(T&&T.done&&t.dataset.mode==="history")T=null;mode=t.dataset.mode;if(mode==="mistakes"){T=T&&T.done?null:T}cur=null;go("practice");render();window.scrollTo({top:0});return}
   if(t.dataset.topt!==undefined){T.ans[T.i]=+t.dataset.topt;paintTest();return}
   if(t.dataset.goto!==undefined){T.i=+t.dataset.goto;paintTest();return}
   if(t.dataset.tab){if(t.dataset.open)window.__sylOpen=t.dataset.open;go(t.dataset.tab);if(t.dataset.sub){if(tab==="plan")planMode=t.dataset.sub;if(tab==="resources")resMode=t.dataset.sub;if(tab==="practice")prMode=t.dataset.sub}render();window.scrollTo({top:0});
@@ -2913,6 +2918,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.auth){authDo(t.dataset.auth);return}
   const a=t.dataset.act;
   if(a==="signout"){signOut();return}
+  if(a==="gohall"){prMode="mock";mockMode="papers";go("practice");render();window.scrollTo({top:0});return}
   if(a==="catchup"){const I=qzState();const d=S.exam[S.level];if(d)I.date=d;I.done=false;I.step=0;go("plan");planMode="study";save();render();window.scrollTo({top:0});toast("15 quick questions and your catch-up plan is ready");return}
   if(a==="qstart"){const I=qzState();const pre=S.level==="foundation"?"F":S.level==="final"?"NB":"IB";const c=I._c||pre;if(c!==I.combo){delete I.a.weak;Object.keys(I.a).filter(k=>k.startsWith("wa_")).forEach(k=>delete I.a[k])}I.combo=c;I.step=0;I.done=false;S.level=COMBOS[c].level;S.plan.groups=COMBOS[c].groups;save();render();window.scrollTo({top:0});return}
   if(a==="qnext"){const I=qzState();I.step=Math.min(quizFor(I.combo).length-1,I.step+1);save();render();window.scrollTo({top:0});return}
