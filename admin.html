@@ -186,7 +186,8 @@ function paint(){
   const idx={};days.forEach((x,i)=>idx[x.k]=i);
   logins.forEach(x=>{const i=idx[dayKey(x.at)];if(i!==undefined)x.is_guest?days[i].g++:days[i].e++});
   const mx=Math.max(4,...days.map(x=>x.e+x.g));
-  const rows=profiles.filter(x=>(filter==="all"||(filter==="guest")===!!x.is_guest)&&(!q||((x.email||"")+" "+(x.name||"")).toLowerCase().includes(q)));
+  const rows=profiles.filter(x=>(filter==="all"||(filter==="guest")===!!x.is_guest)&&(!q||((x.email||"")+" "+(x.name||"")+" "+(x.phone||"")).toLowerCase().includes(q)));
+  const phones=[...new Set(rows.map(x=>x.phone).filter(Boolean))];
   main.innerHTML=`
   <div><div class="eyebrow">Updated ${d2(now)}</div><h1>Who's using CA PrepX</h1></div>
   <div class="stats">
@@ -200,13 +201,14 @@ function paint(){
     <div class="chart">${days.map(x=>`<div class="col" title="${x.d.toLocaleDateString("en-GB",{day:"numeric",month:"short"})}: ${x.e} email, ${x.g} guest">${x.g?`<div class="g" style="height:${x.g/mx*100}%"></div>`:""}${x.e?`<div class="e" style="height:${x.e/mx*100}%"></div>`:""}</div>`).join("")}</div>
     <div class="xl">${days.map((x,i)=>`<span>${i%5===4||i===29?x.d.getDate()+" "+x.d.toLocaleDateString("en-GB",{month:"short"}):""}</span>`).join("")}</div>
     <p class="muted" style="font-size:.8rem;margin-top:8px">Last 30 days. Peak: ${Math.max(...days.map(x=>x.e+x.g))} logins in a day.</p></div>
-  <div class="row sp"><h2>Students</h2><div class="row"><input type="search" id="q" placeholder="Search name or email" value="${esc(q)}"><div class="seg">${[["all","All"],["email","Accounts"],["guest","Visitors"]].map(f=>`<button data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("")}</div></div></div>
-  <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Level</th><th style="text-align:right">Logins</th><th>Last login</th><th>Joined</th></tr></thead><tbody>
-  ${rows.length?rows.map(x=>`<tr><td>${esc(x.name)||'<span class="muted">—</span>'}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td><span class="pill ${x.is_guest?"g":""}">${x.is_guest?"Visitor":"Account"}</span></td><td>${esc(LV[x.level]||x.level||"—")}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num">${x.last_login?d2(x.last_login):"—"}</td><td class="num">${d2(x.created_at)}</td></tr>`).join(""):`<tr><td colspan="7" class="muted">No students match.</td></tr>`}
+  <div class="row sp"><h2>Students</h2><div class="row"><button class="btn sm" id="cpPh" ${phones.length?"":"disabled"}>Copy mobile numbers (${phones.length})</button><input type="search" id="q" placeholder="Search name, email or mobile" value="${esc(q)}"><div class="seg">${[["all","All"],["email","Accounts"],["guest","Visitors"]].map(f=>`<button data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("")}</div></div></div>
+  <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Type</th><th>Level</th><th style="text-align:right">Logins</th><th>Last login</th><th>Joined</th></tr></thead><tbody>
+  ${rows.length?rows.map(x=>`<tr><td>${esc(x.name)||'<span class="muted">—</span>'}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td class="num">${x.phone?esc(x.phone):'<span class="muted">—</span>'}</td><td><span class="pill ${x.is_guest?"g":""}">${x.is_guest?"Visitor":"Account"}</span></td><td>${esc(LV[x.level]||x.level||"—")}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num">${x.last_login?d2(x.last_login):"—"}</td><td class="num">${d2(x.created_at)}</td></tr>`).join(""):`<tr><td colspan="8" class="muted">No students match.</td></tr>`}
   </tbody></table></div>
   <p class="muted" style="font-size:.8rem">Visitors are people using the site without an account (counted once per visit). Accounts are students who signed up with email.</p>`;
   const qi=document.getElementById("q");qi.oninput=()=>{q=qi.value.trim().toLowerCase();const pos=qi.selectionStart;paint();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos)};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;paint()});
+  const cp=document.getElementById("cpPh");if(cp)cp.onclick=async()=>{try{await navigator.clipboard.writeText(phones.join("\n"));cp.textContent="Copied "+phones.length+" numbers"}catch(e){cp.textContent="Couldn't copy"}};
 }
 const JF=[["title","Job title",1],["company","Company",1],["short","Short name for LinkedIn search (e.g. EY)",0],["type","Employer type (Big 4, Mid-tier firm, Corporate, GCC / MNC, Bank / NBFC, Investment bank, Fintech)",0],["domain","Area: audit, ia, dt, gst, fpa, ctrl, ta, cons, forensic, ib, articleship",1],["city","City: delhi, mumbai, bengaluru, pune, hyderabad, dubai, india",1],["location","Location shown (e.g. Gurugram, Haryana)",0],["stage","Level: student, fresher, exp (comma-separated)",1],["exp","Experience / eligibility",0],["apply","Apply link",1],["careers","Company careers page (optional)",0],["email","Official recruitment email (optional)",0],["seen","Date seen (YYYY-MM-DD)",0]];
 async function loadJobs(){

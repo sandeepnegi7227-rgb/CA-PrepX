@@ -7,6 +7,7 @@ create table if not exists public.profiles (
   email       text,
   name        text,
   level       text,
+  phone       text,
   is_guest    boolean not null default false,
   created_at  timestamptz not null default now(),
   last_login  timestamptz,
@@ -58,6 +59,22 @@ begin
     login_count = p.login_count + 1;
 end;
 $$;
+
+-- Called by the website after sign-in to save the student's own mobile number.
+alter table public.profiles add column if not exists phone text;
+create or replace function public.set_phone(p_phone text)
+returns void language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v     text := regexp_replace(coalesce(p_phone, ''), '[^0-9+]', '', 'g');
+begin
+  if v_uid is null then return; end if;
+  if v !~ '^\+?[0-9]{10,15}$' then return; end if;
+  update public.profiles set phone = v where id = v_uid;
+end;
+$$;
+revoke execute on function public.set_phone(text) from public, anon;
+grant execute on function public.set_phone(text) to authenticated;
 
 -- 3. Security (row-level) -------------------------------------------------
 alter table public.profiles enable row level security;

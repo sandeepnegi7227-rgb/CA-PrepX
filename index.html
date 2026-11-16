@@ -1905,7 +1905,7 @@ applyTheme();
 /* ---------- accounts (Supabase) ---------- */
 const CFG=window.PREPX_CONFIG||{};
 const sb=(CFG.url&&CFG.anonKey&&window.supabase)?window.supabase.createClient(CFG.url,CFG.anonKey):null;
-let aEmailVal="",recovering=false,session=null,authReady=!sb,authView="signup",authWhy="",authRet="",authMsg="",authErr=false,authBusy=false,isAdmin=false,isChecker=false,cloudTimer=null;
+let aEmailVal="",aPhoneVal="",recovering=false,session=null,authReady=!sb,authView="signup",authWhy="",authRet="",authMsg="",authErr=false,authBusy=false,isAdmin=false,isChecker=false,cloudTimer=null;
 const isGuest=()=>!!(session&&session.user&&session.user.is_anonymous);
 function cloudSave(){
   if(!sb||!session)return;clearTimeout(cloudTimer);
@@ -1923,7 +1923,8 @@ async function afterSignIn(fresh){
     }
   }catch(e){}
   let visited=false;try{visited=sessionStorage.getItem("prepx.visit")===uid}catch(e){}
-  if(fresh||!visited){try{await sb.rpc("record_login",{p_name:S.name||null,p_level:S.onboarded?S.level:null});sessionStorage.setItem("prepx.visit",uid)}catch(e){}}
+  if(fresh||!visited){try{await sb.rpc("record_login",{p_name:S.name||null,p_level:S.onboarded?S.level:null});sessionStorage.setItem("prepx.visit",uid)}catch(e){}
+    try{const ph=session.user.user_metadata&&session.user.user_metadata.phone;if(ph&&!isGuest())await sb.rpc("set_phone",{p_phone:ph})}catch(e){}}
   try{const r=await sb.rpc("is_admin");isAdmin=!!r.data}catch(e){isAdmin=false}
   try{const r=await sb.rpc("is_checker");isChecker=!r.error&&!!r.data}catch(e){isChecker=false}
   try{render()}catch(e){}
@@ -1933,11 +1934,13 @@ async function afterSignIn(fresh){
 async function authDo(kind){
   if(authBusy)return;const email=(document.getElementById("aEmail")||{}).value,pw=(document.getElementById("aPw")||{}).value;
   const nm=((document.getElementById("aName")||{}).value||"").trim();if(email)aEmailVal=email.trim();
+  const phRaw=((document.getElementById("aPhone")||{}).value||"").trim();aPhoneVal=phRaw;let ph=phRaw.replace(/[^0-9+]/g,"");
+  if(kind==="signup"&&ph){if(/^[6-9][0-9]{9}$/.test(ph))ph="+91"+ph;if(!/^\+?[0-9]{10,15}$/.test(ph)){authMsg="That mobile number doesn't look right. Check it, or leave it blank.";authErr=true;render();return}}
   authBusy=true;authMsg="";authErr=false;render();
   let res;
   try{
     if(kind==="guest")res=await sb.auth.signInAnonymously();
-    else if(kind==="signup")res=await sb.auth.signUp({email:(email||"").trim(),password:pw,options:{data:{name:nm}}});
+    else if(kind==="signup")res=await sb.auth.signUp({email:(email||"").trim(),password:pw,options:{data:ph?{name:nm,phone:ph}:{name:nm}}});
     else if(kind==="signin")res=await sb.auth.signInWithPassword({email:(email||"").trim(),password:pw});
     else if(kind==="reset"){res=await sb.auth.resetPasswordForEmail((email||"").trim(),{redirectTo:location.origin});if(!res.error){authMsg="Check your inbox — reset link sent.";authView="signin"}}
     else if(kind==="newpass"){res=await sb.auth.updateUser({password:pw});if(!res.error){recovering=false;authView="signin";const g=await sb.auth.getSession();session=g.data.session;if(session){await afterSignIn(true);tab="home"}authBusy=false;render();return}}
@@ -1963,6 +1966,7 @@ function authCard(){
     ${up?`<div class="field"><label for="aName">What should we call you?</label><input id="aName" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Priya"></div>`:""}
     <div class="field" style="margin-top:12px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(aEmailVal)}"></div>
     <div class="field" style="margin-top:12px"><label for="aPw">Password</label><input id="aPw" type="password" minlength="6" autocomplete="${up?"new-password":"current-password"}" placeholder="${up?"6+ characters":""}"></div>
+    ${up?`<div class="field" style="margin-top:12px"><label for="aPhone">WhatsApp number <span class="muted">(optional)</span></label><input id="aPhone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="e.g. 98765 43210" value="${esc(aPhoneVal)}"><small class="muted" style="font-size:.78rem">Add it to join the CA PrepX WhatsApp group for notes and exam updates. We never share your number.</small></div>`:""}
     <button class="btn primary" style="width:100%;margin-top:18px;padding-block:11px" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Hold on…":up?"Create my free account":"Sign in"}</button>${up?"":`<div style="text-align:center;margin-top:8px"><button class="btn ghost sm" data-aview="reset">Forgot password?</button></div>`}
     ${guestOK()?"":`<div class="or-line"><span>or</span></div><button class="btn ghost guest-link" data-act="guestgo">Just looking? Continue as guest</button>`}
     <div style="text-align:center;margin-top:6px"><button class="btn ghost sm" data-tab="about">Who's building this? Meet the founder →</button></div>
