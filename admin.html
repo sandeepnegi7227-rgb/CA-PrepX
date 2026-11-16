@@ -288,7 +288,7 @@ async function loadVideosA(){let qy=sb.from("videos").select("*").order("created
   if(r.error){main.innerHTML=`<div class="card"><h2>Videos not set up</h2><p class="muted" style="margin-top:6px">Run <b>setup-mock-videos.sql</b> in Supabase → SQL Editor, then click Refresh.</p><p class="msg" style="margin-top:10px">${esc(r.error.message)}</p></div>`;return}
   vidsA=r.data||[];chansA=c.data||[];paintVideosA(n.count||0)}
 function paintVideosA(total){
-  main.innerHTML=`<div><div class="eyebrow">Resources tab</div><h1>Videos</h1><p class="muted" style="margin-top:4px">${total} videos in the library. They refresh automatically every day. Pin the best ones to the top, hide weak ones, and boost or block teachers.</p></div>
+  main.innerHTML=`<div><div class="eyebrow">Resources tab</div><h1>Videos</h1><p class="muted" style="margin-top:4px">${total} videos in the library. New videos are added by hand for now. Pin the best ones to the top, hide weak ones, and boost or block teachers.</p></div>
   ${amsg?`<p class="msg" style="background:var(--accent-soft);color:var(--ink)">${esc(amsg)}</p>`:""}
   <div class="card"><h2>Teachers</h2><p class="muted" style="font-size:.85rem;margin-top:6px">Type the channel name exactly as on YouTube. Boosted teachers rank higher; blocked channels never appear.</p>
     <div class="row" style="margin-top:10px"><input id="chn" placeholder="Channel name" ${inp}><select id="chs" ${inp}><option value="boost">Boost</option><option value="block">Block</option></select><button class="btn primary" id="chadd">Save</button></div>

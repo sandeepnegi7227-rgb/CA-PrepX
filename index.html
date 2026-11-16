@@ -1428,7 +1428,7 @@ const JDOMKW={audit:"statutory audit",ia:"internal audit",dt:"tax",gst:"indirect
 const JCITY=[["all","All"],["delhi","Delhi NCR"],["mumbai","Mumbai"],["bengaluru","Bengaluru"],["pune","Pune"],["hyderabad","Hyderabad"],["dubai","Dubai / UAE"]];
 const JCITYN={delhi:"Delhi",mumbai:"Mumbai",bengaluru:"Bengaluru",pune:"Pune",hyderabad:"Hyderabad",dubai:"UAE",india:"India"};
 const JSTAGE=[["all","All"],["student","Articleship"],["fresher","Freshers"],["exp","Experienced"]];
-const JAGG=/indeed\.com|caclubindia\.com|buddingca\.com|accaglobal\.com|naukri|linkedin\.com\/jobs/i;
+const JAGG=/indeed\.com|caclubindia\.com|casansaar\.com|buddingca\.com|accaglobal\.com|naukri|linkedin\.com\/jobs/i;
 function jf(){if(!S.jf){const c=(S.city&&JCITY.some(x=>x[0]===S.city))?S.city:"all";S.jf={q:"",city:c,stage:"all",dom:"all",type:"all"}}return S.jf}
 async function loadJobs(){if(jobsFetched||!sb)return;jobsFetched=true;
   try{const {data,error}=await sb.from("jobs").select("*").eq("active",true).order("seen",{ascending:false}).limit(1000);
@@ -2387,7 +2387,7 @@ spom(){
 },
 careers(){
   const cnt=d=>JOBS.filter(j=>j.domain===d).length;
-  return `<div class="hero"><div><div class="eyebrow">Careers</div><h1>Live CA jobs, all in one place.</h1><p class="muted">Openings from company career portals, filtered by city, level and area. Apply on the company's site, then find the team on LinkedIn.</p></div></div>
+  return `<div class="hero"><div><div class="eyebrow">Careers</div><h1>Live CA jobs, all in one place.</h1><p class="muted">Openings from company career portals and CA job boards, filtered by city, level and area. Apply on the company's site, then find the team on LinkedIn.</p></div></div>
   ${jobsBoard()}
   <div class="grid2" id="art">
     <div class="card"><div class="card-h"><h2>${ico("school",20)} Articleship</h2><span class="pill">Inter students</span></div>
