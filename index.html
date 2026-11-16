@@ -338,7 +338,7 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 @media (max-width:620px){.land{gap:26px}.land-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.land-grid,.land-steps{grid-template-columns:minmax(0,1fr)}.land-cta .btn{width:100%}.land-cta{width:100%}}
 .chflash{animation:chflash 2.4s ease-out 1}
 @keyframes chflash{0%,40%{background:var(--accent-soft)}100%{background:transparent}}
-.wa-btn,.land-cta .wa-btn{background:#1FA855;border-color:#1FA855;color:#fff;font-weight:700;text-decoration:none;text-align:center;display:inline-block;box-sizing:border-box}
+.wa-btn,.land-cta .wa-btn{background:#1FA855;border-color:#1FA855;color:#fff;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box}
 .wa-btn:hover{filter:brightness(1.06)}
 .wa-card{display:grid;gap:10px}
 .wa-card .row{gap:8px;flex-wrap:wrap}
@@ -2027,10 +2027,11 @@ function shareLink(path,title){const url=location.origin+"/"+path;track("share")
   if(navigator.share){navigator.share({title:title||"CA PrepX",text:(title||"CA PrepX")+" · free on CA PrepX",url}).catch(e=>{if(!e||e.name!=="AbortError")copy()})}else copy()}
 function normPhone(raw){let ph=String(raw||"").replace(/[^0-9+]/g,"");if(/^[6-9][0-9]{9}$/.test(ph))ph="+91"+ph;return /^\+?[0-9]{10,15}$/.test(ph)?ph:""}
 const WA_LINK="https://chat.whatsapp.com/E73YwMNBli095vVFdaYVaq";
+const CHAT_IC=`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="4"/><path d="M8 17v4l5-4"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/></svg>`;
 function waCard(){
   try{if(localStorage.getItem("prepx.wa.skip")==="1")return ""}catch(_){}
   return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">Join the CA PrepX WhatsApp group</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Notes, exam updates and new papers, straight to your phone. Free to join.</p></div>
-    <div class="row"><a class="btn wa-btn" data-wa="home" href="${WA_LINK}" target="_blank" rel="noopener">Join the group</a><button class="btn ghost sm" data-act="waskip">Hide this</button></div></div>`;
+    <div class="row"><a class="btn wa-btn" data-wa="home" href="${WA_LINK}" target="_blank" rel="noopener">${CHAT_IC}<span>Join the group</span></a><button class="btn ghost sm" data-act="waskip">Hide this</button></div></div>`;
 }
 let landAuth=false;
 function landOn(){return gateOn()&&!landAuth&&!recovering}
@@ -2050,7 +2051,7 @@ function landing(){
       <p>Study plans, ICAI papers, mock exams and MCQs for CA Foundation, Intermediate and Final. All in one place, and free.</p>
       ${cta}
       <div class="land-in">Already have an account? <button class="btn ghost sm" data-act="landin">Sign in</button></div>
-      <div class="land-cta"><a class="btn wa-btn" data-wa="landing" href="${WA_LINK}" target="_blank" rel="noopener">Join our WhatsApp group</a></div>
+      <div class="land-cta"><a class="btn wa-btn" data-wa="landing" href="${WA_LINK}" target="_blank" rel="noopener">${CHAT_IC}<span>Join our WhatsApp group</span></a></div>
     </div>
     <div class="land-stats"><div><b>3</b><span>CA levels covered</span></div><div><b>${nP?nP+"+":"All"}</b><span>ICAI papers to practise</span></div><div><b>${nQ?nQ+"+":"Daily"}</b><span>practice MCQs</span></div><div><b>₹0</b><span>No payment, no card</span></div></div>
     <div class="land-sec"><h2>Everything a CA student needs</h2>
