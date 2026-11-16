@@ -307,6 +307,35 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .guest-btn:hover{filter:brightness(1.05)}
 .guest-btn span{font-size:.78rem;font-weight:600;opacity:.8}
 .guest-btn .ic{display:none}
+.land{display:grid;gap:34px;max-width:980px;margin:0 auto}
+.land-hero{text-align:center;display:grid;justify-items:center;gap:14px;padding:22px 0 4px}
+.land-hero h1{font-size:clamp(2.1rem,7vw,3.3rem);line-height:1.08;max-width:15ch}
+.land-hero>p{max-width:54ch;font-size:1.05rem;color:var(--muted);margin:0}
+.land-cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:4px}
+.land-cta .btn{padding:12px 22px;font-size:1rem;font-weight:700}
+.land-in{font-size:.88rem;color:var(--muted)}
+.land-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.land-stats div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 10px;text-align:center;display:grid;gap:2px}
+.land-stats b{font-family:var(--serif);font-size:1.55rem;line-height:1.1}
+.land-stats span{font-size:.8rem;color:var(--muted)}
+.land h2{font-size:1.45rem;text-align:center}
+.land-sec{display:grid;gap:16px}
+.land-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.land-f{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:6px;align-content:start}
+.land-f svg{color:var(--gold-deep)}
+.land-f h3{font-size:1.05rem}
+.land-f p{margin:0;font-size:.9rem;color:var(--muted)}
+.land-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:ls}
+.land-steps div{display:grid;gap:4px;align-content:start;padding-left:46px;position:relative;counter-increment:ls}
+.land-steps div::before{content:counter(ls);position:absolute;left:0;top:0;width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--gold-ink);display:grid;place-items:center;font-weight:700}
+.land-steps b{font-size:1rem}
+.land-steps span{font-size:.9rem;color:var(--muted)}
+.land-by{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.land-by p{margin:4px 0 0;color:var(--muted);font-size:.92rem;max-width:60ch}
+.land-end{text-align:center;display:grid;justify-items:center;gap:12px;background:var(--accent-soft);border:1px solid var(--line);border-radius:16px;padding:28px 18px}
+.land-end p{margin:0;color:var(--muted)}
+@media (max-width:860px){.land-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.land{gap:26px}.land-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.land-grid,.land-steps{grid-template-columns:minmax(0,1fr)}.land-cta .btn{width:100%}.land-cta{width:100%}}
 .free-pill{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.02em;padding:4px 12px;border-radius:999px;background:var(--good-soft);color:var(--good)}
 .guest-link{width:100%;margin-top:4px}
 .or-line{display:flex;align-items:center;gap:10px;margin:12px 0 14px;color:var(--muted);font-size:.8rem;text-align:center}
@@ -869,7 +898,7 @@ main{padding-bottom:120px}
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
 <div class="wrap" id="bannerWrap"></div>
-<main class="wrap" id="main"></main>
+<main class="wrap" id="main"><section class="view"><div class="land"><div class="land-hero"><span class="free-pill">100% free for CA students</span><h1>Clear CA with a plan, not panic.</h1><p>Study plans, ICAI papers, mock exams and MCQs for CA Foundation, Intermediate and Final. All in one place, and free.</p></div></div></section></main>
 <nav class="bnav" id="bnav" aria-label="Sections"></nav>
 
 <script src="config.js"></script>
@@ -1951,7 +1980,7 @@ async function authDo(kind){
   if(res&&res.data&&res.data.session){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);go(authRet||"home");authWhy="";authRet=""}
   render();
 }
-async function signOut(){try{await sb.auth.signOut()}catch(e){}authWhy="";authRet="";session=null;isAdmin=false;isChecker=false;S=blank();try{localStorage.removeItem(K);localStorage.removeItem("prepx.guest");sessionStorage.removeItem("prepx.visit")}catch(e){}window.__guest=0;authView="signin";authMsg="";go("home");render()}
+async function signOut(){try{await sb.auth.signOut()}catch(e){}authWhy="";authRet="";landAuth=true;session=null;isAdmin=false;isChecker=false;S=blank();try{localStorage.removeItem(K);localStorage.removeItem("prepx.guest");sessionStorage.removeItem("prepx.visit")}catch(e){}window.__guest=0;authView="signin";authMsg="";go("home");render()}
 function authCard(){
   const busy=authBusy?"disabled":"";
   const msg=authMsg?`<p class="amsg ${authErr?"err":""}">${esc(authMsg)}</p>`:"";
@@ -1973,13 +2002,41 @@ function authCard(){
   </div>`;
 }
 function needAcct(why,key){if(!sb||recovering||(session&&!isGuest()))return false;save();authWhy=why;authRet=tab;authView="signup";authMsg="";authErr=false;track("gate."+key);go("signin");render();window.scrollTo({top:0});return true}
+let landAuth=false;
+function landOn(){return gateOn()&&!landAuth&&!recovering}
+function freshVisit(){try{if(guestOK()||landAuth||tab==="about"||/type=recovery|access_token|error_code/.test(location.hash))return false;for(let i=0;i<localStorage.length;i++){if(/^sb-.*-auth-token/.test(localStorage.key(i)||""))return false}return true}catch(_){return false}}
+function landing(){
+  const r=(n,k)=>Math.floor(n/k)*k;let nQ=0,nP=0;try{nQ=r(Q.length,50);nP=r(ICAI_CAT.length,10)}catch(_){}
+  const cta=`<div class="land-cta"><button class="btn primary" data-act="landup">Create my free account</button><button class="btn" data-act="guestgo">Look around first</button></div>`;
+  const F=[["plan","A study plan that fits your days","Answer 15 quick questions and get a day-by-day timetable built around your attempt date, your hours and your weak papers."],
+    ["papers","RTP, MTP and past papers in one place","ICAI revision papers, mock papers and past papers sorted by attempt. No more hunting through PDFs."],
+    ["clock","Mock exam hall","Sit full ICAI papers with the real timing and reading time, then review against ICAI's answers."],
+    ["mcq","10-minute MCQs","Quick practice sets for any paper. The ones you get wrong come back until you fix them."],
+    ["eye","Lectures by chapter","YouTube lectures from CA teachers, arranged chapter by chapter, in Hindi and English."],
+    ["brief","Articleship and jobs","Roles and open vacancies for CA students and newly qualified CAs."]];
+  return `<div class="land">
+    <div class="land-hero"><span class="free-pill">100% free for CA students</span>
+      <h1>Clear CA with a plan, not panic.</h1>
+      <p>Study plans, ICAI papers, mock exams and MCQs for CA Foundation, Intermediate and Final. All in one place, and free.</p>
+      ${cta}
+      <div class="land-in">Already have an account? <button class="btn ghost sm" data-act="landin">Sign in</button></div>
+    </div>
+    <div class="land-stats"><div><b>3</b><span>CA levels covered</span></div><div><b>${nP?nP+"+":"All"}</b><span>ICAI papers to practise</span></div><div><b>${nQ?nQ+"+":"Daily"}</b><span>practice MCQs</span></div><div><b>₹0</b><span>No payment, no card</span></div></div>
+    <div class="land-sec"><h2>Everything a CA student needs</h2>
+      <div class="land-grid">${F.map(f=>`<div class="land-f">${ico(f[0],26)}<h3>${f[1]}</h3><p>${f[2]}</p></div>`).join("")}</div></div>
+    <div class="land-sec"><h2>Start in under a minute</h2>
+      <div class="land-steps"><div><b>Pick your level</b><span>Foundation, Intermediate or Final. CA Final students also get a SPOM tracker.</span></div><div><b>Build your plan</b><span>Tell us your attempt date and study hours. We map out every day until the exam.</span></div><div><b>Practise and tick it off</b><span>Chapters, MCQs and full papers, with your progress saved as you go.</span></div></div></div>
+    <div class="card land-by"><div><h3>Built by a CA who cleared these exams recently</h3><p>CA PrepX is the site we wished we had while preparing. Simple, honest and made for students.</p></div><button class="btn" data-tab="about">Meet the founders →</button></div>
+    <div class="land-end"><h2>Ready when you are</h2><p>Takes 20 seconds. Just your email and a password.</p>${cta}</div>
+  </div>`;
+}
 function guestOK(){try{return localStorage.getItem("prepx.guest")==="1"}catch(_){return !!window.__guest}}
 function gateOn(){if(!sb||recovering)return false;if(session&&!isGuest())return false;if(guestOK())return false;if(tab==="about")return false;return true}
 function renderChrome(){
   const gate=gateOn()||(tab==="about"&&!!sb&&!(session&&!isGuest()));
   const real=sb&&session&&!isGuest()&&!recovering;
   const ac=document.getElementById("acct");
-  ac.innerHTML=!sb?"":real?`${isChecker||isAdmin?`<a class="btn sm primary" href="/checker">Check papers</a>`:""}${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"||gate?"":`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
+  ac.innerHTML=!sb?"":real?`${isChecker||isAdmin?`<a class="btn sm primary" href="/checker">Check papers</a>`:""}${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"?"":gate?(landOn()?`<button class="btn sm primary" data-act="landin">Sign in</button>`:""):`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
   const showLv=!gate&&S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers"&&tab!=="spom";
   const lvEl=document.getElementById("levelSeg");lvEl.className="lvw";lvEl.removeAttribute("role");const LVPIC={foundation:"papers",inter:"mcq",final:"school"};
   lvEl.innerHTML=`<button class="lvchip" data-act="lvlopen" aria-expanded="${lvOpen}" aria-label="Change CA level">${ico(LVPIC[S.level]||"mcq",16)}<span>${S.level==="inter"?"Inter":LEVELS[S.level].label}</span><b aria-hidden="true">▾</b></button>${lvOpen?`<div class="lvmenu" role="menu">${Object.entries(LEVELS).map(([k,v])=>`<button role="menuitemradio" data-level="${k}" aria-checked="${S.level===k}">${ico(LVPIC[k],22)}<span>CA ${v.label}</span>${S.level===k?"<em>✓</em>":""}</button>`).join("")}</div>`:""}`;
@@ -1999,7 +2056,7 @@ let W={level:"inter"};
 function welcome(gate){
   const auth=sb&&(!session||isGuest()||recovering);
   return `<div class="auth">
-    ${recovering||gate?"":`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back</button></div>`}
+    ${recovering?"":gate?`<div><button class="btn ghost sm" data-act="landback">${ico("back",16)} Back</button></div>`:`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back</button></div>`}
     <div class="auth-head"><img class="mark-logo" src="/logo-180.png" alt="CA PrepX logo" width="76" height="76">
       <h1>${auth?"Hey! Let's get you exam-ready":"Quick setup, then you're in"}</h1>
       <p class="muted">${auth?"CA Foundation, Inter &amp; Final — all in one place":"Takes 20 seconds. Promise."}</p>
@@ -2020,15 +2077,15 @@ function welcome(gate){
   </div>`;
 }
 function render(){renderChrome();const m=document.getElementById("main");
-  if(!authReady){m.innerHTML=`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
-  if(gateOn()){m.innerHTML=`<section class="view">${welcome(1)}</section>`;return}
+  if(!authReady){m.innerHTML=freshVisit()?`<section class="view">${landing()}</section>`:`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
+  if(gateOn()){m.innerHTML=`<section class="view">${landOn()?landing():welcome(1)}</section>`;return}
   if(recovering||tab==="signin"){
     if(!recovering&&sb&&session&&!isGuest())go("home");
     else if(sb){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
     else go("home");
   }
   if(!VIEWS[tab])go("home");
-  const back=tab==="about"&&sb&&!(session&&!isGuest())?`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back to sign in</button></div>`:"";
+  const back=tab==="about"&&sb&&!(session&&!isGuest())?`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back</button></div>`:"";
   m.innerHTML=`<section class="view">${back}${VIEWS[tab]()}</section>`;if(tab==="practice"&&prMode!=="mock")paintMcq();if(tab==="resources"&&resMode==="videos")paintVids();if(tab==="home")paintSearch()}
 
 function heroCard(){
@@ -2926,6 +2983,8 @@ document.addEventListener("click",e=>{
   if(t.dataset.auth){authDo(t.dataset.auth);return}
   const a=t.dataset.act;
   if(a==="signout"){signOut();return}
+  if(a==="landup"||a==="landin"){landAuth=true;authView=a==="landup"?"signup":"signin";authMsg="";authErr=false;track(a==="landup"?"land.signup":"land.signin");render();window.scrollTo({top:0});return}
+  if(a==="landback"){landAuth=false;authMsg="";authErr=false;render();window.scrollTo({top:0});return}
   if(a==="gohall"){prMode="mock";mockMode="papers";go("practice");render();window.scrollTo({top:0});return}
   if(a==="catchup"){const I=qzState();const d=S.exam[S.level];if(d)I.date=d;I.done=false;I.step=0;go("plan");planMode="study";save();render();window.scrollTo({top:0});toast("15 quick questions and your catch-up plan is ready");return}
   if(a==="qstart"){const I=qzState();const pre=S.level==="foundation"?"F":S.level==="final"?"NB":"IB";const c=I._c||pre;if(c!==I.combo){delete I.a.weak;Object.keys(I.a).filter(k=>k.startsWith("wa_")).forEach(k=>delete I.a[k])}I.combo=c;I.step=0;I.done=false;S.level=COMBOS[c].level;S.plan.groups=COMBOS[c].groups;save();render();window.scrollTo({top:0});return}
