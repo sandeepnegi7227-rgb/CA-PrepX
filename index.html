@@ -338,6 +338,8 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 @media (max-width:620px){.land{gap:26px}.land-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.land-grid,.land-steps{grid-template-columns:minmax(0,1fr)}.land-cta .btn{width:100%}.land-cta{width:100%}}
 .chflash{animation:chflash 2.4s ease-out 1}
 @keyframes chflash{0%,40%{background:var(--accent-soft)}100%{background:transparent}}
+.wa-btn,.land-cta .wa-btn{background:#1FA855;border-color:#1FA855;color:#fff;font-weight:700;text-decoration:none;text-align:center;display:inline-block;box-sizing:border-box}
+.wa-btn:hover{filter:brightness(1.06)}
 .wa-card{display:grid;gap:10px}
 .wa-card .row{gap:8px;flex-wrap:wrap}
 .wa-card input{flex:1;min-width:180px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit}
@@ -2028,7 +2030,7 @@ const WA_LINK="https://chat.whatsapp.com/E73YwMNBli095vVFdaYVaq";
 function waCard(){
   try{if(localStorage.getItem("prepx.wa.skip")==="1")return ""}catch(_){}
   return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">Join the CA PrepX WhatsApp group</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Notes, exam updates and new papers, straight to your phone. Free to join.</p></div>
-    <div class="row"><a class="btn primary" data-wa="home" href="${WA_LINK}" target="_blank" rel="noopener">Join the group</a><button class="btn ghost sm" data-act="waskip">Hide this</button></div></div>`;
+    <div class="row"><a class="btn wa-btn" data-wa="home" href="${WA_LINK}" target="_blank" rel="noopener">Join the group</a><button class="btn ghost sm" data-act="waskip">Hide this</button></div></div>`;
 }
 let landAuth=false;
 function landOn(){return gateOn()&&!landAuth&&!recovering}
@@ -2048,7 +2050,7 @@ function landing(){
       <p>Study plans, ICAI papers, mock exams and MCQs for CA Foundation, Intermediate and Final. All in one place, and free.</p>
       ${cta}
       <div class="land-in">Already have an account? <button class="btn ghost sm" data-act="landin">Sign in</button></div>
-      <div class="land-in"><a class="btn ghost sm" data-wa="landing" href="${WA_LINK}" target="_blank" rel="noopener">Join our WhatsApp group for notes and updates →</a></div>
+      <div class="land-cta"><a class="btn wa-btn" data-wa="landing" href="${WA_LINK}" target="_blank" rel="noopener">Join our WhatsApp group</a></div>
     </div>
     <div class="land-stats"><div><b>3</b><span>CA levels covered</span></div><div><b>${nP?nP+"+":"All"}</b><span>ICAI papers to practise</span></div><div><b>${nQ?nQ+"+":"Daily"}</b><span>practice MCQs</span></div><div><b>₹0</b><span>No payment, no card</span></div></div>
     <div class="land-sec"><h2>Everything a CA student needs</h2>
