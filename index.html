@@ -1428,7 +1428,7 @@ const JDOMKW={audit:"statutory audit",ia:"internal audit",dt:"tax",gst:"indirect
 const JCITY=[["all","All"],["delhi","Delhi NCR"],["mumbai","Mumbai"],["bengaluru","Bengaluru"],["pune","Pune"],["hyderabad","Hyderabad"],["dubai","Dubai / UAE"]];
 const JCITYN={delhi:"Delhi",mumbai:"Mumbai",bengaluru:"Bengaluru",pune:"Pune",hyderabad:"Hyderabad",dubai:"UAE",india:"India"};
 const JSTAGE=[["all","All"],["student","Articleship"],["fresher","Freshers"],["exp","Experienced"]];
-const JAGG=/indeed\.com|caclubindia\.com|casansaar\.com|buddingca\.com|accaglobal\.com|naukri|linkedin\.com\/jobs/i;
+const JAGG=/indeed\.com|caclubindia\.com|casansaar\.com|casamaaj\.com|puneicai\.org|buddingca\.com|accaglobal\.com|naukri|linkedin\.com\/jobs/i;
 function jf(){if(!S.jf){const c=(S.city&&JCITY.some(x=>x[0]===S.city))?S.city:"all";S.jf={q:"",city:c,stage:"all",dom:"all",type:"all"}}return S.jf}
 async function loadJobs(){if(jobsFetched||!sb)return;jobsFetched=true;
   try{const {data,error}=await sb.from("jobs").select("*").eq("active",true).order("seen",{ascending:false}).limit(1000);
