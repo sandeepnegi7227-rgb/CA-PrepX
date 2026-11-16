@@ -336,6 +336,11 @@ textarea{font:inherit;font-family:var(--mono);font-size:.8rem;padding:8px 10px;b
 .land-end p{margin:0;color:var(--muted)}
 @media (max-width:860px){.land-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:620px){.land{gap:26px}.land-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.land-grid,.land-steps{grid-template-columns:minmax(0,1fr)}.land-cta .btn{width:100%}.land-cta{width:100%}}
+.chflash{animation:chflash 2.4s ease-out 1}
+@keyframes chflash{0%,40%{background:var(--accent-soft)}100%{background:transparent}}
+.wa-card{display:grid;gap:10px}
+.wa-card .row{gap:8px;flex-wrap:wrap}
+.wa-card input{flex:1;min-width:180px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit}
 .free-pill{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.02em;padding:4px 12px;border-radius:999px;background:var(--good-soft);color:var(--good)}
 .guest-link{width:100%;margin-top:4px}
 .or-line{display:flex;align-items:center;gap:10px;margin:12px 0 14px;color:var(--muted);font-size:.8rem;text-align:center}
@@ -901,7 +906,7 @@ main{padding-bottom:120px}
 <main class="wrap" id="main"><section class="view"><div class="land"><div class="land-hero"><span class="free-pill">100% free for CA students</span><h1>Clear CA with a plan, not panic.</h1><p>Study plans, ICAI papers, mock exams and MCQs for CA Foundation, Intermediate and Final. All in one place, and free.</p></div></div></section></main>
 <nav class="bnav" id="bnav" aria-label="Sections"></nav>
 
-<script src="config.js"></script>
+<script src="/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.js"></script>
 <script>
 (function(){
@@ -2002,9 +2007,34 @@ function authCard(){
   </div>`;
 }
 function needAcct(why,key){if(!sb||recovering||(session&&!isGuest()))return false;save();authWhy=why;authRet=tab;authView="signup";authMsg="";authErr=false;track("gate."+key);go("signin");render();window.scrollTo({top:0});return true}
+function deepLink(){try{const seg=location.pathname.split("/").filter(Boolean).map(x=>decodeURIComponent(x).toLowerCase());if(!seg.length)return null;
+  const lk=seg[0]==="intermediate"?"inter":seg[0];if(!LEVELS[lk])return null;const out={level:lk};
+  if(seg[1]){const p=LEVELS[lk].papers.find(p=>slug(p.name)===seg[1]||p.id.toLowerCase()===seg[1]);if(p){out.pid=p.id;const m=/^ch-(\d+)$/.exec(seg[2]||"");if(m&&chapters(p.id)[+m[1]-1])out.ch=+m[1]-1}}
+  return out}catch(_){return null}}
+function openLink(dl){
+  if(!(session&&!isGuest())){window.__guest=1;try{localStorage.setItem("prepx.guest","1")}catch(_){}}
+  S.level=dl.level;S.onboarded=true;
+  if(dl.pid){window.__sylOpen=dl.pid;go("resources");resMode="syllabus"}else go("home");
+  save();track("link.open");
+  if(dl.pid)setTimeout(()=>{const el=(dl.ch!=null&&document.getElementById("ch-"+dl.pid+"-"+dl.ch))||document.getElementById("syl-"+dl.pid);if(el){el.scrollIntoView({block:dl.ch!=null?"center":"start"});if(dl.ch!=null)el.classList.add("chflash")}},350);
+}
+function shareLink(path,title){const url=location.origin+"/"+path;track("share");
+  const copied=()=>toast("Link copied. Paste it anywhere.");
+  const old=()=>{try{const i=document.createElement("input");i.value=url;i.setAttribute("readonly","");i.style.cssText="position:fixed;top:0;left:0;opacity:0";document.body.appendChild(i);i.select();const ok=document.execCommand("copy");i.remove();ok?copied():toast(url)}catch(_){toast(url)}};
+  const copy=()=>{try{navigator.clipboard.writeText(url).then(copied,old)}catch(_){old()}};
+  if(navigator.share){navigator.share({title:title||"CA PrepX",text:(title||"CA PrepX")+" · free on CA PrepX",url}).catch(e=>{if(!e||e.name!=="AbortError")copy()})}else copy()}
+function normPhone(raw){let ph=String(raw||"").replace(/[^0-9+]/g,"");if(/^[6-9][0-9]{9}$/.test(ph))ph="+91"+ph;return /^\+?[0-9]{10,15}$/.test(ph)?ph:""}
+let waVal="",waMsg="",waBusy=false;
+function waCard(){
+  if(!sb||!session||isGuest())return "";if((session.user.user_metadata||{}).phone)return "";
+  try{if(localStorage.getItem("prepx.wa.skip")==="1")return ""}catch(_){}
+  return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">Join the CA PrepX WhatsApp group</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Notes, exam updates and new papers, straight to your phone. Add your WhatsApp number and we'll add you. We never share it.</p></div>
+    ${waMsg?`<p class="amsg err" style="margin:0">${esc(waMsg)}</p>`:""}
+    <div class="row"><input id="waPh" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="e.g. 98765 43210" value="${esc(waVal)}" aria-label="WhatsApp number"><button class="btn primary" data-act="wasave" ${waBusy?"disabled":""}>${waBusy?"Saving…":"Add me"}</button><button class="btn ghost sm" data-act="waskip">Not now</button></div></div>`;
+}
 let landAuth=false;
 function landOn(){return gateOn()&&!landAuth&&!recovering}
-function freshVisit(){try{if(guestOK()||landAuth||tab==="about"||/type=recovery|access_token|error_code/.test(location.hash))return false;for(let i=0;i<localStorage.length;i++){if(/^sb-.*-auth-token/.test(localStorage.key(i)||""))return false}return true}catch(_){return false}}
+function freshVisit(){try{if(deepLink()||guestOK()||landAuth||tab==="about"||/type=recovery|access_token|error_code/.test(location.hash))return false;for(let i=0;i<localStorage.length;i++){if(/^sb-.*-auth-token/.test(localStorage.key(i)||""))return false}return true}catch(_){return false}}
 function landing(){
   const r=(n,k)=>Math.floor(n/k)*k;let nQ=0,nP=0;try{nQ=r(Q.length,50);nP=r(ICAI_CAT.length,10)}catch(_){}
   const cta=`<div class="land-cta"><button class="btn primary" data-act="landup">Create my free account</button><button class="btn" data-act="guestgo">Look around first</button></div>`;
@@ -2261,7 +2291,7 @@ home(){
     ["rocket","I'm behind",n&&n>0?`Catch-up plan for ${n} days`:"Catch-up plan in one tap",`data-act="catchup"`],
     ["target","Fix weak spots",wn?`${wn} questions to redo`:"Redo what you got wrong",`data-mode="mistakes"`]
   ];
-  return `
+  return `${waCard()}
   <div class="home-top">
   <div class="home-hero">
       <div class="eyebrow">${greet}${S.name?", "+esc(S.name):""} · CA ${lv.label}${n&&n>0?` · ${n} days to exam`:""}</div>
@@ -2291,7 +2321,7 @@ syllabus(){
   ${lv.papers.map(p=>{const ch=chapters(p.id),r=ch.filter((_,j)=>(C[p.id+"|"+j]||0)>=1).length,v=ch.filter((_,j)=>(C[p.id+"|"+j]||0)>=2).length,pct=ch.length?Math.round((r+v)/(2*ch.length)*100):0;
     return `<details class="card syl" id="syl-${p.id}" ${window.__sylOpen===p.id?"open":""}><summary><span><span class="pno">P${p.no}${lv.groups?" · G"+p.g:""}</span><b>${esc(p.name)}</b><span class="muted" style="font-size:.84rem">${ch.length} chapters · ${r} read · ${v} revised</span></span><span class="sylpct num">${pct}%</span></summary>
       <div class="track" style="margin:10px 0 6px"><div class="fill" style="width:${pct}%"></div></div>
-      <div class="chlist">${ch.map((c,j)=>{const st=C[p.id+"|"+j]||0,n=Q.filter(q=>q.p===p.id&&q.c===j).length;return `<div class="chrow"><span class="chn num">${j+1}</span><span class="chname">${esc(c[0])}</span><span class="chact"><button class="chip" data-chk="${p.id}|${j}|1" aria-pressed="${st>=1}"><span class="tk">${st>=1?"✓":"·"}</span>Read</button><button class="chip" data-chk="${p.id}|${j}|2" aria-pressed="${st>=2}"><span class="tk">${st>=2?"✓":"·"}</span>Revised</button>${n?`<button class="btn ghost sm" data-chq="${p.id}|${j}">${n} MCQ${n>1?"s":""}</button>`:""}</span></div>`}).join("")}</div></details>`}).join("")}
+      <div class="chlist">${ch.map((c,j)=>{const st=C[p.id+"|"+j]||0,n=Q.filter(q=>q.p===p.id&&q.c===j).length;return `<div class="chrow" id="ch-${p.id}-${j}"><span class="chn num">${j+1}</span><span class="chname">${esc(c[0])}</span><span class="chact"><button class="chip" data-chk="${p.id}|${j}|1" aria-pressed="${st>=1}"><span class="tk">${st>=1?"✓":"·"}</span>Read</button><button class="chip" data-chk="${p.id}|${j}|2" aria-pressed="${st>=2}"><span class="tk">${st>=2?"✓":"·"}</span>Revised</button>${n?`<button class="btn ghost sm" data-chq="${p.id}|${j}">${n} MCQ${n>1?"s":""}</button>`:""}<button class="btn ghost sm" data-share="${S.level}/${slug(p.name)}/ch-${j+1}" data-st="${esc(`CA ${lv.label} ${p.name} · Ch ${j+1} ${chShort(p.id,j)}`)}">Share</button></span></div>`}).join("")}</div><div class="row" style="margin-top:10px"><button class="btn sm" data-share="${S.level}/${slug(p.name)}" data-st="${esc(`CA ${lv.label} · P${p.no} ${p.name}`)}">Share this paper</button></div></details>`}).join("")}
   <p class="muted" style="font-size:.84rem">Chapter lists follow ICAI's new-scheme study material. ICAI revises modules for each attempt, so check the BoS portal for the latest version.</p>`;
 },
 plan(){
@@ -2962,6 +2992,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.jgo){const [c,st,d]=t.dataset.jgo.split("|");Object.assign(jf(),{city:c,stage:st,dom:d,type:"all",q:""});jobsShown=12;render();setTimeout(()=>{const el=document.getElementById("jobs");if(el)el.scrollIntoView({behavior:"smooth",block:"start"})},60);return}
   if(t.dataset.qc){qzState()._c=t.dataset.qc;render();return}
   if(t.dataset.qa!==undefined){const I=qzState();const Q=quizFor(I.combo);const q=Q[Math.min(I.step,Q.length-1)];I.a[q.id]=+t.dataset.qa;save();render();return}
+  if(t.dataset.share){shareLink(t.dataset.share,t.dataset.st);return}
   if(t.dataset.res){resMode=t.dataset.res;render();return}
   if(t.dataset.pick){S.level=t.dataset.pick;S.onboarded=true;save();render();try{track("level."+t.dataset.pick)}catch(_){}return}
   if(t.dataset.chk){const [pid,j,l]=t.dataset.chk.split("|");S.chap=S.chap||{};const k=pid+"|"+j,cur0=S.chap[k]||0,L2=+l;S.chap[k]=cur0>=L2?L2-1:L2;if(!S.chap[k])delete S.chap[k];window.__sylOpen=pid;save();render();const el=document.getElementById("syl-"+pid);if(el)el.open=true;return}
@@ -2984,6 +3015,13 @@ document.addEventListener("click",e=>{
   const a=t.dataset.act;
   if(a==="signout"){signOut();return}
   if(a==="landup"||a==="landin"){landAuth=true;authView=a==="landup"?"signup":"signin";authMsg="";authErr=false;track(a==="landup"?"land.signup":"land.signin");render();window.scrollTo({top:0});return}
+  if(a==="waskip"){try{localStorage.setItem("prepx.wa.skip","1")}catch(_){}waMsg="";render();return}
+  if(a==="wasave"){const el=document.getElementById("waPh");waVal=el?el.value.trim():"";const ph=normPhone(waVal);
+    if(!ph){waMsg="That number doesn't look right. Check it and try again.";render();return}
+    waBusy=true;waMsg="";render();
+    (async()=>{try{const r=await sb.auth.updateUser({data:{phone:ph}});if(r.error)throw r.error;if(r.data&&r.data.user)session.user=r.data.user;else{session.user.user_metadata=Object.assign({},session.user.user_metadata,{phone:ph})}
+      try{await sb.rpc("set_phone",{p_phone:ph})}catch(_){}waBusy=false;waVal="";track("wa.join");render();toast("Done. We'll add you to the WhatsApp group.")}
+      catch(e){waBusy=false;waMsg="Couldn't save right now. Check your connection and try again.";render()}})();return}
   if(a==="landback"){landAuth=false;authMsg="";authErr=false;render();window.scrollTo({top:0});return}
   if(a==="gohall"){prMode="mock";mockMode="papers";go("practice");render();window.scrollTo({top:0});return}
   if(a==="catchup"){const I=qzState();const d=S.exam[S.level];if(d)I.date=d;I.done=false;I.step=0;go("plan");planMode="study";save();render();window.scrollTo({top:0});toast("15 quick questions and your catch-up plan is ready");return}
@@ -3080,7 +3118,7 @@ async function boot(){
   try{const {data}=await sb.auth.getSession();session=data.session}catch(e){session=null}
   if(!session&&!recovering&&!/type=recovery/.test(location.hash)){try{const r=await sb.auth.signInAnonymously();if(r.data&&r.data.session)session=r.data.session}catch(e){}}
   if(session&&!recovering)await afterSignIn(false);
-  authReady=true;render();
+  authReady=true;const dl=recovering?null:deepLink();if(dl)openLink(dl);render();
 }
 boot();
 })();

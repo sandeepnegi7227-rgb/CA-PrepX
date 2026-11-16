@@ -8,6 +8,7 @@ create table if not exists public.profiles (
   name        text,
   level       text,
   phone       text,
+  is_internal boolean not null default false,
   is_guest    boolean not null default false,
   created_at  timestamptz not null default now(),
   last_login  timestamptz,
@@ -75,6 +76,18 @@ end;
 $$;
 revoke execute on function public.set_phone(text) from public, anon;
 grant execute on function public.set_phone(text) to authenticated;
+
+-- Admin-only: flag an account as internal/test so the dashboard leaves it out of the numbers.
+alter table public.profiles add column if not exists is_internal boolean not null default false;
+create or replace function public.set_internal(p_user uuid, p_on boolean)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  if not public.is_admin() then raise exception 'not allowed'; end if;
+  update public.profiles set is_internal = coalesce(p_on, false) where id = p_user;
+end;
+$$;
+revoke execute on function public.set_internal(uuid, boolean) from public, anon;
+grant execute on function public.set_internal(uuid, boolean) to authenticated;
 
 -- 3. Security (row-level) -------------------------------------------------
 alter table public.profiles enable row level security;

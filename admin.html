@@ -99,7 +99,7 @@ input[type=search],input[type=email],input[type=password]{padding:8px 10px;borde
 </header>
 <main class="wrap" id="main"><p class="muted">Loading…</p></main>
 
-<script src="config.js"></script>
+<script src="/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.js"></script>
 <script>
 (function(){
@@ -176,22 +176,24 @@ async function load(){
 }
 function paint(){
   const now=new Date(),today=dayKey(now);
-  const emails=profiles.filter(x=>!x.is_guest).length,guests=profiles.length-emails;
-  const totalLogins=profiles.reduce((a,x)=>a+(x.login_count||0),0);
-  const todayUsers=new Set(logins.filter(x=>dayKey(x.at)===today).map(x=>x.user_id)).size;
-  const wk=Date.now()-7*864e5;const wkLogins=logins.filter(x=>new Date(x.at)>=wk).length;
-  const newWk=profiles.filter(x=>new Date(x.created_at)>=wk).length;
+  const allProfiles=profiles,allLogins=logins;const internal=allProfiles.filter(x=>x.is_internal),inIds=new Set(internal.map(x=>x.id));
+  const live=allProfiles.filter(x=>!x.is_internal),liveLogins=allLogins.filter(x=>!inIds.has(x.user_id));
+  const emails=live.filter(x=>!x.is_guest).length,guests=live.length-emails;
+  const totalLogins=live.reduce((a,x)=>a+(x.login_count||0),0);
+  const todayUsers=new Set(liveLogins.filter(x=>dayKey(x.at)===today).map(x=>x.user_id)).size;
+  const wk=Date.now()-7*864e5;const wkLogins=liveLogins.filter(x=>new Date(x.at)>=wk).length;
+  const newWk=live.filter(x=>new Date(x.created_at)>=wk).length;
   // chart: 30 days
   const days=[];for(let i=29;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push({d,k:dayKey(d),e:0,g:0})}
   const idx={};days.forEach((x,i)=>idx[x.k]=i);
-  logins.forEach(x=>{const i=idx[dayKey(x.at)];if(i!==undefined)x.is_guest?days[i].g++:days[i].e++});
+  liveLogins.forEach(x=>{const i=idx[dayKey(x.at)];if(i!==undefined)x.is_guest?days[i].g++:days[i].e++});
   const mx=Math.max(4,...days.map(x=>x.e+x.g));
-  const rows=profiles.filter(x=>(filter==="all"||(filter==="guest")===!!x.is_guest)&&(!q||((x.email||"")+" "+(x.name||"")+" "+(x.phone||"")).toLowerCase().includes(q)));
+  const rows=(filter==="internal"?internal:live).filter(x=>(filter==="all"||filter==="internal"||(filter==="guest")===!!x.is_guest)&&(!q||((x.email||"")+" "+(x.name||"")+" "+(x.phone||"")).toLowerCase().includes(q)));
   const phones=[...new Set(rows.map(x=>x.phone).filter(Boolean))];
   main.innerHTML=`
   <div><div class="eyebrow">Updated ${d2(now)}</div><h1>Who's using CA PrepX</h1></div>
   <div class="stats">
-    <div class="stat"><div class="eyebrow">Students</div><div class="v">${profiles.length}</div><div class="s">${emails} with account · ${guests} visitors</div></div>
+    <div class="stat"><div class="eyebrow">Students</div><div class="v">${live.length}</div><div class="s">${emails} with account · ${guests} visitors</div></div>
     <div class="stat"><div class="eyebrow">Total logins</div><div class="v">${totalLogins}</div><div class="s">all time</div></div>
     <div class="stat"><div class="eyebrow">Active today</div><div class="v">${todayUsers}</div><div class="s">students</div></div>
     <div class="stat"><div class="eyebrow">Logins · 7 days</div><div class="v">${wkLogins}</div><div class="s">sign-ins and visits</div></div>
@@ -201,13 +203,14 @@ function paint(){
     <div class="chart">${days.map(x=>`<div class="col" title="${x.d.toLocaleDateString("en-GB",{day:"numeric",month:"short"})}: ${x.e} email, ${x.g} guest">${x.g?`<div class="g" style="height:${x.g/mx*100}%"></div>`:""}${x.e?`<div class="e" style="height:${x.e/mx*100}%"></div>`:""}</div>`).join("")}</div>
     <div class="xl">${days.map((x,i)=>`<span>${i%5===4||i===29?x.d.getDate()+" "+x.d.toLocaleDateString("en-GB",{month:"short"}):""}</span>`).join("")}</div>
     <p class="muted" style="font-size:.8rem;margin-top:8px">Last 30 days. Peak: ${Math.max(...days.map(x=>x.e+x.g))} logins in a day.</p></div>
-  <div class="row sp"><h2>Students</h2><div class="row"><button class="btn sm" id="cpPh" ${phones.length?"":"disabled"}>Copy mobile numbers (${phones.length})</button><input type="search" id="q" placeholder="Search name, email or mobile" value="${esc(q)}"><div class="seg">${[["all","All"],["email","Accounts"],["guest","Visitors"]].map(f=>`<button data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("")}</div></div></div>
-  <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Type</th><th>Level</th><th style="text-align:right">Logins</th><th>Last login</th><th>Joined</th></tr></thead><tbody>
-  ${rows.length?rows.map(x=>`<tr><td>${esc(x.name)||'<span class="muted">—</span>'}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td class="num">${x.phone?esc(x.phone):'<span class="muted">—</span>'}</td><td><span class="pill ${x.is_guest?"g":""}">${x.is_guest?"Visitor":"Account"}</span></td><td>${esc(LV[x.level]||x.level||"—")}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num">${x.last_login?d2(x.last_login):"—"}</td><td class="num">${d2(x.created_at)}</td></tr>`).join(""):`<tr><td colspan="8" class="muted">No students match.</td></tr>`}
+  <div class="row sp"><h2>Students</h2><div class="row"><button class="btn sm" id="cpPh" ${phones.length?"":"disabled"}>Copy mobile numbers (${phones.length})</button><input type="search" id="q" placeholder="Search name, email or mobile" value="${esc(q)}"><div class="seg">${[["all","All"],["email","Accounts"],["guest","Visitors"],["internal",`Internal (${internal.length})`]].map(f=>`<button data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("")}</div></div></div>
+  <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Type</th><th>Level</th><th style="text-align:right">Logins</th><th>Last login</th><th>Joined</th><th></th></tr></thead><tbody>
+  ${rows.length?rows.map(x=>`<tr><td>${esc(x.name)||'<span class="muted">—</span>'}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td class="num">${x.phone?esc(x.phone):'<span class="muted">—</span>'}</td><td><span class="pill ${x.is_guest?"g":""}">${x.is_guest?"Visitor":"Account"}</span></td><td>${esc(LV[x.level]||x.level||"—")}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num">${x.last_login?d2(x.last_login):"—"}</td><td class="num">${d2(x.created_at)}</td><td>${x.is_guest?"":`<button class="btn sm" data-int="${x.id}" data-on="${x.is_internal?"0":"1"}">${x.is_internal?"Count again":"Mark internal"}</button>`}</td></tr>`).join(""):`<tr><td colspan="9" class="muted">No students match.</td></tr>`}
   </tbody></table></div>
-  <p class="muted" style="font-size:.8rem">Visitors are people using the site without an account (counted once per visit). Accounts are students who signed up with email.</p>`;
+  <p class="muted" style="font-size:.8rem">Visitors are people using the site without an account (counted once per visit). Accounts are students who signed up with email. ${internal.length} internal or test account${internal.length===1?" is":"s are"} left out of every number above; see them under Internal.</p>`;
   const qi=document.getElementById("q");qi.oninput=()=>{q=qi.value.trim().toLowerCase();const pos=qi.selectionStart;paint();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos)};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;paint()});
+  document.querySelectorAll("[data-int]").forEach(b=>b.onclick=async()=>{b.disabled=true;const r=await sb.rpc("set_internal",{p_user:b.dataset.int,p_on:b.dataset.on==="1"});if(r.error){b.disabled=false;b.textContent="Couldn't save";return}const p=profiles.find(x=>x.id===b.dataset.int);if(p)p.is_internal=b.dataset.on==="1";paint()});
   const cp=document.getElementById("cpPh");if(cp)cp.onclick=async()=>{try{await navigator.clipboard.writeText(phones.join("\n"));cp.textContent="Copied "+phones.length+" numbers"}catch(e){cp.textContent="Couldn't copy"}};
 }
 const JF=[["title","Job title",1],["company","Company",1],["short","Short name for LinkedIn search (e.g. EY)",0],["type","Employer type (Big 4, Mid-tier firm, Corporate, GCC / MNC, Bank / NBFC, Investment bank, Fintech)",0],["domain","Area: audit, ia, dt, gst, fpa, ctrl, ta, cons, forensic, ib, articleship",1],["city","City: delhi, mumbai, bengaluru, pune, hyderabad, dubai, india",1],["location","Location shown (e.g. Gurugram, Haryana)",0],["stage","Level: student, fresher, exp (comma-separated)",1],["exp","Experience / eligibility",0],["apply","Apply link",1],["careers","Company careers page (optional)",0],["email","Official recruitment email (optional)",0],["seen","Date seen (YYYY-MM-DD)",0]];
