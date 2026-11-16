@@ -1897,7 +1897,7 @@ setInterval(()=>{if(!sb||!session)return;const sec=trSection();const always=sec=
 async function trFlush(){if(!sb||!session||TR.busy)return;const rows=Object.entries(TR.p).filter(([,v])=>v.t||v.h).map(([s,v])=>({s,t:v.t,h:v.h}));if(!rows.length)return;
   TR.p={};TR.busy=true;try{const {error}=await sb.rpc("track_usage",{p:rows});if(error&&!/track_usage/.test(error.message||""))rows.forEach(x=>{const r=TR.p[x.s]=TR.p[x.s]||{t:0,h:0};r.t+=x.t;r.h+=x.h})}catch(_){rows.forEach(x=>{const r=TR.p[x.s]=TR.p[x.s]||{t:0,h:0};r.t+=x.t;r.h+=x.h})}TR.busy=false}
 setInterval(trFlush,60000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")trFlush()});addEventListener("pagehide",trFlush);
-document.addEventListener("click",e=>{const a=e.target.closest(".job-act a");if(a)track(/careers/i.test(a.textContent)?"jobs.careers":"jobs.apply");const l=e.target.closest(".job-li a");if(l)track("jobs.linkedin")},true);
+document.addEventListener("click",e=>{const a=e.target.closest(".job-act a");if(a)track(/careers/i.test(a.textContent)?"jobs.careers":"jobs.apply");const l=e.target.closest(".job-li a");if(l)track("jobs.linkedin");const w=e.target.closest("a[data-wa]");if(w)track("wa.join")},true);
 /* ---------- render ---------- */
 const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["plan","Plan","Plan","plan"],["spom","SPOM","SPOM","school"],["careers","Careers","Careers","brief"]];
 const IC={
@@ -2024,13 +2024,11 @@ function shareLink(path,title){const url=location.origin+"/"+path;track("share")
   const copy=()=>{try{navigator.clipboard.writeText(url).then(copied,old)}catch(_){old()}};
   if(navigator.share){navigator.share({title:title||"CA PrepX",text:(title||"CA PrepX")+" · free on CA PrepX",url}).catch(e=>{if(!e||e.name!=="AbortError")copy()})}else copy()}
 function normPhone(raw){let ph=String(raw||"").replace(/[^0-9+]/g,"");if(/^[6-9][0-9]{9}$/.test(ph))ph="+91"+ph;return /^\+?[0-9]{10,15}$/.test(ph)?ph:""}
-let waVal="",waMsg="",waBusy=false;
+const WA_LINK="https://chat.whatsapp.com/E73YwMNBli095vVFdaYVaq";
 function waCard(){
-  if(!sb||!session||isGuest())return "";if((session.user.user_metadata||{}).phone)return "";
   try{if(localStorage.getItem("prepx.wa.skip")==="1")return ""}catch(_){}
-  return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">Join the CA PrepX WhatsApp group</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Notes, exam updates and new papers, straight to your phone. Add your WhatsApp number and we'll add you. We never share it.</p></div>
-    ${waMsg?`<p class="amsg err" style="margin:0">${esc(waMsg)}</p>`:""}
-    <div class="row"><input id="waPh" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="e.g. 98765 43210" value="${esc(waVal)}" aria-label="WhatsApp number"><button class="btn primary" data-act="wasave" ${waBusy?"disabled":""}>${waBusy?"Saving…":"Add me"}</button><button class="btn ghost sm" data-act="waskip">Not now</button></div></div>`;
+  return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">Join the CA PrepX WhatsApp group</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Notes, exam updates and new papers, straight to your phone. Free to join.</p></div>
+    <div class="row"><a class="btn primary" data-wa="home" href="${WA_LINK}" target="_blank" rel="noopener">Join the group</a><button class="btn ghost sm" data-act="waskip">Hide this</button></div></div>`;
 }
 let landAuth=false;
 function landOn(){return gateOn()&&!landAuth&&!recovering}
@@ -2050,6 +2048,7 @@ function landing(){
       <p>Study plans, ICAI papers, mock exams and MCQs for CA Foundation, Intermediate and Final. All in one place, and free.</p>
       ${cta}
       <div class="land-in">Already have an account? <button class="btn ghost sm" data-act="landin">Sign in</button></div>
+      <div class="land-in"><a class="btn ghost sm" data-wa="landing" href="${WA_LINK}" target="_blank" rel="noopener">Join our WhatsApp group for notes and updates →</a></div>
     </div>
     <div class="land-stats"><div><b>3</b><span>CA levels covered</span></div><div><b>${nP?nP+"+":"All"}</b><span>ICAI papers to practise</span></div><div><b>${nQ?nQ+"+":"Daily"}</b><span>practice MCQs</span></div><div><b>₹0</b><span>No payment, no card</span></div></div>
     <div class="land-sec"><h2>Everything a CA student needs</h2>
@@ -3015,13 +3014,7 @@ document.addEventListener("click",e=>{
   const a=t.dataset.act;
   if(a==="signout"){signOut();return}
   if(a==="landup"||a==="landin"){landAuth=true;authView=a==="landup"?"signup":"signin";authMsg="";authErr=false;track(a==="landup"?"land.signup":"land.signin");render();window.scrollTo({top:0});return}
-  if(a==="waskip"){try{localStorage.setItem("prepx.wa.skip","1")}catch(_){}waMsg="";render();return}
-  if(a==="wasave"){const el=document.getElementById("waPh");waVal=el?el.value.trim():"";const ph=normPhone(waVal);
-    if(!ph){waMsg="That number doesn't look right. Check it and try again.";render();return}
-    waBusy=true;waMsg="";render();
-    (async()=>{try{const r=await sb.auth.updateUser({data:{phone:ph}});if(r.error)throw r.error;if(r.data&&r.data.user)session.user=r.data.user;else{session.user.user_metadata=Object.assign({},session.user.user_metadata,{phone:ph})}
-      try{await sb.rpc("set_phone",{p_phone:ph})}catch(_){}waBusy=false;waVal="";track("wa.join");render();toast("Done. We'll add you to the WhatsApp group.")}
-      catch(e){waBusy=false;waMsg="Couldn't save right now. Check your connection and try again.";render()}})();return}
+  if(a==="waskip"){try{localStorage.setItem("prepx.wa.skip","1")}catch(_){}render();return}
   if(a==="landback"){landAuth=false;authMsg="";authErr=false;render();window.scrollTo({top:0});return}
   if(a==="gohall"){prMode="mock";mockMode="papers";go("practice");render();window.scrollTo({top:0});return}
   if(a==="catchup"){const I=qzState();const d=S.exam[S.level];if(d)I.date=d;I.done=false;I.step=0;go("plan");planMode="study";save();render();window.scrollTo({top:0});toast("15 quick questions and your catch-up plan is ready");return}
