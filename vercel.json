@@ -18,11 +18,11 @@
   "rewrites": [
     {
       "source": "/:level(foundation|inter|intermediate|final)",
-      "destination": "/index.html"
+      "destination": "/"
     },
     {
       "source": "/:level(foundation|inter|intermediate|final)/:rest*",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ]
 }
