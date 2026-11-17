@@ -2033,6 +2033,10 @@ function waCard(){
   return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">Join the CA PrepX WhatsApp group</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Notes, exam updates and new papers, straight to your phone. Free to join.</p></div>
     <div class="row"><a class="btn wa-btn" data-wa="home" href="${WA_LINK}" target="_blank" rel="noopener">${CHAT_IC}<span>Join the group</span></a><button class="btn ghost sm" data-act="waskip">Hide this</button></div></div>`;
 }
+function anaCard(){
+  return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">CA Foundation Jan 2027: where the marks come from</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Chapter-wise marks for all four papers, counted from ICAI's own past papers.</p></div>
+    <div class="row"><a class="btn primary" data-ana="home" href="/analysis" style="text-decoration:none">See the analysis</a></div></div>`;
+}
 let landAuth=false;
 function landOn(){return gateOn()&&!landAuth&&!recovering}
 function freshVisit(){try{if(deepLink()||guestOK()||landAuth||tab==="about"||/type=recovery|access_token|error_code/.test(location.hash))return false;for(let i=0;i<localStorage.length;i++){if(/^sb-.*-auth-token/.test(localStorage.key(i)||""))return false}return true}catch(_){return false}}
@@ -2051,7 +2055,7 @@ function landing(){
       <p>Study plans, ICAI papers, mock exams and MCQs for CA Foundation, Intermediate and Final. All in one place, and free.</p>
       ${cta}
       <div class="land-in">Already have an account? <button class="btn ghost sm" data-act="landin">Sign in</button></div>
-      <div class="land-cta"><a class="btn wa-btn" data-wa="landing" href="${WA_LINK}" target="_blank" rel="noopener">${CHAT_IC}<span>Join our WhatsApp group</span></a></div>
+      <div class="land-cta"><a class="btn wa-btn" data-wa="landing" href="${WA_LINK}" target="_blank" rel="noopener">${CHAT_IC}<span>Join our WhatsApp group</span></a><a class="btn" data-ana="landing" href="/analysis" style="text-decoration:none">CA Foundation: chapter-wise marks</a></div>
     </div>
     <div class="land-stats"><div><b>3</b><span>CA levels covered</span></div><div><b>${nP?nP+"+":"All"}</b><span>ICAI papers to practise</span></div><div><b>${nQ?nQ+"+":"Daily"}</b><span>practice MCQs</span></div><div><b>₹0</b><span>No payment, no card</span></div></div>
     <div class="land-sec"><h2>Everything a CA student needs</h2>
@@ -2293,7 +2297,7 @@ home(){
     ["rocket","I'm behind",n&&n>0?`Catch-up plan for ${n} days`:"Catch-up plan in one tap",`data-act="catchup"`],
     ["target","Fix weak spots",wn?`${wn} questions to redo`:"Redo what you got wrong",`data-mode="mistakes"`]
   ];
-  return `${waCard()}
+  return `${waCard()}${anaCard()}
   <div class="home-top">
   <div class="home-hero">
       <div class="eyebrow">${greet}${S.name?", "+esc(S.name):""} · CA ${lv.label}${n&&n>0?` · ${n} days to exam`:""}</div>
