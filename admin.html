@@ -87,6 +87,7 @@ input[type=search],input[type=email],input[type=password]{padding:8px 10px;borde
 :root{--heat:#9C7400}
 @media (prefers-color-scheme: dark){:root{--heat:#E0B43A}}
 #topAct{min-width:0;max-width:100%}#vw{display:flex;max-width:100%;overflow-x:auto}#vw button{white-space:nowrap;flex:none}
+#main>*,.an-grid>*,.row>*{min-width:0}.seg{max-width:100%;overflow-x:auto;flex-wrap:nowrap}.seg button{white-space:nowrap;flex:none}
 </style>
 </head>
 <body>
@@ -130,7 +131,7 @@ async function start(){
   const r=await sb.rpc("is_admin");
   if(!r.data){top.innerHTML=`<button class="btn" id="so">Sign out</button>`;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
     main.innerHTML=`<div class="card"><h2>This account isn't an admin</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(data.session.user.email||"a guest")}. Run the "make yourself admin" line in supabase-setup.sql for your account, then reload.</p></div>`;return}
-  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Students</button><button data-v="analytics" aria-pressed="false">Analytics</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button><button data-v="checkers" aria-pressed="false">Checkers</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
+  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Overview</button><button data-v="analytics" aria-pressed="false">Analytics</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button><button data-v="checkers" aria-pressed="false">Checkers</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
   document.querySelectorAll("#vw [data-v]").forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll("#vw [data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b));load()});
   document.getElementById("rf").onclick=load;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
   load();
@@ -166,52 +167,97 @@ async function load(){
   if(view==="papers")return loadPapersA();
   if(view==="videos")return loadVideosA();
   if(view==="checkers")return loadCheckers();
-  const since=new Date(Date.now()-29*864e5);since.setHours(0,0,0,0);
-  const [p,l]=await Promise.all([
+  const since=new Date(Date.now()-30*864e5);since.setHours(0,0,0,0);
+  const [p,l,u]=await Promise.all([
     sb.from("profiles").select("*").order("last_login",{ascending:false,nullsFirst:false}).limit(5000),
-    sb.from("logins").select("user_id,is_guest,at").gte("at",since.toISOString()).order("at",{ascending:false}).limit(20000)
+    sb.from("logins").select("user_id,is_guest,at").gte("at",since.toISOString()).order("at",{ascending:false}).limit(20000),
+    sb.from("usage").select("user_id,hour,section,secs,hits").gte("hour",since.toISOString()).limit(100000)
   ]);
   if(p.error||l.error){main.innerHTML=`<div class="card"><p class="msg">${esc((p.error||l.error).message)}</p></div>`;return}
-  profiles=p.data||[];logins=l.data||[];paint();
+  profiles=p.data||[];logins=l.data||[];usageRows=u.error?[]:(u.data||[]);paint();
 }
+/* ---------- Overview: who is here, who came back, who went quiet ---------- */
+let usageRows=[],ovDay="today",ovWho="students",sortBy="seen";
+const IST="Asia/Kolkata";
+const istDay=d=>new Date(d).toLocaleDateString("en-CA",{timeZone:IST});
+const istTime=d=>new Date(d).toLocaleTimeString("en-GB",{timeZone:IST,hour:"2-digit",minute:"2-digit"});
+const istDate=d=>new Date(d).toLocaleDateString("en-GB",{timeZone:IST,day:"numeric",month:"short"});
+const ago=d=>{if(!d)return"never";const m=(Date.now()-new Date(d))/6e4;if(m<60)return Math.max(1,Math.round(m))+" min ago";if(m<1440)return Math.round(m/60)+" h ago";const dd=Math.round(m/1440);return dd===1?"yesterday":dd+" days ago"};
+const mins=s=>s>=3600?(s/3600).toFixed(1)+" h":s>=60?Math.round(s/60)+" min":s>0?"under 1 min":"—";
 function paint(){
-  const now=new Date(),today=dayKey(now);
-  const allProfiles=profiles,allLogins=logins;const internal=allProfiles.filter(x=>x.is_internal),inIds=new Set(internal.map(x=>x.id));
-  const live=allProfiles.filter(x=>!x.is_internal),liveLogins=allLogins.filter(x=>!inIds.has(x.user_id));
-  const emails=live.filter(x=>!x.is_guest).length,guests=live.length-emails;
-  const totalLogins=live.reduce((a,x)=>a+(x.login_count||0),0);
-  const todayUsers=new Set(liveLogins.filter(x=>dayKey(x.at)===today).map(x=>x.user_id)).size;
-  const wk=Date.now()-7*864e5;const wkLogins=liveLogins.filter(x=>new Date(x.at)>=wk).length;
-  const newWk=live.filter(x=>new Date(x.created_at)>=wk).length;
-  // chart: 30 days
-  const days=[];for(let i=29;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push({d,k:dayKey(d),e:0,g:0})}
-  const idx={};days.forEach((x,i)=>idx[x.k]=i);
-  liveLogins.forEach(x=>{const i=idx[dayKey(x.at)];if(i!==undefined)x.is_guest?days[i].g++:days[i].e++});
-  const mx=Math.max(4,...days.map(x=>x.e+x.g));
-  const rows=(filter==="internal"?internal:live).filter(x=>(filter==="all"||filter==="internal"||(filter==="guest")===!!x.is_guest)&&(!q||((x.email||"")+" "+(x.name||"")+" "+(x.phone||"")).toLowerCase().includes(q)));
-  const phones=[...new Set(rows.map(x=>x.phone).filter(Boolean))];
+  const now=new Date(),LV={foundation:"Foundation",inter:"Intermediate",final:"Final"};
+  const internal=profiles.filter(x=>x.is_internal),inIds=new Set(internal.map(x=>x.id));
+  const P=Object.fromEntries(profiles.map(x=>[x.id,x]));
+  const acc=profiles.filter(x=>!x.is_internal&&!x.is_guest),vis=profiles.filter(x=>!x.is_internal&&x.is_guest);
+  // activity per user per day (India time), from sign-ins and time on site
+  const A={};const cell=(uid,k)=>{const U=A[uid]=A[uid]||{};return U[k]=U[k]||{visits:0,secs:0,first:null,last:null,sec:{}}};
+  logins.forEach(x=>{if(inIds.has(x.user_id))return;const c=cell(x.user_id,istDay(x.at));c.visits++;if(!c.first||x.at<c.first)c.first=x.at;if(!c.last||x.at>c.last)c.last=x.at});
+  usageRows.forEach(r=>{if(inIds.has(r.user_id)||!(r.secs>0)||ACTN[r.section])return;const c=cell(r.user_id,istDay(r.hour));c.secs+=r.secs;c.sec[r.section]=(c.sec[r.section]||0)+r.secs;if(!c.first||r.hour<c.first)c.first=r.hour;if(!c.last||r.hour>c.last)c.last=r.hour});
+  const days=[];for(let i=29;i>=0;i--){const d=new Date(Date.now()-i*864e5);days.push({d,k:istDay(d),s:new Set(),v:new Set(),n:0})}
+  const di=Object.fromEntries(days.map((x,i)=>[x.k,i]));
+  Object.entries(A).forEach(([uid,U])=>{const g=P[uid]?P[uid].is_guest:true;Object.keys(U).forEach(k=>{if(di[k]!=null)(g?days[di[k]].v:days[di[k]].s).add(uid)})});
+  acc.forEach(x=>{const i=di[istDay(x.created_at)];if(i!=null)days[i].n++});
+  const tk=days[29].k,yk=days[28].k,wkKeys=new Set(days.slice(-7).map(x=>x.k));
+  const seen=x=>{let t=x.last_login||null;const U=A[x.id];if(U)Object.values(U).forEach(c=>{if(c.last&&(!t||c.last>t))t=c.last});return t};
+  const secs30=x=>Object.values(A[x.id]||{}).reduce((a,c)=>a+c.secs,0);
+  const status=x=>{const t=seen(x),dd=t?(Date.now()-new Date(t))/864e5:999;if(dd<=7)return["Active","a"];
+    if((x.login_count||0)<=1&&(!t||new Date(t)-new Date(x.created_at)<864e5))return["Never came back","n"];return dd<=30?["Quiet","q"]:["Gone","g"]};
+  const activeOn=(list,keys)=>list.filter(x=>A[x.id]&&Object.keys(A[x.id]).some(k=>keys.has(k)));
+  const sToday=activeOn(acc,new Set([tk])),vToday=activeOn(vis,new Set([tk])),sWeek=activeOn(acc,wkKeys),s30=activeOn(acc,new Set(days.map(x=>x.k)));
+  const back=acc.filter(x=>(x.login_count||0)>=2).length,newWk=acc.filter(x=>Date.now()-new Date(x.created_at)<7*864e5).length;
+  const secOn=(list,keys)=>list.reduce((a,x)=>a+Object.entries(A[x.id]||{}).reduce((b,[k,c])=>b+(keys.has(k)?c.secs:0),0),0);
+  const phones=acc.filter(x=>x.phone).length,lvl=acc.filter(x=>x.level).length;
+  // who was here
+  const keys=ovDay==="today"?new Set([tk]):ovDay==="yesterday"?new Set([yk]):wkKeys;
+  const here=activeOn(ovWho==="students"?acc:vis,keys).map(x=>{const cs=Object.entries(A[x.id]).filter(([k])=>keys.has(k)).map(e=>e[1]);const sec={};let first=null,last=null,visits=0,secs=0;
+    cs.forEach(c=>{visits+=c.visits;secs+=c.secs;if(c.first&&(!first||c.first<first))first=c.first;if(c.last&&(!last||c.last>last))last=c.last;Object.entries(c.sec).forEach(([k,v])=>sec[k]=(sec[k]||0)+v)});
+    return{x,first,last,visits,secs,days:cs.length,top:Object.entries(sec).sort((a,b)=>b[1]-a[1]).slice(0,3).map(e=>SECN[e[0]]||e[0])}}).sort((a,b)=>(b.last||"")>(a.last||"")?1:-1);
+  const dayLabel=ovDay==="today"?"today":ovDay==="yesterday"?"yesterday":"in the last 7 days";
+  // students table
+  const pool=filter==="internal"?internal:filter==="visitors"?vis:acc;
+  let rows=pool.map(x=>({x,t:seen(x),st:status(x),s:secs30(x)})).filter(r=>(["all","internal","visitors"].includes(filter)||r.st[1]===filter)&&(!q||((r.x.email||"")+" "+(r.x.name||"")+" "+(r.x.phone||"")).toLowerCase().includes(q)));
+  rows.sort(sortBy==="time"?(a,b)=>b.s-a.s:sortBy==="logins"?(a,b)=>(b.x.login_count||0)-(a.x.login_count||0):sortBy==="joined"?(a,b)=>new Date(b.x.created_at)-new Date(a.x.created_at):(a,b)=>new Date(b.t||0)-new Date(a.t||0));
+  const shown=rows.slice(0,300),ph=[...new Set(rows.map(r=>r.x.phone).filter(Boolean))];
+  const cnt={a:0,q:0,g:0,n:0};acc.forEach(x=>cnt[status(x)[1]]++);
+  const mx=Math.max(4,...days.map(x=>x.s.size+x.v.size));
+  const fun=[["Signed up",acc.length],["Logged in more than once",back],["Active in the last 30 days",s30.length],["Active in the last 7 days",sWeek.length],["Active today",sToday.length]];
+  const pc={a:"",q:"g",g:"g",n:"g"};
   main.innerHTML=`
-  <div><div class="eyebrow">Updated ${d2(now)}</div><h1>Who's using CA PrepX</h1></div>
+  <div class="row sp"><div><div class="eyebrow">Updated ${d2(now)} · days counted in India time</div><h1>Overview</h1></div></div>
   <div class="stats">
-    <div class="stat"><div class="eyebrow">Students</div><div class="v">${live.length}</div><div class="s">${emails} with account · ${guests} visitors</div></div>
-    <div class="stat"><div class="eyebrow">Total logins</div><div class="v">${totalLogins}</div><div class="s">all time</div></div>
-    <div class="stat"><div class="eyebrow">Active today</div><div class="v">${todayUsers}</div><div class="s">students</div></div>
-    <div class="stat"><div class="eyebrow">Logins · 7 days</div><div class="v">${wkLogins}</div><div class="s">sign-ins and visits</div></div>
-    <div class="stat"><div class="eyebrow">New · 7 days</div><div class="v">${newWk}</div><div class="s">students joined</div></div>
+    <div class="stat"><div class="eyebrow">Students today</div><div class="v">${sToday.length}</div><div class="s">signed in · plus ${vToday.length} visitor${vToday.length===1?"":"s"}</div></div>
+    <div class="stat"><div class="eyebrow">Students this week</div><div class="v">${sWeek.length}</div><div class="s">of ${acc.length} accounts</div></div>
+    <div class="stat"><div class="eyebrow">Accounts</div><div class="v">${acc.length}</div><div class="s">${newWk} new in 7 days</div></div>
+    <div class="stat"><div class="eyebrow">Came back</div><div class="v">${acc.length?Math.round(back/acc.length*100):0}%</div><div class="s">${back} logged in more than once</div></div>
+    <div class="stat"><div class="eyebrow">Time on site today</div><div class="v">${mins(secOn(acc,new Set([tk])))}</div><div class="s">${mins(secOn(acc,wkKeys))} this week · students only</div></div>
   </div>
-  <div class="card"><div class="row sp" style="margin-bottom:12px"><h2>Logins per day</h2><div class="legend"><span><i style="background:var(--accent)"></i>Email</span><span><i style="background:var(--warn)"></i>Visitor</span></div></div>
-    <div class="chart">${days.map(x=>`<div class="col" title="${x.d.toLocaleDateString("en-GB",{day:"numeric",month:"short"})}: ${x.e} email, ${x.g} guest">${x.g?`<div class="g" style="height:${x.g/mx*100}%"></div>`:""}${x.e?`<div class="e" style="height:${x.e/mx*100}%"></div>`:""}</div>`).join("")}</div>
-    <div class="xl">${days.map((x,i)=>`<span>${i%5===4||i===29?x.d.getDate()+" "+x.d.toLocaleDateString("en-GB",{month:"short"}):""}</span>`).join("")}</div>
-    <p class="muted" style="font-size:.8rem;margin-top:8px">Last 30 days. Peak: ${Math.max(...days.map(x=>x.e+x.g))} logins in a day.</p></div>
-  <div class="row sp"><h2>Students</h2><div class="row"><button class="btn sm" id="cpPh" ${phones.length?"":"disabled"}>Copy mobile numbers (${phones.length})</button><input type="search" id="q" placeholder="Search name, email or mobile" value="${esc(q)}"><div class="seg">${[["all","All"],["email","Accounts"],["guest","Visitors"],["internal",`Internal (${internal.length})`]].map(f=>`<button data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("")}</div></div></div>
-  <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Type</th><th>Level</th><th style="text-align:right">Logins</th><th>Last login</th><th>Joined</th><th></th></tr></thead><tbody>
-  ${rows.length?rows.map(x=>`<tr><td>${esc(x.name)||'<span class="muted">—</span>'}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td class="num">${x.phone?esc(x.phone):'<span class="muted">—</span>'}</td><td><span class="pill ${x.is_guest?"g":""}">${x.is_guest?"Visitor":"Account"}</span></td><td>${esc(LV[x.level]||x.level||"—")}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num">${x.last_login?d2(x.last_login):"—"}</td><td class="num">${d2(x.created_at)}</td><td>${x.is_guest?"":`<button class="btn sm" data-int="${x.id}" data-on="${x.is_internal?"0":"1"}">${x.is_internal?"Count again":"Mark internal"}</button>`}</td></tr>`).join(""):`<tr><td colspan="9" class="muted">No students match.</td></tr>`}
+  <div class="card"><div class="row sp" style="margin-bottom:12px"><h2>Who was here ${dayLabel}</h2><div class="row"><div class="seg">${[["today","Today"],["yesterday","Yesterday"],["week","7 days"]].map(([k,t])=>`<button data-od="${k}" aria-pressed="${ovDay===k}">${t}</button>`).join("")}</div><div class="seg">${[["students","Students"],["visitors","Visitors"]].map(([k,t])=>`<button data-ow="${k}" aria-pressed="${ovWho===k}">${t}</button>`).join("")}</div></div></div>
+    ${here.length?`<div class="tbl"><table><thead><tr><th>${ovWho==="students"?"Name":"Visitor"}</th>${ovWho==="students"?"<th>Email</th><th>Level</th>":""}<th>First seen</th><th>Last seen</th><th style="text-align:right">Visits</th><th style="text-align:right">Time on site</th><th>What they used</th></tr></thead><tbody>
+    ${here.slice(0,200).map(r=>`<tr><td>${ovWho==="students"?(esc(r.x.name)||'<span class="muted">—</span>'):"Visitor "+esc(String(r.x.id).slice(0,4))}</td>${ovWho==="students"?`<td>${esc(r.x.email||"")}</td><td>${LV[r.x.level]||'<span class="muted">Not set</span>'}</td>`:""}<td class="num">${r.first?(ovDay==="week"?istDate(r.first)+", ":"")+istTime(r.first):"—"}</td><td class="num">${r.last?(ovDay==="week"?istDate(r.last)+", ":"")+istTime(r.last):"—"}</td><td class="num" style="text-align:right">${r.visits||"—"}</td><td class="num" style="text-align:right">${mins(r.secs)}</td><td style="white-space:normal;min-width:180px">${r.top.length?esc(r.top.join(", ")):'<span class="muted">Opened the site only</span>'}</td></tr>`).join("")}
+    </tbody></table></div>`:`<p class="muted">No ${ovWho==="students"?"signed-in student":"visitor"} ${dayLabel} so far.</p>`}
+    <p class="muted" style="font-size:.8rem;margin-top:10px">Times are India time. A visit is one sign-in or one opening of the site. Time on site counts only while the page is open and in use.</p></div>
+  <div class="an-grid">
+    <div class="card"><div class="row sp" style="margin-bottom:12px"><h2>People per day</h2><div class="legend"><span><i style="background:var(--accent)"></i>Students</span><span><i style="background:var(--warn)"></i>Visitors</span></div></div>
+      <div class="chart">${days.map(x=>`<div class="col" title="${istDate(x.d)}: ${x.s.size} students, ${x.v.size} visitors, ${x.n} new accounts">${x.v.size?`<div class="g" style="height:${x.v.size/mx*100}%"></div>`:""}${x.s.size?`<div class="e" style="height:${x.s.size/mx*100}%"></div>`:""}</div>`).join("")}</div>
+      <div class="xl">${days.map((x,i)=>`<span style="white-space:nowrap">${i%5===4||i===29?new Date(x.d).toLocaleDateString("en-GB",{timeZone:IST,day:"numeric",month:"numeric"}):""}</span>`).join("")}</div>
+      <p class="muted" style="font-size:.8rem;margin-top:8px">Last 30 days. Each person counted once per day. Hover a bar for the numbers.</p></div>
+    <div class="card"><h2 style="margin-bottom:8px">Where students drop off</h2>
+      ${fun.map(([t,n])=>`<div class="an-bar"><span>${t}</span><b class="num">${n}</b><div class="an-t"><i style="width:${acc.length?n/acc.length*100:0}%"></i></div></div>`).join("")}
+      <p class="muted" style="font-size:.8rem;margin-top:10px">Mobile numbers collected: <b>${phones}</b> of ${acc.length}. Level chosen: <b>${lvl}</b> of ${acc.length}.</p></div>
+  </div>
+  <div class="row sp"><h2>${filter==="visitors"?"Visitors":filter==="internal"?"Internal accounts":"Students"}</h2><div class="row"><button class="btn sm" id="cpPh" ${ph.length?"":"disabled"}>Copy mobile numbers (${ph.length})</button><input type="search" id="q" placeholder="Search name, email or mobile" value="${esc(q)}"><select id="srt" aria-label="Sort by" style="padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:.85rem">${[["seen","Last seen"],["time","Most time"],["logins","Most logins"],["joined","Newest"]].map(([k,t])=>`<option value="${k}" ${sortBy===k?"selected":""}>Sort: ${t}</option>`).join("")}</select></div></div>
+  <div class="row"><div class="seg">${[["all","All "+acc.length],["a","Active "+cnt.a],["q","Quiet "+cnt.q],["g","Gone "+cnt.g],["n","Never came back "+cnt.n],["visitors","Visitors "+vis.length],["internal","Internal "+internal.length]].map(([k,t])=>`<button data-f="${k}" aria-pressed="${filter===k}">${t}</button>`).join("")}</div></div>
+  <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Level</th><th>Status</th><th>Last seen</th><th style="text-align:right">Logins</th><th style="text-align:right">Time · 30 days</th><th>Joined</th><th></th></tr></thead><tbody>
+  ${shown.length?shown.map(({x,t,st,s})=>`<tr><td>${x.is_guest?"Visitor "+esc(String(x.id).slice(0,4)):(esc(x.name)||'<span class="muted">—</span>')}</td><td>${x.email?esc(x.email):'<span class="muted">—</span>'}</td><td class="num">${x.phone?esc(x.phone):'<span class="muted">—</span>'}</td><td>${LV[x.level]||'<span class="muted">—</span>'}</td><td>${x.is_guest?'<span class="pill g">Visitor</span>':`<span class="pill ${pc[st[1]]}">${st[0]}</span>`}</td><td class="num" title="${t?d2(t):""}">${ago(t)}</td><td class="num" style="text-align:right">${x.login_count||0}</td><td class="num" style="text-align:right">${mins(s)}</td><td class="num">${istDate(x.created_at)}</td><td><button class="btn sm" data-int="${x.id}" data-on="${x.is_internal?0:1}">${x.is_internal?"Count again":"Mark internal"}</button></td></tr>`).join(""):`<tr><td colspan="10" class="muted" style="text-align:center;padding:26px">No one matches.</td></tr>`}
   </tbody></table></div>
-  <p class="muted" style="font-size:.8rem">Visitors are people using the site without an account (counted once per visit). Accounts are students who signed up with email. ${internal.length} internal or test account${internal.length===1?" is":"s are"} left out of every number above; see them under Internal.</p>`;
+  <p class="muted" style="font-size:.8rem">${rows.length>300?`Showing the first 300 of ${rows.length}. `:""}<b>Active</b>: seen in the last 7 days. <b>Quiet</b>: 8 to 30 days. <b>Gone</b>: over 30 days. <b>Never came back</b>: signed up and did not return. Visitors are browsers that opened the site without signing in; a new one is created on each fresh visit, so ${vis.length} visitors is not ${vis.length} people. ${internal.length} internal or test account${internal.length===1?" is":"s are"} left out of every number.</p>`;
   const qi=document.getElementById("q");qi.oninput=()=>{q=qi.value.trim().toLowerCase();const pos=qi.selectionStart;paint();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos)};
+  document.getElementById("srt").onchange=e=>{sortBy=e.target.value;paint()};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;paint()});
+  document.querySelectorAll("[data-od]").forEach(b=>b.onclick=()=>{ovDay=b.dataset.od;paint()});
+  document.querySelectorAll("[data-ow]").forEach(b=>b.onclick=()=>{ovWho=b.dataset.ow;paint()});
   document.querySelectorAll("[data-int]").forEach(b=>b.onclick=async()=>{b.disabled=true;const r=await sb.rpc("set_internal",{p_user:b.dataset.int,p_on:b.dataset.on==="1"});if(r.error){b.disabled=false;b.textContent="Couldn't save";return}const p=profiles.find(x=>x.id===b.dataset.int);if(p)p.is_internal=b.dataset.on==="1";paint()});
-  const cp=document.getElementById("cpPh");if(cp)cp.onclick=async()=>{try{await navigator.clipboard.writeText(phones.join("\n"));cp.textContent="Copied "+phones.length+" numbers"}catch(e){cp.textContent="Couldn't copy"}};
+  const cp=document.getElementById("cpPh");if(cp)cp.onclick=async()=>{try{await navigator.clipboard.writeText(ph.join("\n"));cp.textContent="Copied "+ph.length+" numbers"}catch(e){cp.textContent="Couldn't copy"}};
 }
 const JF=[["title","Job title",1],["company","Company",1],["short","Short name for LinkedIn search (e.g. EY)",0],["type","Employer type (Big 4, Mid-tier firm, Corporate, GCC / MNC, Bank / NBFC, Investment bank, Fintech)",0],["domain","Area: audit, ia, dt, gst, fpa, ctrl, ta, cons, forensic, ib, articleship",1],["city","City: delhi, mumbai, bengaluru, pune, hyderabad, dubai, india",1],["location","Location shown (e.g. Gurugram, Haryana)",0],["stage","Level: student, fresher, exp (comma-separated)",1],["exp","Experience / eligibility",0],["apply","Apply link",1],["careers","Company careers page (optional)",0],["email","Official recruitment email (optional)",0],["seen","Date seen (YYYY-MM-DD)",0]];
 async function loadJobs(){
@@ -311,10 +357,10 @@ const ACTN={"exam.start":"Mock exams started","exam.submit":"Mock exams submitte
 let anRange=30,anVisitors=false,anData=null,anOpen=null;
 const hrs=s=>{const h=s/3600;return h>=10?Math.round(h)+" h":h>=1?h.toFixed(1)+" h":Math.round(s/60)+" min"};
 async function loadAnalytics(){const since=new Date(Date.now()-anRange*864e5);since.setMinutes(0,0,0);
-  const [u,p]=await Promise.all([sb.from("usage").select("user_id,hour,section,secs,hits").gte("hour",since.toISOString()).limit(100000),sb.from("profiles").select("id,name,email,level,is_guest,last_login").limit(10000)]);
+  const [u,p]=await Promise.all([sb.from("usage").select("user_id,hour,section,secs,hits").gte("hour",since.toISOString()).limit(100000),sb.from("profiles").select("id,name,email,level,is_guest,is_internal,last_login").limit(10000)]);
   if(u.error){main.innerHTML=`<div class="card"><h2>Analytics not set up</h2><p class="muted" style="margin-top:6px">Run <b>analytics-setup.sql</b> in Supabase → SQL Editor, then click Refresh. Time starts counting from then.</p><p class="msg" style="margin-top:10px">${esc(u.error.message)}</p></div>`;return}
   anData={u:u.data||[],p:Object.fromEntries((p.data||[]).map(x=>[x.id,x]))};paintAnalytics()}
-function paintAnalytics(){const P=anData.p;const U=anData.u.filter(r=>anVisitors||!(P[r.user_id]&&P[r.user_id].is_guest));
+function paintAnalytics(){const P=anData.p;const U=anData.u.filter(r=>!(P[r.user_id]&&P[r.user_id].is_internal)&&(anVisitors||!(P[r.user_id]&&P[r.user_id].is_guest)));
   const dk=d=>{const x=new Date(d);return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0")};
   const T=U.filter(r=>r.secs>0&&!ACTN[r.section]),A=U.filter(r=>r.hits>0);
   const total=T.reduce((a,r)=>a+r.secs,0);const users={},days=[],sec={},act={},heat=[...Array(7)].map(()=>Array(24).fill(0)),lvl={};
