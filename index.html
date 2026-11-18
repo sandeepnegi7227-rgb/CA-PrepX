@@ -1984,7 +1984,7 @@ async function authDo(kind){
   authBusy=false;
   if(res&&res.error){authMsg=res.error.message;authErr=true;render();return}
   if(kind==="signup"&&res.data&&!res.data.session){authMsg="Account created! Confirm it from your email, then sign in.";authView="signin";render();return}
-  if(res&&res.data&&res.data.session){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);go(authRet||"home");authWhy="";authRet=""}
+  if(res&&res.data&&res.data.session){window.__gate=1;try{sessionStorage.setItem("prepx.gate","1")}catch(_){}session=res.data.session;if(nm)S.name=nm;await afterSignIn(true);{const dp=dlPend();if(dp&&!isGuest()){dlGo(dp);return}}go(authRet||"home");authWhy="";authRet=""}
   render();
 }
 async function signOut(){try{await sb.auth.signOut()}catch(e){}authWhy="";authRet="";landAuth=true;session=null;isAdmin=false;isChecker=false;S=blank();try{localStorage.removeItem(K);localStorage.removeItem("prepx.guest");sessionStorage.removeItem("prepx.visit")}catch(e){}window.__guest=0;authView="signin";authMsg="";go("home");render()}
@@ -2038,6 +2038,8 @@ function anaCard(){
     <div class="row"><a class="btn primary" data-ana="home" href="/analysis" style="text-decoration:none">Foundation</a><a class="btn primary" data-ana="home-inter" href="/analysis-inter" style="text-decoration:none">Intermediate</a></div></div>`;
 }
 let landAuth=false;
+function dlPend(){try{const v=(localStorage.getItem("prepx.dl")||"").split("|");if((v[0]==="/analysis"||v[0]==="/analysis-inter")&&Date.now()-(+v[1]||0)<18e5)return v[0];localStorage.removeItem("prepx.dl")}catch(_){}return ""}
+function dlGo(p){try{localStorage.removeItem("prepx.dl")}catch(_){}location.href=p+"?dl=1"}
 function landOn(){return gateOn()&&!landAuth&&!recovering}
 function freshVisit(){try{if(deepLink()||guestOK()||landAuth||tab==="about"||/type=recovery|access_token|error_code/.test(location.hash))return false;for(let i=0;i<localStorage.length;i++){if(/^sb-.*-auth-token/.test(localStorage.key(i)||""))return false}return true}catch(_){return false}}
 function landing(){
@@ -3118,6 +3120,7 @@ async function boot(){
   try{const {data}=await sb.auth.getSession();session=data.session}catch(e){session=null}
   if(!session&&!recovering&&!/type=recovery/.test(location.hash)){try{const r=await sb.auth.signInAnonymously();if(r.data&&r.data.session)session=r.data.session}catch(e){}}
   if(session&&!recovering)await afterSignIn(false);
+  {const dp=recovering?"":dlPend();if(dp){if(session&&!isGuest()){dlGo(dp);return}landAuth=true;authWhy="Sign in or create a free account to download the analysis PDF.";authView="signup";authRet="home";if(!gateOn())go("signin")}}
   authReady=true;const dl=recovering?null:deepLink();if(dl)openLink(dl);render();
 }
 boot();
