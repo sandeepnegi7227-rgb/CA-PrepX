@@ -809,6 +809,9 @@ main{padding-bottom:120px}
 .lvchip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 10px 0 8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;font:inherit;font-weight:800;font-size:.85rem;color:var(--ink);cursor:pointer}
 .lvchip b{font-size:.7rem;color:var(--muted)}
 .lvchip:hover{border-color:var(--gold)}
+.lvw.tipon .lvchip{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold)}
+.lvtip{position:absolute;right:0;top:calc(100% + 12px);z-index:40;width:270px;background:var(--ink);color:var(--surface);border-radius:16px;padding:14px;display:grid;gap:6px;box-shadow:0 14px 32px rgba(20,20,20,.28);font-size:.86rem;line-height:1.4;text-align:left}.lvtip:before{content:"";position:absolute;right:26px;top:-7px;width:14px;height:14px;background:var(--ink);transform:rotate(45deg)}.lvtip b{font-size:.95rem}.lvtip .btn{justify-self:start;margin-top:4px}
+@media (max-width:719px){.lvtip{position:fixed;left:16px;right:16px;top:64px;width:auto}.lvtip:before{display:none}}
 .lvmenu{position:absolute;right:0;top:calc(100% + 8px);z-index:40;min-width:230px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:6px;display:grid;gap:2px;box-shadow:0 14px 32px rgba(20,20,20,.18)}
 .lvmenu button{display:flex;align-items:center;gap:10px;border:0;background:transparent;border-radius:12px;padding:9px 10px;font:inherit;font-weight:700;font-size:.92rem;color:var(--ink);cursor:pointer;text-align:left}
 .lvmenu button:hover{background:var(--surface-2)}
@@ -1902,6 +1905,10 @@ setInterval(trFlush,60000);document.addEventListener("visibilitychange",()=>{if(
 document.addEventListener("click",e=>{const a=e.target.closest(".job-act a");if(a)track(/careers/i.test(a.textContent)?"jobs.careers":"jobs.apply");const l=e.target.closest(".job-li a");if(l)track("jobs.linkedin");const w=e.target.closest("a[data-wa]");if(w)track("wa.join")},true);
 /* ---------- render ---------- */
 const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["plan","Plan","Plan","plan"],["spom","SPOM","SPOM","school"],["careers","Careers","Careers","brief"]];
+/* what each level sees: SPOM is Final only, careers from Inter onwards */
+const fits=k=>k==="spom"?S.level==="final":k==="careers"?S.level!=="foundation":true;
+const tabsNow=()=>TABS.filter(x=>fits(x[0]));
+const lvTipOn=()=>{try{return localStorage.getItem("prepx.lvtip")!=="1"}catch(_){return false}};
 const IC={
  pin:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
@@ -2034,8 +2041,10 @@ function waCard(){
     <div class="row"><a class="btn wa-btn" data-wa="home" href="${WA_LINK}" target="_blank" rel="noopener">${CHAT_IC}<span>Join the group</span></a><button class="btn ghost sm" data-act="waskip">Hide this</button></div></div>`;
 }
 function anaCard(){
-  return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">Where the marks come from: Foundation and Inter</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Chapter-wise analysis of every paper, counted from ICAI's own past papers.</p></div>
-    <div class="row"><a class="btn primary" data-ana="home" href="/analysis" style="text-decoration:none">Foundation</a><a class="btn primary" data-ana="home-inter" href="/analysis-inter" style="text-decoration:none">Intermediate</a></div></div>`;
+  const A={foundation:["/analysis","CA Foundation Jan 2027: where the marks come from","Chapter-wise analysis of all four papers, counted from ICAI's own past papers."],inter:["/analysis-inter","CA Inter: where the marks come from","Chapter-wise analysis of all six papers, counted from ICAI's own past papers."]}[S.level];
+  if(!A)return "";
+  return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">${A[1]}</h2><p class="muted" style="margin-top:4px;font-size:.9rem">${A[2]}</p></div>
+    <div class="row"><a class="btn primary" data-ana="home" href="${A[0]}" style="text-decoration:none">See the analysis</a></div></div>`;
 }
 let landAuth=false;
 function dlPend(){try{const v=(localStorage.getItem("prepx.dl")||"").split("|");if((v[0]==="/analysis"||v[0]==="/analysis-inter")&&Date.now()-(+v[1]||0)<18e5)return v[0];localStorage.removeItem("prepx.dl")}catch(_){}return ""}
@@ -2076,16 +2085,16 @@ function renderChrome(){
   const ac=document.getElementById("acct");
   ac.innerHTML=!sb?"":real?`${isChecker||isAdmin?`<a class="btn sm primary" href="/checker">Check papers</a>`:""}${isAdmin?`<a class="btn sm" href="/admin">Admin</a>`:""}<span class="who" title="${esc(session.user.email||"")}">${esc(session.user.email||"")}</span><button class="btn sm" data-act="signout">Sign out</button>`:(tab==="signin"?"":gate?(landOn()?`<button class="btn sm primary" data-act="landin">Sign in</button>`:""):`<button class="btn sm primary" data-tab="signin">Sign in</button>`);
   const showLv=!gate&&S.onboarded&&tab!=="signin"&&tab!=="about"&&tab!=="careers"&&tab!=="spom";
-  const lvEl=document.getElementById("levelSeg");lvEl.className="lvw";lvEl.removeAttribute("role");const LVPIC={foundation:"papers",inter:"mcq",final:"school"};
-  lvEl.innerHTML=`<button class="lvchip" data-act="lvlopen" aria-expanded="${lvOpen}" aria-label="Change CA level">${ico(LVPIC[S.level]||"mcq",16)}<span>${S.level==="inter"?"Inter":LEVELS[S.level].label}</span><b aria-hidden="true">▾</b></button>${lvOpen?`<div class="lvmenu" role="menu">${Object.entries(LEVELS).map(([k,v])=>`<button role="menuitemradio" data-level="${k}" aria-checked="${S.level===k}">${ico(LVPIC[k],22)}<span>CA ${v.label}</span>${S.level===k?"<em>✓</em>":""}</button>`).join("")}</div>`:""}`;
+  const lvEl=document.getElementById("levelSeg");lvEl.className="lvw"+(showLv&&!lvOpen&&lvTipOn()?" tipon":"");lvEl.removeAttribute("role");const LVPIC={foundation:"papers",inter:"mcq",final:"school"};
+  lvEl.innerHTML=`<button class="lvchip" data-act="lvlopen" aria-expanded="${lvOpen}" aria-label="Change CA level">${ico(LVPIC[S.level]||"mcq",16)}<span>${S.level==="inter"?"Inter":LEVELS[S.level].label}</span><b aria-hidden="true">▾</b></button>${lvOpen?`<div class="lvmenu" role="menu">${Object.entries(LEVELS).map(([k,v])=>`<button role="menuitemradio" data-level="${k}" aria-checked="${S.level===k}">${ico(LVPIC[k],22)}<span>CA ${v.label}</span>${S.level===k?"<em>✓</em>":""}</button>`).join("")}</div>`:(showLv&&lvTipOn()?`<div class="lvtip" role="status"><b>You're seeing CA ${LEVELS[S.level].label} only</b><span>Papers, MCQs, videos and analysis are for your level. Moved up, or picked the wrong one? Tap the highlighted button above any time to change it.</span><button class="btn sm primary" data-act="lvtipok">Got it</button></div>`:"")}`;
   document.getElementById("levelSeg").hidden=!showLv;
   {let lvm=document.getElementById("lvModal");const need=authReady&&!S.onboarded&&!gateOn()&&!recovering&&tab!=="signin"&&tab!=="about";
    if(need&&!lvm){lvm=document.createElement("div");lvm.id="lvModal";lvm.className="lvmodal";lvm.innerHTML=`<div class="lvbox" role="dialog" aria-modal="true" aria-labelledby="lvT"><div class="eyebrow">Quick one</div><h2 id="lvT">Which level are you at?</h2><p class="muted">We'll show the right papers, mocks and plan. You can change it any time from the top bar.</p><div class="lvopts">${[["foundation","papers","CA Foundation","4 papers"],["inter","mcq","CA Intermediate","Group I & II"],["final","school","CA Final","Group I & II + SPOM"]].map(x=>`<button data-pick="${x[0]}">${ico(x[1],34)}<span><b>${x[2]}</b><small>${x[3]}</small></span><em aria-hidden="true">→</em></button>`).join("")}</div></div>`;document.body.appendChild(lvm)}
    else if(!need&&lvm)lvm.remove()}
   document.querySelector(".tabs").hidden=tab==="signin"||gate;
-  document.getElementById("tabs").innerHTML=TABS.map(([k,v,,i])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${ico(i,18)}${v}</button>`).join("");
+  document.getElementById("tabs").innerHTML=tabsNow().map(([k,v,,i])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${ico(i,18)}${v}</button>`).join("");
   const bn=document.getElementById("bnav");bn.hidden=tab==="signin"||gate;
-  bn.innerHTML=TABS.map(([k,,sh,i])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${sh}">${ico(i,22)}<span>${sh}</span></button>`).join("");
+  bn.style.setProperty("grid-template-columns","repeat("+tabsNow().length+",1fr)","important");bn.innerHTML=tabsNow().map(([k,,sh,i])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${sh}">${ico(i,22)}<span>${sh}</span></button>`).join("");
   document.getElementById("themeBtn").innerHTML=ico(isDark()?"sun":"moon",19);
   document.getElementById("aboutBtn").setAttribute("aria-pressed",tab==="about");
   document.getElementById("bannerWrap").innerHTML=real&&isChecker&&tab!=="signin"?`<div class="banner"><span><b>Teacher account.</b> Students' answer sheets are waiting in the checking portal.</span><a class="btn sm primary" href="/checker">Check papers</a></div>`:S.sample&&tab!=="signin"?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:"";
@@ -2122,7 +2131,7 @@ function render(){renderChrome();const m=document.getElementById("main");
     else if(sb){m.innerHTML=`<section class="view">${welcome()}</section>`;return}
     else go("home");
   }
-  if(!VIEWS[tab])go("home");
+  if(!VIEWS[tab]||!fits(tab))go("home");
   const back=tab==="about"&&sb&&!(session&&!isGuest())?`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back</button></div>`:"";
   m.innerHTML=`<section class="view">${back}${VIEWS[tab]()}</section>`;if(tab==="practice"&&prMode!=="mock")paintMcq();if(tab==="resources"&&resMode==="videos")paintVids();if(tab==="home")paintSearch()}
 
@@ -2304,7 +2313,7 @@ home(){
   <div class="home-hero">
       <div class="eyebrow">${greet}${S.name?", "+esc(S.name):""} · CA ${lv.label}${n&&n>0?` · ${n} days to exam`:""}</div>
       <h1>What do you need today?</h1>
-      <div class="hsearch"><span class="ic-wrap">${ico("search",18)}</span><input id="hq" type="search" placeholder="Search papers, topics, SAs, careers…" value="${esc(HQ)}" autocomplete="off" aria-label="Search CA PrepX"></div>
+      <div class="hsearch"><span class="ic-wrap">${ico("search",18)}</span><input id="hq" type="search" placeholder="${fits("careers")?"Search papers, topics, SAs, careers…":"Search papers, topics, chapters…"}" value="${esc(HQ)}" autocomplete="off" aria-label="Search CA PrepX"></div>
       <div id="hres" class="hres" hidden></div>
     </div>
     <div class="today">
@@ -2314,8 +2323,8 @@ home(){
     </div>
   </div>
   <div class="tiles v6">${tiles.map(x=>`<button class="tile" ${x[3]}>${ico(x[0],30)}<b>${x[1]}</b><span>${x[2]}</span></button>`).join("")}</div>
-  <div class="home-row">
-    <button class="jobrow" data-tab="careers">${ico("brief",30)}<span><b>Articleship &amp; jobs</b><small>Roles and open vacancies</small></span><span aria-hidden="true" style="flex:none">→</span></button>
+  <div class="home-row"${fits("careers")?"":' style="grid-template-columns:1fr"'}>
+    ${fits("careers")?`<button class="jobrow" data-tab="careers">${ico("brief",30)}<span><b>Articleship &amp; jobs</b><small>Roles and open vacancies</small></span><span aria-hidden="true" style="flex:none">→</span></button>`:""}
     <div class="tipstrip">${ico("bulb",26)}<div><span class="eyebrow">Tip of the day · ${esc(tip[0])}</span><p>${esc(tip[1])}</p></div><button class="btn ghost sm" data-tab="resources" data-sub="tips">More tips →</button></div>
   </div>`;
 },
@@ -2560,10 +2569,10 @@ function searchIndex(){
   lv.papers.forEach(p=>out.push({k:"Paper",t:`P${p.no} · ${p.name}`,s:"RTP, MTP and past papers",a:`data-tab="resources" data-sub="papers"`}));
   [["RTP","Revision Test Papers"],["MTP","Mock Test Papers"],["PYQ","Past exam papers"],["Amendments","Check ICAI notices for your attempt"]].forEach(x=>out.push({k:"Resource",t:x[0],s:x[1],a:`data-tab="resources" data-sub="papers"`}));
   TIPS.forEach(x=>out.push({k:"Tip",t:x[0],s:x[1],a:`data-tab="resources" data-sub="tips"`}));
-  ROLES.forEach(r=>out.push({k:"Career",t:r.name,s:r.what,a:`data-tab="careers" data-jump="role-${r.id}"`}));
-  [["Articleship","Find articleship openings","careers","art"],["Industrial training","Openings for Final students","careers","art"],["Gulf jobs","CA roles in Dubai","careers","gulf"]].forEach(x=>out.push({k:"Career",t:x[0],s:x[1],a:`data-tab="careers" data-jump="${x[3]}"`}));
-  out.push({k:"SPOM",t:"SPOM overview",s:"Sets A–D, pass marks, electives",a:`data-tab="spom" data-spm="overview"`},{k:"SPOM",t:"Book SPOM test / check centres",s:"SPMT portal, fees, helpdesk",a:`data-spm="test"`},{k:"SPOM",t:"SPOM MCQs",s:"Practice for Sets A–D",a:`data-spm="mcq"`});
-  Object.keys(SPOM_SYL).forEach(id=>SPOM_SYL[id].forEach((c,j)=>out.push({k:"SPOM",t:c[0],s:id==="SA"?"Set A · Corporate and Economic Laws":"Set B · Strategic Cost and Performance Management",a:`data-spm="syllabus"`})));
+  if(fits("careers")){ROLES.forEach(r=>out.push({k:"Career",t:r.name,s:r.what,a:`data-tab="careers" data-jump="role-${r.id}"`}));
+  [["Articleship","Find articleship openings","careers","art"],["Industrial training","Openings for Final students","careers","art"],["Gulf jobs","CA roles in Dubai","careers","gulf"]].forEach(x=>out.push({k:"Career",t:x[0],s:x[1],a:`data-tab="careers" data-jump="${x[3]}"`}))}
+  if(fits("spom")){out.push({k:"SPOM",t:"SPOM overview",s:"Sets A–D, pass marks, electives",a:`data-tab="spom" data-spm="overview"`},{k:"SPOM",t:"Book SPOM test / check centres",s:"SPMT portal, fees, helpdesk",a:`data-spm="test"`},{k:"SPOM",t:"SPOM MCQs",s:"Practice for Sets A–D",a:`data-spm="mcq"`});
+  Object.keys(SPOM_SYL).forEach(id=>SPOM_SYL[id].forEach((c,j)=>out.push({k:"SPOM",t:c[0],s:id==="SA"?"Set A · Corporate and Economic Laws":"Set B · Strategic Cost and Performance Management",a:`data-spm="syllabus"`})))}
   [["Catch-up plan","I'm behind — plan the days left","catchup"],["Study plan","Plan for any duration","plan"],["Log study hours","Track today's hours","progress"],["CA journey","Milestones to membership","journey"]].forEach(x=>out.push({k:"Plan",t:x[0],s:x[1],a:x[2]==="catchup"?`data-act="catchup"`:`data-tab="plan" data-sub="${x[2]==="plan"?"study":x[2]}"`}));
   lv.papers.forEach(p=>chapters(p.id).forEach((c,j)=>out.push({k:"Chapter",t:`Ch ${j+1} · ${chShort(p.id,j)}`,s:`P${p.no} ${p.name}`,a:`data-tab="resources" data-sub="syllabus" data-jump="syl-${p.id}" data-open="${p.id}"`})));
   Q.filter(q=>lv.papers.some(p=>p.id===q.p)).forEach(q=>out.push({k:"MCQ",t:q.q,s:"P"+paper(q.p).no+" · "+paper(q.p).name,a:`data-q="${q.id}"`}));
@@ -2576,7 +2585,7 @@ function paintSearch(){
   const words=q.split(/\s+/);
   const hits=searchIndex().filter(x=>{const h=(x.t+" "+x.s+" "+x.k).toLowerCase();return words.every(w=>h.includes(w))}).slice(0,8);
   box.hidden=false;
-  box.innerHTML=hits.length?hits.map(x=>`<button class="hit" ${x.a}><span class="pill">${x.k}</span><span><b>${esc(x.t)}</b><span class="muted">${esc(x.s)}</span></span></button>`).join(""):`<p class="muted" style="padding:10px 12px">Nothing for "${esc(HQ)}" yet. Try a paper name, "RTP", "GST" or "articleship".</p>`;
+  box.innerHTML=hits.length?hits.map(x=>`<button class="hit" ${x.a}><span class="pill">${x.k}</span><span><b>${esc(x.t)}</b><span class="muted">${esc(x.s)}</span></span></button>`).join(""):`<p class="muted" style="padding:10px 12px">Nothing for "${esc(HQ)}" yet. Try a paper name, "RTP", "GST"${fits("careers")?' or "articleship"':""}.</p>`;
 }
 
 /* ---------- Word export (branded .docx with watermark) ---------- */
@@ -2948,7 +2957,7 @@ function restoreCode(c){try{const o=JSON.parse(decodeURIComponent(escape(atob(c.
 
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
-  if(lvOpen&&!e.target.closest("#levelSeg")){lvOpen=false;renderChrome()}const t=e.target.closest("button,[data-tab]");if(!t)return;if(t.dataset.act==="lvlopen"){lvOpen=!lvOpen;renderChrome();return}if(t.dataset.level)lvOpen=false;if(t.dataset.act==="snopen"){snOpen=!snOpen;render();return}if(t.dataset.res||t.dataset.prm||t.dataset.plan||t.dataset.spm||t.dataset.tab)snOpen=false;if(t.dataset.prm||t.dataset.tab)window.__mt=null;
+  if(lvOpen&&!e.target.closest("#levelSeg")){lvOpen=false;renderChrome()}const t=e.target.closest("button,[data-tab]");if(!t)return;if(t.dataset.act==="lvlopen"||t.dataset.act==="lvtipok"){try{localStorage.setItem("prepx.lvtip","1")}catch(_){}if(t.dataset.act==="lvlopen")lvOpen=!lvOpen;renderChrome();return}if(t.dataset.level)lvOpen=false;if(t.dataset.act==="snopen"){snOpen=!snOpen;render();return}if(t.dataset.res||t.dataset.prm||t.dataset.plan||t.dataset.spm||t.dataset.tab)snOpen=false;if(t.dataset.prm||t.dataset.tab)window.__mt=null;
   if(t.dataset.wlevel){W.level=t.dataset.wlevel;document.querySelectorAll("[data-wlevel]").forEach(b=>b.setAttribute("aria-pressed",b===t));return}
   if(t.dataset.level){if(T&&T.active)return;S.level=t.dataset.level;S.plan.weak=[];cur=null;T=null;sess={n:0,ok:0};window.__mp="all";save();render();return}
   if(t.dataset.act==="tchsend"){tchSend();return}if(t.dataset.act==="tchrefresh"){tchLoad(true);return}if(t.dataset.tchget){tchGet(t.dataset.tchget);return}if(t.dataset.tchdel){tchDel(t.dataset.tchdel);return}if(t.dataset.abtab){const [id,k]=t.dataset.abtab.split("|");window.__ab=window.__ab||{};window.__ab[id]=k;render();const el=document.getElementById("ab-"+id);if(el)el.scrollIntoView({block:"start"});return}if(t.dataset.abgo){const el=document.getElementById("ab-"+t.dataset.abgo);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return}
