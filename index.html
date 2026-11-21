@@ -13,7 +13,78 @@
 <meta property="og:image" content="https://www.caprepx.com/logo-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Outfit:wght@400;500;600&family=Young+Serif&display=swap">
+<style id="lpcss">
+#lp a{color:#E3B341}
+#lp a:hover{color:#F0C75E}
+#lp .lift{transition:transform .18s ease,border-color .18s ease}
+#lp .lift:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.24) !important}
+#lp .arr{display:inline-block;transition:transform .18s ease}
+#lp .lift:hover .arr,#lp .go:hover .arr{transform:translateX(4px)}
+#lp .zoom{transition:transform .35s ease}
+#lp .lift:hover .zoom{transform:scale(1.03)}
+#lp .primary{transition:background .15s ease}
+#lp .primary:hover{background:#F0C75E !important}
+#lp .ghost{transition:border-color .15s ease}
+#lp .ghost:hover{border-color:rgba(255,255,255,.4) !important}
+#lp .navlink{transition:color .15s ease}
+#lp .navlink:hover{color:#F4F1EA !important}
+#lp .play{transition:transform .2s ease}
+#lp .play:hover{transform:scale(1.1)}
+#lp .gridbg{background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:72px 72px}
+#lp .menu{display:none !important}
+#lp .jv{display:none !important}
+#lp .mobcta{display:none !important}
+@keyframes lp-up{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+@keyframes lp-down{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+@keyframes lp-pulse{0%{box-shadow:0 0 0 0 rgba(227,179,65,.55)}100%{box-shadow:0 0 0 10px rgba(227,179,65,0)}}
+@keyframes lp-floaty{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+@keyframes lp-fa{from{opacity:0}to{opacity:1}}
+@keyframes lp-fb{from{opacity:0}to{opacity:1}}
+@keyframes lp-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes lp-inl{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
+@keyframes lp-inr{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
+@keyframes lp-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes lp-navin{from{background:rgba(11,11,12,0);border-bottom-color:rgba(255,255,255,0);backdrop-filter:blur(0px)}to{background:rgba(11,11,12,.82);border-bottom-color:rgba(255,255,255,.08);backdrop-filter:blur(12px)}}
+#lp .colup{animation:lp-up 36s linear infinite}
+#lp .coldown{animation:lp-down 42s linear infinite}
+#lp .dot{animation:lp-pulse 1.8s ease-out infinite}
+#lp .float{animation:lp-floaty 3.2s ease-in-out infinite alternate}
+#lp .scatter>*:nth-child(even){margin-top:56px}
+#lp .scatter>*:nth-child(3n) .float{animation-delay:.8s}
+#lp .scatter>*:nth-child(3n+1) .float{animation-delay:1.6s}
+#lp .fa{animation:lp-fa .35s ease both}
+#lp .fb{animation:lp-fb .35s ease both}
+@supports (animation-timeline: view()){
+#lp .lprv{animation:lp-rise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+#lp .lprvl{animation:lp-inl linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+#lp .lprvr{animation:lp-inr linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+#lp .draw{animation:lp-draw linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+#lp .navbar{animation:lp-navin linear both;animation-timeline:scroll(root);animation-range:0px 40px}
+}
+@media (max-width:900px){
+#lp .navlinks{display:none !important}
+#lp .menu{display:inline-flex !important}
+#lp .hide-sm{display:none !important}
+#lp .scatter>*:nth-child(even){margin-top:0}
+#lp .bento{grid-template-columns:minmax(0,1fr) !important}
+#lp .bento>*{grid-column:auto !important;grid-row:auto !important}
+#lp .jh{display:none !important}
+#lp .jv{display:flex !important}
+#lp .mobcta{display:inline-flex !important}
+}
+@media (prefers-reduced-motion: reduce){#lp *{animation:none !important;transition:none !important}}
+body.lp-on{background:#0B0B0C;color:#F4F1EA}
+body.lp-on .land-hero{padding:96px 24px}body.lp-on .land-hero p{color:#A8A49B}
+body.lp-on>header.top,body.lp-on>nav.tabs,body.lp-on>#bannerWrap,body.lp-on>#bnav{display:none !important}
+body.lp-on>main#main{max-width:none;padding:0;margin:0}
+#lp{overflow-x:clip}
+#lp .mobcta,#lp a[data-wa]{white-space:nowrap}
+#lp button{line-height:inherit}
+#lp [role=tab][aria-selected=true]{background:#E3B341 !important;color:#1A1400 !important;border-color:#E3B341 !important}
+#lp [role=tab][aria-selected=false]{background:transparent !important;color:#F4F1EA !important;border-color:rgba(255,255,255,.18) !important}
+#lp :focus-visible{outline:2px solid #E3B341;outline-offset:2px}
+</style>
 <style>
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 :root{
@@ -898,6 +969,662 @@ main{padding-bottom:120px}
 </style>
 </head>
 <body>
+<script>try{var __k=false;for(var __i=0;__i<localStorage.length;__i++){if(/^sb-.*-auth-token$/.test(localStorage.key(__i)||""))__k=true}if(!__k&&localStorage.getItem("prepx.guest")!=="1"&&location.pathname==="/"&&!location.hash)document.body.classList.add("lp-on")}catch(e){}</script>
+<template id="lpT">
+<div id="lp"><div style="background: #0B0B0C; color: #F4F1EA; font-family: 'Outfit', system-ui, sans-serif; font-size: 17px; line-height: 1.55">
+
+<header class="navbar" style="position: sticky; top: 0; z-index: 10; background: rgba(11,11,12,0.92); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#top" data-lp-go="top" style="display: flex; align-items: center; gap: 12px; color: #F4F1EA; text-decoration: none">
+<img src="/logo-180.png" alt="" width="36" height="36" style="border-radius: 10px; display: block">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 22px">CA PrepX</span>
+</a>
+<nav class="navlinks" aria-label="Main" style="display: flex; align-items: center; gap: 28px; font-size: 16px">
+<a href="#top" data-lp-go="top" style="color: #F4F1EA; text-decoration: none; padding: 24px 0 22px; border-bottom: 2px solid #E3B341">Home</a>
+<a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none">Learn</a>
+<a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none">Practice</a>
+<a class="navlink" href="#mock" data-lp-go="mock" style="color: #A8A49B; text-decoration: none">Mock Exams</a>
+<a class="navlink" href="#platform" data-lp-go="platform" style="color: #A8A49B; text-decoration: none">Resources</a>
+<a class="navlink" href="#progress" data-lp-go="progress" style="color: #A8A49B; text-decoration: none">Progress</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="ghost" data-act="landin" style="height: 44px; padding: 0 16px; border-radius: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.18); color: #F4F1EA; font-weight: 500; font-size: 15px; display: inline-flex; align-items: center; white-space: nowrap; cursor: pointer; font-family: inherit">Sign in</button>
+<button class="primary hide-sm" data-act="landup" style="height: 44px; padding: 0 18px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; font-size: 15px; display: inline-flex; align-items: center; white-space: nowrap; border: 0; cursor: pointer; font-family: inherit">Create free account</button>
+</div>
+</div>
+</header>
+
+<main>
+
+<section id="top" class="gridbg" style="padding: 88px 24px 104px">
+<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 64px">
+<div style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 24px; align-items: flex-start">
+<div style="height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); display: inline-flex; align-items: center; gap: 10px; font-size: 15px">
+<span class="dot" aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #E3B341"></span>
+<span>100% free for CA students</span>
+</div>
+<div style="font-size: 13px; letter-spacing: 0.14em; color: #A8A49B; font-weight: 500">CA FOUNDATION • INTER • FINAL</div>
+<h1 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(40px, 5.2vw, 66px); line-height: 1.06; letter-spacing: -0.01em">Prepare smarter. <span style="color: #E3B341">Know exactly what to study next.</span></h1>
+<p style="margin: 0; font-size: 20px; max-width: 540px">One focused workspace for learning, practicing, revising and tracking your CA preparation.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px">
+<button class="primary go" data-act="landup" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Create my free account <span class="arr" aria-hidden="true">→</span></button>
+<button class="ghost go" data-act="guestgo" style="height: 52px; padding: 0 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18); background: transparent; color: #F4F1EA; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; cursor: pointer; font-family: inherit; font-size: inherit">Look around first</button>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 12px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); width: 100%; font-size: 15px; color: #A8A49B">
+<span><span style="color: #F4F1EA; font-weight: 600">3</span> CA levels</span>
+<span><span style="color: #F4F1EA; font-weight: 600">__NP__</span> ICAI papers</span>
+<span><span style="color: #F4F1EA; font-weight: 600">__NQ__</span> practice MCQs</span>
+<span><span style="color: #F4F1EA; font-weight: 600">₹0</span> to use</span>
+<span>Since <span style="color: #F4F1EA; font-weight: 600">2026</span></span>
+</div>
+</div>
+
+<div aria-hidden="true" style="flex: 1 1 380px; min-width: 0; height: 580px; overflow: hidden; display: flex; justify-content: center; gap: 16px; -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent)">
+<div class="colup" style="flex: 0 1 148px; min-width: 0; align-self: flex-start">
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">SYLLABUS</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">42%</span>
+<span style="font-size: 13px; color: #A8A49B">19 of 46 chapters</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 42%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">MCQ</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">Q7 of 10</span>
+<span style="font-size: 13px; color: #A8A49B">Business Laws</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 70%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">MOCK RESULT</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">61/100</span>
+<span style="font-size: 13px; color: #A8A49B">Paper 1</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 61%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">SYLLABUS</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">42%</span>
+<span style="font-size: 13px; color: #A8A49B">19 of 46 chapters</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 42%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">MCQ</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">Q7 of 10</span>
+<span style="font-size: 13px; color: #A8A49B">Business Laws</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 70%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">MOCK RESULT</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">61/100</span>
+<span style="font-size: 13px; color: #A8A49B">Paper 1</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 61%"></span></span>
+</div>
+
+</div>
+<div class="coldown" style="flex: 0 1 148px; min-width: 0; align-self: flex-start">
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">TODAY</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">2 tasks</span>
+<span style="font-size: 13px; color: #A8A49B">Planner</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 50%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">CHAPTER ANALYSIS</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">Ch 4</span>
+<span style="font-size: 13px; color: #A8A49B">High weight</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 85%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">WEAK SPOTS</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">4 to fix</span>
+<span style="font-size: 13px; color: #A8A49B">Review next</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 30%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">TODAY</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">2 tasks</span>
+<span style="font-size: 13px; color: #A8A49B">Planner</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 50%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">CHAPTER ANALYSIS</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">Ch 4</span>
+<span style="font-size: 13px; color: #A8A49B">High weight</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 85%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">WEAK SPOTS</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">4 to fix</span>
+<span style="font-size: 13px; color: #A8A49B">Review next</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 30%"></span></span>
+</div>
+
+</div>
+<div class="colup" style="flex: 0 1 148px; min-width: 0; align-self: flex-start">
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">NEXT UP</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">35 min</span>
+<span style="font-size: 13px; color: #A8A49B">Inventories</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 20%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">ACCURACY</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">68%</span>
+<span style="font-size: 13px; color: #A8A49B">Last 10 sets</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 68%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">RTP</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">Jan 27</span>
+<span style="font-size: 13px; color: #A8A49B">Paper 3</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 55%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">NEXT UP</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">35 min</span>
+<span style="font-size: 13px; color: #A8A49B">Inventories</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 20%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">ACCURACY</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">68%</span>
+<span style="font-size: 13px; color: #A8A49B">Last 10 sets</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 68%"></span></span>
+</div>
+
+<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">RTP</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">Jan 27</span>
+<span style="font-size: 13px; color: #A8A49B">Paper 3</span>
+<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 55%"></span></span>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div class="lprv" style="max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 48px">
+<p style="margin: 0; text-align: center; font-family: 'Young Serif', Georgia, serif; font-size: clamp(30px, 4vw, 52px); line-height: 1.12">“Built by people who sat where you are sitting.”</p>
+<div style="width: 100%; max-width: 380px; aspect-ratio: 9 / 16; border-radius: 28px; background: #141416; border: 1px solid rgba(227,179,65,0.35); box-shadow: 0 0 96px rgba(227,179,65,0.16); overflow: hidden">
+<video controls playsinline preload="none" poster="/media/founder-reel.jpg" aria-label="CA PrepX founder video" style="width: 100%; height: 100%; display: block; object-fit: cover; background: #141416"><source src="/media/founder-reel.mp4" type="video/mp4"></video>
+</div>
+</div>
+</section>
+
+<section class="gridbg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div class="lprv" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
+<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">WHY CA PREPX</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.8vw, 48px); line-height: 1.12; max-width: 760px">What's really holding your preparation back?</h2>
+<p style="margin: 0; color: #A8A49B; max-width: 560px">CA preparation shouldn't feel like guessing what to do next.</p>
+</div>
+<div class="scatter" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); column-gap: 28px; row-gap: 28px; align-items: start">
+<div class="lprvl"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></span>
+<span style="font-size: 19px; font-weight: 500">Too many chapters</span>
+</div></div>
+<div class="lprvr"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></span>
+<span style="font-size: 19px; font-weight: 500">Too many resources</span>
+</div></div>
+<div class="lprvl"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9M3 4v5h5"></path></svg></span>
+<span style="font-size: 19px; font-weight: 500">Difficulty knowing what to revise</span>
+</div></div>
+<div class="lprvr"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4"></circle></svg></span>
+<span style="font-size: 19px; font-weight: 500">Weak areas getting ignored</span>
+</div></div>
+<div class="lprvl"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2.5 2M9 2h6"></path></svg></span>
+<span style="font-size: 19px; font-weight: 500">Lack of realistic exam practice</span>
+</div></div>
+<div class="lprvr"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"></path></svg></span>
+<span style="font-size: 19px; font-weight: 500">No clear preparation roadmap</span>
+</div></div>
+<div class="lprvl"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 9a2.5 2.5 0 114 2c-.9.6-1.5 1.2-1.5 2.5M12 17.5v.5"></path><circle cx="12" cy="12" r="9"></circle></svg></span>
+<span style="font-size: 19px; font-weight: 500">Not knowing if you're on track</span>
+</div></div>
+</div>
+<p class="lprv" style="margin: 16px 0 0; text-align: center; font-family: 'Young Serif', Georgia, serif; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.25">We turn all of that into <span style="color: #E3B341">one clear preparation system.</span></p>
+<div class="lprv" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px">
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span style="color: #A8A49B; text-decoration: line-through; text-decoration-color: rgba(168,164,155,0.5)">Confused</span>
+<span style="font-size: 22px; font-weight: 500"><span style="color: #E3B341" aria-hidden="true">→ </span>Focused</span>
+</div>
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span style="color: #A8A49B; text-decoration: line-through; text-decoration-color: rgba(168,164,155,0.5)">Scattered resources</span>
+<span style="font-size: 22px; font-weight: 500"><span style="color: #E3B341" aria-hidden="true">→ </span>One workspace</span>
+</div>
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span style="color: #A8A49B; text-decoration: line-through; text-decoration-color: rgba(168,164,155,0.5)">Passive studying</span>
+<span style="font-size: 22px; font-weight: 500"><span style="color: #E3B341" aria-hidden="true">→ </span>Active practice</span>
+</div>
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span style="color: #A8A49B; text-decoration: line-through; text-decoration-color: rgba(168,164,155,0.5)">"I think I'm prepared"</span>
+<span style="font-size: 22px; font-weight: 500"><span style="color: #E3B341" aria-hidden="true">→ </span>Measurable progress</span>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div class="lprv" style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start; max-width: 760px">
+<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">WHY IT'S DIFFERENT</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">Not another library of CA resources. A preparation system.</h2>
+</div>
+<div class="lprv" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); column-gap: 64px; row-gap: 0">
+<div style="border-top: 1px solid rgba(255,255,255,0.10); padding: 32px 0 40px; display: flex; gap: 28px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 44px; line-height: 1; color: #E3B341">01</span>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 500">Know what to study</h3>
+<p style="margin: 0; color: #A8A49B">A day-by-day plan built around your attempt date and your study hours.</p>
+</div>
+</div>
+<div style="border-top: 1px solid rgba(255,255,255,0.10); padding: 32px 0 40px; display: flex; gap: 28px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 44px; line-height: 1; color: #E3B341">02</span>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 500">Practice like the real exam</h3>
+<p style="margin: 0; color: #A8A49B">MCQs, RTP and MTP based practice, and full mock examinations.</p>
+</div>
+</div>
+<div style="border-top: 1px solid rgba(255,255,255,0.10); padding: 32px 0 40px; display: flex; gap: 28px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 44px; line-height: 1; color: #E3B341">03</span>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 500">Find your weak spots</h3>
+<p style="margin: 0; color: #A8A49B">The MCQs you get wrong come back until you fix them.</p>
+</div>
+</div>
+<div style="border-top: 1px solid rgba(255,255,255,0.10); padding: 32px 0 40px; display: flex; gap: 28px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 44px; line-height: 1; color: #E3B341">04</span>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 500">See your preparation clearly</h3>
+<p style="margin: 0; color: #A8A49B">Track syllabus completion and your practice scores.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="services" class="gridbg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div class="lprv" style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start; max-width: 760px">
+<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">THE WORKSPACE</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">Everything you need. One preparation workspace.</h2>
+</div>
+<div class="bento lprv" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+
+<a class="lift" href="#" role="button" data-act="landup" style="grid-row: span 2; background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 14px; color: #F4F1EA; text-decoration: none; min-height: 300px">
+<div aria-hidden="true" style="flex-grow: 1; min-height: 150px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 18px; display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: #A8A49B">
+<div style="display: flex; align-items: center; gap: 10px"><span style="width: 18px; height: 18px; border-radius: 50%; background: #E3B341; flex-shrink: 0"></span><span>Ch 1 · Theoretical framework</span></div>
+<div style="display: flex; align-items: center; gap: 10px"><span style="width: 18px; height: 18px; border-radius: 50%; background: #E3B341; flex-shrink: 0"></span><span>Ch 2 · Accounting process</span></div>
+<div style="display: flex; align-items: center; gap: 10px"><span style="width: 18px; height: 18px; border-radius: 50%; background: #E3B341; flex-shrink: 0"></span><span>Ch 3 · Bank reconciliation</span></div>
+<div style="display: flex; align-items: center; gap: 10px; color: #F4F1EA"><span style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #E3B341; box-sizing: border-box; flex-shrink: 0"></span><span>Ch 4 · Inventories</span></div>
+<div style="display: flex; align-items: center; gap: 10px"><span style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); box-sizing: border-box; flex-shrink: 0"></span><span>Ch 5 · Depreciation</span></div>
+</div></div>
+<h3 style="margin: 0; font-size: 24px; font-weight: 500">Learn</h3>
+<p style="margin: 0; color: #A8A49B">Study chapter by chapter with video lectures and a syllabus tracker.</p>
+<span style="font-weight: 500">Start Learning <span class="arr" aria-hidden="true">→</span></span>
+</a>
+
+<a class="lift" href="#" role="button" data-act="landup" style="grid-column: span 2; background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; color: #F4F1EA; text-decoration: none">
+<div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 12px">
+<h3 style="margin: 0; font-size: 24px; font-weight: 500">Mock Exams</h3>
+<p style="margin: 0; color: #A8A49B">Experience full-length exam conditions.</p>
+<span style="font-weight: 500">Take a Mock <span class="arr" aria-hidden="true">→</span></span>
+</div>
+<div aria-hidden="true" style="flex: 1 1 180px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
+<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B">TIME LEFT</span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 34px; line-height: 1">2:41:07</span>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #E3B341"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: #E3B341"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: #E3B341"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span></div>
+</div></div>
+</a>
+
+<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: #F4F1EA; text-decoration: none">
+<div aria-hidden="true" style="height: 84px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 16px; display: flex; flex-direction: column; gap: 8px">
+<span style="height: 12px; width: 80%; border-radius: 6px; background: rgba(255,255,255,0.14)"></span>
+<span style="height: 12px; width: 62%; border-radius: 6px; background: #E3B341"></span>
+<span style="height: 12px; width: 72%; border-radius: 6px; background: rgba(255,255,255,0.14)"></span>
+</div></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 500">Practice</h3>
+<p style="margin: 0; color: #A8A49B; font-size: 16px; flex-grow: 1">Sharpen your concepts with targeted questions and 10-minute MCQs.</p>
+<span style="font-weight: 500">Practice Now <span class="arr" aria-hidden="true">→</span></span>
+</a>
+
+<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: #F4F1EA; text-decoration: none">
+<div aria-hidden="true" style="height: 84px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 16px; display: flex; gap: 8px; font-size: 13px; font-weight: 600">
+<span style="padding: 6px 10px; border-radius: 8px; background: #E3B341; color: #1A1400">RTP</span>
+<span style="padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,0.10)">MTP</span>
+<span style="padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,0.10)">PYQ</span>
+</div></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 500">RTP / MTP / PYQ</h3>
+<p style="margin: 0; color: #A8A49B; font-size: 16px; flex-grow: 1">Practice with exam-relevant questions and past material.</p>
+<span style="font-weight: 500">Explore Papers <span class="arr" aria-hidden="true">→</span></span>
+</a>
+
+<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: #F4F1EA; text-decoration: none">
+<div aria-hidden="true" style="height: 84px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 16px; height: 84px; box-sizing: border-box; display: flex; align-items: flex-end; gap: 8px">
+<span style="width: 18px; height: 80%; border-radius: 4px; background: rgba(255,255,255,0.14)"></span>
+<span style="width: 18px; height: 35%; border-radius: 4px; background: #E3B341"></span>
+<span style="width: 18px; height: 65%; border-radius: 4px; background: rgba(255,255,255,0.14)"></span>
+<span style="width: 18px; height: 28%; border-radius: 4px; background: #E3B341"></span>
+<span style="width: 18px; height: 90%; border-radius: 4px; background: rgba(255,255,255,0.14)"></span>
+</div></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 500">Weak Spots</h3>
+<p style="margin: 0; color: #A8A49B; font-size: 16px; flex-grow: 1">Identify what needs more attention.</p>
+<span style="font-weight: 500">Fix Weak Areas <span class="arr" aria-hidden="true">→</span></span>
+</a>
+
+<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: #F4F1EA; text-decoration: none">
+<div aria-hidden="true" style="height: 84px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 14px 16px; display: flex; align-items: center; gap: 14px">
+<svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6"></circle><circle cx="28" cy="28" r="22" fill="none" stroke="#E3B341" stroke-width="6" stroke-linecap="round" stroke-dasharray="58 138" transform="rotate(-90 28 28)"></circle></svg>
+<span style="font-size: 22px; font-weight: 600">42%</span>
+</div></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 500">Progress</h3>
+<p style="margin: 0; color: #A8A49B; font-size: 16px; flex-grow: 1">See exactly how far you have come.</p>
+<span style="font-weight: 500">View Progress <span class="arr" aria-hidden="true">→</span></span>
+</a>
+
+</div>
+</div>
+</section>
+
+<section id="platform" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 40px">
+<div class="lprv" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
+<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">THE PLATFORM</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12; max-width: 720px">Pick your level. <span style="color: #E3B341">See what's inside.</span></h2>
+</div>
+<div role="tablist" aria-label="CA level" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+
+<button role="tab" data-lp-lv="foundation" aria-selected="true" style="height: 52px; padding: 0 28px; border-radius: 999px; font-family: inherit; font-size: 17px; font-weight: 500; cursor: pointer; transition: background .15s ease, color .15s ease; background: #E3B341; color: #1A1400; border: 1px solid #E3B341">Foundation</button>
+
+<button role="tab" data-lp-lv="inter" aria-selected="false" style="height: 52px; padding: 0 28px; border-radius: 999px; font-family: inherit; font-size: 17px; font-weight: 500; cursor: pointer; transition: background .15s ease, color .15s ease; background: transparent; color: #F4F1EA; border: 1px solid rgba(255,255,255,0.18)">Intermediate</button>
+
+<button role="tab" data-lp-lv="final" aria-selected="false" style="height: 52px; padding: 0 28px; border-radius: 999px; font-family: inherit; font-size: 17px; font-weight: 500; cursor: pointer; transition: background .15s ease, color .15s ease; background: transparent; color: #F4F1EA; border: 1px solid rgba(255,255,255,0.18)">Final</button>
+
+</div>
+<div class="fa" style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 20px">
+
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 190px">
+<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B"><span data-lv-l="0">PAPERS</span></span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.15"><span data-lv-b="0">4 papers</span></span>
+<span style="color: #A8A49B; font-size: 15px"><span data-lv-s="0">Accounting · Business Laws · Quantitative Aptitude · Business Economics</span></span>
+</div>
+
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 190px">
+<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B"><span data-lv-l="1">CHAPTERS</span></span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.15"><span data-lv-b="1">46 chapters</span></span>
+<span style="color: #A8A49B; font-size: 15px"><span data-lv-s="1">Tracked and ticked off one by one</span></span>
+</div>
+
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 190px">
+<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B"><span data-lv-l="2">PRACTICE PAPERS</span></span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.15"><span data-lv-b="2">RTP · MTP · PYQ</span></span>
+<span style="color: #A8A49B; font-size: 15px"><span data-lv-s="2">Practice papers for each attempt</span></span>
+</div>
+
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 190px">
+<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B"><span data-lv-l="3">ALSO INSIDE</span></span>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.15"><span data-lv-b="3">Video lectures</span></span>
+<span style="color: #A8A49B; font-size: 15px"><span data-lv-s="3">Chapter-wise, in Hindi and English</span></span>
+</div>
+
+</div>
+<p class="lprv" style="margin: 0; text-align: center; color: #A8A49B">Free chapter-wise analysis, counted from ICAI's own papers: <a href="/analysis" data-ana="landing" style="white-space: nowrap">CA Foundation <span aria-hidden="true">→</span></a> &nbsp;·&nbsp; <a href="/analysis-inter" data-ana="landing-inter" style="white-space: nowrap">CA Intermediate <span aria-hidden="true">→</span></a></p>
+</div>
+</section>
+
+<section id="next" class="gridbg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div class="lprv" style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">Always know what to do next.</h2>
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 24px; padding: clamp(28px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 40px">
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<span style="align-self: flex-start; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 12px; letter-spacing: 0.14em; display: inline-flex; align-items: center">EXAMPLE</span>
+<p style="margin: 0; color: #A8A49B">You're 42% through your preparation. Your next step:</p>
+<h3 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(26px, 3vw, 36px); line-height: 1.15">Complete Chapter 4: Accounting for Inventory</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; color: #A8A49B; font-size: 16px">
+<span>Paper 1 · Accounting</span>
+<span>35 min estimated</span>
+<span>Then: 10-minute MCQs</span>
+</div>
+</div>
+<div style="flex: 0 1 300px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start">
+<button class="primary go" data-act="landup" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Build my plan <span class="arr" aria-hidden="true">→</span></button>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div class="lprv" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
+<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">HOW IT WORKS</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">From first read to exam day. <span style="color: #E3B341">Your six-step loop.</span></h2>
+</div>
+
+<div class="jh" style="position: relative; height: 360px">
+<svg aria-hidden="true" viewBox="0 0 1160 300" preserveAspectRatio="none" style="position: absolute; left: 0; top: 0; width: 100%; height: 300px; overflow: visible">
+<path d="M60,210 C165,210 165,90 270,90 C375,90 375,210 480,210 C585,210 585,90 690,90 C795,90 795,210 900,210 C1005,210 1005,90 1110,90" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="14" stroke-linecap="round"></path>
+<path class="draw" pathLength="1" d="M60,210 C165,210 165,90 270,90 C375,90 375,210 480,210 C585,210 585,90 690,90 C795,90 795,210 900,210 C1005,210 1005,90 1110,90" fill="none" stroke="#E3B341" stroke-width="4" stroke-linecap="round" stroke-dasharray="1" stroke-dashoffset="0"></path>
+</svg>
+
+<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 5.17%; top: 188px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">01</span>
+<span style="font-size: 19px; font-weight: 500">Learn</span>
+<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">Video lectures, chapter by chapter.</span>
+</div>
+
+<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 23.28%; top: 68px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">02</span>
+<span style="font-size: 19px; font-weight: 500">Practice</span>
+<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">10-minute MCQs and chapter questions.</span>
+</div>
+
+<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 41.38%; top: 188px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">03</span>
+<span style="font-size: 19px; font-weight: 500">Revise</span>
+<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">RTPs, MTPs and past papers.</span>
+</div>
+
+<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 59.48%; top: 68px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">04</span>
+<span style="font-size: 19px; font-weight: 500">Test</span>
+<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">A full-length mock under exam timing.</span>
+</div>
+
+<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 77.59%; top: 188px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">05</span>
+<span style="font-size: 19px; font-weight: 500">Analyse</span>
+<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">See which chapters carry the marks.</span>
+</div>
+
+<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 95.69%; top: 68px">
+<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">06</span>
+<span style="font-size: 19px; font-weight: 500">Improve</span>
+<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">Fix weak spots, then move on.</span>
+</div>
+
+</div>
+
+<div class="jv" style="flex-direction: column; gap: 28px; border-left: 3px solid #E3B341; margin-left: 20px; padding-left: 28px">
+
+<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
+<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">01</span>
+<span style="font-size: 19px; font-weight: 500">Learn</span>
+<span style="font-size: 15px; color: #A8A49B">Video lectures, chapter by chapter.</span>
+</div>
+
+<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
+<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">02</span>
+<span style="font-size: 19px; font-weight: 500">Practice</span>
+<span style="font-size: 15px; color: #A8A49B">10-minute MCQs and chapter questions.</span>
+</div>
+
+<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
+<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">03</span>
+<span style="font-size: 19px; font-weight: 500">Revise</span>
+<span style="font-size: 15px; color: #A8A49B">RTPs, MTPs and past papers.</span>
+</div>
+
+<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
+<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">04</span>
+<span style="font-size: 19px; font-weight: 500">Test</span>
+<span style="font-size: 15px; color: #A8A49B">A full-length mock under exam timing.</span>
+</div>
+
+<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
+<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">05</span>
+<span style="font-size: 19px; font-weight: 500">Analyse</span>
+<span style="font-size: 15px; color: #A8A49B">See which chapters carry the marks.</span>
+</div>
+
+<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
+<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">06</span>
+<span style="font-size: 19px; font-weight: 500">Improve</span>
+<span style="font-size: 15px; color: #A8A49B">Fix weak spots, then move on.</span>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="progress" class="gridbg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div class="lprv" style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px">
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">Your preparation, at a glance</h2>
+<button data-act="landup" class="ghost go" style="background: transparent; cursor: pointer; font-family: inherit; font-size: inherit; height: 48px; padding: 0 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18); color: #F4F1EA; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 10px">Start tracking yours <span class="arr" aria-hidden="true">→</span></button>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+<div style="flex: 1 1 320px; background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 32px; display: flex; align-items: center; gap: 28px">
+<svg role="img" aria-label="42 percent of syllabus completed" width="132" height="132" viewBox="0 0 132 132" style="flex-shrink: 0"><circle cx="66" cy="66" r="56" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10"></circle><circle cx="66" cy="66" r="56" fill="none" stroke="#E3B341" stroke-width="10" stroke-linecap="round" stroke-dasharray="148 352" transform="rotate(-90 66 66)"></circle><text x="66" y="75" text-anchor="middle" fill="#F4F1EA" font-size="30" font-family="Outfit, sans-serif" font-weight="600">42%</text></svg>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 22px; font-weight: 500">Syllabus completed</span>
+<span style="color: #A8A49B">19 of 46 chapters ticked off</span>
+</div>
+</div>
+<div style="flex: 2 1 480px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 20px">
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; color: #A8A49B">Questions attempted</span>
+<span style="font-size: 34px; font-weight: 600; line-height: 1.1">640</span>
+</div>
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; color: #A8A49B">Accuracy</span>
+<span style="font-size: 34px; font-weight: 600; line-height: 1.1">68%</span>
+<div style="height: 6px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px"><div style="width: 68%; height: 6px; border-radius: 3px; background: #E3B341"></div></div>
+</div>
+<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; color: #A8A49B">Mock exams completed</span>
+<span style="font-size: 34px; font-weight: 600; line-height: 1.1">2</span>
+</div>
+<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 6px; color: #F4F1EA; text-decoration: none">
+<span style="font-size: 14px; color: #A8A49B">Weak areas</span>
+<span style="font-size: 34px; font-weight: 600; line-height: 1.1">4 to fix</span>
+<span style="font-size: 15px; color: #A8A49B">Sample numbers</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+
+
+
+
+
+<section id="mock" style="padding: 112px 24px 112px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div class="lprv" style="max-width: 1160px; margin: 0 auto; background: #E3B341; color: #1A1400; border-radius: 28px; padding: clamp(36px, 6vw, 72px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 40px; box-sizing: border-box">
+<div style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.8vw, 48px); line-height: 1.1">Ready to see where you actually stand?</h2>
+<p style="margin: 0; font-size: 19px; max-width: 560px; color: #33290A">Take a full-length mock under realistic exam conditions and discover exactly where you need to improve.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
+<button class="go" data-act="landup" style="border: 0; cursor: pointer; font-family: inherit; font-size: inherit; height: 56px; padding: 0 28px; border-radius: 12px; background: #0B0B0C; color: #F4F1EA; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px">Start Mock Exam <span class="arr" aria-hidden="true">→</span></button>
+<button class="go" data-act="landin" style="background: transparent; border: 0; cursor: pointer; font-family: inherit; font-size: inherit; text-decoration: underline; color: #1A1400; font-weight: 500; padding: 10px 0">Already have an account? Sign in <span class="arr" aria-hidden="true">→</span></button>
+</div>
+</div>
+</section>
+
+<section style="padding: 96px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div class="lprv" style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start; max-width: 760px">
+<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">WHAT IT'S BUILT ON</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(26px, 3vw, 38px); line-height: 1.15">Built around the ICAI syllabus, paper by paper.</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 24px">
+<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>ICAI-aligned terminology</span></div>
+<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>RTP, MTP and PYQ papers</span></div>
+<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>Chapter-wise preparation</span></div>
+<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>Full-length mock exams</span></div>
+<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>Performance tracking</span></div>
+</div>
+</div>
+</section>
+
+<section class="gridbg" style="padding: 144px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
+<div class="lprv" style="max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(34px, 4.6vw, 58px); line-height: 1.08">Your next study session <span style="color: #E3B341">starts here.</span></h2>
+<p style="margin: 0; font-size: 19px; color: #A8A49B">Stop wondering what to study next. Start making measurable progress.</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 12px">
+<button class="primary go" data-act="landup" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Create my free account <span class="arr" aria-hidden="true">→</span></button>
+<button class="ghost go" data-act="guestgo" style="height: 52px; padding: 0 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18); background: transparent; color: #F4F1EA; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; cursor: pointer; font-family: inherit; font-size: inherit">Look around first</button>
+</div>
+</div>
+</section>
+
+<div style="position: sticky; bottom: 24px; height: 0; z-index: 9; padding: 0 24px; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none">
+<button class="mobcta primary" data-act="landup" style="border: 0; cursor: pointer; font-family: inherit; font-size: inherit; pointer-events: auto; height: 52px; padding: 0 20px; border-radius: 999px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5)">Sign up free</button>
+<span aria-hidden="true"></span>
+<a class="ghost" href="__WA__" target="_blank" rel="noopener" data-wa="landing" aria-label="Join the CA PrepX WhatsApp group" style="pointer-events: auto; height: 56px; padding: 0 20px 0 16px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.18); color: #F4F1EA; text-decoration: none; font-weight: 500; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5)">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.6 7.4L3 20l1.2-5.1A8.5 8.5 0 1121 11.5z"></path></svg>
+<span>Join the group</span>
+</a>
+</div>
+
+</main>
+
+<footer style="padding: 48px 24px 56px; border-top: 1px solid rgba(255,255,255,0.08)">
+<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 320px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 22px">CA PrepX</span>
+<span style="color: #A8A49B; font-size: 15px">Free CA exam prep, ticked off paper by paper.</span>
+</div>
+<nav aria-label="Product" style="display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 15px; align-content: flex-start">
+<a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Learn</a>
+<a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Practice</a>
+<a class="navlink" href="#mock" data-lp-go="mock" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Mock Exams</a>
+<a class="navlink" href="#platform" data-lp-go="platform" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Resources</a>
+<a class="navlink" href="#progress" data-lp-go="progress" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Progress</a>
+<button class="navlink" data-tab="about" style="background: transparent; border: 0; cursor: pointer; font-family: inherit; font-size: inherit; color: #A8A49B; text-decoration: none; padding: 10px 0">About</button>
+<a class="navlink" href="/analysis" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Foundation analysis</a>
+<a class="navlink" href="/analysis-inter" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Inter analysis</a>
+</nav>
+</div>
+</footer>
+
+</div>
+</div>
+</template>
+
 
 <header class="wrap top">
   <div class="brand">
@@ -908,7 +1635,7 @@ main{padding-bottom:120px}
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
 <div class="wrap" id="bannerWrap"></div>
-<main class="wrap" id="main"><section class="view"><div class="land"><div class="land-hero"><span class="free-pill">100% free for CA students</span><h1>Clear CA with a plan, not panic.</h1><p>Study plans, ICAI papers, mock exams and MCQs for CA Foundation, Intermediate and Final. All in one place, and free.</p></div></div></section></main>
+<main class="wrap" id="main"><section class="view"><div class="land"><div class="land-hero"><span class="free-pill">100% free for CA students</span><h1>Prepare smarter. Know exactly what to study next.</h1><p>One focused workspace for learning, practicing, revising and tracking your CA preparation.</p></div></div></section></main>
 <nav class="bnav" id="bnav" aria-label="Sections"></nav>
 
 <script src="/config.js"></script>
@@ -2052,6 +2779,22 @@ function dlGo(p){try{localStorage.removeItem("prepx.dl")}catch(_){}location.href
 function landOn(){return gateOn()&&!landAuth&&!recovering}
 function freshVisit(){try{if(deepLink()||guestOK()||landAuth||tab==="about"||/type=recovery|access_token|error_code/.test(location.hash))return false;for(let i=0;i<localStorage.length;i++){if(/^sb-.*-auth-token/.test(localStorage.key(i)||""))return false}return true}catch(_){return false}}
 function landing(){
+  const T=document.getElementById("lpT");if(!T)return landingOld();
+  const r=(n,k)=>Math.floor(n/k)*k;let nQ=0,nP=0;try{nQ=r(Q.length,50);nP=r(ICAI_CAT.length,10)}catch(_){}
+  return T.innerHTML.replace("__NP__",nP?nP+"+":"All").replace("__NQ__",nQ?nQ+"+":"Daily").replace("__WA__",WA_LINK);
+}
+const LP_LV={foundation:[["PAPERS","4 papers","Accounting · Business Laws · Quantitative Aptitude · Business Economics"],["CHAPTERS","46 chapters","Tracked and ticked off one by one"],["PRACTICE PAPERS","RTP · MTP · PYQ","Practice papers for each attempt"],["ALSO INSIDE","Video lectures","Chapter-wise, in Hindi and English"]],
+  inter:[["PAPERS","6 papers","Advanced Accounting · Corporate and Other Laws · Taxation · Costing · Auditing and Ethics · FM and SM"],["ANALYSIS","Chapter-wise","Where the marks come from, paper by paper"],["PRACTICE PAPERS","RTP · MTP · PYQ","Practice papers for each attempt"],["ALSO INSIDE","Video lectures","Chapter-wise, in Hindi and English"]],
+  final:[["PAPERS","6 papers","FR · AFM · Advanced Auditing · Direct Tax · Indirect Tax · Integrated Business Solutions"],["CAREERS","Articleship and jobs","Roles and open vacancies"],["PRACTICE PAPERS","RTP · MTP · PYQ","Practice papers for each attempt"],["ALSO INSIDE","SPOM tracker","All four self-paced modules"]]};
+document.addEventListener("click",e=>{const lp=e.target.closest("#lp");if(!lp)return;
+  const lv=e.target.closest("[data-lp-lv]");
+  if(lv){const d=LP_LV[lv.dataset.lpLv];lp.querySelectorAll("[data-lp-lv]").forEach(b=>b.setAttribute("aria-selected",b===lv?"true":"false"));
+    d.forEach((c,i)=>{[["l",0],["b",1],["s",2]].forEach(x=>{const el=lp.querySelector("[data-lv-"+x[0]+'="'+i+'"]');if(el)el.textContent=c[x[1]]})});return}
+  const a=e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();
+  if(a.dataset.lpGo){const t=document.getElementById(a.dataset.lpGo);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});return}
+  if(a.dataset.act){const b=lp.querySelector('button[data-act="'+a.dataset.act+'"]');if(b)b.click()}
+});
+function landingOld(){
   const r=(n,k)=>Math.floor(n/k)*k;let nQ=0,nP=0;try{nQ=r(Q.length,50);nP=r(ICAI_CAT.length,10)}catch(_){}
   const cta=`<div class="land-cta"><button class="btn primary" data-act="landup">Create my free account</button><button class="btn" data-act="guestgo">Look around first</button></div>`;
   const F=[["plan","A study plan that fits your days","Answer 15 quick questions and get a day-by-day timetable built around your attempt date, your hours and your weak papers."],
@@ -2123,7 +2866,8 @@ function welcome(gate){
     </div>`}
   </div>`;
 }
-function render(){renderChrome();const m=document.getElementById("main");
+function render(){render0();const on=!!document.getElementById("lp");if(document.body.classList.contains("lp-on")!==on){document.body.classList.toggle("lp-on",on);if(!on)window.scrollTo({top:0})}}
+function render0(){renderChrome();const m=document.getElementById("main");
   if(!authReady){m.innerHTML=freshVisit()?`<section class="view">${landing()}</section>`:`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
   if(gateOn()){m.innerHTML=`<section class="view">${landOn()?landing():welcome(1)}</section>`;return}
   if(recovering||tab==="signin"){
