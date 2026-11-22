@@ -82,7 +82,7 @@ input[type=text],input[type=datetime-local]{padding:9px 12px;border:1px solid va
 .qgrid label{font-size:.78rem;font-weight:700;color:var(--muted);display:grid;gap:3px}
 .qgrid input{width:100%}
 table.res{width:100%;border-collapse:collapse;font-size:.9rem}table.res td,table.res th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}
-.partner{font-size:.8rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.partner{font-size:.8rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 3px;display:inline-flex;gap:8px;align-items:center}
 .hint{font-size:.8rem;color:var(--muted)}
 </style>
 </head>
@@ -109,6 +109,7 @@ const B="test-series",LV={foundation:"Foundation",inter:"Intermediate",final:"Fi
 const PAPERS={foundation:["Accounting","Business Laws","Quantitative Aptitude","Business Economics"],
  inter:["Advanced Accounting","Corporate & Other Laws","Taxation","Cost & Management Accounting","Auditing & Ethics","FM & Strategic Management"],
  final:["Financial Reporting","Advanced Financial Management","Advanced Auditing, Assurance & Ethics","Direct Tax Laws & International Taxation","Indirect Tax Laws","Integrated Business Solutions"]};
+const SLOTS=[["U1","Unit Test 1"],["U2","Unit Test 2"],["U3","Unit Test 3"],["U4","Unit Test 4"],["F1","Full Syllabus Test 1"],["F2","Full Syllabus Test 2"],["other","Other / extra test"]];
 const ALL=Object.keys(PAPERS).flatMap(l=>PAPERS[l].map((_,i)=>l+":P"+(i+1)));
 const subName=k=>{const [l,p]=k.split(":"),n=+p.slice(1);return `${LV[l]||l} · P${n} ${PAPERS[l]?PAPERS[l][n-1]||"":""}`};
 let me=null,myName="",isAdmin=false,subs=[],tests=[],atts=[],view="tests",form=null,open=null,flash="",selTest="",busy=false;
@@ -150,7 +151,7 @@ const T=id=>tests.find(x=>x.id===id);
 function paint(){
   const todo=atts.filter(x=>x.status==="submitted"&&T(x.test_id));
   const tabs=[["tests","Tests"],["check",`To check${todo.length?` (${todo.length})`:""}`],["results","Results"]];
-  let h=`<div class="row" style="justify-content:space-between"><div><div class="eyebrow">Test series</div><h1>Teacher dashboard</h1></div><span class="partner">In partnership with Aarvedya</span></div>
+  let h=`<div class="row" style="justify-content:space-between"><div><div class="eyebrow">Test series</div><h1>Teacher dashboard</h1></div><span class="partner"><img src="/aarvedya-logo.jpg" alt="Aarvedya logo" width="30" height="30" style="border-radius:50%">In partnership with Aarvedya</span></div>
    <p class="muted">Your subjects: ${subs.length?(isAdmin?"all (admin)":subs.map(s=>esc(subName(s))).join(" · ")):"none yet. Ask the admin to assign your subjects."}</p>
    ${flash?`<p class="${flash[0]==="!"?"msg":"ok"}">${esc(flash.replace(/^!/,""))}</p>`:""}
    <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-view="${k}" aria-selected="${view===k}">${l}</button>`).join("")}</div>`;
@@ -160,7 +161,7 @@ function paint(){
 function vTests(){
   if(form)return vForm();
   const row=t=>{const n=atts.filter(a=>a.test_id===t.id),sub=n.filter(a=>a.status!=="started").length;
-    return `<div class="trow"><div class="t"><b>${esc(t.title)}</b><div class="meta"><span class="pill ${t.status==="published"?"done":"rev"}">${t.status==="published"?"Published":"Draft"}</span><span>${esc(subName(t.level+":"+t.paper))}</span><span>${t.kind==="mcq"?"MCQ · "+t.n_questions+" Qs":"Written"}</span><span>${t.duration_min} min</span><span>${num(t.max_marks)} marks</span><span>Opens ${when(t.opens_at)}</span>${t.closes_at?`<span>Closes ${when(t.closes_at)}</span>`:""}<span>${n.length} started · ${sub} submitted</span>${t.paper_path?"":`<span class="msg">No question paper yet</span>`}</div></div>
+    return `<div class="trow"><div class="t"><b>${esc(t.title)}</b><div class="meta"><span class="pill ${t.status==="published"?"done":"rev"}">${t.status==="published"?"Published":"Draft"}</span><span>${esc(subName(t.level+":"+t.paper))}</span>${t.slot&&t.slot!=="other"?`<span>${esc((SLOTS.find(z=>z[0]===t.slot)||[,""])[1])}</span>`:""}<span>${t.kind==="mcq"?"MCQ · "+t.n_questions+" Qs":"Written"}</span><span>${t.duration_min} min</span><span>${num(t.max_marks)} marks</span><span>Opens ${when(t.opens_at)}</span>${t.closes_at?`<span>Closes ${when(t.closes_at)}</span>`:""}<span>${n.length} started · ${sub} submitted</span>${t.paper_path?"":`<span class="msg">No question paper yet</span>`}</div></div>
      <div class="row">${t.paper_path?`<button class="btn" data-file="${esc(t.paper_path)}">Open paper</button>`:""}<button class="btn" data-edit="${t.id}">Edit</button><button class="btn ${t.status==="published"?"":"primary"}" data-pub="${t.id}">${t.status==="published"?"Unpublish":"Publish"}</button>${n.length?"":`<button class="btn ghost" data-del="${t.id}">Delete</button>`}</div></div>`};
   return `<div class="row"><button class="btn primary" data-new="1"${subs.length?"":" disabled"}>+ New test</button><span class="hint">Students see a test only after you publish it, and can open the paper only from its opening time.</span></div>
    ${tests.length?`<div class="card" style="display:grid;gap:10px">${tests.map(row).join("")}</div>`:`<div class="card empty"><h2>No tests yet</h2><p class="muted" style="margin-top:6px">Tap “New test” to upload your first one.</p></div>`}`;
@@ -170,6 +171,7 @@ function vForm(){const f=form,mcq=f.kind==="mcq";
    <div class="grid2">
     <div class="field"><label for="fs">Subject</label><select id="fs"${f.id?" disabled":""}>${subs.map(s=>`<option value="${s}"${s===f.sub?" selected":""}>${esc(subName(s))}</option>`).join("")}</select></div>
     <div class="field"><label for="fk">Type</label><select id="fk"${f.id?" disabled":""}><option value="mcq"${mcq?" selected":""}>MCQ (students tap options)</option><option value="desc"${mcq?"":" selected"}>Written (students upload one PDF)</option></select></div>
+    <div class="field"><label for="fl">Which test is this?</label><select id="fl">${SLOTS.map(([k,l])=>`<option value="${k}"${k===f.slot?" selected":""}>${l}</option>`).join("")}</select><span class="hint">It takes the place of that line in the student's list.</span></div>
     <div class="field" style="grid-column:1/-1"><label for="ft">Test name</label><input id="ft" type="text" maxlength="120" value="${esc(f.title)}" placeholder="e.g. Unit Test 1: Partnership Accounts"></div>
     <div class="field"><label for="fd">Time allowed (minutes)</label><input id="fd" type="number" min="5" max="600" value="${esc(f.duration_min)}"></div>
     <div class="field"><label for="fo">Opens on</label><input id="fo" type="datetime-local" value="${esc(f.opens)}"></div>
@@ -192,10 +194,10 @@ function parseKey(s,n){s=String(s||"").toUpperCase();let out=[];
   return {key:out.join("")}}
 async function save(status){if(busy)return;const f=form,msg=t=>{document.getElementById("fmsg").textContent=t};
   const g=id=>{const e=document.getElementById(id);return e?e.value.trim():""};
-  const sub=f.id?f.sub:g("fs"),kind=f.id?f.kind:g("fk"),title=g("ft"),dur=+g("fd"),opens=g("fo"),closes=g("fc");
+  const sub=f.id?f.sub:g("fs"),kind=f.id?f.kind:g("fk"),slot=g("fl")||"other",title=g("ft"),dur=+g("fd"),opens=g("fo"),closes=g("fc");
   if(!sub)return msg("Choose a subject.");if(!title)return msg("Give the test a name.");if(!(dur>=5&&dur<=600))return msg("Time allowed must be between 5 and 600 minutes.");if(!opens)return msg("Choose when the test opens.");
   if(closes&&new Date(closes)<=new Date(opens))return msg("The closing time must be after the opening time.");
-  const [level,paper]=sub.split(":");const row={level,paper,title,kind,duration_min:dur,opens_at:new Date(opens).toISOString(),closes_at:closes?new Date(closes).toISOString():null,status};
+  const [level,paper]=sub.split(":");const row={level,paper,title,kind,slot,duration_min:dur,opens_at:new Date(opens).toISOString(),closes_at:closes?new Date(closes).toISOString():null,status};
   let key=null;
   if(kind==="mcq"){const n=+g("fn"),mpq=+g("fm"),neg=+g("fg")||0;if(!(n>=1&&n<=300))return msg("Enter the number of questions.");if(!(mpq>0))return msg("Enter the marks for each right answer.");
     const raw=g("fa");if(raw||!f.id){const k=parseKey(raw,n);if(k.err)return msg(k.err);key=k.key}else if(f.n&&+f.n!==n)return msg("You changed the number of questions, so enter the answer key again.");
@@ -250,11 +252,11 @@ function vResults(){
 async function file(path){const w=window.open("","_blank");const r=await sb.storage.from(B).createSignedUrl(path,900);if(r.error){if(w)w.close();flash="!"+r.error.message;return paint()}if(w)w.location=r.data.signedUrl;else location.href=r.data.signedUrl}
 document.addEventListener("input",e=>{if(e.target.matches("[data-qi]"))total()});
 document.addEventListener("change",e=>{if(e.target.id==="rs"){selTest=e.target.value;paint()}
-  if(e.target.id==="fk"&&form&&!form.id){const keep=id=>{const x=document.getElementById(id);return x?x.value:""};Object.assign(form,{kind:e.target.value,sub:keep("fs"),title:keep("ft"),duration_min:keep("fd"),opens:keep("fo"),closes:keep("fc")});paint()}});
+  if(e.target.id==="fk"&&form&&!form.id){const keep=id=>{const x=document.getElementById(id);return x?x.value:""};Object.assign(form,{kind:e.target.value,sub:keep("fs"),slot:keep("fl"),title:keep("ft"),duration_min:keep("fd"),opens:keep("fo"),closes:keep("fc")});paint()}});
 document.addEventListener("click",async e=>{const t=e.target.closest("button");if(!t)return;const d=t.dataset;
   if(d.view){view=d.view;form=null;open=null;return paint()}
-  if(d.new){form={id:null,sub:subs[0],kind:"mcq",title:"",duration_min:60,opens:toLocal(new Date()),closes:"",n:"",mpq:1,neg:0,key:"",qm:"",paper_path:null};return paint()}
-  if(d.edit){const x=T(d.edit);form={id:x.id,sub:x.level+":"+x.paper,kind:x.kind,title:x.title,duration_min:x.duration_min,opens:toLocal(x.opens_at),closes:x.closes_at?toLocal(x.closes_at):"",n:x.n_questions||"",mpq:x.marks_per_q,neg:x.negative,key:"",qm:(x.q_marks||[]).join(", "),paper_path:x.paper_path};return paint()}
+  if(d.new){form={id:null,sub:subs[0],kind:"mcq",slot:"U1",title:"",duration_min:60,opens:toLocal(new Date()),closes:"",n:"",mpq:1,neg:0,key:"",qm:"",paper_path:null};return paint()}
+  if(d.edit){const x=T(d.edit);form={id:x.id,sub:x.level+":"+x.paper,kind:x.kind,slot:x.slot||"other",title:x.title,duration_min:x.duration_min,opens:toLocal(x.opens_at),closes:x.closes_at?toLocal(x.closes_at):"",n:x.n_questions||"",mpq:x.marks_per_q,neg:x.negative,key:"",qm:(x.q_marks||[]).join(", "),paper_path:x.paper_path};return paint()}
   if(d.cancel){form=null;return paint()}
   if(d.save)return save(d.save);
   if(d.pub){const x=T(d.pub),to=x.status==="published"?"draft":"published";if(to==="published"&&!x.paper_path){flash="!Attach the question paper before publishing. Tap Edit.";return paint()}

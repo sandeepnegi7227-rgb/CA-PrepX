@@ -16,8 +16,9 @@ create table if not exists public.ts_tests(
   n_questions int check (n_questions between 1 and 300),
   marks_per_q numeric not null default 1, negative numeric not null default 0,
   q_marks jsonb, opens_at timestamptz not null default now(), closes_at timestamptz,
-  paper_path text, status text not null default 'draft' check (status in ('draft','published')),
+  paper_path text, slot text, status text not null default 'draft' check (status in ('draft','published')),
   created_by uuid, created_name text, created_at timestamptz not null default now());
+alter table public.ts_tests add column if not exists slot text;
 create table if not exists public.ts_keys(
   test_id uuid primary key references public.ts_tests(id) on delete cascade,
   answer_key text not null);
