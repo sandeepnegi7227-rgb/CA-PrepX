@@ -759,7 +759,7 @@ body.exam-on,body.modal-on{overflow:hidden}
 .ts-hero h1{font-size:1.6rem;margin:0;color:inherit}.ts-hero p{color:inherit;opacity:.82}
 .ts-hero .eyebrow{color:var(--gold)}
 .ts-partner{display:inline-flex;align-self:start;justify-self:start;gap:8px;align-items:center;font-size:.82rem;font-weight:700;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:4px 14px 4px 4px}.ts-partner img{border-radius:50%;display:block}
-.ts-row.soon{border-style:dashed;background:transparent}.ts-row .d{font-size:.84rem;color:var(--muted)}
+.ts-row.soon{border-style:dashed;background:transparent}.ts-filter{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr))}.ts-filter .field{display:grid;gap:4px}.ts-filter label{font-size:.78rem;font-weight:700;color:var(--muted)}.ts-filter select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font:inherit;font-size:16px;color:inherit}.ts-row .d{font-size:.84rem;color:var(--muted)}
 .ts-steps{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr))}
 .ts-steps li{border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 12px;font-size:.86rem}.ts-steps b{display:block;font-size:.95rem}
 .ts-paper{display:grid;gap:10px}.ts-paper>h2{font-size:1.05rem;margin:0}
@@ -3802,14 +3802,19 @@ function tsRow(t){const now=Date.now(),a=TS.att[t.id],kind=t.kind==="mcq"?"MCQ":
   else right=`<button class="btn primary" data-tsstart="${t.id}">Attempt</button>`;
   const info=t.slot&&t.slot!=="other"?tsSlotInfo(t.level,t.paper,t.slot):null;
   return `<div class="ts-row"><div class="t"><b>${esc(t.title)}</b>${info?`<span class="d">${esc(info.d)}</span>`:""}<div class="ts-meta"><span class="pill">${kind}</span><span>${t.duration_min} min</span><span>${tsNum(t.max_marks)} marks</span>${t.kind==="mcq"?`<span>${t.n_questions} questions</span>`:""}${t.closes_at&&!closed&&!a?`<span>Closes ${tsWhen(t.closes_at)}</span>`:""}</div></div><div class="row">${right}</div></div>`}
+let TSF={p:"all",t:"all"};
 function tsSchedule(lv,mode){
-  const tests=mode==="open"?TS.tests:[];
-  return LEVELS[lv].papers.map(p=>{const pp="P"+p.no,mine=tests.filter(t=>t.paper===pp),used=new Set();
-    const rows=TS_SLOTS.map(([sl,nm])=>{const t=mine.find(x=>x.slot===sl);if(t){used.add(t.id);return tsRow(t)}
+  const tests=mode==="open"?TS.tests:[],papers=LEVELS[lv].papers;
+  if(TSF.p!=="all"&&!papers.some(p=>"P"+p.no===TSF.p))TSF.p="all";
+  const bar=`<div class="card ts-filter"><div class="field"><label for="tsfP">Paper</label><select id="tsfP"><option value="all">All papers</option>${papers.map(p=>`<option value="P${p.no}"${TSF.p==="P"+p.no?" selected":""}>Paper ${p.no} · ${esc(p.name)}</option>`).join("")}</select></div>
+   <div class="field"><label for="tsfT">Test</label><select id="tsfT"><option value="all">All tests</option>${TS_SLOTS.map(([k,l])=>`<option value="${k}"${TSF.t===k?" selected":""}>${l}</option>`).join("")}</select></div></div>`;
+  const out=papers.filter(p=>TSF.p==="all"||"P"+p.no===TSF.p).map(p=>{const pp="P"+p.no,mine=tests.filter(t=>t.paper===pp),used=new Set();
+    const rows=TS_SLOTS.filter(([sl])=>TSF.t==="all"||TSF.t===sl).map(([sl,nm])=>{const t=mine.find(x=>x.slot===sl);if(t){used.add(t.id);return tsRow(t)}
       const info=tsSlotInfo(lv,pp,sl);
       return `<div class="ts-row soon"><div class="t"><b>${nm}</b><span class="d">${esc(info.d)}</span>${info.f?`<div class="ts-meta"><span>${esc(info.f)}</span></div>`:""}</div><div class="row"><span class="pill">${mode==="locked"?"For enrolled students":mode==="guest"?"Sign in to attempt":"Paper coming soon"}</span></div></div>`}).join("");
-    const extra=mine.filter(t=>!used.has(t.id)).map(tsRow).join("");
-    return `<div class="card ts-paper"><h2>Paper ${p.no} · ${esc(p.name)}</h2>${rows}${extra}</div>`}).join("")}
+    const extra=TSF.t==="all"?mine.filter(t=>!TS_SLOTS.some(([sl])=>sl===t.slot&&mine.find(x=>x.slot===sl)===t)).map(tsRow).join(""):"";
+    return `<div class="card ts-paper"><h2>Paper ${p.no} · ${esc(p.name)}</h2>${rows}${extra}</div>`}).join("");
+  return bar+out}
 function tsResult(id){const t=TS.tests.find(x=>x.id===id),a=TS.att[id];if(!t||!a){TS.res=null;return ""}
   const back=`<div class="row"><button class="btn" data-act="tsback">← All tests</button></div>`;
   const top=`<div class="eyebrow">${esc(tsPaperName(t.level,t.paper))}</div><h2 style="margin:2px 0 0">${esc(t.title)}</h2>`;
@@ -3905,7 +3910,8 @@ document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)r
   if(t.dataset.tsq){TSX.q=+t.dataset.tsq;TSX.grid=false;tsDock();return}
   if(t.dataset.tso){const o=t.dataset.tso;if(TSX.ans[TSX.q]===o)delete TSX.ans[TSX.q];else TSX.ans[TSX.q]=o;try{localStorage.setItem(tsKey(TSX.id),JSON.stringify(TSX.ans))}catch(_){}tsDock();return}
 });
-document.addEventListener("change",e=>{if(e.target&&e.target.id==="tsxF"&&e.target.files&&e.target.files[0])tsUpload(e.target.files[0])});
+document.addEventListener("change",e=>{if(e.target&&(e.target.id==="tsfP"||e.target.id==="tsfT")){TSF[e.target.id==="tsfP"?"p":"t"]=e.target.value;const id=e.target.id;render();const el=document.getElementById(id);if(el)el.focus();return}
+  if(e.target&&e.target.id==="tsxF"&&e.target.files&&e.target.files[0])tsUpload(e.target.files[0])});
 function tsHomeCard(){return `<div class="card wa-card ts-card"><div><div class="eyebrow">New</div><h2 style="font-size:1.1rem">CA ${esc(L().label)} Test Series</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Unit-wise and full-syllabus tests. MCQs marked instantly, written papers checked by a teacher.</p></div><div class="row"><button class="btn primary" data-tab="tests">Open Test Series</button></div></div>`}
 
 /* ---------- events ---------- */
