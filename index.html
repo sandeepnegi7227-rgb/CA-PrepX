@@ -3762,6 +3762,8 @@ const TS_PLAN={foundation:{
  P2:{unit:"Written · 50 marks · 90 min",full:"Written · 100 marks · 3 hours",U1:"Indian Regulatory Framework and the Indian Contract Act (general contracts)",U2:"Indian Contract Act (special contracts) and the Sale of Goods Act",U3:"Indian Partnership Act and the LLP Act",U4:"Companies Act and the Negotiable Instruments Act"},
  P3:{unit:"MCQ · 50 questions · 60 min",full:"MCQ · 100 questions · 2 hours · 0.25 cut for a wrong answer",U1:"Business Maths, Ch 1–4: Ratio, Indices and Logs, Equations, Inequalities, Mathematics of Finance",U2:"Business Maths, Ch 5–8: Permutations and Combinations, Sequence and Series, Sets and Functions, Calculus",U3:"Logical Reasoning, Ch 9–13",U4:"Statistics, Ch 14–18"},
  P4:{unit:"MCQ · 50 questions · 60 min",full:"MCQ · 100 questions · 2 hours · 0.25 cut for a wrong answer",U1:"Ch 1–3: Nature and Scope, Demand and Supply, Production and Cost",U2:"Ch 4–5: Price Determination in Different Markets, Business Cycles",U3:"Ch 6–8: National Income, Public Finance, Money Market",U4:"Ch 9–10: International Trade, Indian Economy"}}};
+const TS_DATES={};
+const tsSlotDate=(lv,pp,sl)=>{const d=TS_DATES[lv+":"+pp+":"+sl];return d?new Date(d+"T00:00:00").toLocaleDateString("en-IN",{day:"numeric",month:"short"}):""};
 function tsSlotInfo(lv,pp,sl){const P=(TS_PLAN[lv]||{})[pp]||{},full=sl[0]==="F";
   return {d:full?"Whole syllabus, on the ICAI exam pattern":(P[sl]||"Chapters will be announced by your teacher"),f:full?(P.full||""):(P.unit||"")}}
 async function tsLoad(force){
@@ -3784,7 +3786,7 @@ function testsView(){
   if(!can)return head+`<div class="card ts-card"><h2>Sign in to take the tests</h2><p class="muted" style="margin-top:4px">Use the same email you gave when you enrolled, so your tests and marks show up here. Below is how the test series is laid out.</p><div class="row" style="margin-top:12px"><button class="btn primary" data-act="tsauth">Sign in or create account</button></div></div>`+tsSchedule(lv,"guest");
   tsLoad();
   if(!TS.loaded)return head+`<div class="card"><p class="muted">Loading your tests…</p></div>`;
-  if(TS.err==="setup")return head+`<div class="card"><p class="muted">The test series is being set up. Check back soon.</p></div>`+tsSchedule(lv,"guest");
+  if(TS.err==="setup")return head+`<div class="card"><p class="muted">The tests are being loaded in. Here is the full line-up; each one opens for you as its paper goes up.</p></div>`+tsSchedule(lv,"soon");
   if(TS.err)return head+`<div class="card"><p class="muted">Couldn't load the tests: ${esc(TS.err)}</p><div class="row" style="margin-top:10px"><button class="btn" data-act="tsrefresh">Try again</button></div></div>`;
   if(!TS.enrol)return head+`<div class="card ts-card"><h2>For enrolled students</h2><p class="muted" style="margin-top:4px">You can see the full line-up of tests below. Attempting them is open to students who have enrolled in the batch. You're signed in as <b>${esc(session.user.email||"")}</b>.</p>
     <p class="muted" style="margin-top:8px"><b>Already enrolled?</b> Access is switched on for the email you gave when you paid. If that was a different email, sign in with it, or message us and we'll fix it.</p>
@@ -3811,7 +3813,7 @@ function tsSchedule(lv,mode){
   const out=papers.filter(p=>TSF.p==="all"||"P"+p.no===TSF.p).map(p=>{const pp="P"+p.no,mine=tests.filter(t=>t.paper===pp),used=new Set();
     const rows=TS_SLOTS.filter(([sl])=>TSF.t==="all"||TSF.t===sl).map(([sl,nm])=>{const t=mine.find(x=>x.slot===sl);if(t){used.add(t.id);return tsRow(t)}
       const info=tsSlotInfo(lv,pp,sl);
-      return `<div class="ts-row soon"><div class="t"><b>${nm}</b><span class="d">${esc(info.d)}</span>${info.f?`<div class="ts-meta"><span>${esc(info.f)}</span></div>`:""}</div><div class="row"><span class="pill">${mode==="locked"?"For enrolled students":mode==="guest"?"Sign in to attempt":"Paper coming soon"}</span></div></div>`}).join("");
+      return `<div class="ts-row soon"><div class="t"><b>${nm}</b><span class="d">${esc(info.d)}</span>${info.f?`<div class="ts-meta"><span>${esc(info.f)}</span></div>`:""}</div><div class="row"><span class="pill">${(d=>mode==="locked"?(d?"Opens "+d+" · enrolled students":"For enrolled students"):mode==="guest"?(d?"Opens "+d+" · sign in to attempt":"Sign in to attempt"):d?"Can attempt from "+d:"Coming soon")(tsSlotDate(lv,pp,sl))}</span></div></div>`}).join("");
     const extra=TSF.t==="all"?mine.filter(t=>!TS_SLOTS.some(([sl])=>sl===t.slot&&mine.find(x=>x.slot===sl)===t)).map(tsRow).join(""):"";
     return `<div class="card ts-paper"><h2>Paper ${p.no} · ${esc(p.name)}</h2>${rows}${extra}</div>`}).join("");
   return bar+out}
