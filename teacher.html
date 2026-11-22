@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CA PrepX · Test Series for teachers</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/logo-64.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#FAF7EF; --surface:#FFFFFF; --surface-2:#F3EEE1; --ink:#141414; --muted:#6B6558;
+  --line:#E6DFCC; --gold:#E0B43A; --gold-ink:#1A1405; --gold-deep:#9C7400; --soft:#F6EDD2;
+  --good:#2F7D4F; --good-soft:#E2F1E7; --tick:#C2410C; --tick-soft:#FBE4D8; --warn:#A86A00; --warn-soft:#F6EBCB;
+  --serif:"Fraunces",Georgia,serif; --sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root{color-scheme:dark;
+  --bg:#0B0B0C; --surface:#161617; --surface-2:#1F1F22; --ink:#F3EEDF; --muted:#A39C88;
+  --line:#2C2921; --gold-deep:#E0B43A; --soft:#2A2414;
+  --good:#5FC08A; --good-soft:#15291E; --tick:#F2845C; --tick-soft:#3A2016; --warn:#E3B04F; --warn-soft:#33290F;}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+[hidden]{display:none!important}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px}
+@media (min-width:720px){.wrap{padding-inline:28px}}
+h1,h2{font-family:var(--serif);font-weight:700;margin:0;letter-spacing:-.01em}
+h1{font-size:1.7rem} h2{font-size:1.15rem}
+p{margin:0}
+.muted{color:var(--muted)}
+.eyebrow{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-block:16px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand b{font-family:var(--serif);font-size:1.2rem}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:700;font-size:.88rem;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--gold)}
+.btn.primary{background:var(--gold);color:var(--gold-ink);border-color:var(--gold);box-shadow:0 6px 16px rgba(224,180,58,.3)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--gold-deep)}
+.btn:disabled{opacity:.5;cursor:default}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+main{display:grid;gap:16px;padding-block:4px 60px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+@media (min-width:760px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{background:var(--surface);padding:14px 16px}
+.stat .v{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-top:2px}
+.stat .s{font-size:.8rem;color:var(--muted)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{flex:none;border:0;background:none;padding:10px 14px 11px;cursor:pointer;color:var(--muted);font-weight:600;border-bottom:3px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);font-weight:800;border-bottom-color:var(--gold)}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+input[type=search],input[type=email],input[type=password],input[type=number],select,textarea{padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:16px}
+input[type=search]{flex:1;min-width:180px}
+textarea{width:100%;resize:vertical}
+.pill{display:inline-block;font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--ink)}
+.pill.new{background:var(--soft);color:var(--gold-deep)}.pill.rev{background:var(--warn-soft);color:var(--warn)}.pill.done{background:var(--good-soft);color:var(--good)}
+.sub{display:grid;gap:10px}
+.sub-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.sub-t{display:grid;gap:2px;min-width:0}.sub-t b{font-size:1rem}
+.note{background:var(--surface-2);border-radius:12px;padding:8px 12px;font-size:.88rem;white-space:pre-line}
+.score{font-family:var(--serif);font-weight:700;font-size:1.5rem;line-height:1}.score small{font-size:.85rem;color:var(--muted)}
+.mark{display:grid;gap:10px;border-top:1px dashed var(--line);padding-top:12px}
+.mark-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr))}
+.field{display:grid;gap:4px}.field label{font-size:.8rem;font-weight:700;color:var(--muted)}
+.file{padding:10px;border:1.5px dashed var(--gold);border-radius:12px;background:var(--soft)}
+.msg{color:var(--tick);font-size:.88rem}
+.ok{color:var(--good);font-size:.88rem}
+.login{max-width:420px;margin:30px auto 0;display:grid;gap:12px}
+.empty{text-align:center;padding:30px 18px}
+
+.grid2{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr))}
+input[type=text],input[type=datetime-local]{padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:16px;width:100%}
+.field input,.field select{width:100%}
+.trow{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.trow .t{display:grid;gap:3px;flex:1 1 240px;min-width:0}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:.82rem;color:var(--muted);align-items:center}
+.qgrid{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+.qgrid label{font-size:.78rem;font-weight:700;color:var(--muted);display:grid;gap:3px}
+.qgrid input{width:100%}
+table.res{width:100%;border-collapse:collapse;font-size:.9rem}table.res td,table.res th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}
+.partner{font-size:.8rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.hint{font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand">
+    <img src="/logo-180.png" alt="CA PrepX logo" width="34" height="34" style="border-radius:9px;background:#fff;box-shadow:0 0 0 1px var(--line)">
+    <div><b>CA PrepX</b> <span class="muted">· Test Series · Teachers</span></div>
+  </div>
+  <div class="row" id="topAct"></div>
+</header>
+<main class="wrap" id="main"><p class="muted">Loading…</p></main>
+
+<script src="/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.js"></script>
+<script>
+(function(){
+const CFG=window.PREPX_CONFIG||{};
+const main=document.getElementById("main"),top=document.getElementById("topAct");
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+if(!CFG.url||!CFG.anonKey||!window.supabase){main.innerHTML=`<div class="card"><h2>Not connected yet</h2></div>`;return}
+const sb=window.supabase.createClient(CFG.url,CFG.anonKey);
+const B="test-series",LV={foundation:"Foundation",inter:"Intermediate",final:"Final"};
+const PAPERS={foundation:["Accounting","Business Laws","Quantitative Aptitude","Business Economics"],
+ inter:["Advanced Accounting","Corporate & Other Laws","Taxation","Cost & Management Accounting","Auditing & Ethics","FM & Strategic Management"],
+ final:["Financial Reporting","Advanced Financial Management","Advanced Auditing, Assurance & Ethics","Direct Tax Laws & International Taxation","Indirect Tax Laws","Integrated Business Solutions"]};
+const ALL=Object.keys(PAPERS).flatMap(l=>PAPERS[l].map((_,i)=>l+":P"+(i+1)));
+const subName=k=>{const [l,p]=k.split(":"),n=+p.slice(1);return `${LV[l]||l} · P${n} ${PAPERS[l]?PAPERS[l][n-1]||"":""}`};
+let me=null,myName="",isAdmin=false,subs=[],tests=[],atts=[],view="tests",form=null,open=null,flash="",selTest="",busy=false;
+const when=d=>d?new Date(d).toLocaleString("en-IN",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"}):"";
+const num=n=>{n=+n;return Number.isInteger(n)?String(n):String(+n.toFixed(2))};
+const toLocal=d=>{const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString().slice(0,16)};
+
+function loginForm(err){
+  top.innerHTML=`<a class="btn" href="/">Open site</a>`;
+  main.innerHTML=`<div class="card login"><div class="eyebrow">Test Series · teacher dashboard</div><h1>Sign in</h1><p class="muted">Use the email and password of your CA PrepX account. The admin gives it teacher access and your subjects.</p>${err?`<p class="msg">${esc(err)}</p>`:""}
+   <div class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="email"></div>
+   <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password"></div>
+   <button class="btn primary" id="go" style="justify-content:center">Sign in</button></div>`;
+  const go=async()=>{const b=document.getElementById("go");b.disabled=true;b.textContent="Signing in…";
+    const {error}=await sb.auth.signInWithPassword({email:document.getElementById("em").value.trim(),password:document.getElementById("pw").value});
+    if(error)return loginForm(error.message);start()};
+  document.getElementById("go").onclick=go;document.getElementById("pw").onkeydown=e=>{if(e.key==="Enter")go()};
+}
+async function start(){
+  const {data}=await sb.auth.getSession();if(!data.session)return loginForm();me=data.session.user;
+  const [t,a]=await Promise.all([sb.from("ts_teachers").select("name,subjects").eq("user_id",me.id).maybeSingle(),sb.rpc("is_admin")]);isAdmin=!!a.data;
+  const so=`<button class="btn" id="so">Sign out</button>`,bind=()=>{document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()}};
+  if(t.error&&!isAdmin){top.innerHTML=so;bind();main.innerHTML=`<div class="card"><h2>The test series isn't set up yet</h2><p class="msg" style="margin-top:6px">${esc(t.error.message)}</p></div>`;return}
+  if(!t.data&&!isAdmin){top.innerHTML=so;bind();main.innerHTML=`<div class="card"><h2>This isn't a teacher account yet</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(me.email||"")}. Ask the CA PrepX admin to add this email under Admin → Test series, then reload.</p></div>`;return}
+  subs=isAdmin?ALL:((t.data&&t.data.subjects)||[]);
+  myName=(t.data&&t.data.name)||(me.user_metadata&&me.user_metadata.name)||(me.email||"").split("@")[0];
+  top.innerHTML=`<span class="muted" style="font-size:.85rem">${esc(myName)}${isAdmin?" · admin":""}</span><button class="btn" id="rf">Refresh</button><a class="btn" href="/">Open site</a>${so}`;bind();
+  document.getElementById("rf").onclick=load;load();
+}
+async function load(){
+  main.innerHTML=`<p class="muted">Loading…</p>`;
+  const t=await sb.from("ts_tests").select("*").order("created_at",{ascending:false});
+  if(t.error){main.innerHTML=`<div class="card"><p class="msg">${esc(t.error.message)}</p></div>`;return}
+  tests=(t.data||[]).filter(x=>isAdmin||subs.includes(x.level+":"+x.paper));
+  const a=await sb.from("ts_attempts").select("*").order("submitted_at",{ascending:true}).limit(5000);
+  atts=a.error?[]:(a.data||[]);paint();
+}
+const T=id=>tests.find(x=>x.id===id);
+function paint(){
+  const todo=atts.filter(x=>x.status==="submitted"&&T(x.test_id));
+  const tabs=[["tests","Tests"],["check",`To check${todo.length?` (${todo.length})`:""}`],["results","Results"]];
+  let h=`<div class="row" style="justify-content:space-between"><div><div class="eyebrow">Test series</div><h1>Teacher dashboard</h1></div><span class="partner">In partnership with Aarvedya</span></div>
+   <p class="muted">Your subjects: ${subs.length?(isAdmin?"all (admin)":subs.map(s=>esc(subName(s))).join(" · ")):"none yet. Ask the admin to assign your subjects."}</p>
+   ${flash?`<p class="${flash[0]==="!"?"msg":"ok"}">${esc(flash.replace(/^!/,""))}</p>`:""}
+   <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-view="${k}" aria-selected="${view===k}">${l}</button>`).join("")}</div>`;
+  h+=view==="tests"?vTests():view==="check"?vCheck(todo):vResults();main.innerHTML=h;flash="";
+}
+/* ----- tests ----- */
+function vTests(){
+  if(form)return vForm();
+  const row=t=>{const n=atts.filter(a=>a.test_id===t.id),sub=n.filter(a=>a.status!=="started").length;
+    return `<div class="trow"><div class="t"><b>${esc(t.title)}</b><div class="meta"><span class="pill ${t.status==="published"?"done":"rev"}">${t.status==="published"?"Published":"Draft"}</span><span>${esc(subName(t.level+":"+t.paper))}</span><span>${t.kind==="mcq"?"MCQ · "+t.n_questions+" Qs":"Written"}</span><span>${t.duration_min} min</span><span>${num(t.max_marks)} marks</span><span>Opens ${when(t.opens_at)}</span>${t.closes_at?`<span>Closes ${when(t.closes_at)}</span>`:""}<span>${n.length} started · ${sub} submitted</span>${t.paper_path?"":`<span class="msg">No question paper yet</span>`}</div></div>
+     <div class="row">${t.paper_path?`<button class="btn" data-file="${esc(t.paper_path)}">Open paper</button>`:""}<button class="btn" data-edit="${t.id}">Edit</button><button class="btn ${t.status==="published"?"":"primary"}" data-pub="${t.id}">${t.status==="published"?"Unpublish":"Publish"}</button>${n.length?"":`<button class="btn ghost" data-del="${t.id}">Delete</button>`}</div></div>`};
+  return `<div class="row"><button class="btn primary" data-new="1"${subs.length?"":" disabled"}>+ New test</button><span class="hint">Students see a test only after you publish it, and can open the paper only from its opening time.</span></div>
+   ${tests.length?`<div class="card" style="display:grid;gap:10px">${tests.map(row).join("")}</div>`:`<div class="card empty"><h2>No tests yet</h2><p class="muted" style="margin-top:6px">Tap “New test” to upload your first one.</p></div>`}`;
+}
+function vForm(){const f=form,mcq=f.kind==="mcq";
+  return `<div class="card" style="display:grid;gap:12px"><h2>${f.id?"Edit test":"New test"}</h2>
+   <div class="grid2">
+    <div class="field"><label for="fs">Subject</label><select id="fs"${f.id?" disabled":""}>${subs.map(s=>`<option value="${s}"${s===f.sub?" selected":""}>${esc(subName(s))}</option>`).join("")}</select></div>
+    <div class="field"><label for="fk">Type</label><select id="fk"${f.id?" disabled":""}><option value="mcq"${mcq?" selected":""}>MCQ (students tap options)</option><option value="desc"${mcq?"":" selected"}>Written (students upload one PDF)</option></select></div>
+    <div class="field" style="grid-column:1/-1"><label for="ft">Test name</label><input id="ft" type="text" maxlength="120" value="${esc(f.title)}" placeholder="e.g. Unit Test 1: Partnership Accounts"></div>
+    <div class="field"><label for="fd">Time allowed (minutes)</label><input id="fd" type="number" min="5" max="600" value="${esc(f.duration_min)}"></div>
+    <div class="field"><label for="fo">Opens on</label><input id="fo" type="datetime-local" value="${esc(f.opens)}"></div>
+    <div class="field"><label for="fc">Closes on (optional)</label><input id="fc" type="datetime-local" value="${esc(f.closes)}"></div>
+   </div>
+   ${mcq?`<div class="grid2">
+    <div class="field"><label for="fn">Number of questions</label><input id="fn" type="number" min="1" max="300" value="${esc(f.n)}"></div>
+    <div class="field"><label for="fm">Marks for each right answer</label><input id="fm" type="number" min="0" step="0.25" value="${esc(f.mpq)}"></div>
+    <div class="field"><label for="fg">Marks cut for each wrong answer</label><input id="fg" type="number" min="0" step="0.05" value="${esc(f.neg)}"></div>
+    <div class="field" style="grid-column:1/-1"><label for="fa">Answer key${f.id?" (leave blank to keep the saved key)":""}</label><textarea id="fa" rows="3" placeholder="ABCDABCD…  or  1-A, 2-C, 3-B …">${esc(f.key)}</textarea><span class="hint">One letter (A to D) per question, in order. Use a dash (-) for a question that should not be counted. Students never see this until they submit.</span></div></div>`
+   :`<div class="field"><label for="fq">Marks for each question, in order</label><input id="fq" type="text" value="${esc(f.qm)}" placeholder="e.g. 5, 5, 10, 10, 20"><span class="hint">You will enter the marks you award against each of these. Total marks = the sum.</span></div>`}
+   <div class="field"><label for="fp">Question paper (PDF, up to 25 MB)${f.paper_path?" · a paper is already saved; choose a file only to replace it":""}</label><input id="fp" type="file" accept="application/pdf,.pdf" class="file"></div>
+   <p class="msg" id="fmsg"></p>
+   <div class="row"><button class="btn primary" data-save="published">Save and publish</button><button class="btn" data-save="draft">Save as draft</button><button class="btn ghost" data-cancel="1">Cancel</button></div></div>`;
+}
+function parseKey(s,n){s=String(s||"").toUpperCase();let out=[];
+  if(/\d/.test(s)){const m=[...s.matchAll(/(\d+)\s*[-.:)=]?\s*([A-D]|-|X)/g)];out=Array(n).fill("");m.forEach(x=>{const i=+x[1];if(i>=1&&i<=n)out[i-1]=x[2]==="X"?"-":x[2]});if(out.some(x=>!x))return {err:`The key is missing question ${out.findIndex(x=>!x)+1}.`}}
+  else out=s.replace(/[^A-D-]/g,"").split("");
+  if(out.length!==n)return {err:`The key has ${out.length} answers but the test has ${n} questions.`};
+  return {key:out.join("")}}
+async function save(status){if(busy)return;const f=form,msg=t=>{document.getElementById("fmsg").textContent=t};
+  const g=id=>{const e=document.getElementById(id);return e?e.value.trim():""};
+  const sub=f.id?f.sub:g("fs"),kind=f.id?f.kind:g("fk"),title=g("ft"),dur=+g("fd"),opens=g("fo"),closes=g("fc");
+  if(!sub)return msg("Choose a subject.");if(!title)return msg("Give the test a name.");if(!(dur>=5&&dur<=600))return msg("Time allowed must be between 5 and 600 minutes.");if(!opens)return msg("Choose when the test opens.");
+  if(closes&&new Date(closes)<=new Date(opens))return msg("The closing time must be after the opening time.");
+  const [level,paper]=sub.split(":");const row={level,paper,title,kind,duration_min:dur,opens_at:new Date(opens).toISOString(),closes_at:closes?new Date(closes).toISOString():null,status};
+  let key=null;
+  if(kind==="mcq"){const n=+g("fn"),mpq=+g("fm"),neg=+g("fg")||0;if(!(n>=1&&n<=300))return msg("Enter the number of questions.");if(!(mpq>0))return msg("Enter the marks for each right answer.");
+    const raw=g("fa");if(raw||!f.id){const k=parseKey(raw,n);if(k.err)return msg(k.err);key=k.key}else if(f.n&&+f.n!==n)return msg("You changed the number of questions, so enter the answer key again.");
+    Object.assign(row,{n_questions:n,marks_per_q:mpq,negative:neg,max_marks:n*mpq,q_marks:null})}
+  else{const qm=g("fq").split(/[,\s]+/).filter(Boolean).map(Number);if(!qm.length||qm.some(x=>!(x>0)))return msg("Enter the marks for each question, like 5, 5, 10.");
+    Object.assign(row,{q_marks:qm,max_marks:qm.reduce((a,b)=>a+b,0),n_questions:qm.length})}
+  const file=document.getElementById("fp").files[0];
+  if(file&&!(file.type==="application/pdf"||/\.pdf$/i.test(file.name)))return msg("The question paper must be a PDF.");
+  if(file&&file.size>25*1024*1024)return msg("That PDF is over 25 MB.");
+  if(status==="published"&&!file&&!f.paper_path)return msg("Attach the question paper PDF before publishing, or save as a draft.");
+  busy=true;msg("Saving…");
+  try{let id=f.id;
+    if(!id){row.created_by=me.id;row.created_name=myName;const r=await sb.from("ts_tests").insert(row).select().single();if(r.error)throw r.error;id=r.data.id}
+    else{const r=await sb.from("ts_tests").update(row).eq("id",id);if(r.error)throw r.error}
+    if(key){const r=await sb.from("ts_keys").upsert({test_id:id,answer_key:key});if(r.error)throw r.error}
+    if(file){const path=`papers/${id}.pdf`;const up=await sb.storage.from(B).upload(path,file,{contentType:"application/pdf",upsert:true});if(up.error)throw up.error;const r=await sb.from("ts_tests").update({paper_path:path}).eq("id",id);if(r.error)throw r.error}
+    busy=false;form=null;flash=status==="published"?"Saved and published. Enrolled students can see it now.":"Saved as a draft. Students can't see it yet.";load()}
+  catch(e){busy=false;msg("Couldn't save: "+(e.message||e))}}
+/* ----- checking ----- */
+function vCheck(todo){
+  if(!todo.length)return `<div class="card empty"><h2>Nothing to check</h2><p class="muted" style="margin-top:6px">Written answers that students upload for your subjects appear here.</p></div>`;
+  return todo.map(a=>{const t=T(a.test_id),qm=t.q_marks||[];
+    if(open!==a.id)return `<div class="card sub"><div class="sub-top"><div class="sub-t"><b>${esc(a.student_name||a.student_email||"Student")}</b><span class="muted">${esc(t.title)} · ${esc(subName(t.level+":"+t.paper))}</span><span class="meta"><span>Uploaded ${when(a.submitted_at)}</span>${a.late?`<span class="pill rev">Late</span>`:""}</span></div><div class="row"><button class="btn" data-file="${esc(a.file_path)}">Open answers</button><button class="btn primary" data-open="${a.id}">Mark</button></div></div></div>`;
+    return `<div class="card sub"><div class="sub-top"><div class="sub-t"><b>${esc(a.student_name||a.student_email||"Student")}</b><span class="muted">${esc(t.title)} · ${esc(subName(t.level+":"+t.paper))} · ${esc(a.student_email||"")}</span></div><div class="row"><button class="btn" data-file="${esc(a.file_path)}">Open answers</button>${t.paper_path?`<button class="btn" data-file="${esc(t.paper_path)}">Question paper</button>`:""}</div></div>
+     <div class="mark"><b>Marks, question by question</b><div class="qgrid">${qm.map((m,i)=>`<label>Q${i+1} (out of ${num(m)})<input type="number" min="0" max="${m}" step="0.25" data-qi="${i}" inputmode="decimal"></label>`).join("")}</div>
+      <p><b>Total: <span id="tot">0</span> / ${num(t.max_marks)}</b></p>
+      <div class="field"><label for="rm">Remarks for the student</label><textarea id="rm" rows="4" placeholder="What went well, what to fix, how to present it better."></textarea></div>
+      <div class="field"><label for="cf">Checked answer sheet (PDF)</label><input id="cf" type="file" accept="application/pdf,.pdf" class="file"></div>
+      <p class="msg" id="cmsg"></p>
+      <div class="row"><button class="btn primary" data-send="${a.id}">Send marks to student</button><button class="btn ghost" data-open="">Close</button></div></div></div>`}).join("");
+}
+function total(){let s=0;document.querySelectorAll("[data-qi]").forEach(i=>{s+=+i.value||0});const e=document.getElementById("tot");if(e)e.textContent=num(s);return s}
+async function send(id){if(busy)return;const a=atts.find(x=>x.id===id),t=T(a.test_id),qm=t.q_marks||[],msg=s=>{document.getElementById("cmsg").textContent=s};
+  const marks=[];let bad="";document.querySelectorAll("[data-qi]").forEach(i=>{const k=+i.dataset.qi,v=i.value.trim();if(v===""){bad=bad||`Enter marks for Q${k+1} (0 if not attempted).`;return}const n=+v;if(!(n>=0&&n<=qm[k]))bad=bad||`Q${k+1} must be between 0 and ${num(qm[k])}.`;marks[k]=n});
+  if(bad)return msg(bad);const file=document.getElementById("cf").files[0];
+  if(!file)return msg("Attach the checked answer sheet (PDF).");if(!(file.type==="application/pdf"||/\.pdf$/i.test(file.name)))return msg("The checked sheet must be a PDF.");if(file.size>25*1024*1024)return msg("That PDF is over 25 MB.");
+  busy=true;msg("Uploading…");
+  try{const path=`checked/${id}.pdf`;const up=await sb.storage.from(B).upload(path,file,{contentType:"application/pdf",upsert:true});if(up.error)throw up.error;
+    const r=await sb.from("ts_attempts").update({q_marks:marks,score:marks.reduce((x,y)=>x+y,0),max_marks:t.max_marks,remarks:document.getElementById("rm").value.trim()||null,checked_path:path,status:"checked",checked_at:new Date().toISOString(),checker_id:me.id,checker_name:myName}).eq("id",id).select();
+    if(r.error)throw r.error;if(!r.data||!r.data.length)throw new Error("Not saved. You may not have access to this subject.");
+    busy=false;open=null;flash="Sent. The student can see the marks, remarks and checked sheet now.";load()}
+  catch(e){busy=false;msg("Couldn't send: "+(e.message||e))}}
+/* ----- results ----- */
+function vResults(){
+  if(!tests.length)return `<div class="card empty"><p class="muted">No tests yet.</p></div>`;
+  if(!selTest||!T(selTest))selTest=tests[0].id;const t=T(selTest),rows=atts.filter(a=>a.test_id===t.id);
+  const done=rows.filter(a=>a.status==="checked"),avg=done.length?done.reduce((s,a)=>s+(+a.score||0),0)/done.length:null;
+  return `<div class="row"><label for="rs" class="muted" style="font-weight:700">Test</label><select id="rs">${tests.map(x=>`<option value="${x.id}"${x.id===t.id?" selected":""}>${esc(x.title)} · ${esc(subName(x.level+":"+x.paper))}</option>`).join("")}</select></div>
+   <div class="stats"><div class="stat"><div class="eyebrow">Started</div><div class="v">${rows.length}</div></div><div class="stat"><div class="eyebrow">Submitted</div><div class="v">${rows.filter(a=>a.status!=="started").length}</div></div><div class="stat"><div class="eyebrow">Marked</div><div class="v">${done.length}</div></div><div class="stat"><div class="eyebrow">Average</div><div class="v">${avg==null?"–":num(avg)}<span class="s"> / ${num(t.max_marks)}</span></div></div></div>
+   ${rows.length?`<div class="card" style="overflow-x:auto"><table class="res"><tr><th>Student</th><th>Status</th><th>Marks</th><th>Submitted</th><th></th></tr>${rows.sort((a,b)=>(+b.score||0)-(+a.score||0)).map(a=>`<tr><td><b>${esc(a.student_name||"")}</b><br><span class="muted">${esc(a.student_email||"")}</span></td><td>${a.status==="checked"?"Marked":a.status==="submitted"?"To check":"Started, not submitted"}${a.late?" · late":""}</td><td>${a.status==="checked"?`<b>${num(a.score)}</b> / ${num(a.max_marks||t.max_marks)}`:"–"}</td><td>${when(a.submitted_at)}</td><td>${a.file_path?`<button class="btn" data-file="${esc(a.file_path)}">Answers</button>`:""}${a.checked_path?` <button class="btn" data-file="${esc(a.checked_path)}">Checked</button>`:""}</td></tr>`).join("")}</table></div>`:`<div class="card empty"><p class="muted">No student has started this test yet.</p></div>`}`;
+}
+async function file(path){const w=window.open("","_blank");const r=await sb.storage.from(B).createSignedUrl(path,900);if(r.error){if(w)w.close();flash="!"+r.error.message;return paint()}if(w)w.location=r.data.signedUrl;else location.href=r.data.signedUrl}
+document.addEventListener("input",e=>{if(e.target.matches("[data-qi]"))total()});
+document.addEventListener("change",e=>{if(e.target.id==="rs"){selTest=e.target.value;paint()}
+  if(e.target.id==="fk"&&form&&!form.id){const keep=id=>{const x=document.getElementById(id);return x?x.value:""};Object.assign(form,{kind:e.target.value,sub:keep("fs"),title:keep("ft"),duration_min:keep("fd"),opens:keep("fo"),closes:keep("fc")});paint()}});
+document.addEventListener("click",async e=>{const t=e.target.closest("button");if(!t)return;const d=t.dataset;
+  if(d.view){view=d.view;form=null;open=null;return paint()}
+  if(d.new){form={id:null,sub:subs[0],kind:"mcq",title:"",duration_min:60,opens:toLocal(new Date()),closes:"",n:"",mpq:1,neg:0,key:"",qm:"",paper_path:null};return paint()}
+  if(d.edit){const x=T(d.edit);form={id:x.id,sub:x.level+":"+x.paper,kind:x.kind,title:x.title,duration_min:x.duration_min,opens:toLocal(x.opens_at),closes:x.closes_at?toLocal(x.closes_at):"",n:x.n_questions||"",mpq:x.marks_per_q,neg:x.negative,key:"",qm:(x.q_marks||[]).join(", "),paper_path:x.paper_path};return paint()}
+  if(d.cancel){form=null;return paint()}
+  if(d.save)return save(d.save);
+  if(d.pub){const x=T(d.pub),to=x.status==="published"?"draft":"published";if(to==="published"&&!x.paper_path){flash="!Attach the question paper before publishing. Tap Edit.";return paint()}
+    if(to==="published"&&x.kind==="mcq"){const k=await sb.from("ts_keys").select("test_id").eq("test_id",x.id).maybeSingle();if(!k.data){flash="!Add the answer key before publishing. Tap Edit.";return paint()}}
+    const r=await sb.from("ts_tests").update({status:to}).eq("id",x.id);flash=r.error?"!"+r.error.message:to==="published"?"Published.":"Unpublished. Students can't see it now.";return load()}
+  if(d.del){if(d.sure!=="1"){d.sure="1";t.textContent="Tap again to delete";return}const x=T(d.del);if(x.paper_path)await sb.storage.from(B).remove([x.paper_path]);const r=await sb.from("ts_tests").delete().eq("id",x.id);flash=r.error?"!"+r.error.message:"Deleted.";return load()}
+  if(d.file)return file(d.file);
+  if("open" in d){open=d.open||null;return paint()}
+  if(d.send)return send(d.send);
+});
+start();
+})();
+</script>
+</body>
+</html>

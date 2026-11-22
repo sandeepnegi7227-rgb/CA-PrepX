@@ -131,10 +131,57 @@ async function start(){
   const r=await sb.rpc("is_admin");
   if(!r.data){top.innerHTML=`<button class="btn" id="so">Sign out</button>`;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
     main.innerHTML=`<div class="card"><h2>This account isn't an admin</h2><p class="muted" style="margin-top:6px">Signed in as ${esc(data.session.user.email||"a guest")}. Run the "make yourself admin" line in supabase-setup.sql for your account, then reload.</p></div>`;return}
-  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Overview</button><button data-v="analytics" aria-pressed="false">Analytics</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button><button data-v="checkers" aria-pressed="false">Checkers</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
+  top.innerHTML=`<div class="seg" id="vw"><button data-v="students" aria-pressed="true">Overview</button><button data-v="analytics" aria-pressed="false">Analytics</button><button data-v="jobs" aria-pressed="false">Jobs</button><button data-v="papers" aria-pressed="false">Mock papers</button><button data-v="videos" aria-pressed="false">Videos</button><button data-v="checkers" aria-pressed="false">Checkers</button><button data-v="ts" aria-pressed="false">Test series</button></div><a class="btn" href="/">Open site</a><button class="btn" id="rf">Refresh</button><button class="btn" id="so">Sign out</button>`;
   document.querySelectorAll("#vw [data-v]").forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll("#vw [data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b));load()});
   document.getElementById("rf").onclick=load;document.getElementById("so").onclick=async()=>{await sb.auth.signOut();loginForm()};
   load();
+}
+
+
+/* ---------- Test series: enrolled students and teachers ---------- */
+let tsMsg="",tsEdit=null;
+const TS_LV={foundation:"Foundation",inter:"Intermediate",final:"Final"},TS_P={foundation:["Accounting","Business Laws","Quantitative Aptitude","Business Economics"],inter:["Advanced Accounting","Corporate & Other Laws","Taxation","Cost & Management Accounting","Auditing & Ethics","FM & Strategic Management"],final:["Financial Reporting","Advanced Financial Management","Advanced Auditing, Assurance & Ethics","Direct Tax & International Taxation","Indirect Tax Laws","Integrated Business Solutions"]};
+const tsSub=k=>{const [l,pp]=k.split(":");return `${TS_LV[l]||l} P${pp.slice(1)}`};
+async function loadTS(){
+  const [e,t,x,at,pr]=await Promise.all([sb.from("ts_enrol").select("*").order("added_at",{ascending:false}),sb.from("ts_teachers").select("*").order("added_at",{ascending:true}),sb.from("ts_tests").select("id,level,status,kind"),sb.from("ts_attempts").select("id,status,student_email").limit(10000),sb.from("profiles").select("email").limit(10000)]);
+  if(e.error||t.error){main.innerHTML=`<div class="card"><h2>The test series isn't set up yet</h2><p class="msg" style="margin-top:8px">${esc((e.error||t.error).message)}</p></div>`;return}
+  const E=e.data||[],T=t.data||[],X=x.data||[],A=at.data||[],has=new Set((pr.data||[]).map(p=>String(p.email||"").toLowerCase()));
+  const boxes=sel=>Object.keys(TS_P).map(l=>`<div style="margin-top:8px"><b style="font-size:.85rem">${TS_LV[l]}</b><div class="row" style="margin-top:4px">${TS_P[l].map((n,i)=>{const k=l+":P"+(i+1);return `<label class="btn" style="font-weight:600;cursor:pointer"><input type="checkbox" data-tsub="${k}"${sel.includes(k)?" checked":""}> P${i+1} ${esc(n)}</label>`}).join("")}</div></div>`).join("");
+  const ed=tsEdit&&T.find(z=>z.user_id===tsEdit);
+  main.innerHTML=`<div class="row sp"><div><div class="eyebrow">Paid batch</div><h1>Test series</h1></div><a class="btn" href="/teacher">Open teacher dashboard</a></div>
+  <div class="stats"><div class="stat"><div class="eyebrow">Enrolled</div><div class="v">${E.length}</div><div class="s">students with access</div></div>
+   <div class="stat"><div class="eyebrow">Teachers</div><div class="v">${T.length}</div><div class="s">can upload and check</div></div>
+   <div class="stat"><div class="eyebrow">Tests</div><div class="v">${X.filter(z=>z.status==="published").length}</div><div class="s">published · ${X.filter(z=>z.status!=="published").length} draft</div></div>
+   <div class="stat"><div class="eyebrow">Attempts</div><div class="v">${A.filter(z=>z.status!=="started").length}</div><div class="s">submitted</div></div>
+   <div class="stat"><div class="eyebrow">To check</div><div class="v">${A.filter(z=>z.status==="submitted").length}</div><div class="s">written papers waiting</div></div></div>
+  ${tsMsg?`<p class="${tsMsg.startsWith("!")?"msg":"muted"}">${esc(tsMsg.replace(/^!/,""))}</p>`:""}
+  <div class="card"><h2>Give students access</h2><p class="muted" style="margin:4px 0 12px">Paste the emails of students who have paid, one per line. Use the same email they sign in with on caprepx.com. They get the Test Series tab for the level you pick.</p>
+   <textarea id="tse" rows="4" placeholder="student1@email.com&#10;student2@email.com" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font:inherit"></textarea>
+   <div class="row" style="margin-top:10px"><select id="tsl">${Object.keys(TS_LV).map(l=>`<option value="${l}">${TS_LV[l]}</option>`).join("")}</select><select id="tsp"><option value="">Plan (optional)</option><option value="test series">Test series</option><option value="test series + mentorship">Test series + mentorship</option></select><button class="btn primary" id="tsadd">Give access</button></div></div>
+  <div class="tbl"><table><thead><tr><th>Student email</th><th>Level</th><th>Plan</th><th>Account</th><th>Added</th><th style="text-align:right">Tests done</th><th></th></tr></thead><tbody>
+  ${E.length?E.map(z=>`<tr><td>${esc(z.email)}</td><td>${esc(TS_LV[z.level]||z.level)}</td><td>${esc(z.plan||"—")}</td><td>${has.has(z.email)?"Signed up":`<span class="muted">Not signed up yet</span>`}</td><td class="num">${new Date(z.added_at).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</td><td class="num" style="text-align:right">${A.filter(q=>q.student_email===z.email&&q.status!=="started").length}</td><td><button class="btn" data-tsrm="${esc(z.email)}">Remove</button></td></tr>`).join(""):`<tr><td colspan="7" class="muted">No students have access yet.</td></tr>`}
+  </tbody></table></div>
+  <div class="card"><h2>${ed?"Change subjects for "+esc(ed.email):"Add a teacher"}</h2><p class="muted" style="margin:4px 0 12px">${ed?"Tick the subjects this teacher handles.":"They first create a normal account on caprepx.com with this email. Then add it here, tick their subjects, and they sign in at <b>caprepx.com/teacher</b>. A teacher can upload tests and check papers only for the subjects you tick."}</p>
+   ${ed?"":`<div class="row"><input type="email" id="tte" placeholder="teacher@email.com" style="min-width:240px"><input type="search" id="ttn" placeholder="Name shown to students (optional)" style="min-width:220px"></div>`}
+   ${boxes(ed?ed.subjects||[]:[])}
+   <div class="row" style="margin-top:12px"><button class="btn primary" id="ttadd">${ed?"Save subjects":"Add teacher"}</button>${ed?`<button class="btn" id="ttcancel">Cancel</button>`:""}</div></div>
+  <div class="tbl"><table><thead><tr><th>Teacher</th><th>Email</th><th>Subjects</th><th></th></tr></thead><tbody>
+  ${T.length?T.map(z=>`<tr><td>${esc(z.name||"—")}</td><td>${esc(z.email||"")}</td><td>${(z.subjects||[]).map(tsSub).map(esc).join(", ")||`<span class="muted">None</span>`}</td><td><button class="btn" data-ttedit="${z.user_id}">Subjects</button> <button class="btn" data-ttrm="${z.user_id}">Remove</button></td></tr>`).join(""):`<tr><td colspan="4" class="muted">No teachers yet.</td></tr>`}
+  </tbody></table></div>`;
+  document.getElementById("tsadd").onclick=async()=>{const raw=document.getElementById("tse").value.toLowerCase().split(/[\s,;]+/).map(s=>s.trim()).filter(Boolean),ok=[...new Set(raw.filter(s=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s)))],bad=raw.filter(s=>!ok.includes(s));
+    if(!ok.length){tsMsg="!Paste at least one valid email.";return loadTS()}
+    const lv=document.getElementById("tsl").value,plan=document.getElementById("tsp").value||null;
+    const r=await sb.from("ts_enrol").upsert(ok.map(email=>({email,level:lv,plan})),{onConflict:"email"});
+    tsMsg=r.error?"!"+r.error.message:`Access given to ${ok.length} student${ok.length>1?"s":""} for ${TS_LV[lv]}.${bad.length?" Skipped (not an email): "+bad.join(", "):""}`;loadTS()};
+  document.querySelectorAll("[data-tsrm]").forEach(b=>b.onclick=async()=>{if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Tap again to remove";return}const r=await sb.from("ts_enrol").delete().eq("email",b.dataset.tsrm);tsMsg=r.error?"!"+r.error.message:"Access removed. Their past marks are kept.";loadTS()});
+  document.getElementById("ttadd").onclick=async()=>{const subs=[...document.querySelectorAll("[data-tsub]:checked")].map(c=>c.dataset.tsub);
+    const em=ed?ed.email:document.getElementById("tte").value.trim(),nm=ed?ed.name:document.getElementById("ttn").value.trim();
+    if(!em){tsMsg="!Enter the teacher's email.";return loadTS()}if(!subs.length){tsMsg="!Tick at least one subject.";return loadTS()}
+    const r=await sb.rpc("ts_set_teacher",{p_email:em,p_name:nm||null,p_subjects:subs});
+    tsMsg=r.error?"!"+r.error.message:r.data==="not_found"?`!No account found for ${em}. Ask them to sign up on caprepx.com first, then add them again.`:`Saved ${em} with ${subs.length} subject${subs.length>1?"s":""}. They sign in at caprepx.com/teacher.`;if(!r.error&&r.data!=="not_found")tsEdit=null;loadTS()};
+  const cc=document.getElementById("ttcancel");if(cc)cc.onclick=()=>{tsEdit=null;loadTS()};
+  document.querySelectorAll("[data-ttedit]").forEach(b=>b.onclick=()=>{tsEdit=b.dataset.ttedit;tsMsg="";loadTS()});
+  document.querySelectorAll("[data-ttrm]").forEach(b=>b.onclick=async()=>{if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Tap again to remove";return}const r=await sb.rpc("ts_remove_teacher",{p_user:b.dataset.ttrm});tsMsg=r.error?"!"+r.error.message:"Teacher removed.";loadTS()});
 }
 
 /* ---------- Teacher checkers ---------- */
@@ -167,6 +214,7 @@ async function load(){
   if(view==="papers")return loadPapersA();
   if(view==="videos")return loadVideosA();
   if(view==="checkers")return loadCheckers();
+  if(view==="ts")return loadTS();
   const since=new Date(Date.now()-30*864e5);since.setHours(0,0,0,0);
   const [p,l,u]=await Promise.all([
     sb.from("profiles").select("*").order("last_login",{ascending:false,nullsFirst:false}).limit(5000),

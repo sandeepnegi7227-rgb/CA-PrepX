@@ -754,6 +754,42 @@ body.exam-on,body.modal-on{overflow:hidden}
 .ix-verdict.pass{background:var(--good-soft);color:var(--good)}
 .ix-verdict.fail{background:var(--tick-soft);color:var(--tick)}
 @media (max-width:720px){#acct a[href="/checker"]{display:none}}
+/* ---------- test series ---------- */
+.ts-hero{display:grid;gap:10px;background:var(--ink);color:var(--bg);border:0}
+.ts-hero h1{font-size:1.6rem;margin:0;color:inherit}.ts-hero p{color:inherit;opacity:.82}
+.ts-hero .eyebrow{color:var(--gold)}
+.ts-partner{display:inline-flex;align-self:start;justify-self:start;gap:6px;align-items:center;font-size:.8rem;font-weight:700;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:4px 12px}
+.ts-steps{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr))}
+.ts-steps li{border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 12px;font-size:.86rem}.ts-steps b{display:block;font-size:.95rem}
+.ts-paper{display:grid;gap:10px}.ts-paper>h2{font-size:1.05rem;margin:0}
+.ts-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface)}
+.ts-row .t{display:grid;gap:3px;min-width:0;flex:1 1 220px}.ts-row .t b{font-size:1rem}
+.ts-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.8rem;color:var(--muted)}
+.ts-score{font-family:var(--serif);font-weight:600;font-size:1.3rem;line-height:1}.ts-score small{font-size:.8rem;color:var(--muted);font-family:var(--sans)}
+.ts-card{border-color:var(--gold)}
+.tsx{position:fixed;inset:0;z-index:250;background:var(--bg);display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.tsx-top{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface)}
+.tsx-top .tt{flex:1;min-width:0;display:grid}.tsx-top .tt b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tsx-top .tt span{font-size:.78rem;color:var(--muted)}
+.tsx-timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:1.05rem;padding:6px 12px;border-radius:999px;background:var(--surface-2);white-space:nowrap}
+.tsx-timer.low{background:var(--tick-soft,#FBE4D8);color:var(--tick,#C2410C)}
+.tsx-body{overflow:auto;-webkit-overflow-scrolling:touch;padding:12px;display:grid;gap:10px;align-content:start;justify-items:center;background:var(--surface-2)}
+.tsx-body canvas{max-width:100%;height:auto;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.12);border-radius:4px}
+.tsx-dock{border-top:1px solid var(--line);background:var(--surface);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));display:grid;gap:8px}
+.tsx-q{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
+.tsx-q .qn{min-width:74px;text-align:center;font-weight:800}
+.tsx-opts{display:flex;gap:8px;justify-content:center}
+.tsx-opts button{width:54px;height:46px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font-weight:800;font-size:1.05rem;cursor:pointer}
+.tsx-opts button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tsx-foot{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:.84rem;color:var(--muted)}
+.tsx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px;max-height:50vh;overflow:auto}
+.tsx-grid button{height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:700;font-size:.82rem;cursor:pointer;display:grid;place-items:center;line-height:1.05}
+.tsx-grid button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tsx-grid button small{font-size:.66rem;font-weight:600;opacity:.8}
+.ts-res{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+.ts-res div{border:1px solid var(--line);border-radius:10px;padding:6px 4px;text-align:center;font-size:.8rem;line-height:1.25}
+.ts-res .ok{background:var(--good-soft);border-color:transparent}.ts-res .no{background:var(--tick-soft,#FBE4D8);border-color:transparent}
+.ts-qm{width:100%;border-collapse:collapse;font-size:.92rem}.ts-qm td,.ts-qm th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}.ts-qm td:last-child,.ts-qm th:last-child{text-align:right}
+.ts-remarks{background:var(--surface-2);border-radius:12px;padding:10px 12px;white-space:pre-line;font-size:.92rem}
 </style>
 <style>
 .p-brief{background-image:url(data:image/webp;base64,UklGRpYFAABXRUJQVlA4WAoAAAAQAAAAXwAAXwAAQUxQSNUBAAABkCPZtmo3+5wrZsiZOVeoSKVJSHMwpuxQoZmdfg9AuZmZ2c4Yf73377nb9P4XXDNFxATgD6siIhHTMgcArkzj5ASAVFUJAHHxEQXG1+TO3r1zNrdmHFCJjAJT856Zfn4K0Kg4tB4i6b2ZmfckD7XCRcSh7zLNBwbz3gKDN17ug0ZD0XafKRk8v+gDmfJ+GzQSolUnWCADyQdHjz4gGcgCT1SpxMFhHVPS6HdO1AA1EzuNRqZcBxcFRcc7CzQ+mUTm5BMag73rgMagDFtYYLBnIyh3IiKuHCPPLLDAzShbUqILXX0jGD1nUKmZlZihp4Ub1brQshDqsODDIdDzBEo8Qc8QhrHgTktSoL6rd0EHOlfQ6DnXOdBb5EDnHD2NKzoHehe0qx7QEhRD+5/kk4XNGz9P8knR+YSfWz5Z2PyTfUPQohTTrxjZl9PQIlS6XzENC54RSswIC57yVbdolsNWpoxsyq1wGYLym8FiY+FmBSSr+QVDbAJfNBfT8jJGL1v++++XssanMXramAVxZ8zHxtsZJ8gsw1omsUm4FmVZInXnmXpv0fQ+5fk6kSwI2o4yskfaIChWUD57+PjJaB7PzZZDULwguoJSxbmYOCdYSIkofqQCAFZQOCCaAwAAcBUAnQEqYABgAD5hKJFFpCKhlHpudEAGBKAMlKVV2+gRTF/XZ3/znqv2z3iuesh/cv2A92HkgdYB6AH7Adat+43oof/QwqbOXmLbiAjKbKjT501yqJ2cQ94p/+md7vutYa/wB4QuDRtB2+GlhxvOqth8ZoCzT5oWJ47YmCD0VPVtA9Og5uR47snNH7dFTio+n09bRz+JaPWOHVWqiJR3IFA4VEEmr+9/qqb2LGdO1g81eBkAAP79bkgSv//r40+5FU3uH7bmVGhns/oouCX4WaHOtIF54jRJx1yfCgjDL/+2meT1cul78mp6yFofwPanb9U1IsWLfo8cVePtbog3zj9UOH9v9qrNgReMU98ta39cqiSUTIMnaWC/yrbSaYIcn2sFefSOI368orWTE5lph7EJFZHafDZ9C8bZ9ScDuNEe6ndTqW+8rHRWEko2NjCBpvLtGFcuBHfi1BeMcanbmKG90uuDwrUPjrnxzWcvknYM/sUJvDGyYC4xhPekBLN5NtEV/XHnbVbmebcUpgEAhgr2j/4x2hYJ50SUXHiyWox6nqM1L8vFP2bwXxrEV6XW7SXNLXZU8nVjo6SvryxJyVBsRA3j5xHpxlZp5Cu2Mqa9is56i/p8uQea8Zb3B40mNWVBhSVq9tc/v2c9X9+8Ocg5geYhaRZrxnpYP3wqCF9ny++Kobyx0pgr+OxMAAAaXjYrE/okO+KuJbB2NN3vR3WZbqeWHdZ7a46bah3IUcE0o52opnI77wV9VW1wbmb1JzR51t2BpZwZVtyj9hyp0gOlfOC/PCIKtYsicqvkyley0nAOs9UoHGmbs1flZ/aOTnVg1OLBPtNBnfqC6HP/oJMcW+3op3+kjDXKNvxPQQLrhNlY9xfmrwMPqQfkr3kzLIvHEhOWSrbUkyNDcW8OAzMQEnZ31w1iJO3Kx1dbBqE3vZ5SD95V+Z55icNFMpB+RF62uwRX1QUFHag83EjKPR6EI9jTmOGW/Z/3/2BS+V47dhp93UdEyHWb82azSC/QMwwfM8upeIdu0oMk+XNTiBJTsnEM+rJyhhejgw90VW1BPcJ9Z//tzKmYBecm5IoYSzsEnuOfH8TH5LJud+TJ1YjxwwJRGDrYXFtMWiUMa85Oey6AVN0v5+oal+Pf23T+MMO7nimKcFLsChDhY4xyV+Rhk8Xl2hNmvFPfiH65iQaNa0ScVa9y6fwHe9QFMo1H9zwazmEzqe0AAA==)}
@@ -984,6 +1020,7 @@ main{padding-bottom:120px}
 <a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none">Learn</a>
 <a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none">Practice</a>
 <a class="navlink" href="#mock" data-lp-go="mock" style="color: #A8A49B; text-decoration: none">Mock Exams</a>
+<a class="navlink" href="#testseries" data-lp-go="testseries" style="color: #A8A49B; text-decoration: none">Test Series</a>
 <a class="navlink" href="#platform" data-lp-go="platform" style="color: #A8A49B; text-decoration: none">Resources</a>
 <a class="navlink" href="#progress" data-lp-go="progress" style="color: #A8A49B; text-decoration: none">Progress</a>
 </nav>
@@ -1158,6 +1195,15 @@ main{padding-bottom:120px}
 </div>
 </div>
 </section>
+
+<section id="testseries" style="padding: 0 24px 40px"><div class="lprv" style="max-width: 1160px; margin: 0 auto; box-sizing: border-box; border: 1px solid rgba(227,179,65,0.5); border-radius: 24px; background: #141416; padding: 28px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between">
+<div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 10px">
+<span style="align-self: flex-start; height: 28px; padding: 0 12px; border-radius: 999px; background: #E3B341; color: #1A1400; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; display: inline-flex; align-items: center">NEW · TEST SERIES</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(26px, 3vw, 38px); line-height: 1.15">Test yourself <span style="color: #E3B341">before ICAI does.</span></h2>
+<p style="margin: 0; color: #A8A49B; max-width: 620px">Unit-wise and full-syllabus tests for Foundation, Intermediate and Final. MCQs are marked the moment you submit. Written papers are checked by a teacher, question by question, with remarks.</p>
+</div>
+<button class="primary go" data-act="landup" data-lp-ts="1" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Open the Test Series <span class="arr" aria-hidden="true">→</span></button>
+</div></section>
 
 <section style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
 <div class="lprv" style="max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 48px">
@@ -2631,7 +2677,7 @@ async function trFlush(){if(!sb||!session||TR.busy)return;const rows=Object.entr
 setInterval(trFlush,60000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")trFlush()});addEventListener("pagehide",trFlush);
 document.addEventListener("click",e=>{const a=e.target.closest(".job-act a");if(a)track(/careers/i.test(a.textContent)?"jobs.careers":"jobs.apply");const l=e.target.closest(".job-li a");if(l)track("jobs.linkedin");const w=e.target.closest("a[data-wa]");if(w)track("wa.join")},true);
 /* ---------- render ---------- */
-const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["plan","Plan","Plan","plan"],["spom","SPOM","SPOM","school"],["careers","Careers","Careers","brief"]];
+const TABS=[["home","Home","Home","home"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["tests","Test Series","Tests","target"],["plan","Plan","Plan","plan"],["spom","SPOM","SPOM","school"],["careers","Careers","Careers","brief"]];
 /* what each level sees: SPOM is Final only, careers from Inter onwards */
 const fits=k=>k==="spom"?S.level==="final":k==="careers"?S.level!=="foundation":true;
 const tabsNow=()=>TABS.filter(x=>fits(x[0]));
@@ -2787,6 +2833,7 @@ const LP_LV={foundation:[["PAPERS","4 papers","Accounting · Business Laws · Qu
   inter:[["PAPERS","6 papers","Advanced Accounting · Corporate and Other Laws · Taxation · Costing · Auditing and Ethics · FM and SM"],["ANALYSIS","Chapter-wise","Where the marks come from, paper by paper"],["PRACTICE PAPERS","RTP · MTP · PYQ","Practice papers for each attempt"],["ALSO INSIDE","Video lectures","Chapter-wise, in Hindi and English"]],
   final:[["PAPERS","6 papers","FR · AFM · Advanced Auditing · Direct Tax · Indirect Tax · Integrated Business Solutions"],["CAREERS","Articleship and jobs","Roles and open vacancies"],["PRACTICE PAPERS","RTP · MTP · PYQ","Practice papers for each attempt"],["ALSO INSIDE","SPOM tracker","All four self-paced modules"]]};
 document.addEventListener("click",e=>{const lp=e.target.closest("#lp");if(!lp)return;
+  if(e.target.closest("[data-lp-ts]"))setTimeout(()=>{authRet="tests";authWhy="Create a free account to open the Test Series."; if(typeof render==="function")render()},0);
   const lv=e.target.closest("[data-lp-lv]");
   if(lv){const d=LP_LV[lv.dataset.lpLv];lp.querySelectorAll("[data-lp-lv]").forEach(b=>b.setAttribute("aria-selected",b===lv?"true":"false"));
     d.forEach((c,i)=>{[["l",0],["b",1],["s",2]].forEach(x=>{const el=lp.querySelector("[data-lv-"+x[0]+'="'+i+'"]');if(el)el.textContent=c[x[1]]})});return}
@@ -2911,6 +2958,7 @@ function barsHTML(){
     return `<div class="bar-row"><span class="lbl"><span class="pno">P${p.no}</span> ${esc(p.name)}</span><span class="num" style="text-align:right">${r===null?"—":r+"%"}</span><div class="track"><div class="fill ${cls}" style="width:${r||0}%"></div></div></div>`}).join("")}</div>`;
 }
 const VIEWS={
+tests(){return testsView()},
 dashboard(){
   const acc=accuracy();const tot=S.mcq.length,ok=S.mcq.filter(m=>m.ok).length;const rd=resDone();
   const wk=Object.entries(S.log).filter(([k])=>new Date(k)>=addDays(today,-6)).reduce((a,[,v])=>a+v,0);
@@ -3052,7 +3100,7 @@ home(){
     ["rocket","I'm behind",n&&n>0?`Catch-up plan for ${n} days`:"Catch-up plan in one tap",`data-act="catchup"`],
     ["target","Fix weak spots",wn?`${wn} questions to redo`:"Redo what you got wrong",`data-mode="mistakes"`]
   ];
-  return `${waCard()}${anaCard()}
+  return `${tsHomeCard()}${waCard()}${anaCard()}
   <div class="home-top">
   <div class="home-hero">
       <div class="eyebrow">${greet}${S.name?", "+esc(S.name):""} · CA ${lv.label}${n&&n>0?` · ${n} days to exam`:""}</div>
@@ -3698,6 +3746,151 @@ function toast(msg){const t=document.createElement("div");t.className="toast";t.
 /* backup */
 function backupCode(){return btoa(unescape(encodeURIComponent(JSON.stringify(S))))}
 function restoreCode(c){try{const o=JSON.parse(decodeURIComponent(escape(atob(c.trim()))));if(!o||!o.level||!LEVELS[o.level])return false;S=o;S.wrong=S.wrong||{};S.tests=S.tests||[];S.onboarded=true;save();return true}catch(e){return false}}
+
+/* ---------- Test series (enrolled students) ---------- */
+const TSB="test-series",TS_WA="https://wa.me/919217611208?text="+encodeURIComponent("Hi, I want to know about the CA Test Series on CA PrepX.");
+let TS={loaded:false,loading:false,err:"",enrol:null,tests:[],att:{},res:null};
+const tsCan=()=>!!(sb&&session&&!isGuest());
+const tsWhen=d=>new Date(d).toLocaleString("en-IN",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});
+const tsPaperName=(lv,pp)=>{const p=(LEVELS[lv]||{papers:[]}).papers.find(p=>"P"+p.no===pp);return p?`Paper ${p.no} · ${p.name}`:pp};
+const tsNum=n=>{n=+n;return Number.isInteger(n)?String(n):n.toFixed(2).replace(/0$/,"")};
+async function tsLoad(force){
+  if(!tsCan()||TS.loading||(TS.loaded&&!force))return;TS.loading=true;TS.err="";
+  try{const em=String(session.user.email||"").toLowerCase();
+    const e=await sb.from("ts_enrol").select("level,name").eq("email",em).maybeSingle();if(e.error)throw e.error;TS.enrol=e.data||null;
+    if(TS.enrol){const [t,a]=await Promise.all([sb.from("ts_tests").select("*").eq("status","published").eq("level",TS.enrol.level).order("opens_at",{ascending:true}),sb.from("ts_attempts").select("*").eq("user_id",session.user.id)]);
+      if(t.error)throw t.error;if(a.error)throw a.error;TS.tests=t.data||[];TS.att={};(a.data||[]).forEach(x=>TS.att[x.test_id]=x)}
+  }catch(e){TS.err=/does not exist|schema cache|Could not find/i.test(String(e.message||e))?"setup":String(e.message||e)}
+  TS.loaded=true;TS.loading=false;if(tab==="tests")render()}
+function tsEnd(t,a){return new Date(a.started_at).getTime()+t.duration_min*60000}
+function tsHead(lv,full){return `<div class="card ts-hero"><div class="eyebrow">Test series</div><h1>CA ${esc(LEVELS[lv].label)} Test Series</h1>
+  <span class="ts-partner">In partnership with Aarvedya</span>
+  ${full?`<p>Unit-wise and full-syllabus tests on the ICAI pattern. MCQ tests are marked the moment you submit. Written papers are checked by a teacher, question by question, and come back with remarks.</p>
+  <ol class="ts-steps"><li><b>1. Take the test</b>Timed, like the exam. No answers shown while you attempt.</li><li><b>2. Submit</b>Tap your MCQ options, or upload your written answers as one PDF.</li><li><b>3. Get your marks</b>Question-wise marks, remarks and the checked copy.</li></ol>`:`<p style="font-size:.9rem">MCQ tests are marked when you submit. Written papers come back checked, with remarks.</p>`}</div>`}
+function testsView(){
+  const head=tsHead((TS.enrol&&TS.enrol.level)||S.level,!(tsCan()&&TS.uid===session.user.id&&TS.loaded&&TS.enrol));
+  if(!sb)return head+`<div class="card"><p class="muted">The test series works on the live site at caprepx.com.</p></div>`;
+  if(!tsCan())return head+`<div class="card"><h2>Sign in to open the test series</h2><p class="muted" style="margin-top:4px">Use the same email you gave when you enrolled, so your tests and marks show up here.</p><div class="row" style="margin-top:12px"><button class="btn primary" data-act="tsauth">Sign in or create account</button></div></div>`;
+  if(TS.uid!==session.user.id){TS={loaded:false,loading:false,err:"",enrol:null,tests:[],att:{},res:null,uid:session.user.id}}
+  tsLoad();
+  if(!TS.loaded)return head+`<div class="card"><p class="muted">Loading your tests…</p></div>`;
+  if(TS.err==="setup")return head+`<div class="card"><p class="muted">The test series is being set up. Check back soon.</p></div>`;
+  if(TS.err)return head+`<div class="card"><p class="muted">Couldn't load the tests: ${esc(TS.err)}</p><div class="row" style="margin-top:10px"><button class="btn" data-act="tsrefresh">Try again</button></div></div>`;
+  if(!TS.enrol)return head+`<div class="card ts-card"><h2>For enrolled students</h2><p class="muted" style="margin-top:4px">This test series is open to students who have enrolled in the batch. You're signed in as <b>${esc(session.user.email||"")}</b>.</p>
+    <p class="muted" style="margin-top:8px"><b>Already enrolled?</b> Access is switched on for the email you gave when you paid. If that was a different email, sign in with it, or message us and we'll fix it.</p>
+    <div class="row" style="margin-top:12px"><a class="btn primary" href="${TS_WA}" target="_blank" rel="noopener" style="text-decoration:none">Ask about enrolment on WhatsApp</a><button class="btn" data-act="tsrefresh">I've enrolled, check again</button></div></div>`;
+  if(TS.res)return head+tsResult(TS.res);
+  const lv=TS.enrol.level,now=Date.now();
+  const note=lv!==S.level?`<div class="card"><p class="muted">You're enrolled for CA ${esc(LEVELS[lv].label)}, so these are ${esc(LEVELS[lv].label)} tests.</p></div>`:"";
+  if(!TS.tests.length)return head+note+`<div class="card"><h2>No tests yet</h2><p class="muted" style="margin-top:4px">Your teachers haven't published a test yet. They will show up here as soon as they do.</p><div class="row" style="margin-top:10px"><button class="btn" data-act="tsrefresh">Refresh</button></div></div>`;
+  const row=t=>{const a=TS.att[t.id],kind=t.kind==="mcq"?"MCQ":"Written",opens=new Date(t.opens_at).getTime(),closed=t.closes_at&&new Date(t.closes_at).getTime()<now;
+    let right="";
+    if(a&&a.status==="checked")right=`<span class="ts-score">${tsNum(a.score)}<small> / ${tsNum(a.max_marks||t.max_marks)}</small></span><button class="btn sm" data-tsres="${t.id}">See result</button>`;
+    else if(a&&a.status==="submitted")right=`<span class="pill warn">Submitted · being checked</span><button class="btn sm" data-tsres="${t.id}">Details</button>`;
+    else if(a)right=`<button class="btn primary" data-tsgo="${t.id}">${t.kind==="mcq"?(tsEnd(t,a)>now?"Resume":"Submit now"):"Open paper / upload answers"}</button>`;
+    else if(opens>now)right=`<span class="pill">Opens ${tsWhen(t.opens_at)}</span>`;
+    else if(closed)right=`<span class="pill">Closed</span>`;
+    else right=`<button class="btn primary" data-tsstart="${t.id}">Start test</button>`;
+    return `<div class="ts-row"><div class="t"><b>${esc(t.title)}</b><div class="ts-meta"><span class="pill">${kind}</span><span>${t.duration_min} min</span><span>${tsNum(t.max_marks)} marks</span>${t.kind==="mcq"?`<span>${t.n_questions} questions</span>`:""}${t.closes_at&&!closed&&!a?`<span>Closes ${tsWhen(t.closes_at)}</span>`:""}</div></div><div class="row">${right}</div></div>`};
+  const by={};TS.tests.forEach(t=>{(by[t.paper]=by[t.paper]||[]).push(t)});
+  return head+note+Object.keys(by).sort().map(pp=>`<div class="card ts-paper"><h2>${esc(tsPaperName(lv,pp))}</h2>${by[pp].map(row).join("")}</div>`).join("")+`<div class="row"><button class="btn" data-act="tsrefresh">Refresh</button></div>`}
+function tsResult(id){const t=TS.tests.find(x=>x.id===id),a=TS.att[id];if(!t||!a){TS.res=null;return ""}
+  const back=`<div class="row"><button class="btn" data-act="tsback">← All tests</button></div>`;
+  const top=`<div class="eyebrow">${esc(tsPaperName(t.level,t.paper))}</div><h2 style="margin:2px 0 0">${esc(t.title)}</h2>`;
+  if(a.status==="submitted")return back+`<div class="card">${top}<p class="muted" style="margin-top:8px">Your answers were uploaded on ${tsWhen(a.submitted_at)}${a.late?" (after the time limit)":""}. A teacher is checking them. Your marks, remarks and checked copy will appear here.</p><div class="row" style="margin-top:12px"><button class="btn" data-tsfile="${esc(a.file_path||"")}">Open what I uploaded</button><button class="btn" data-tsgo="${t.id}">Replace my upload</button></div></div>`;
+  const sc=`<div class="ts-score" style="font-size:2rem;margin-top:10px">${tsNum(a.score)}<small> / ${tsNum(a.max_marks||t.max_marks)}</small></div>`;
+  if(t.kind==="mcq"){const r=a.result||{},d=r.detail||[];
+    return back+`<div class="card">${top}${sc}<p class="muted" style="margin-top:4px">${r.correct||0} correct · ${r.wrong||0} wrong · ${r.blank||0} not attempted${+t.negative?` · ${tsNum(t.negative)} cut for each wrong answer`:""}${a.late?" · submitted after the time limit":""}</p></div>
+    <div class="card"><h2>Question by question</h2><p class="muted" style="margin:4px 0 10px;font-size:.86rem">Your answer, then the right answer where you missed it.</p><div class="ts-res">${d.map(x=>`<div class="${x.ok===true?"ok":x.ok===false?"no":""}"><b>Q${x.q}</b><br>${x.k==null?"Not counted":x.a?(x.ok?esc(x.a)+" ✓":esc(x.a)+" → "+esc(x.k)):"– → "+esc(x.k)}</div>`).join("")}</div></div>`}
+  const qm=Array.isArray(a.q_marks)?a.q_marks:[],mx=Array.isArray(t.q_marks)?t.q_marks:[];
+  return back+`<div class="card">${top}${sc}<p class="muted" style="margin-top:4px">Checked${a.checker_name?" by "+esc(a.checker_name):""}${a.checked_at?" on "+tsWhen(a.checked_at):""}${a.late?" · uploaded after the time limit":""}</p>
+    <div class="row" style="margin-top:12px">${a.checked_path?`<button class="btn primary" data-tsfile="${esc(a.checked_path)}">Download checked copy</button>`:""}${a.file_path?`<button class="btn" data-tsfile="${esc(a.file_path)}">My upload</button>`:""}</div></div>
+    ${qm.length?`<div class="card"><h2>Marks, question by question</h2><table class="ts-qm" style="margin-top:8px"><tr><th>Question</th><th>Marks</th></tr>${qm.map((m,i)=>`<tr><td>Q${i+1}</td><td><b>${m==null||m===""?"–":tsNum(m)}</b>${mx[i]!=null?` / ${tsNum(mx[i])}`:""}</td></tr>`).join("")}</table></div>`:""}
+    ${a.remarks?`<div class="card"><h2>Teacher's remarks</h2><div class="ts-remarks" style="margin-top:8px">${esc(a.remarks)}</div></div>`:""}`}
+async function tsFile(path){if(!path)return;const w=window.open("","_blank");try{const r=await sb.storage.from(TSB).createSignedUrl(path,600);if(r.error)throw r.error;if(w)w.location=r.data.signedUrl;else location.href=r.data.signedUrl}catch(e){if(w)w.close();toast("Couldn't open the file. Try again.")}}
+function tsModal(html){let m=document.getElementById("tsModal");if(m)m.remove();m=document.createElement("div");m.id="tsModal";m.className="lvmodal";m.innerHTML=`<div class="lvbox" role="dialog" aria-modal="true">${html}</div>`;document.body.appendChild(m);m.addEventListener("click",e=>{if(e.target===m)m.remove()});return m}
+function tsAskStart(id){const t=TS.tests.find(x=>x.id===id);if(!t)return;
+  tsModal(`<div class="eyebrow">${esc(tsPaperName(t.level,t.paper))}</div><h2>${esc(t.title)}</h2>
+   <p class="muted">${t.duration_min} minutes · ${tsNum(t.max_marks)} marks${t.kind==="mcq"?` · ${t.n_questions} questions${+t.negative?` · ${tsNum(t.negative)} cut for each wrong answer`:""}`:""}</p>
+   <p style="font-size:.92rem">${t.kind==="mcq"?"The clock starts when you tap Start and cannot be paused. You won't see right or wrong answers until you submit. It submits by itself when time is up.":"The clock starts when you tap Start and cannot be paused. Write your answers on paper. When you finish, scan all pages into <b>one PDF</b> and upload it here within 20 minutes of the time ending."}</p>
+   <div class="row" style="margin-top:6px"><button class="btn primary" data-tsbegin="${t.id}">Start now</button><button class="btn ghost" data-act="tsmclose">Not now</button></div>`)}
+async function tsBegin(id,btn){if(btn){btn.disabled=true;btn.textContent="Starting…"}
+  const r=await sb.rpc("ts_start",{p_test:id});const m=document.getElementById("tsModal");
+  if(r.error){if(m)m.remove();toast(r.error.message||"Couldn't start the test.");return}
+  if(m)m.remove();TS.att[id]=r.data;tsRun(id)}
+/* exam screen */
+let TSX=null;
+function tsKey(id){return "prepx.ts."+id}
+function tsRun(id){const t=TS.tests.find(x=>x.id===id),a=TS.att[id];if(!t||!a)return;
+  let ans={};try{ans=JSON.parse(localStorage.getItem(tsKey(id))||"{}")||{}}catch(_){}
+  if(TSX)tsClose(true);
+  const el=document.createElement("div");el.className="tsx";el.id="tsx";document.body.appendChild(el);document.body.classList.add("modal-on");
+  TSX={id,t,a,ans,q:1,grid:false,el,tick:null,busy:false};
+  el.innerHTML=`<div class="tsx-top"><div class="tt"><b>${esc(t.title)}</b><span>${esc(tsPaperName(t.level,t.paper))}</span></div><span class="tsx-timer" id="tsxT" aria-live="off">--:--</span><button class="btn sm" data-act="tsxclose" aria-label="Leave the test screen">✕</button></div>
+   <div class="tsx-body" id="tsxB"><p class="muted">Loading the question paper…</p></div><div class="tsx-dock" id="tsxD"></div>`;
+  tsDock();tsTick();TSX.tick=setInterval(tsTick,1000);tsPaper(t)}
+function tsTick(){if(!TSX)return;const left=tsEnd(TSX.t,TSX.a)-Date.now(),el=document.getElementById("tsxT");if(!el)return;
+  const s=Math.max(0,Math.floor(left/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;
+  el.textContent=left>0?(h?h+":":"")+String(m).padStart(h?2:1,"0")+":"+String(x).padStart(2,"0"):"Time up";el.classList.toggle("low",left<300000);
+  if(left<=0&&!TSX.over){TSX.over=true;if(TSX.t.kind==="mcq")tsSubmitMcq(true);else{tsDock();toast("Time is up. Upload your answers now.")}}}
+function tsDock(){if(!TSX)return;const {t,ans,q}=TSX,d=document.getElementById("tsxD");if(!d)return;
+  if(t.kind==="mcq"){const n=t.n_questions,done=Object.keys(ans).filter(k=>ans[k]).length;
+    d.innerHTML=TSX.grid?`<div class="tsx-foot"><b style="color:var(--ink)">All questions</b><button class="btn sm" data-act="tsxgrid">Close</button></div><div class="tsx-grid">${Array.from({length:n},(_,i)=>`<button class="${ans[i+1]?"on":""}" data-tsq="${i+1}">${i+1}<small>${ans[i+1]||"–"}</small></button>`).join("")}</div>`
+     :`<div class="tsx-q"><button class="btn sm" data-tsq="${Math.max(1,q-1)}" aria-label="Previous question"${q<=1?" disabled":""}>◀</button><span class="qn">Q ${q} of ${n}</span><button class="btn sm" data-tsq="${Math.min(n,q+1)}" aria-label="Next question"${q>=n?" disabled":""}>▶</button></div>
+      <div class="tsx-opts" role="group" aria-label="Your answer for question ${q}">${["A","B","C","D"].map(o=>`<button data-tso="${o}" aria-pressed="${ans[q]===o}">${o}</button>`).join("")}</div>
+      <div class="tsx-foot"><button class="btn sm" data-act="tsxgrid">${done} of ${n} answered · see all</button><button class="btn sm primary" data-act="tsxsubmit">Submit test</button></div>`}
+  else{const over=tsEnd(TSX.t,TSX.a)<Date.now(),up=TSX.a.status==="submitted";
+    d.innerHTML=`<div class="tsx-foot" style="color:var(--ink)"><span>${up?"Your answers are uploaded. You can replace the file until a teacher checks it.":over?"Time is up. Scan all your pages into one PDF and upload it now.":"Write on paper. When you finish, scan all pages into one PDF."}</span></div>
+     <div class="row" style="justify-content:center"><input type="file" id="tsxF" accept="application/pdf,.pdf" hidden><button class="btn primary" data-act="tsxpick">${up?"Replace my answers (PDF)":"Upload my answers (one PDF)"}</button><span class="muted" id="tsxM" style="font-size:.84rem"></span></div>`}}
+function tsLoadPdfJs(){return window.pdfjsLib?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js";s.onload=()=>{try{window.pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";ok()}catch(e){no(e)}};s.onerror=no;document.head.appendChild(s)})}
+async function tsPaper(t){const b=document.getElementById("tsxB"),run=TSX;if(!b)return;
+  if(!t.paper_path){b.innerHTML=`<p class="muted">No question paper is attached to this test. Tell your teacher.</p>`;return}
+  let url="";try{const r=await sb.storage.from(TSB).createSignedUrl(t.paper_path,6*3600);if(r.error)throw r.error;url=r.data.signedUrl}catch(e){b.innerHTML=`<p class="muted">Couldn't load the question paper. Close this screen and open the test again.</p>`;return}
+  const fallback=`<p class="muted" style="text-align:center">The paper couldn't be shown here.</p><a class="btn primary" href="${url}" target="_blank" rel="noopener" style="text-decoration:none">Open the question paper</a>`;
+  try{await tsLoadPdfJs();const pdf=await window.pdfjsLib.getDocument({url}).promise;if(TSX!==run)return;b.innerHTML="";
+    const w=Math.min(b.clientWidth-24,900),dpr=Math.min(window.devicePixelRatio||1,2);
+    for(let i=1;i<=pdf.numPages;i++){const pg=await pdf.getPage(i);if(TSX!==run)return;const v0=pg.getViewport({scale:1}),vp=pg.getViewport({scale:w/v0.width*dpr});
+      const c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;c.style.width=w+"px";c.setAttribute("role","img");c.setAttribute("aria-label","Question paper, page "+i+" of "+pdf.numPages);b.appendChild(c);
+      await pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise}
+    const a=document.createElement("a");a.className="btn sm";a.href=url;a.target="_blank";a.rel="noopener";a.style.textDecoration="none";a.textContent="Open the paper in a new tab";b.appendChild(a)
+  }catch(e){if(TSX===run)b.innerHTML=fallback}}
+function tsClose(silent){if(!TSX)return;clearInterval(TSX.tick);TSX.el.remove();TSX=null;document.body.classList.remove("modal-on");if(!silent)render()}
+async function tsSubmitMcq(auto){if(!TSX||TSX.busy)return;const {id,t,ans}=TSX;
+  if(!auto){const blank=t.n_questions-Object.keys(ans).filter(k=>ans[k]).length;
+    tsModal(`<h2>Submit the test?</h2><p class="muted">${blank?`${blank} question${blank>1?"s are":" is"} not answered. `:"All questions answered. "}You can't change your answers after this.</p><div class="row" style="margin-top:6px"><button class="btn primary" data-act="tsxconfirm">Yes, submit</button><button class="btn ghost" data-act="tsmclose">Keep going</button></div>`);return}
+  TSX.busy=true;const m=document.getElementById("tsModal");if(m)m.remove();const d=document.getElementById("tsxD");if(d)d.innerHTML=`<p class="muted" style="text-align:center">Submitting your answers…</p>`;
+  const r=await sb.rpc("ts_submit_mcq",{p_test:id,p_answers:ans});
+  if(r.error){if(TSX){TSX.busy=false;tsDock()}toast("Couldn't submit. Check your internet and tap Submit again.");return}
+  try{localStorage.removeItem(tsKey(id))}catch(_){}TS.att[id]=r.data;TS.res=id;tsClose(true);track("ts.mcq");render();window.scrollTo({top:0})}
+async function tsUpload(file){if(!TSX||TSX.busy||!file)return;const {id}=TSX,msg=s=>{const m=document.getElementById("tsxM");if(m)m.textContent=s};
+  if(!(file.type==="application/pdf"||/\.pdf$/i.test(file.name)))return msg("Only a PDF file works here.");
+  if(file.size>25*1024*1024)return msg("That file is over 25 MB. Scan at a lower quality and try again.");
+  TSX.busy=true;msg("Uploading… keep this screen open.");const path=`answers/${session.user.id}/${id}.pdf`;
+  try{const up=await sb.storage.from(TSB).upload(path,file,{contentType:"application/pdf",upsert:true});if(up.error)throw up.error;
+    const r=await sb.rpc("ts_submit_desc",{p_test:id,p_path:path});if(r.error)throw r.error;
+    TS.att[id]=r.data;TS.res=id;tsClose(true);track("ts.desc");render();window.scrollTo({top:0});toast("Uploaded. A teacher will check it.")}
+  catch(e){if(TSX)TSX.busy=false;msg("Upload failed: "+(e.message||"try again")+".")}}
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;const a=t.dataset.act;
+  if(a==="tsauth"){needAcct("Sign in or create a free account to open the test series.","tests");return}
+  if(a==="tsrefresh"){TS.loaded=false;TS.res=null;render();return}
+  if(a==="tsback"){TS.res=null;render();window.scrollTo({top:0});return}
+  if(a==="tsmclose"){const m=document.getElementById("tsModal");if(m)m.remove();return}
+  if(t.dataset.tsstart){tsAskStart(t.dataset.tsstart);return}
+  if(t.dataset.tsbegin){tsBegin(t.dataset.tsbegin,t);return}
+  if(t.dataset.tsgo){tsRun(t.dataset.tsgo);return}
+  if(t.dataset.tsres){TS.res=t.dataset.tsres;render();window.scrollTo({top:0});return}
+  if(t.dataset.tsfile){tsFile(t.dataset.tsfile);return}
+  if(!TSX)return;
+  if(a==="tsxclose"){if(TSX.t.kind==="mcq"&&tsEnd(TSX.t,TSX.a)>Date.now())toast("The clock keeps running. Come back and resume from the Tests tab.");tsClose();return}
+  if(a==="tsxgrid"){TSX.grid=!TSX.grid;tsDock();return}
+  if(a==="tsxsubmit"){tsSubmitMcq(false);return}
+  if(a==="tsxconfirm"){tsSubmitMcq(true);return}
+  if(a==="tsxpick"){const f=document.getElementById("tsxF");if(f)f.click();return}
+  if(t.dataset.tsq){TSX.q=+t.dataset.tsq;TSX.grid=false;tsDock();return}
+  if(t.dataset.tso){const o=t.dataset.tso;if(TSX.ans[TSX.q]===o)delete TSX.ans[TSX.q];else TSX.ans[TSX.q]=o;try{localStorage.setItem(tsKey(TSX.id),JSON.stringify(TSX.ans))}catch(_){}tsDock();return}
+});
+document.addEventListener("change",e=>{if(e.target&&e.target.id==="tsxF"&&e.target.files&&e.target.files[0])tsUpload(e.target.files[0])});
+function tsHomeCard(){return `<div class="card wa-card ts-card"><div><div class="eyebrow">New</div><h2 style="font-size:1.1rem">CA ${esc(L().label)} Test Series</h2><p class="muted" style="margin-top:4px;font-size:.9rem">Unit-wise and full-syllabus tests. MCQs marked instantly, written papers checked by a teacher.</p></div><div class="row"><button class="btn primary" data-tab="tests">Open Test Series</button></div></div>`}
 
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
