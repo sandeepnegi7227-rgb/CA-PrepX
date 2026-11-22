@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CA PrepX · Free CA exam prep</title>
 <meta name="description" content="Free study planner, ICAI RTP & MTP tracker and MCQ practice for CA Foundation, Intermediate and Final students.">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#0B0B0C">
 <meta property="og:title" content="CA PrepX">
 <meta property="og:description" content="Plan it. Practise it. Tick it off. Free study plans, RTP/MTP tracker and MCQs for CA students.">
 <link rel="icon" href="/logo-64.png" type="image/png">
@@ -13,7 +13,7 @@
 <meta property="og:image" content="https://www.caprepx.com/logo-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Outfit:wght@400;500;600&family=Young+Serif&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Young+Serif&display=swap">
 <style id="lpcss">
 #lp a{color:#E3B341}
 #lp a:hover{color:#F0C75E}
@@ -791,6 +791,29 @@ body.exam-on,body.modal-on{overflow:hidden}
 .ts-res .ok{background:var(--good-soft);border-color:transparent}.ts-res .no{background:var(--tick-soft,#FBE4D8);border-color:transparent}
 .ts-qm{width:100%;border-collapse:collapse;font-size:.92rem}.ts-qm td,.ts-qm th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}.ts-qm td:last-child,.ts-qm th:last-child{text-align:right}
 .ts-remarks{background:var(--surface-2);border-radius:12px;padding:10px 12px;white-space:pre-line;font-size:.92rem}
+
+/* ---------- black and gold skin (matches the visitor home page) ---------- */
+:root{--serif:"Young Serif",Georgia,"Times New Roman",serif;--sans:"Outfit",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"Outfit",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+html{font-synthesis-weight:none}
+h1,h2,h3,.brand b{font-weight:400;letter-spacing:0}
+body{font-size:16px}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0B0B0C;--surface:#141416;--surface-2:#1E1E21;--ink:#F4F1EA;--muted:#A8A49B;--line:#2B2B30;
+  --accent:#E3B341;--accent-ink:#1A1400;--accent-soft:#2A2412;--gold:#E3B341;--gold-deep:#E3B341;--gold-ink:#1A1400;
+  --hero-bg:#141416;--hero-line:rgba(227,179,65,.35);--hero-ink:#F4F1EA;--hero-muted:#A8A49B;--hero-ring:#E3B341}
+:root[data-theme="dark"] body{background-color:#0B0B0C;background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);background-size:120px 120px;background-attachment:fixed}
+:root[data-theme="dark"] body.lp-on{background-image:none}
+.card{border-radius:20px}.tile{border-radius:20px}.stats{border-radius:16px}
+.btn{border-radius:12px;padding:10px 16px;font-weight:500}.btn.sm{border-radius:10px;padding:6px 12px}.btn.primary{font-weight:600}
+.icon-btn{border-radius:12px}.pill{padding:3px 10px}
+:root[data-theme="dark"] .tabs{background:rgba(11,11,12,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+:root[data-theme="dark"] .bnav{background:rgba(20,20,22,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 -6px 22px rgba(0,0,0,.45)}
+:root[data-theme="dark"] .card,:root[data-theme="dark"] .tile{box-shadow:0 1px 0 rgba(255,255,255,.03) inset}
+:root[data-theme="dark"] .tile:hover,:root[data-theme="dark"] .btn:hover{border-color:rgba(227,179,65,.55)}
+:root[data-theme="dark"] .ts-hero{background:#141416;color:#F4F1EA;border:1px solid rgba(227,179,65,.4)}
+:root[data-theme="dark"] .tsx-opts button[aria-pressed="true"],:root[data-theme="dark"] .tsx-grid button.on{background:#E3B341;color:#1A1400;border-color:#E3B341}
+:root[data-theme="dark"] .lvtip{background:#E3B341;color:#1A1400}:root[data-theme="dark"] .lvtip:before{background:#E3B341}
+:root[data-theme="dark"] .lvtip .btn.primary{background:#1A1400;color:#F4F1EA;border-color:#1A1400}
+:root[data-theme="dark"] input,:root[data-theme="dark"] select,:root[data-theme="dark"] textarea{color-scheme:dark}
 </style>
 <style>
 .p-brief{background-image:url(data:image/webp;base64,UklGRpYFAABXRUJQVlA4WAoAAAAQAAAAXwAAXwAAQUxQSNUBAAABkCPZtmo3+5wrZsiZOVeoSKVJSHMwpuxQoZmdfg9AuZmZ2c4Yf73377nb9P4XXDNFxATgD6siIhHTMgcArkzj5ASAVFUJAHHxEQXG1+TO3r1zNrdmHFCJjAJT856Zfn4K0Kg4tB4i6b2ZmfckD7XCRcSh7zLNBwbz3gKDN17ug0ZD0XafKRk8v+gDmfJ+GzQSolUnWCADyQdHjz4gGcgCT1SpxMFhHVPS6HdO1AA1EzuNRqZcBxcFRcc7CzQ+mUTm5BMag73rgMagDFtYYLBnIyh3IiKuHCPPLLDAzShbUqILXX0jGD1nUKmZlZihp4Ub1brQshDqsODDIdDzBEo8Qc8QhrHgTktSoL6rd0EHOlfQ6DnXOdBb5EDnHD2NKzoHehe0qx7QEhRD+5/kk4XNGz9P8knR+YSfWz5Z2PyTfUPQohTTrxjZl9PQIlS6XzENC54RSswIC57yVbdolsNWpoxsyq1wGYLym8FiY+FmBSSr+QVDbAJfNBfT8jJGL1v++++XssanMXramAVxZ8zHxtsZJ8gsw1omsUm4FmVZInXnmXpv0fQ+5fk6kSwI2o4yskfaIChWUD57+PjJaB7PzZZDULwguoJSxbmYOCdYSIkofqQCAFZQOCCaAwAAcBUAnQEqYABgAD5hKJFFpCKhlHpudEAGBKAMlKVV2+gRTF/XZ3/znqv2z3iuesh/cv2A92HkgdYB6AH7Adat+43oof/QwqbOXmLbiAjKbKjT501yqJ2cQ94p/+md7vutYa/wB4QuDRtB2+GlhxvOqth8ZoCzT5oWJ47YmCD0VPVtA9Og5uR47snNH7dFTio+n09bRz+JaPWOHVWqiJR3IFA4VEEmr+9/qqb2LGdO1g81eBkAAP79bkgSv//r40+5FU3uH7bmVGhns/oouCX4WaHOtIF54jRJx1yfCgjDL/+2meT1cul78mp6yFofwPanb9U1IsWLfo8cVePtbog3zj9UOH9v9qrNgReMU98ta39cqiSUTIMnaWC/yrbSaYIcn2sFefSOI368orWTE5lph7EJFZHafDZ9C8bZ9ScDuNEe6ndTqW+8rHRWEko2NjCBpvLtGFcuBHfi1BeMcanbmKG90uuDwrUPjrnxzWcvknYM/sUJvDGyYC4xhPekBLN5NtEV/XHnbVbmebcUpgEAhgr2j/4x2hYJ50SUXHiyWox6nqM1L8vFP2bwXxrEV6XW7SXNLXZU8nVjo6SvryxJyVBsRA3j5xHpxlZp5Cu2Mqa9is56i/p8uQea8Zb3B40mNWVBhSVq9tc/v2c9X9+8Ocg5geYhaRZrxnpYP3wqCF9ny++Kobyx0pgr+OxMAAAaXjYrE/okO+KuJbB2NN3vR3WZbqeWHdZ7a46bah3IUcE0o52opnI77wV9VW1wbmb1JzR51t2BpZwZVtyj9hyp0gOlfOC/PCIKtYsicqvkyley0nAOs9UoHGmbs1flZ/aOTnVg1OLBPtNBnfqC6HP/oJMcW+3op3+kjDXKNvxPQQLrhNlY9xfmrwMPqQfkr3kzLIvHEhOWSrbUkyNDcW8OAzMQEnZ31w1iJO3Kx1dbBqE3vZ5SD95V+Z55icNFMpB+RF62uwRX1QUFHag83EjKPR6EI9jTmOGW/Z/3/2BS+V47dhp93UdEyHWb82azSC/QMwwfM8upeIdu0oMk+XNTiBJTsnEM+rJyhhejgw90VW1BPcJ9Z//tzKmYBecm5IoYSzsEnuOfH8TH5LJud+TJ1YjxwwJRGDrYXFtMWiUMa85Oey6AVN0v5+oal+Pf23T+MMO7nimKcFLsChDhY4xyV+Rhk8Xl2hNmvFPfiH65iQaNa0ScVa9y6fwHe9QFMo1H9zwazmEzqe0AAA==)}
@@ -1006,6 +1029,7 @@ main{padding-bottom:120px}
 </style>
 </head>
 <body>
+<script>try{var __t=localStorage.getItem("prepx.theme");document.documentElement.setAttribute("data-theme",__t==="light"?"light":"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
 <script>try{var __k=false;for(var __i=0;__i<localStorage.length;__i++){if(/^sb-.*-auth-token$/.test(localStorage.key(__i)||""))__k=true}if(!__k&&localStorage.getItem("prepx.guest")!=="1"&&location.pathname==="/"&&!location.hash)document.body.classList.add("lp-on")}catch(e){}</script>
 <template id="lpT">
 <div id="lp"><div style="background: #0B0B0C; color: #F4F1EA; font-family: 'Outfit', system-ui, sans-serif; font-size: 17px; line-height: 1.55">
@@ -2716,6 +2740,7 @@ function chipNav(label,attr,items,isOn){return `<div class="chipnav" role="group
 const icoSvg=(n,sz)=>`<svg class="ic" width="${sz||20}" height="${sz||20}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 /* theme */
 let THEME=null;try{THEME=localStorage.getItem("prepx.theme")}catch(e){}
+if(THEME!=="light"&&THEME!=="dark")THEME="dark";
 function applyTheme(){if(THEME)document.documentElement.setAttribute("data-theme",THEME);else document.documentElement.removeAttribute("data-theme")}
 function isDark(){return THEME?THEME==="dark":window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches}
 applyTheme();
