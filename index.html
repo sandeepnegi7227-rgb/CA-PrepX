@@ -1030,7 +1030,7 @@ main{padding-bottom:120px}
 </head>
 <body>
 <script>try{var __t=localStorage.getItem("prepx.theme");document.documentElement.setAttribute("data-theme",__t==="light"?"light":"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
-<script>try{var __k=false;for(var __i=0;__i<localStorage.length;__i++){if(/^sb-.*-auth-token$/.test(localStorage.key(__i)||""))__k=true}if(!__k&&localStorage.getItem("prepx.guest")!=="1"&&location.pathname==="/"&&!location.hash)document.body.classList.add("lp-on")}catch(e){}</script>
+<script>try{var __k=false;for(var __i=0;__i<localStorage.length;__i++){if(/^sb-.*-auth-token$/.test(localStorage.key(__i)||""))__k=true}if(!__k&&location.pathname==="/"&&!location.hash)document.body.classList.add("lp-on")}catch(e){}</script>
 <template id="lpT">
 <div id="lp"><div style="background: #0B0B0C; color: #F4F1EA; font-family: 'Outfit', system-ui, sans-serif; font-size: 17px; line-height: 1.55">
 
@@ -1070,7 +1070,6 @@ main{padding-bottom:120px}
 <p style="margin: 0; font-size: 20px; max-width: 540px">One focused workspace for learning, practicing, revising and tracking your CA preparation.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px">
 <button class="primary go" data-act="landup" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Create my free account <span class="arr" aria-hidden="true">→</span></button>
-<button class="ghost go" data-act="guestgo" style="height: 52px; padding: 0 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18); background: transparent; color: #F4F1EA; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; cursor: pointer; font-family: inherit; font-size: inherit">Look around first</button>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 12px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); width: 100%; font-size: 15px; color: #A8A49B">
 <span><span style="color: #F4F1EA; font-weight: 600">3</span> CA levels</span>
@@ -1657,7 +1656,6 @@ main{padding-bottom:120px}
 <p style="margin: 0; font-size: 19px; color: #A8A49B">Stop wondering what to study next. Start making measurable progress.</p>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 12px">
 <button class="primary go" data-act="landup" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Create my free account <span class="arr" aria-hidden="true">→</span></button>
-<button class="ghost go" data-act="guestgo" style="height: 52px; padding: 0 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18); background: transparent; color: #F4F1EA; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; cursor: pointer; font-family: inherit; font-size: inherit">Look around first</button>
 </div>
 </div>
 </section>
@@ -2777,7 +2775,7 @@ async function authDo(kind){
   if(authBusy)return;const email=(document.getElementById("aEmail")||{}).value,pw=(document.getElementById("aPw")||{}).value;
   const nm=((document.getElementById("aName")||{}).value||"").trim();if(email)aEmailVal=email.trim();
   const phRaw=((document.getElementById("aPhone")||{}).value||"").trim();aPhoneVal=phRaw;let ph=phRaw.replace(/[^0-9+]/g,"");
-  if(kind==="signup"&&ph){if(/^[6-9][0-9]{9}$/.test(ph))ph="+91"+ph;if(!/^\+?[0-9]{10,15}$/.test(ph)){authMsg="That mobile number doesn't look right. Check it, or leave it blank.";authErr=true;render();return}}
+  if(kind==="signup"){if(!(email||"").trim()){authMsg="Enter your email address.";authErr=true;render();return}if(!ph){authMsg="Enter your mobile number. It is needed to create an account.";authErr=true;render();return}if(/^[6-9][0-9]{9}$/.test(ph))ph="+91"+ph;if(!/^\+?[0-9]{10,15}$/.test(ph)){authMsg="That mobile number doesn't look right. Enter all 10 digits.";authErr=true;render();return}}
   authBusy=true;authMsg="";authErr=false;render();
   let res;
   try{
@@ -2808,9 +2806,9 @@ function authCard(){
     ${up?`<div class="field"><label for="aName">What should we call you?</label><input id="aName" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Priya"></div>`:""}
     <div class="field" style="margin-top:12px"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(aEmailVal)}"></div>
     <div class="field" style="margin-top:12px"><label for="aPw">Password</label><input id="aPw" type="password" minlength="6" autocomplete="${up?"new-password":"current-password"}" placeholder="${up?"6+ characters":""}"></div>
-    ${up?`<div class="field" style="margin-top:12px"><label for="aPhone">WhatsApp number <span class="muted">(optional)</span></label><input id="aPhone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="e.g. 98765 43210" value="${esc(aPhoneVal)}"><small class="muted" style="font-size:.78rem">Add it to join the CA PrepX WhatsApp group for notes and exam updates. We never share your number.</small></div>`:""}
+    ${up?`<div class="field" style="margin-top:12px"><label for="aPhone">Mobile number (WhatsApp)</label><input id="aPhone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" required aria-required="true" placeholder="e.g. 98765 43210" value="${esc(aPhoneVal)}"><small class="muted" style="font-size:.78rem">Needed to create your account. We use it for exam updates on WhatsApp and never share it.</small></div>`:""}
     <button class="btn primary" style="width:100%;margin-top:18px;padding-block:11px" data-auth="${up?"signup":"signin"}" ${busy}>${authBusy?"Hold on…":up?"Create my free account":"Sign in"}</button>${up?"":`<div style="text-align:center;margin-top:8px"><button class="btn ghost sm" data-aview="reset">Forgot password?</button></div>`}
-    ${guestOK()?"":`<div class="or-line"><span>or</span></div><button class="btn ghost guest-link" data-act="guestgo">Just looking? Continue as guest</button>`}
+    
     <div style="text-align:center;margin-top:6px"><button class="btn ghost sm" data-tab="about">Who's building this? Meet the founder →</button></div>
   </div>`;
 }
@@ -2869,7 +2867,7 @@ document.addEventListener("click",e=>{const lp=e.target.closest("#lp");if(!lp)re
 });
 function landingOld(){
   const r=(n,k)=>Math.floor(n/k)*k;let nQ=0,nP=0;try{nQ=r(Q.length,50);nP=r(ICAI_CAT.length,10)}catch(_){}
-  const cta=`<div class="land-cta"><button class="btn primary" data-act="landup">Create my free account</button><button class="btn" data-act="guestgo">Look around first</button></div>`;
+  const cta=`<div class="land-cta"><button class="btn primary" data-act="landup">Create my free account</button></div>`;
   const F=[["plan","A study plan that fits your days","Answer 15 quick questions and get a day-by-day timetable built around your attempt date, your hours and your weak papers."],
     ["papers","RTP, MTP and past papers in one place","ICAI revision papers, mock papers and past papers sorted by attempt. No more hunting through PDFs."],
     ["clock","Mock exam hall","Sit full ICAI papers with the real timing and reading time, then review against ICAI's answers."],
@@ -2893,7 +2891,7 @@ function landingOld(){
     <div class="land-end"><h2>Ready when you are</h2><p>Takes 20 seconds. Just your email and a password.</p>${cta}</div>
   </div>`;
 }
-function guestOK(){try{return localStorage.getItem("prepx.guest")==="1"}catch(_){return !!window.__guest}}
+function guestOK(){return false} /* guest browsing was removed: an account (email + mobile) is needed */
 function gateOn(){if(!sb||recovering)return false;if(session&&!isGuest())return false;if(guestOK())return false;if(tab==="about")return false;return true}
 function renderChrome(){
   const gate=gateOn()||(tab==="about"&&!!sb&&!(session&&!isGuest()));
