@@ -115,6 +115,11 @@ nav .w{display:flex;align-items:center;justify-content:space-between;height:84px
 .wk i{flex:1;background:var(--s2);border-radius:6px 6px 0 0;height:0;transition:height 1s}
 .wk i.on{background:var(--gold)}
 .in .wk i{height:var(--h)}
+.an{margin-top:8px}
+.an>div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) 70px;gap:14px;align-items:center;padding:13px 0;border-top:1px solid var(--ln);font-size:16px}
+.an i{display:block;height:10px;border-radius:999px;background:var(--gold);width:0;transition:width 1.1s .2s}
+.in .an i{width:var(--w)}
+.an b{font-weight:500;font-size:13px;color:var(--goldt);text-align:right}
 .end{position:relative;border-radius:32px;overflow:hidden;padding:72px 28px;text-align:center;border:1px solid var(--ln);background:var(--s1);box-shadow:var(--sh2)}
 .end p{margin:16px auto 30px;max-width:30em;color:var(--mu)}
 footer{padding:30px 0 50px;font-size:14px;color:var(--mu);text-align:center}
@@ -182,6 +187,31 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <a href="#progress"><svg class="ic"><use href="#i-bars"/></svg><h3>Progress</h3><p class="mu">See what to fix next</p></a>
 </div>
 </section>
+
+<section class="sec band" id="founder"><div class="w">
+<div class="fh rv"><span class="lab">From the founders</span><h2>Built by people who sat where you are sitting</h2><p class="mu">CA PrepX is made by Chartered Accountants who cleared the same exams. Here is why we built it.</p></div>
+<div class="vid rv"><video controls playsinline preload="none" poster="/media/founder-reel.jpg" aria-label="CA PrepX founder video"><source src="/media/founder-reel.mp4" type="video/mp4"></video></div>
+</div></section>
+
+<section class="sec" id="analysis"><div class="w">
+<div class="fh rv"><span class="lab">Paper-wise analysis</span><h2>Know which chapters carry the marks</h2><p class="mu">We went through past ICAI papers, RTPs and MTPs for every paper. <b>See where the marks have come from</b>, chapter by chapter, before you decide what to study first.</p></div>
+<div class="stage rv">
+<div class="blob" style="width:360px;height:360px;right:-130px;top:-50px"></div>
+<div class="mock">
+<div class="xh"><div class="tabs" style="margin:0"><span class="on">Accounting</span><span>Business Laws</span><span>Quant</span><span>Economics</span></div><span class="mu" style="font-size:14px">Sample view</span></div>
+<div class="an">
+<div><span>Partnership Accounts</span><i style="--w:92%"></i><b>High</b></div>
+<div><span>Company Accounts</span><i style="--w:78%"></i><b>High</b></div>
+<div><span>Final Accounts</span><i style="--w:64%"></i><b>Medium</b></div>
+<div><span>Depreciation</span><i style="--w:46%"></i><b>Medium</b></div>
+<div><span>Bills of Exchange</span><i style="--w:30%"></i><b>Low</b></div>
+</div>
+</div>
+<div class="chip fl" style="left:-90px;top:64px"><svg class="ic"><use href="#i-bars"/></svg>Foundation and Inter</div>
+<div class="chip fl b" style="right:-80px;bottom:44px"><svg class="ic"><use href="#i-down"/></svg>Download as PDF</div>
+</div>
+<div class="cta rv"><a class="lnk" href="#">See the analysis →</a></div>
+</div></section>
 
 <section class="sec band" id="learn"><div class="w">
 <div class="fh rv"><span class="lab">Learn</span><h2>Every ICAI resource, sorted by chapter</h2><p class="mu">No more ten tabs and Telegram channels. <b>Pick your level and paper</b>, and the notes, RTPs, MTPs and past papers are all in one list.</p></div>
@@ -256,11 +286,6 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="chip fl c" style="left:-80px;top:60px"><svg class="ic"><use href="#i-bars"/></svg>Weak chapters flagged</div>
 </div>
 <div class="cta rv"><a class="lnk" href="#">Build my plan →</a></div>
-</div></section>
-
-<section class="sec band" id="founder"><div class="w">
-<div class="fh rv"><span class="lab">From the founders</span><h2>Built by people who sat where you are sitting</h2><p class="mu">CA PrepX is made by Chartered Accountants who cleared the same exams. Here is why we built it.</p></div>
-<div class="vid rv"><video controls playsinline preload="none" poster="/media/founder-reel.jpg" aria-label="CA PrepX founder video"><source src="/media/founder-reel.mp4" type="video/mp4"></video></div>
 </div></section>
 
 <section class="w sec">
