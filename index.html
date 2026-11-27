@@ -338,6 +338,41 @@ body:not(.lp-on):not(.au-on) #bnav{background:linear-gradient(180deg,#FFF8E6 0%,
 #bnav button{padding:7px 0 6px !important;border-radius:15px !important}
 }
 :root[data-theme="dark"] #bnav button[aria-selected="true"] .nvi{background:rgba(255,255,255,.92)}
+
+.hm-pill{display:inline-block;justify-self:start;border:1px solid rgba(242,177,12,.6);background:rgba(242,177,12,.10);border-radius:999px;padding:6px 16px;font-size:.88rem;font-weight:500}
+.hm-hero .home-hero h1{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--ink);font-size:clamp(1.7rem,3.1vw,2.7rem);line-height:1.14;margin:6px 0 8px}
+.hm-ul{color:var(--gold);position:relative;white-space:nowrap}
+.hm-ul::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:7px;border-top:3px solid var(--gold);border-radius:50%}
+.hm-hero .today-t h2{font-size:1.2rem;line-height:1.25}
+.hm-sec{padding:44px 0 6px}
+.hm-fh{text-align:center;max-width:720px;margin:0 auto 26px}
+.hm-lab{display:inline-block;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);font-weight:600;background:rgba(242,177,12,.14);border-radius:999px;padding:6px 14px}
+.hm-fh h2{font-size:clamp(1.5rem,2.8vw,2.2rem);line-height:1.15;margin:14px 0 8px}
+.hm-fh h2::after{content:"";display:block;width:90px;height:3px;background:var(--gold);border-radius:2px;margin:14px auto 0}
+.hm-gl{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.hm-gl button,.hm-step,.hm-loop button{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 8px 24px rgba(60,45,10,.08);font:inherit;color:var(--ink);transition:transform .22s cubic-bezier(.3,1.5,.5,1),border-color .2s}
+:root[data-theme="dark"] .hm-gl button,:root[data-theme="dark"] .hm-step,:root[data-theme="dark"] .hm-loop button{box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.hm-gl button{text-align:center;cursor:pointer}
+.hm-gl button:hover,.hm-loop button:hover,.hm-step:hover{transform:translateY(-5px);border-color:var(--gold)}
+.hm-gl b{display:block;font-family:var(--serif);font-weight:400;font-size:2rem;line-height:1.1}
+.hm-gl b.g{color:var(--gold-deep)}
+.hm-gl span{font-size:.85rem;color:var(--muted)}
+.hm-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.hm-step{display:flex;flex-direction:column;gap:6px;text-align:left}
+.hm-step em,.hm-loop em{font-style:normal;font-family:var(--serif);font-size:1.9rem;color:var(--gold);line-height:1}
+.hm-k{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.hm-step h3{font-size:1.15rem;line-height:1.25}
+.hm-step p{font-size:.92rem;flex:1}
+.hm-lnk{align-self:flex-start;background:none;border:0;padding:6px 0 0;font:inherit;font-weight:600;color:var(--gold-deep);cursor:pointer}
+.hm-loop{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.hm-loop button{text-align:left;cursor:pointer;padding:16px;display:grid;gap:6px;align-content:start}
+.hm-loop h3{font-size:1.05rem}
+.hm-loop p{font-size:.85rem}
+.hm-loop .done{border-color:var(--good)}
+.hm-loop .done em{color:var(--good)}
+.hm-loop .cur{border-color:var(--gold);background:var(--accent-soft)}
+@media(max-width:1100px){.hm-loop{grid-template-columns:repeat(3,minmax(0,1fr))}.hm-gl{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:719px){.hm-sec{padding-top:30px}.hm-steps{grid-template-columns:1fr}.hm-loop,.hm-gl{grid-template-columns:1fr 1fr}.hm-gl b{font-size:1.6rem}.hm-gl button,.hm-loop button{padding:14px}.hm-ul{white-space:normal}}
 </style>
 <style>
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
@@ -2941,10 +2976,26 @@ journey(){
 },
 home(){
   const lv=L(),d=S.exam[S.level],n=d?Math.round((new Date(d)-today)/864e5):null,wn=mistakes().length;
-  const hr=new Date().getHours(),greet=hr<5?"Late-night grind":hr<12?"Morning":hr<17?"Hey":"Evening";
-  const tip=TIPS[today.getDate()%TIPS.length];
+  const hr=new Date().getHours(),greet=hr<5?"Late-night grind":hr<12?"Good morning":hr<17?"Hey":"Good evening";
+  const tip=TIPS[today.getDate()%TIPS.length],nm=S.name?esc(String(S.name).split(" ")[0]):"";
   const att=lv.attempts[0],tot=lv.papers.reduce((a,p)=>a+chapters(p.id).length,0),rd=lv.papers.reduce((a,p)=>a+chapters(p.id).filter((_,j)=>((S.chap||{})[p.id+"|"+j]||0)>=1).length,0),pct=tot?Math.round(rd/tot*100):0;
-  const hasProg=S.mcq.length||Object.keys(S.chap||{}).length;
+  const acc=accuracy();let qn=0,qok=0,weak=null;lv.papers.forEach(p=>{const a=acc[p.id]||{n:0,ok:0};qn+=a.n;qok+=a.ok;if(a.n>=5){const r=Math.round(a.ok/a.n*100);if(!weak||r<weak.r)weak={p,r}}});
+  const ap=qn?Math.round(qok/qn*100):null;let stk=0;try{stk=streak()}catch(_){}
+  const hasProg=qn||rd;
+  let nx=null;for(const p of lv.papers){const ch=chapters(p.id);const j=ch.findIndex((_,j)=>!(((S.chap||{})[p.id+"|"+j]||0)>=1));if(j>=0){let nmc="Chapter "+(j+1);try{nmc=chShort(p.id,j)||nmc}catch(_){}nx={p,j,len:ch.length,name:nmc};break}}
+  const chA=nx?`data-tab="resources" data-sub="syllabus" data-jump="syl-${nx.p.id}" data-open="${nx.p.id}"`:`data-tab="resources" data-sub="syllabus"`;
+  const head=!hasProg?[`Welcome${nm?", "+nm:""}. Let's set up your`,"first step"]:wn?[`${greet}${nm?", "+nm:""}. ${wn} question${wn>1?"s":""} to`,"fix today"]:[`${greet}${nm?", "+nm:""}. You're ${pct}% through, here's what to`,"study next"];
+  const main=!hasProg?{t:"Build your study plan",s:"Two minutes. A day-by-day plan around your attempt date and study hours.",b:"Build my plan",a:`data-tab="plan" data-sub="study"`}
+    :wn?{t:`Redo ${wn} question${wn>1?"s":""} you got wrong`,s:"They come back until you get them right.",b:"Fix weak spots",a:`data-mode="mistakes"`}
+    :nx?{t:`Read: ${esc(nx.name)}`,s:`Paper ${nx.p.no} · ${esc(nx.p.name)} · chapter ${nx.j+1} of ${nx.len}`,b:"Open chapter",a:chA}
+    :{t:"10-minute MCQs",s:"A quick set to keep your streak going.",b:"Practise now",a:`data-tab="practice" data-sub="mcq"`};
+  const steps=[
+    nx?["Learn",`Read ${esc(nx.name)}`,`Paper ${nx.p.no} · ${esc(nx.p.name)}`,chA,"Open chapter"]:["Learn","Syllabus complete","Every chapter ticked off. Revise from RTPs and MTPs.",`data-tab="resources" data-sub="papers"`,"Open papers"],
+    weak?["Practise",`${esc(weak.p.name)}: ${weak.r}% accuracy`,"Your lowest paper so far. One 10-minute set moves it.",`data-tab="practice" data-sub="mcq"`,"Practise now"]:["Practise","10-minute MCQs",qn?"Keep the habit going with one quick set.":"Try your first set. You get the answer and the reason straight away.",`data-tab="practice" data-sub="mcq"`,"Practise now"],
+    ["Test",`CA ${esc(lv.label)} Test Series`,"Unit-wise and full-syllabus tests, checked by a teacher.",`data-tab="tests"`,"Open tests"]
+  ];
+  const loop=[["Learn","Video lectures, chapter by chapter.",rd>0,`data-tab="resources" data-sub="videos"`],["Practice","10-minute MCQs and chapter questions.",qn>0,`data-tab="practice" data-sub="mcq"`],["Revise","RTPs, MTPs and past papers.",false,`data-tab="resources" data-sub="papers"`],["Test","A full-length mock under exam timing.",false,`data-tab="practice" data-sub="mock"`],["Analyse","See which chapters carry the marks.",false,`data-tab="plan" data-sub="progress"`],["Improve","Fix weak spots, then move on.",false,`data-mode="mistakes"`]];
+  const cur=loop.findIndex(x=>!x[2]);
   const tiles=[
     ["papers","RTP · MTP · PYQ",`Latest for ${att}`,`data-tab="resources" data-sub="papers"`],
     ["mcq","10-min MCQs","Quick practice, any paper",`data-tab="practice" data-sub="mcq"`],
@@ -2953,28 +3004,43 @@ home(){
     ["rocket","I'm behind",n&&n>0?`Catch-up plan for ${n} days`:"Catch-up plan in one tap",`data-act="catchup"`],
     ["target","Fix weak spots",wn?`${wn} questions to redo`:"Redo what you got wrong",`data-mode="mistakes"`]
   ];
+  const fh=(l,h,p)=>`<div class="hm-fh"><span class="hm-lab">${l}</span><h2>${h}</h2>${p?`<p class="muted">${p}</p>`:""}</div>`;
   return `<div class="home-top hm-hero">
   <div class="hm-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1648201637025-1c77b9be3013?auto=format&fit=crop&w=1400&q=70" alt="" loading="lazy"></div>
   <div class="home-hero">
-      <div class="eyebrow">${greet}${S.name?", "+esc(S.name):""} · CA ${lv.label}${n&&n>0?` · ${n} days to exam`:""}</div>
-      <h1>What do you need today?</h1>
+      <span class="hm-pill">CA ${esc(lv.label)} · ${esc(att)} attempt${n&&n>0?` · ${n} days to go`:""}</span>
+      <h1>${head[0]} <span class="hm-ul">${head[1]}</span>.</h1>
       <div class="hsearch"><span class="ic-wrap">${ico("search",18)}</span><input id="hq" type="search" placeholder="${fits("careers")?"Search papers, topics, SAs, careers…":"Search papers, topics, chapters…"}" value="${esc(HQ)}" autocomplete="off" aria-label="Search CA PrepX"></div>
       <div id="hres" class="hres" hidden></div>
     </div>
     <div class="today">
       <div class="hm-nx">${ico("target",18)}<span>Your next step</span></div>
       <div class="today-top"><div class="tring" style="background:conic-gradient(var(--gold) ${pct}%,var(--hero-track) 0)"><b>${pct}%</b></div>
-      <div class="today-t"><small>${esc(att)} attempt${n&&n>0?` · ${n} days to go`:""}</small><h2>Syllabus ticked off</h2><small>${tot?`${rd} of ${tot} chapters read`:"Tick chapters as you finish them"}</small></div></div>
-      ${hasProg?`<button class="today-go" data-tab="plan" data-sub="progress"><span>${wn?`Pick up where you left off · ${wn} to fix`:"Pick up where you left off"}</span><span aria-hidden="true">→</span></button>`:`<button class="today-go" data-tab="plan" data-sub="study"><span>Build my study plan</span><span aria-hidden="true">→</span></button>`}
+      <div class="today-t"><h2>${main.t}</h2><small>${main.s}</small></div></div>
+      <button class="today-go" ${main.a}><span>${main.b}</span><span aria-hidden="true">→</span></button>
     </div>
   </div>
-  <div class="tiles v6">${tiles.map(x=>`<button class="tile" ${x[3]}>${ico(x[0],30)}<b>${x[1]}</b><span>${x[2]}</span></button>`).join("")}</div>
-  <div class="promo3">${tsHomeCard()}${anaCard()}${waCard()}</div>
+  <section class="hm-sec">${fh("Progress","Your preparation, at a glance",hasProg?"":"Your numbers appear here as soon as you tick a chapter or try a practice set.")}
+    <div class="hm-gl">
+      <button data-tab="resources" data-sub="syllabus"><b class="g">${rd} / ${tot}</b><span>Chapters ticked off</span></button>
+      <button data-tab="practice" data-sub="mcq"><b>${qn}</b><span>Questions attempted</span></button>
+      <button data-tab="plan" data-sub="progress"><b>${ap===null?"–":ap+"%"}</b><span>Accuracy</span></button>
+      <button data-tab="plan" data-sub="progress"><b>${stk}</b><span>Day streak</span></button>
+      <button data-mode="mistakes"><b>${wn}</b><span>Weak spots to fix</span></button>
+    </div></section>
+  <section class="hm-sec">${fh("Your plan","Always know what to do next","Picked from what you have done so far.")}
+    <div class="hm-steps">${steps.map((x,i)=>`<div class="hm-step"><em>0${i+1}</em><span class="hm-k">${x[0]}</span><h3>${x[1]}</h3><p class="muted">${x[2]}</p><button class="hm-lnk" ${x[3]}>${x[4]} →</button></div>`).join("")}</div></section>
+  <section class="hm-sec">${fh("The workspace","Everything you need to prepare for CA")}
+    <div class="tiles v6">${tiles.map(x=>`<button class="tile" ${x[3]}>${ico(x[0],30)}<b>${x[1]}</b><span>${x[2]}</span></button>`).join("")}</div>
+    <div class="promo3">${tsHomeCard()}${anaCard()}${waCard()}</div></section>
+  <section class="hm-sec">${fh("How it works","From first read to exam day. Your six-step loop.",cur>=0?`You are on step ${cur+1}: ${loop[cur][0]}.`:"")}
+    <div class="hm-loop">${loop.map((x,i)=>`<button class="${x[2]?"done":i===cur?"cur":""}" ${x[3]}><em>${x[2]?"✓":"0"+(i+1)}</em><h3>${x[0]}</h3><p class="muted">${x[1]}</p></button>`).join("")}</div></section>
   <div class="home-row"${fits("careers")?"":' style="grid-template-columns:1fr"'}>
     ${fits("careers")?`<button class="jobrow" data-tab="careers">${ico("brief",30)}<span><b>Articleship &amp; jobs</b><small>Roles and open vacancies</small></span><span aria-hidden="true" style="flex:none">→</span></button>`:""}
     <div class="tipstrip">${ico("bulb",26)}<div><span class="eyebrow">Tip of the day · ${esc(tip[0])}</span><p>${esc(tip[1])}</p></div><button class="btn ghost sm" data-tab="resources" data-sub="tips">More tips →</button></div>
   </div>`;
 },
+
 resources(){
   return sideNav("Resources","res",[["papers","RTP · MTP","Revision & mock test papers, past papers","papers"],["syllabus","Syllabus","Tick off every chapter","check"],["videos","Videos","Lectures by top CA teachers","video"],["tips","Exam tips","How toppers write and score","bulb"]],resMode,resMode==="tips"?VIEWS.guidance():resMode==="syllabus"?VIEWS.syllabus():resMode==="videos"?videosView():VIEWS.papers());
 },
