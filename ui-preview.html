@@ -37,9 +37,11 @@ nav .w{display:flex;align-items:center;justify-content:space-between;height:84px
 .logo img{width:38px;height:38px;border-radius:8px}
 .nr{display:flex;gap:10px;align-items:center}
 .tg{font:inherit;font-size:14px;color:var(--mu);background:var(--s1);border:1px solid var(--ln);border-radius:999px;padding:8px 14px;cursor:pointer}
-.hero{position:relative;min-height:min(740px,100vh);display:flex;align-items:center;padding:110px 0 70px}
-.hero .ph{position:absolute;inset:84px 0 64px 38%;z-index:0}
-.hero .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),.78) 20%,rgba(var(--bgr),0) 52%),linear-gradient(0deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 20%),linear-gradient(180deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 10%)}
+.hero{position:relative;min-height:clamp(600px,46vw,760px);display:flex;align-items:center;padding:110px 0 70px}
+.hero .ph{position:absolute;right:0;top:84px;width:62%;max-width:1000px;aspect-ratio:897/530;z-index:0;container-type:inline-size}
+.hero .ph img{object-fit:fill}
+[data-m=light] .hd,[data-m=dark] .hl{display:none}
+.hero .ph::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 14%),linear-gradient(0deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 12%),linear-gradient(180deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 6%)}
 .hero .w{position:relative;z-index:1;width:100%}
 .hero .tx{max-width:560px}
 .hero h1{margin:22px 0}
@@ -50,7 +52,12 @@ nav .w{display:flex;align-items:center;justify-content:space-between;height:84px
 .next svg{font-size:38px;color:var(--gold)}
 .next b{display:block;font-size:20px;font-weight:500}
 .next span{color:var(--mu)}
-.hero .next{position:absolute;right:24px;bottom:22px;z-index:2}
+.hero .ph .next{position:absolute;left:53%;top:72.5%;width:44%;height:24%;z-index:2;padding:0 4cqw;gap:3.2cqw;border-radius:2.6cqw}
+.hero .ph .next svg{font-size:8.5cqw}
+.hero .ph .next b{font-size:4.5cqw;line-height:1.25}
+.hero .ph .next span{font-size:3.7cqw}
+.vid{max-width:340px;margin:0 auto;aspect-ratio:9/16;border-radius:28px;overflow:hidden;border:1px solid var(--ln);box-shadow:var(--sh);background:#141416}
+.vid video{width:100%;height:100%;display:block;object-fit:cover}
 .scroll{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);text-align:center;font-size:14px;color:var(--mu);z-index:2}
 .scroll svg{display:block;margin:0 auto 2px;font-size:26px;color:var(--gold)}
 .sec{padding:72px 0}
@@ -107,19 +114,18 @@ nav .w{display:flex;align-items:center;justify-content:space-between;height:84px
 .wk i{flex:1;background:var(--s2);border-radius:6px 6px 0 0;height:0;transition:height 1s}
 .wk i.on{background:var(--gold)}
 .in .wk i{height:var(--h)}
-.end{position:relative;border-radius:32px;overflow:hidden;padding:72px 28px;text-align:center;border:1px solid var(--ln);background:var(--band)}
+.end{position:relative;border-radius:32px;overflow:hidden;padding:72px 28px;text-align:center;border:1px solid var(--ln);background:var(--s1);box-shadow:var(--sh2)}
 .end p{margin:16px auto 30px;max-width:30em;color:var(--mu)}
 footer{padding:30px 0 50px;font-size:14px;color:var(--mu);text-align:center}
 @media(prefers-reduced-motion:reduce){.fl{animation:none}.rv{opacity:1;transform:none}}
 @media(max-width:880px){
 nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 .hero{display:block;min-height:0;padding:68px 0 26px}
-.hero .ph{position:relative;inset:auto;height:300px;margin-bottom:-70px}
-.hero .ph::after{background:linear-gradient(0deg,rgba(var(--bgr),1) 4%,rgba(var(--bgr),0) 60%)}
+.hero .ph{position:relative;top:auto;width:100%;max-width:none;margin-bottom:-28px}
+.hero .ph::after{background:linear-gradient(0deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 14%)}
 .hero h1{margin:16px 0}
 .hero p{font-size:17px;margin-bottom:22px}
 .hero .btn,.end .btn{width:100%;justify-content:center}
-.hero .next{position:static;margin:22px 0 0}
 .scroll{display:none}
 .sec{padding:48px 0}
 .four{grid-template-columns:1fr 1fr}
@@ -153,7 +159,7 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 </div></nav>
 
 <header class="hero">
-<div class="ph"><img alt="Student reading a book" src="https://images.unsplash.com/photo-1617009762269-c062aaf6b3a0?auto=format&fit=crop&w=1600&q=78"></div>
+<div class="ph"><img class="hl" alt="Two CA students studying together in a library" src="/media/hero-light.jpg"><img class="hd" alt="" src="/media/hero-dark.jpg"><div class="next"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>10-minute practice</span></div></div></div>
 <div class="w">
 <div class="tx">
 <span class="pill"><svg class="ic" style="font-size:22px"><use href="#i-cap"/></svg>100% free for CA students</span>
@@ -161,7 +167,6 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <p>A free, focused platform for CA students to learn, practise and track their preparation.</p>
 <a class="btn" href="#">Create my free account <svg class="ic" style="font-size:22px"><use href="#i-arrow"/></svg></a>
 </div>
-<div class="next fl"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>10-minute practice</span></div></div>
 </div>
 <a class="scroll" href="#all"><svg class="ic"><use href="#i-down"/></svg>Scroll to explore</a>
 </header>
@@ -251,6 +256,11 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="cta rv"><a class="lnk" href="#">Build my plan →</a></div>
 </div></section>
 
+<section class="sec band" id="founder"><div class="w">
+<div class="fh rv"><span class="lab">From the founders</span><h2>Built by people who sat where you are sitting</h2><p class="mu">CA PrepX is made by Chartered Accountants who cleared the same exams. Here is why we built it.</p></div>
+<div class="vid rv"><video controls playsinline preload="none" poster="/media/founder-reel.jpg" aria-label="CA PrepX founder video"><source src="/media/founder-reel.mp4" type="video/mp4"></video></div>
+</div></section>
+
 <section class="w sec">
 <div class="end rv">
 <h2>Tough exam. <span class="gd">Tougher you.</span></h2>
@@ -259,7 +269,7 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 </div>
 </section>
 
-<footer class="w">Preview only. Photo from Unsplash (free licence). Nothing on caprepx.com has changed.</footer>
+<footer class="w">Preview only. Nothing on caprepx.com has changed.</footer>
 
 <script>
 (function(){
