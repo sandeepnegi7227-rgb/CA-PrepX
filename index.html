@@ -15,75 +15,189 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Young+Serif&display=swap">
 <style id="lpcss">
-#lp a{color:#E3B341}
-#lp a:hover{color:#F0C75E}
-#lp .lift{transition:transform .18s ease,border-color .18s ease}
-#lp .lift:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.24) !important}
-#lp .arr{display:inline-block;transition:transform .18s ease}
-#lp .lift:hover .arr,#lp .go:hover .arr{transform:translateX(4px)}
-#lp .zoom{transition:transform .35s ease}
-#lp .lift:hover .zoom{transform:scale(1.03)}
-#lp .primary{transition:background .15s ease}
-#lp .primary:hover{background:#F0C75E !important}
-#lp .ghost{transition:border-color .15s ease}
-#lp .ghost:hover{border-color:rgba(255,255,255,.4) !important}
-#lp .navlink{transition:color .15s ease}
-#lp .navlink:hover{color:#F4F1EA !important}
-#lp .play{transition:transform .2s ease}
-#lp .play:hover{transform:scale(1.1)}
-#lp .gridbg{background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:72px 72px}
-#lp .menu{display:none !important}
-#lp .jv{display:none !important}
-#lp .mobcta{display:none !important}
-@keyframes lp-up{from{transform:translateY(0)}to{transform:translateY(-50%)}}
-@keyframes lp-down{from{transform:translateY(-50%)}to{transform:translateY(0)}}
-@keyframes lp-pulse{0%{box-shadow:0 0 0 0 rgba(227,179,65,.55)}100%{box-shadow:0 0 0 10px rgba(227,179,65,0)}}
-@keyframes lp-floaty{from{transform:translateY(0)}to{transform:translateY(-4px)}}
-@keyframes lp-fa{from{opacity:0}to{opacity:1}}
-@keyframes lp-fb{from{opacity:0}to{opacity:1}}
-@keyframes lp-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes lp-inl{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
-@keyframes lp-inr{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
-@keyframes lp-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-@keyframes lp-navin{from{background:rgba(11,11,12,0);border-bottom-color:rgba(255,255,255,0);backdrop-filter:blur(0px)}to{background:rgba(11,11,12,.82);border-bottom-color:rgba(255,255,255,.08);backdrop-filter:blur(12px)}}
-#lp .colup{animation:lp-up 36s linear infinite}
-#lp .coldown{animation:lp-down 42s linear infinite}
-#lp .dot{animation:lp-pulse 1.8s ease-out infinite}
-#lp .float{animation:lp-floaty 3.2s ease-in-out infinite alternate}
-#lp .scatter>*:nth-child(even){margin-top:56px}
-#lp .scatter>*:nth-child(3n) .float{animation-delay:.8s}
-#lp .scatter>*:nth-child(3n+1) .float{animation-delay:1.6s}
-#lp .fa{animation:lp-fa .35s ease both}
-#lp .fb{animation:lp-fb .35s ease both}
-@supports (animation-timeline: view()){
-#lp .lprv{animation:lp-rise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
-#lp .lprvl{animation:lp-inl linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
-#lp .lprvr{animation:lp-inr linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
-#lp .draw{animation:lp-draw linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
-#lp .navbar{animation:lp-navin linear both;animation-timeline:scroll(root);animation-range:0px 40px}
+#lp{--serif:"Young Serif",Georgia,serif;--sans:"Outfit",system-ui,sans-serif;--gold:#F2B10C;--gold2:#E9A300}
+#lp[data-m=light]{--bg:#FFFDF9;--bgr:255,253,249;--band:#FBF5E8;--s1:#FFFFFF;--s2:#F6F1E7;--ink:#1F2430;--mu:#5A6170;--ln:#EAE2D2;--goldt:#B77900;--good:#1E8E5A;--bad:#D64545;--sh:0 18px 50px rgba(60,45,10,.12);--sh2:0 8px 24px rgba(60,45,10,.10)}
+#lp[data-m=dark]{--bg:#0B0B0C;--bgr:11,11,12;--band:#101012;--s1:#141416;--s2:#1E1E21;--ink:#F4F1EA;--mu:#A8A49B;--ln:#2B2B30;--goldt:#F0B429;--good:#5FBF8A;--bad:#E5675F;--sh:0 18px 50px rgba(0,0,0,.5);--sh2:0 8px 24px rgba(0,0,0,.4)}
+#lp *{box-sizing:border-box}
+#lp{scroll-behavior:smooth}
+#lp{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;overflow-x:clip;transition:background .3s,color .3s}
+#lp img{display:block;width:100%;height:100%;object-fit:cover}
+#lp a{color:inherit;text-decoration:none}
+#lp p{margin:0}
+#lp h1,#lp h2,#lp h3{font-family:var(--serif);font-weight:400;margin:0;line-height:1.1}
+#lp h1{font-size:clamp(36px,4.4vw,62px)}
+#lp h2{font-size:clamp(28px,4vw,44px)}
+#lp h3{font-size:22px}
+#lp .lx-w{max-width:1180px;margin:0 auto;padding:0 24px}
+#lp .lx-gd{color:var(--gold)}
+#lp .lx-mu{color:var(--mu)}
+#lp .lx-btn{display:inline-flex;align-items:center;gap:12px;border-radius:12px;padding:16px 28px;font-weight:600;font-size:18px;background:linear-gradient(180deg,#FBC531,var(--gold2));color:#1B1403;box-shadow:0 10px 24px rgba(233,163,0,.28);transition:transform .15s;border:0;cursor:pointer;font-family:inherit}
+#lp .lx-btn:hover{transform:translateY(-2px)}
+#lp .lx-btn.lx-o{background:transparent;border:1.5px solid var(--gold);color:var(--ink);padding:9px 20px;font-size:16px;font-weight:500;box-shadow:none}
+#lp .lx-pill{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(242,177,12,.6);background:rgba(242,177,12,.10);color:var(--ink);border-radius:999px;padding:8px 18px;font-size:15px;font-weight:500}
+#lp .lx-pill svg{color:var(--gold)}
+#lp svg.lx-ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#lp nav{position:absolute;inset:0 0 auto 0;z-index:5}
+#lp nav .lx-w{display:flex;align-items:center;justify-content:space-between;height:84px}
+#lp .lx-logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:26px}
+#lp .lx-logo img{width:38px;height:38px;border-radius:8px}
+#lp .lx-nr{display:flex;gap:10px;align-items:center}
+#lp .lx-tg{font:inherit;font-size:14px;color:var(--mu);background:var(--s1);border:1px solid var(--ln);border-radius:999px;padding:8px 14px;cursor:pointer}
+#lp .lx-hero{position:relative;min-height:clamp(560px,44vw,760px);display:flex;align-items:center;padding:110px 0 70px}
+#lp .lx-hero .lx-ph{position:absolute;right:0;top:84px;width:58%;max-width:1000px;aspect-ratio:897/530;z-index:0;container-type:inline-size}
+#lp .lx-hero .lx-ph img{object-fit:fill}
+#lp[data-m=light] .lx-hd,#lp[data-m=dark] .lx-hl{display:none}
+#lp .lx-hero .lx-ph::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 14%),linear-gradient(0deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 12%),linear-gradient(180deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 6%)}
+#lp .lx-hero .lx-w{position:relative;z-index:1;width:100%}
+#lp .lx-hero .lx-tx{max-width:min(560px,43vw)}
+#lp .lx-hero h1{margin:22px 0}
+#lp .lx-ul{position:relative;white-space:nowrap}
+#lp .lx-ul::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:8px;border-top:4px solid var(--gold);border-radius:50%}
+#lp .lx-hero p{font-size:19px;max-width:26em;margin-bottom:30px}
+#lp .lx-next{display:flex;align-items:center;gap:16px;background:var(--s1);border:1px solid var(--ln);border-radius:16px;padding:16px 22px;box-shadow:var(--sh)}
+#lp .lx-next svg{font-size:38px;color:var(--gold)}
+#lp .lx-next b{display:block;font-size:20px;font-weight:500}
+#lp .lx-next span{color:var(--mu)}
+#lp .lx-hero .lx-ph .lx-next{position:absolute;left:53%;top:72.5%;width:44%;height:24%;z-index:2;padding:0 4cqw;gap:3.2cqw;border-radius:2.6cqw}
+#lp .lx-hero .lx-ph .lx-next{overflow:hidden;white-space:nowrap}
+#lp .lx-hero .lx-ph .lx-next svg{font-size:7cqw}
+#lp .lx-hero .lx-ph .lx-next b{font-size:3.7cqw;line-height:1.25}
+#lp .lx-hero .lx-ph .lx-next span{font-size:3.1cqw;display:block}
+#lp .lx-vid{max-width:340px;margin:0 auto;aspect-ratio:9/16;border-radius:28px;overflow:hidden;border:1px solid var(--ln);box-shadow:var(--sh);background:#141416}
+#lp .lx-vid video{width:100%;height:100%;display:block;object-fit:cover}
+#lp .lx-scroll{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);text-align:center;font-size:14px;color:var(--mu);z-index:2}
+#lp .lx-scroll svg{display:block;margin:0 auto 2px;font-size:26px;color:var(--gold)}
+#lp .lx-sec{padding:72px 0}
+#lp .lx-ttl{text-align:center;margin:0 auto 40px;max-width:760px}
+#lp .lx-ttl h2::after{content:"";display:block;width:110px;height:3px;background:var(--gold);border-radius:2px;margin:18px auto 0}
+#lp .lx-four{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+#lp .lx-four a{padding:26px 12px;border-radius:18px;border:1px solid transparent;transition:.25s}
+#lp .lx-four a:hover{border-color:var(--ln);background:var(--s1);box-shadow:var(--sh2);transform:translateY(-4px)}
+#lp .lx-four svg{font-size:46px;color:var(--gold);margin-bottom:10px}
+#lp .lx-four p{font-size:15px;margin-top:6px}
+#lp .lx-band{background:var(--band)}
+#lp .lx-fh{text-align:center;max-width:720px;margin:0 auto 46px}
+#lp .lx-lab{display:inline-block;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--goldt);font-weight:600;background:rgba(242,177,12,.14);border-radius:999px;padding:7px 16px}
+#lp .lx-fh h2{margin:16px 0 14px}
+#lp .lx-fh b{font-weight:500;color:var(--ink)}
+#lp .lx-stage{position:relative;max-width:760px;margin:0 auto;padding:0 10px}
+#lp .lx-mock{position:relative;background:var(--s1);border:1px solid var(--ln);border-radius:24px;padding:26px;box-shadow:var(--sh);z-index:1}
+#lp .lx-chip{position:absolute;z-index:2;display:flex;align-items:center;gap:10px;background:var(--s1);border:1px solid var(--ln);border-radius:14px;padding:11px 16px;font-size:15px;font-weight:500;box-shadow:var(--sh2);white-space:nowrap}
+#lp .lx-chip svg{color:var(--gold);font-size:20px}
+#lp .lx-fl{animation:lx-fl 6s ease-in-out infinite}
+#lp .lx-fl.lx-b{animation-duration:7.5s;animation-delay:-2s}
+#lp .lx-fl.lx-c{animation-duration:9s;animation-delay:-4s}
+@keyframes lx-fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+#lp .lx-blob{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(242,177,12,.28),rgba(242,177,12,0) 70%);z-index:0;pointer-events:none}
+#lp .lx-rv{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+#lp .lx-rv.lx-in{opacity:1;transform:none}
+#lp .lx-cta{text-align:center;margin-top:34px}
+#lp .lx-lnk{color:var(--goldt);font-weight:600}
+#lp .lx-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+#lp .lx-tabs span{border:1px solid var(--ln);border-radius:999px;padding:6px 14px;font-size:14px;color:var(--mu)}
+#lp .lx-tabs span.lx-on{background:var(--gold);border-color:var(--gold);color:#1B1403;font-weight:500}
+#lp .lx-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-top:1px solid var(--ln);font-size:16px}
+#lp .lx-tagz{display:flex;gap:6px}
+#lp .lx-tagz i{font-style:normal;font-size:12px;border-radius:6px;padding:3px 8px;background:var(--s2);color:var(--mu)}
+#lp .lx-opt{border:1px solid var(--ln);border-radius:12px;padding:12px 16px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:16px;transition:.3s}
+#lp .lx-opt svg{opacity:0;color:var(--good);font-size:22px;transition:.3s}
+#lp .lx-opt.lx-sel{border-color:var(--good);background:color-mix(in srgb,var(--good) 10%,transparent)}
+#lp .lx-opt.lx-sel svg{opacity:1}
+#lp .lx-why{max-height:0;overflow:hidden;opacity:0;transition:.5s;font-size:15px;color:var(--mu)}
+#lp .lx-why.lx-on{max-height:90px;opacity:1;margin-top:14px;padding:12px 14px;border-left:3px solid var(--gold);background:var(--s2)}
+#lp .lx-xh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+#lp .lx-tm{font-family:var(--serif);font-size:24px;color:var(--goldt)}
+#lp .lx-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:16px 0}
+#lp .lx-grid i{aspect-ratio:1;border-radius:7px;background:var(--s2);border:1px solid var(--ln);font-style:normal;font-size:12px;display:grid;place-items:center;color:var(--mu)}
+#lp .lx-grid i.lx-d{background:var(--gold);border-color:var(--gold);color:#1B1403}
+#lp .lx-grid i.lx-n{outline:2px solid var(--ink)}
+#lp .lx-bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:var(--s2);margin:10px 0 8px}
+#lp .lx-bar div{width:0;transition:width 1.2s .3s}
+#lp .lx-in .lx-bar .lx-g{width:76%}
+#lp .lx-in .lx-bar .lx-r{width:18%}
+#lp .lx-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+#lp .lx-stats div{background:var(--s2);border-radius:16px;padding:18px}
+#lp .lx-stats b{display:block;font-family:var(--serif);font-size:30px;font-weight:400}
+#lp .lx-wk{display:flex;gap:8px;align-items:flex-end;height:110px;margin:22px 0 20px}
+#lp .lx-wk i{flex:1;background:var(--s2);border-radius:6px 6px 0 0;height:0;transition:height 1s}
+#lp .lx-wk i.lx-on{background:var(--gold)}
+#lp .lx-in .lx-wk i{height:var(--h)}
+#lp .lx-an{margin-top:8px}
+#lp .lx-an>div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) 70px;gap:14px;align-items:center;padding:13px 0;border-top:1px solid var(--ln);font-size:16px}
+#lp .lx-an i{display:block;height:10px;border-radius:999px;background:var(--gold);width:0;transition:width 1.1s .2s}
+#lp .lx-in .lx-an i{width:var(--w)}
+#lp .lx-an b{font-weight:500;font-size:13px;color:var(--goldt);text-align:right}
+#lp .lx-pain{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:880px;margin:0 auto}
+#lp .lx-pain span{background:var(--s1);border:1px solid var(--ln);border-radius:999px;padding:11px 20px;box-shadow:var(--sh2);font-size:16px}
+#lp .lx-turn{text-align:center;font-size:clamp(24px,3.2vw,36px);margin:52px auto 26px;max-width:18em;line-height:1.2}
+#lp .lx-tr,#lp .lx-num{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+#lp .lx-tr div,#lp .lx-num div,#lp .lx-steps div,#lp .lx-gl div{background:var(--s1);border:1px solid var(--ln);border-radius:20px;padding:22px;box-shadow:var(--sh2);transition:transform .25s}
+#lp .lx-num div:hover,#lp .lx-steps div:hover{transform:translateY(-6px)}
+#lp .lx-tr div{text-align:center}
+#lp .lx-tr s{display:block;color:var(--mu);font-size:15px}
+#lp .lx-tr i{display:block;font-style:normal;color:var(--gold);margin:4px 0}
+#lp .lx-tr b{display:block;font-family:var(--serif);font-weight:400;font-size:21px}
+#lp .lx-num em,#lp .lx-steps em{font-style:normal;font-family:var(--serif);font-size:32px;color:var(--gold);display:block;margin-bottom:10px}
+#lp .lx-num p,#lp .lx-steps p{font-size:15px;margin-top:8px}
+#lp .lx-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+#lp .lx-steps div{padding:18px}
+#lp .lx-gl{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;text-align:center}
+#lp .lx-gl b{display:block;font-family:var(--serif);font-weight:400;font-size:32px}
+#lp .lx-gl span{font-size:14px}
+@media(max-width:1000px){#lp .lx-steps{grid-template-columns:repeat(3,1fr)}
+#lp .lx-tr,#lp .lx-num{grid-template-columns:1fr 1fr}
+#lp .lx-gl{grid-template-columns:repeat(3,1fr)}
 }
-@media (max-width:900px){
-#lp .navlinks{display:none !important}
-#lp .menu{display:inline-flex !important}
-#lp .hide-sm{display:none !important}
-#lp .scatter>*:nth-child(even){margin-top:0}
-#lp .bento{grid-template-columns:minmax(0,1fr) !important}
-#lp .bento>*{grid-column:auto !important;grid-row:auto !important}
-#lp .jh{display:none !important}
-#lp .jv{display:flex !important}
-#lp .mobcta{display:inline-flex !important}
+@media(max-width:560px){#lp .lx-steps,#lp .lx-gl{grid-template-columns:1fr 1fr}
+#lp .lx-pain span{font-size:14px;padding:9px 14px;animation:none}
 }
-@media (prefers-reduced-motion: reduce){#lp *{animation:none !important;transition:none !important}}
-body.lp-on{background:#0B0B0C;color:#F4F1EA}
-body.lp-on .land-hero{padding:96px 24px}body.lp-on .land-hero p{color:#A8A49B}
+#lp .lx-end{position:relative;border-radius:32px;overflow:hidden;padding:72px 28px;text-align:center;border:1px solid var(--ln);background:var(--s1);box-shadow:var(--sh2)}
+#lp .lx-end p{margin:16px auto 30px;max-width:30em;color:var(--mu)}
+#lp footer{padding:30px 0 50px;font-size:14px;color:var(--mu);text-align:center}
+@media(prefers-reduced-motion:reduce){#lp .lx-fl{animation:none}
+#lp .lx-rv{opacity:1;transform:none}
+}
+@media(max-width:1140px){#lp .lx-stage{padding:0}
+#lp .lx-chip{position:static;margin-top:12px;white-space:normal;animation:none}
+#lp .lx-chip[style*="width:215px"]{width:auto!important}
+#lp .lx-blob{display:none}
+}
+@media(max-width:880px){#lp nav .lx-w{height:68px}
+#lp .lx-logo{font-size:21px}
+#lp .lx-logo img{width:30px;height:30px}
+#lp .lx-hero{display:block;min-height:0;padding:68px 0 26px}
+#lp .lx-hero .lx-ph{position:relative;top:auto;width:100%;max-width:none;margin-bottom:10px}
+#lp .lx-hero .lx-ph::after{background:linear-gradient(0deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 14%)}
+#lp .lx-hero .lx-tx{max-width:none}
+#lp .lx-hero h1{margin:16px 0}
+#lp .lx-hero p{font-size:17px;margin-bottom:22px}
+#lp .lx-hero .lx-btn,#lp .lx-end .lx-btn{width:100%;justify-content:center}
+#lp .lx-scroll{display:none}
+#lp .lx-sec{padding:48px 0}
+#lp .lx-four{grid-template-columns:1fr 1fr}
+#lp .lx-stage{padding:0}
+#lp .lx-mock{padding:20px}
+#lp .lx-chip{position:static;margin-top:12px;white-space:normal;animation:none}
+#lp .lx-blob{display:none}
+#lp .lx-stats b{font-size:22px}
+#lp .lx-stats div{padding:14px}
+#lp .lx-grid{grid-template-columns:repeat(10,1fr);gap:4px}
+}
+#lp{position:relative;text-align:left;letter-spacing:normal}
+#lp h1,#lp h2,#lp h3{letter-spacing:normal;text-transform:none;color:inherit}
+#lp button{min-height:0;letter-spacing:normal;text-transform:none}
+#lp button.lx-lnk{background:none;border:0;padding:0;cursor:pointer;font:inherit;font-weight:600;color:var(--goldt)}
+#lp a.lx-lnk,#lp a.lx-lnk:hover{color:var(--goldt)}
+#lp .lx-foot{border-top:1px solid var(--ln);padding:36px 0 48px;font-size:15px;color:var(--mu)}
+#lp .lx-foot .lx-w{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:center}
+#lp .lx-foot nav{position:static;display:flex;flex-wrap:wrap;gap:8px 24px}
+#lp .lx-foot nav a,#lp .lx-foot nav button{color:var(--mu);background:none;border:0;padding:6px 0;font:inherit;cursor:pointer}
+#lp .lx-end .lx-sub{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:22px;font-size:15px}
+#lp .lx-end .lx-sub a,#lp .lx-end .lx-sub button{color:var(--mu);background:none;border:0;padding:0;font:inherit;cursor:pointer;text-decoration:underline}
+body.lp-on{background:#FFFDF9;color:#1F2430}
+body.lp-on .land-hero{padding:96px 24px}
 body.lp-on>header.top,body.lp-on>nav.tabs,body.lp-on>#bannerWrap,body.lp-on>#bnav{display:none !important}
 body.lp-on>main#main{max-width:none;padding:0;margin:0}
-#lp{overflow-x:clip}
-#lp .mobcta,#lp a[data-wa]{white-space:nowrap}
-#lp button{line-height:inherit}
-#lp [role=tab][aria-selected=true]{background:#E3B341 !important;color:#1A1400 !important;border-color:#E3B341 !important}
-#lp [role=tab][aria-selected=false]{background:transparent !important;color:#F4F1EA !important;border-color:rgba(255,255,255,.18) !important}
-#lp :focus-visible{outline:2px solid #E3B341;outline-offset:2px}
 </style>
 <style>
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
@@ -1032,665 +1146,210 @@ main{padding-bottom:120px}
 <script>try{var __t=localStorage.getItem("prepx.theme");document.documentElement.setAttribute("data-theme",__t==="light"?"light":"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
 <script>try{var __k=false;for(var __i=0;__i<localStorage.length;__i++){if(/^sb-.*-auth-token$/.test(localStorage.key(__i)||""))__k=true}if(!__k&&location.pathname==="/"&&!location.hash)document.body.classList.add("lp-on")}catch(e){}</script>
 <template id="lpT">
-<div id="lp"><div style="background: #0B0B0C; color: #F4F1EA; font-family: 'Outfit', system-ui, sans-serif; font-size: 17px; line-height: 1.55">
+<div id="lp" data-m="light">
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="lp-i-book" viewBox="0 0 24 24"><path d="M12 6.500C10.200 5.200 7.400 4.600 4 5v13.200c3.400-.4 6.200.2 8 1.500 1.800-1.300 4.600-1.900 8-1.500V5c-3.400-.4-6.200.2-8 1.500zM12 6.500v13.200"/></symbol>
+<symbol id="lp-i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4.500L16.500 4a2.100 2.100 0 013 3L8 18.500zM14.500 6l3 3"/></symbol>
+<symbol id="lp-i-list" viewBox="0 0 24 24"><rect x="5" y="4.500" width="14" height="16" rx="2"/><path d="M9 4.500V3h6v1.500M8.500 10l1.200 1.200 2-2.200M8.500 15l1.200 1.200 2-2.200M14 10.500h2.500M14 15.500h2.500"/></symbol>
+<symbol id="lp-i-bars" viewBox="0 0 24 24"><path d="M4 20h16M6 20v-5h3v5M10.500 20v-9h3v9M15 20V6h3v14"/></symbol>
+<symbol id="lp-i-target" viewBox="0 0 24 24"><circle cx="11" cy="13" r="7.500"/><circle cx="11" cy="13" r="3.500"/><path d="M11 13l8-8M16.500 4.500V7.500h3"/></symbol>
+<symbol id="lp-i-check" viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></symbol>
+<symbol id="lp-i-arrow" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></symbol>
+<symbol id="lp-i-down" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></symbol>
+<symbol id="lp-i-cap" viewBox="0 0 24 24"><path d="M2.500 9.500L12 5l9.500 4.500L12 14zM6.500 11.500v4.500c3 2.300 8 2.300 11 0v-4.500M21.500 9.500v5"/></symbol>
+<symbol id="lp-i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.500h6L10 21l8-10.500h-6z"/></symbol>
+<symbol id="lp-i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
+</defs></svg>
 
-<header class="navbar" style="position: sticky; top: 0; z-index: 10; background: rgba(11,11,12,0.92); border-bottom: 1px solid rgba(255,255,255,0.08)">
-<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
-<a href="#top" data-lp-go="top" style="display: flex; align-items: center; gap: 12px; color: #F4F1EA; text-decoration: none">
-<img src="/logo-180.png" alt="" width="36" height="36" style="border-radius: 10px; display: block">
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 22px">CA PrepX</span>
-</a>
-<nav class="navlinks" aria-label="Main" style="display: flex; align-items: center; gap: 28px; font-size: 16px">
-<a href="#top" data-lp-go="top" style="color: #F4F1EA; text-decoration: none; padding: 24px 0 22px; border-bottom: 2px solid #E3B341">Home</a>
-<a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none">Learn</a>
-<a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none">Practice</a>
-<a class="navlink" href="#mock" data-lp-go="mock" style="color: #A8A49B; text-decoration: none">Mock Exams</a>
-<a class="navlink" href="#testseries" data-lp-go="testseries" style="color: #A8A49B; text-decoration: none">Test Series</a>
-<a class="navlink" href="#platform" data-lp-go="platform" style="color: #A8A49B; text-decoration: none">Resources</a>
-<a class="navlink" href="#progress" data-lp-go="progress" style="color: #A8A49B; text-decoration: none">Progress</a>
-</nav>
-<div style="display: flex; align-items: center; gap: 12px">
-<button class="ghost" data-act="landin" style="height: 44px; padding: 0 16px; border-radius: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.18); color: #F4F1EA; font-weight: 500; font-size: 15px; display: inline-flex; align-items: center; white-space: nowrap; cursor: pointer; font-family: inherit">Sign in</button>
-<button class="primary hide-sm" data-act="landup" style="height: 44px; padding: 0 18px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; font-size: 15px; display: inline-flex; align-items: center; white-space: nowrap; border: 0; cursor: pointer; font-family: inherit">Create free account</button>
+<nav><div class="lx-w">
+<a class="lx-logo" href="#lp-top" data-lp-go="lp-top"><img src="/logo-64.png" alt=""><span>CA Prep<span class="lx-gd">X</span></span></a>
+<div class="lx-nr"><button class="lx-tg" id="lp-tg" type="button">Dark mode</button><button class="lx-btn lx-o" type="button" data-act="landin">Sign in</button></div>
+</div></nav>
+
+<header class="lx-hero" id="lp-top">
+<div class="lx-ph"><img class="lx-hl" alt="Two CA students studying together in a library" src="/media/hero-light.jpg"><img class="lx-hd" alt="" src="/media/hero-dark.jpg"><div class="lx-next"><svg class="lx-ic"><use href="#lp-i-target"/></svg><div><b>Your next step</b><span>10-minute practice</span></div></div></div>
+<div class="lx-w">
+<div class="lx-tx">
+<span class="lx-pill"><svg class="lx-ic" style="font-size:22px"><use href="#lp-i-cap"/></svg>100% free for CA students</span>
+<h1>Prepare smarter.<br>Know exactly what to <span class="lx-gd lx-ul">study next</span>.</h1>
+<p>A free, focused platform for CA students to learn, practise and track their preparation.</p>
+<button class="lx-btn" type="button" data-act="landup">Create my free account <svg class="lx-ic" style="font-size:22px"><use href="#lp-i-arrow"/></svg></button>
 </div>
 </div>
+<a class="lx-scroll" href="#lp-all" data-lp-go="lp-all"><svg class="lx-ic"><use href="#lp-i-down"/></svg>Scroll to explore</a>
 </header>
 
-<main>
-
-<section id="top" class="gridbg" style="padding: 88px 24px 104px">
-<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 64px">
-<div style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 24px; align-items: flex-start">
-<div style="height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); display: inline-flex; align-items: center; gap: 10px; font-size: 15px">
-<span class="dot" aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #E3B341"></span>
-<span>100% free for CA students</span>
-</div>
-<div style="font-size: 13px; letter-spacing: 0.14em; color: #A8A49B; font-weight: 500">CA FOUNDATION • INTER • FINAL</div>
-<h1 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(40px, 5.2vw, 66px); line-height: 1.06; letter-spacing: -0.01em">Prepare smarter. <span style="color: #E3B341">Know exactly what to study next.</span></h1>
-<p style="margin: 0; font-size: 20px; max-width: 540px">One focused workspace for learning, practicing, revising and tracking your CA preparation.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px">
-<button class="primary go" data-act="landup" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Create my free account <span class="arr" aria-hidden="true">→</span></button>
-</div>
-<div style="display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 12px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); width: 100%; font-size: 15px; color: #A8A49B">
-<span><span style="color: #F4F1EA; font-weight: 600">3</span> CA levels</span>
-<span><span style="color: #F4F1EA; font-weight: 600">__NP__</span> ICAI papers</span>
-<span><span style="color: #F4F1EA; font-weight: 600">__NQ__</span> practice MCQs</span>
-<span><span style="color: #F4F1EA; font-weight: 600">₹0</span> to use</span>
-<span>Since <span style="color: #F4F1EA; font-weight: 600">2026</span></span>
-</div>
-</div>
-
-<div aria-hidden="true" style="flex: 1 1 380px; min-width: 0; height: 580px; overflow: hidden; display: flex; justify-content: center; gap: 16px; -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent)">
-<div class="colup" style="flex: 0 1 148px; min-width: 0; align-self: flex-start">
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">SYLLABUS</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">42%</span>
-<span style="font-size: 13px; color: #A8A49B">19 of 46 chapters</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 42%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">MCQ</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">Q7 of 10</span>
-<span style="font-size: 13px; color: #A8A49B">Business Laws</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 70%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">MOCK RESULT</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">61/100</span>
-<span style="font-size: 13px; color: #A8A49B">Paper 1</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 61%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">SYLLABUS</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">42%</span>
-<span style="font-size: 13px; color: #A8A49B">19 of 46 chapters</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 42%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">MCQ</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">Q7 of 10</span>
-<span style="font-size: 13px; color: #A8A49B">Business Laws</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 70%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">MOCK RESULT</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">61/100</span>
-<span style="font-size: 13px; color: #A8A49B">Paper 1</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 61%"></span></span>
-</div>
-
-</div>
-<div class="coldown" style="flex: 0 1 148px; min-width: 0; align-self: flex-start">
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">TODAY</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">2 tasks</span>
-<span style="font-size: 13px; color: #A8A49B">Planner</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 50%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">CHAPTER ANALYSIS</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">Ch 4</span>
-<span style="font-size: 13px; color: #A8A49B">High weight</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 85%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">WEAK SPOTS</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">4 to fix</span>
-<span style="font-size: 13px; color: #A8A49B">Review next</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 30%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">TODAY</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">2 tasks</span>
-<span style="font-size: 13px; color: #A8A49B">Planner</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 50%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">CHAPTER ANALYSIS</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">Ch 4</span>
-<span style="font-size: 13px; color: #A8A49B">High weight</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 85%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">WEAK SPOTS</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #F4F1EA">4 to fix</span>
-<span style="font-size: 13px; color: #A8A49B">Review next</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 30%"></span></span>
-</div>
-
-</div>
-<div class="colup" style="flex: 0 1 148px; min-width: 0; align-self: flex-start">
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">NEXT UP</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">35 min</span>
-<span style="font-size: 13px; color: #A8A49B">Inventories</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 20%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">ACCURACY</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">68%</span>
-<span style="font-size: 13px; color: #A8A49B">Last 10 sets</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 68%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">RTP</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">Jan 27</span>
-<span style="font-size: 13px; color: #A8A49B">Paper 3</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 55%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">NEXT UP</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">35 min</span>
-<span style="font-size: 13px; color: #A8A49B">Inventories</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 20%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">ACCURACY</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">68%</span>
-<span style="font-size: 13px; color: #A8A49B">Last 10 sets</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 68%"></span></span>
-</div>
-
-<div style="margin-bottom: 16px; height: 250px; border-radius: 999px; background: #141416; border: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; text-align: center; box-sizing: border-box">
-<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49B">RTP</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 30px; line-height: 1.1; color: #E3B341">Jan 27</span>
-<span style="font-size: 13px; color: #A8A49B">Paper 3</span>
-<span style="width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px; display: block"><span style="display: block; height: 5px; border-radius: 3px; background: #E3B341; width: 55%"></span></span>
-</div>
-
-</div>
-</div>
+<section class="lx-w lx-sec" id="lp-all">
+<div class="lx-ttl lx-rv"><h2>Everything you need to prepare for CA</h2></div>
+<div class="lx-four lx-rv">
+<a href="#lp-learn" data-lp-go="lp-learn"><svg class="lx-ic"><use href="#lp-i-book"/></svg><h3>Learn</h3><p class="lx-mu">Notes, RTPs, MTPs, past papers</p></a>
+<a href="#lp-practice" data-lp-go="lp-practice"><svg class="lx-ic"><use href="#lp-i-pen"/></svg><h3>Practice</h3><p class="lx-mu">Chapter-wise MCQs</p></a>
+<a href="#lp-mock" data-lp-go="lp-mock"><svg class="lx-ic"><use href="#lp-i-list"/></svg><h3>Mock exams</h3><p class="lx-mu">Timed tests, checked papers</p></a>
+<a href="#lp-progress" data-lp-go="lp-progress"><svg class="lx-ic"><use href="#lp-i-bars"/></svg><h3>Progress</h3><p class="lx-mu">See what to fix next</p></a>
 </div>
 </section>
 
-<section id="testseries" style="padding: 0 24px 40px"><div class="lprv" style="max-width: 1160px; margin: 0 auto; box-sizing: border-box; border: 1px solid rgba(227,179,65,0.5); border-radius: 24px; background: #141416; padding: 28px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between">
-<div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 10px">
-<span style="align-self: flex-start; height: 28px; padding: 0 12px; border-radius: 999px; background: #E3B341; color: #1A1400; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; display: inline-flex; align-items: center">NEW · TEST SERIES</span>
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(26px, 3vw, 38px); line-height: 1.15">Test yourself <span style="color: #E3B341">before ICAI does.</span></h2>
-<p style="margin: 0; color: #A8A49B; max-width: 620px">Unit-wise and full-syllabus tests for Foundation, Intermediate and Final. MCQs are marked the moment you submit. Written papers are checked by a teacher, question by question, with remarks.</p>
-</div>
-<button class="primary go" data-act="landup" data-lp-ts="1" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Open the Test Series <span class="arr" aria-hidden="true">→</span></button>
+<section class="lx-sec lx-band" id="lp-founder"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">From the founders</span><h2>Built by people who sat where you are sitting</h2><p class="lx-mu">CA PrepX is made by Chartered Accountants who cleared the same exams. Here is why we built it.</p></div>
+<div class="lx-vid lx-rv"><video controls playsinline preload="none" poster="/media/founder-reel.jpg" aria-label="CA PrepX founder video"><source src="/media/founder-reel.mp4" type="video/mp4"></video></div>
 </div></section>
 
-<section style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div class="lprv" style="max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 48px">
-<p style="margin: 0; text-align: center; font-family: 'Young Serif', Georgia, serif; font-size: clamp(30px, 4vw, 52px); line-height: 1.12">“Built by people who sat where you are sitting.”</p>
-<div style="width: 100%; max-width: 380px; aspect-ratio: 9 / 16; border-radius: 28px; background: #141416; border: 1px solid rgba(227,179,65,0.35); box-shadow: 0 0 96px rgba(227,179,65,0.16); overflow: hidden">
-<video controls playsinline preload="none" poster="/media/founder-reel.jpg" aria-label="CA PrepX founder video" style="width: 100%; height: 100%; display: block; object-fit: cover; background: #141416"><source src="/media/founder-reel.mp4" type="video/mp4"></video>
+<section class="lx-sec" id="lp-why"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">Why CA PrepX</span><h2>What's really holding your preparation back?</h2><p class="lx-mu">CA preparation shouldn't feel like guessing what to do next.</p></div>
+<div class="lx-pain lx-rv"><span class="lx-fl">Too many chapters</span><span class="lx-fl lx-b">Too many resources</span><span class="lx-fl lx-c">Difficulty knowing what to revise</span><span class="lx-fl lx-b">Weak areas getting ignored</span><span class="lx-fl">Lack of realistic exam practice</span><span class="lx-fl lx-c">No clear preparation roadmap</span><span class="lx-fl lx-b">Not knowing if you're on track</span></div>
+<h3 class="lx-turn lx-rv">We turn all of that into <span class="lx-gd">one clear preparation system.</span></h3>
+<div class="lx-tr lx-rv">
+<div><s>Confused</s><i>↓</i><b>Focused</b></div>
+<div><s>Scattered resources</s><i>↓</i><b>One workspace</b></div>
+<div><s>Passive studying</s><i>↓</i><b>Active practice</b></div>
+<div><s>"I think I'm prepared"</s><i>↓</i><b>Measurable progress</b></div>
 </div>
+</div></section>
+
+<section class="lx-sec lx-band" id="lp-different"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">Why it's different</span><h2>Not another library of CA resources. A preparation system.</h2></div>
+<div class="lx-num lx-rv">
+<div><em>01</em><h3>Know what to study</h3><p class="lx-mu">A day-by-day plan built around your attempt date and your study hours.</p></div>
+<div><em>02</em><h3>Practice like the real exam</h3><p class="lx-mu">MCQs, RTP and MTP based practice, and full mock examinations.</p></div>
+<div><em>03</em><h3>Find your weak spots</h3><p class="lx-mu">The MCQs you get wrong come back until you fix them.</p></div>
+<div><em>04</em><h3>See your preparation clearly</h3><p class="lx-mu">Track syllabus completion and your practice scores.</p></div>
+</div>
+</div></section>
+
+<section class="lx-sec" id="lp-analysis"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">Paper-wise analysis</span><h2>See which chapters carry the marks</h2><p class="lx-mu">Free chapter-wise analysis, <b>counted from ICAI's own papers</b>, so you know what deserves your time first.</p></div>
+<div class="lx-stage lx-rv">
+<div class="lx-blob" style="width:360px;height:360px;right:-130px;top:-50px"></div>
+<div class="lx-mock">
+<div class="lx-xh"><div class="lx-tabs" style="margin:0"><span class="lx-on">Accounting</span><span>Business Laws</span><span>Quant</span><span>Economics</span></div><span class="lx-mu" style="font-size:14px">Sample view</span></div>
+<div class="lx-an">
+<div><span>Partnership Accounts</span><i style="--w:92%"></i><b>High</b></div>
+<div><span>Company Accounts</span><i style="--w:78%"></i><b>High</b></div>
+<div><span>Final Accounts</span><i style="--w:64%"></i><b>Medium</b></div>
+<div><span>Depreciation</span><i style="--w:46%"></i><b>Medium</b></div>
+<div><span>Bills of Exchange</span><i style="--w:30%"></i><b>Low</b></div>
+</div>
+</div>
+<div class="lx-chip lx-fl" style="left:-60px;top:-22px"><svg class="lx-ic"><use href="#lp-i-bars"/></svg>Foundation and Inter</div>
+<div class="lx-chip lx-fl lx-b" style="right:-60px;bottom:-22px"><svg class="lx-ic"><use href="#lp-i-down"/></svg>Download as PDF</div>
+</div>
+<div class="lx-cta lx-rv"><a class="lx-lnk" href="/analysis" data-ana="landing">CA Foundation →</a> &nbsp;·&nbsp; <a class="lx-lnk" href="/analysis-inter" data-ana="landing-inter">CA Intermediate →</a></div>
+</div></section>
+
+<section class="lx-sec lx-band" id="lp-learn"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">Learn</span><h2>Study chapter by chapter</h2><p class="lx-mu">Video lectures and a syllabus tracker for every paper, with <b>RTPs, MTPs and past papers</b> beside each chapter.</p></div>
+<div class="lx-stage lx-rv">
+<div class="lx-blob" style="width:340px;height:340px;left:-120px;top:-60px"></div>
+<div class="lx-mock">
+<div class="lx-tabs"><span class="lx-on">Accounting</span><span>Business Laws</span><span>Quantitative Aptitude</span><span>Economics</span></div>
+<div class="lx-row"><span>Ch 1 · Theoretical framework</span><span class="lx-tagz"><i style="background:var(--gold);color:#1B1403">Done</i><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="lx-row"><span>Ch 2 · Accounting process</span><span class="lx-tagz"><i style="background:var(--gold);color:#1B1403">Done</i><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="lx-row"><span>Ch 3 · Bank reconciliation</span><span class="lx-tagz"><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="lx-row"><span>Ch 4 · Inventories</span><span class="lx-tagz"><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="lx-row"><span>Ch 5 · Depreciation</span><span class="lx-tagz"><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+</div>
+<div class="lx-chip lx-fl" style="right:-60px;top:-22px"><svg class="lx-ic"><use href="#lp-i-book"/></svg>Video lectures in Hindi and English</div>
+<div class="lx-chip lx-fl lx-b" style="left:-60px;bottom:-22px"><svg class="lx-ic"><use href="#lp-i-check"/></svg>46 chapters, ticked off one by one</div>
+</div>
+<div class="lx-cta lx-rv"><button class="lx-lnk" type="button" data-act="landup">Start learning →</button></div>
+</div></section>
+
+<section class="lx-sec" id="lp-practice"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">Practice</span><h2>Sharpen your concepts in 10 minutes</h2><p class="lx-mu">Targeted questions and 10-minute MCQs. <b>The ones you get wrong come back</b> until you fix them.</p></div>
+<div class="lx-stage lx-rv">
+<div class="lx-blob" style="width:360px;height:360px;right:-130px;top:-40px"></div>
+<div class="lx-mock" id="lp-mcq">
+<div class="lx-xh lx-mu" style="font-size:14px"><span>Business Economics · Elasticity</span><span>Sample question 4 of 10</span></div>
+<p style="font-size:20px;margin:16px 0 8px">When price rises and the quantity demanded stays the same, demand is</p>
+<div class="lx-opt"><span>A. Unit elastic</span><svg class="lx-ic"><use href="#lp-i-check"/></svg></div>
+<div class="lx-opt" data-ok><span>B. Perfectly inelastic</span><svg class="lx-ic"><use href="#lp-i-check"/></svg></div>
+<div class="lx-opt"><span>C. Perfectly elastic</span><svg class="lx-ic"><use href="#lp-i-check"/></svg></div>
+<div class="lx-opt"><span>D. Relatively elastic</span><svg class="lx-ic"><use href="#lp-i-check"/></svg></div>
+<div class="lx-why">Correct. Quantity does not respond to price at all, so elasticity is zero and the demand curve is vertical.</div>
+</div>
+<div class="lx-chip lx-fl" style="left:-60px;top:-22px"><svg class="lx-ic"><use href="#lp-i-bolt"/></svg>Instant explanation</div>
+<div class="lx-chip lx-fl lx-c" style="right:-60px;bottom:-22px"><svg class="lx-ic"><use href="#lp-i-target"/></svg>Redo list for wrong answers</div>
+</div>
+<div class="lx-cta lx-rv"><button class="lx-lnk" type="button" data-act="landup">Practice now →</button></div>
+</div></section>
+
+<section class="lx-sec lx-band" id="lp-mock"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">Mock exams</span><h2>Test yourself before ICAI does</h2><p class="lx-mu">Full-length mocks under exam timing, plus unit-wise and full-syllabus tests. MCQs are marked the moment you submit. Written papers are <b>checked by a teacher, question by question</b>, with remarks.</p></div>
+<div class="lx-stage lx-rv">
+<div class="lx-blob" style="width:340px;height:340px;left:-110px;bottom:-60px"></div>
+<div class="lx-mock">
+<div class="lx-xh"><div><div class="lx-mu" style="font-size:14px">Unit Test 1 · sample</div><div style="font-size:19px;font-weight:500">Business Economics</div></div><div class="lx-tm"><svg class="lx-ic" style="font-size:20px;vertical-align:-3px"><use href="#lp-i-clock"/></svg> 42:18</div></div>
+<div class="lx-grid" id="lp-qg"></div>
+<div class="lx-xh lx-mu" style="font-size:14px"><span>18 of 50 answered</span><span>No marks shown until you submit</span></div>
+</div>
+<div class="lx-chip lx-fl lx-b" style="right:-175px;top:56px;display:block;white-space:normal;width:215px">
+<span class="lx-mu" style="font-size:13px;font-weight:400">Sample result</span>
+<div style="font-family:var(--serif);font-size:28px;color:var(--goldt);font-weight:400">38 <span class="lx-mu" style="font-size:15px">/ 50</span></div>
+<div class="lx-bar"><div class="lx-g" style="background:var(--good)"></div><div class="lx-r" style="background:var(--bad)"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;font-weight:400"><span style="color:var(--good)">38 correct</span><span style="color:var(--bad)">9 wrong</span></div>
+</div>
+<div class="lx-chip lx-fl" style="left:-60px;bottom:-22px"><svg class="lx-ic"><use href="#lp-i-pen"/></svg>Checked sheets with remarks</div>
+</div>
+<div class="lx-cta lx-rv"><button class="lx-lnk" type="button" data-act="landup" data-lp-ts="1">Take a mock →</button></div>
+</div></section>
+
+<section class="lx-sec" id="lp-next"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">Your plan</span><h2>Always know what to do next</h2></div>
+<div class="lx-stage lx-rv">
+<div class="lx-blob" style="width:360px;height:360px;right:-120px;bottom:-50px"></div>
+<div class="lx-mock">
+<div class="lx-xh lx-mu" style="font-size:14px"><span>Example</span><span>42% through your preparation</span></div>
+<div class="lx-bar" style="height:10px"><div class="lx-g" style="background:var(--gold);width:42%!important"></div></div>
+<p class="lx-mu" style="margin-top:16px">Your next step:</p>
+<p style="font-family:var(--serif);font-size:clamp(22px,3vw,30px);line-height:1.2;margin:6px 0 14px">Complete Chapter 4: Accounting for Inventory</p>
+<div class="lx-tabs" style="margin:0"><span>Paper 1 · Accounting</span><span>35 min estimated</span><span class="lx-on">Then: 10-minute MCQs</span></div>
+</div>
+<div class="lx-chip lx-fl lx-c" style="left:-60px;top:-22px"><svg class="lx-ic"><use href="#lp-i-target"/></svg>Built around your attempt date</div>
+</div>
+<div class="lx-cta lx-rv"><button class="lx-btn" type="button" data-act="landup">Build my plan <svg class="lx-ic" style="font-size:22px"><use href="#lp-i-arrow"/></svg></button></div>
+</div></section>
+
+<section class="lx-sec lx-band" id="lp-how"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">How it works</span><h2>From first read to exam day. Your six-step loop.</h2></div>
+<div class="lx-steps lx-rv">
+<div><em>01</em><h3>Learn</h3><p class="lx-mu">Video lectures, chapter by chapter.</p></div>
+<div><em>02</em><h3>Practice</h3><p class="lx-mu">10-minute MCQs and chapter questions.</p></div>
+<div><em>03</em><h3>Revise</h3><p class="lx-mu">RTPs, MTPs and past papers.</p></div>
+<div><em>04</em><h3>Test</h3><p class="lx-mu">A full-length mock under exam timing.</p></div>
+<div><em>05</em><h3>Analyse</h3><p class="lx-mu">See which chapters carry the marks.</p></div>
+<div><em>06</em><h3>Improve</h3><p class="lx-mu">Fix weak spots, then move on.</p></div>
+</div>
+</div></section>
+
+<section class="lx-sec" id="lp-glance"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">Progress</span><h2>Your preparation, at a glance</h2></div>
+<div class="lx-gl lx-rv">
+<div><b style="color:var(--goldt)">19 / 46</b><span class="lx-mu">Chapters ticked off</span></div>
+<div><b>640</b><span class="lx-mu">Questions attempted</span></div>
+<div><b>68%</b><span class="lx-mu">Accuracy</span></div>
+<div><b>2</b><span class="lx-mu">Mock exams completed</span></div>
+<div><b>4</b><span class="lx-mu">Weak areas to fix</span></div>
+</div>
+<p class="lx-mu lx-rv" style="text-align:center;font-size:14px;margin-top:14px">Sample numbers</p>
+<div class="lx-cta lx-rv"><button class="lx-lnk" type="button" data-act="landup">Start tracking yours →</button></div>
+</div></section>
+
+<section class="lx-sec lx-band" id="lp-built"><div class="lx-w">
+<div class="lx-fh lx-rv"><span class="lx-lab">What it's built on</span><h2>Built around the ICAI syllabus, paper by paper</h2></div>
+<div class="lx-pain lx-rv"><span>ICAI-aligned terminology</span><span>RTP, MTP and PYQ papers</span><span>Chapter-wise preparation</span><span>Full-length mock exams</span><span>Performance tracking</span></div>
+</div></section>
+
+<section class="lx-w lx-sec">
+<div class="lx-end lx-rv">
+<h2>Your next study session <span class="lx-gd">starts here.</span></h2>
+<p>Stop wondering what to study next. Start making measurable progress.</p>
+<button class="lx-btn" type="button" data-act="landup">Create my free account <svg class="lx-ic" style="font-size:22px"><use href="#lp-i-arrow"/></svg></button>
+<div class="lx-sub"><button type="button" data-act="landin">Already have an account? Sign in</button><a href="__WA__" target="_blank" rel="noopener" data-wa="landing" aria-label="Join the CA PrepX WhatsApp group">Join the group</a></div>
 </div>
 </section>
 
-<section class="gridbg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
-<div class="lprv" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
-<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">WHY CA PREPX</span>
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.8vw, 48px); line-height: 1.12; max-width: 760px">What's really holding your preparation back?</h2>
-<p style="margin: 0; color: #A8A49B; max-width: 560px">CA preparation shouldn't feel like guessing what to do next.</p>
-</div>
-<div class="scatter" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); column-gap: 28px; row-gap: 28px; align-items: start">
-<div class="lprvl"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></span>
-<span style="font-size: 19px; font-weight: 500">Too many chapters</span>
-</div></div>
-<div class="lprvr"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></span>
-<span style="font-size: 19px; font-weight: 500">Too many resources</span>
-</div></div>
-<div class="lprvl"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9M3 4v5h5"></path></svg></span>
-<span style="font-size: 19px; font-weight: 500">Difficulty knowing what to revise</span>
-</div></div>
-<div class="lprvr"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4"></circle></svg></span>
-<span style="font-size: 19px; font-weight: 500">Weak areas getting ignored</span>
-</div></div>
-<div class="lprvl"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2.5 2M9 2h6"></path></svg></span>
-<span style="font-size: 19px; font-weight: 500">Lack of realistic exam practice</span>
-</div></div>
-<div class="lprvr"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"></path></svg></span>
-<span style="font-size: 19px; font-weight: 500">No clear preparation roadmap</span>
-</div></div>
-<div class="lprvl"><div class="float" style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px 24px; display: flex; align-items: center; gap: 16px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #1F1F23; color: #E3B341; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 9a2.5 2.5 0 114 2c-.9.6-1.5 1.2-1.5 2.5M12 17.5v.5"></path><circle cx="12" cy="12" r="9"></circle></svg></span>
-<span style="font-size: 19px; font-weight: 500">Not knowing if you're on track</span>
-</div></div>
-</div>
-<p class="lprv" style="margin: 16px 0 0; text-align: center; font-family: 'Young Serif', Georgia, serif; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.25">We turn all of that into <span style="color: #E3B341">one clear preparation system.</span></p>
-<div class="lprv" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px">
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
-<span style="color: #A8A49B; text-decoration: line-through; text-decoration-color: rgba(168,164,155,0.5)">Confused</span>
-<span style="font-size: 22px; font-weight: 500"><span style="color: #E3B341" aria-hidden="true">→ </span>Focused</span>
-</div>
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
-<span style="color: #A8A49B; text-decoration: line-through; text-decoration-color: rgba(168,164,155,0.5)">Scattered resources</span>
-<span style="font-size: 22px; font-weight: 500"><span style="color: #E3B341" aria-hidden="true">→ </span>One workspace</span>
-</div>
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
-<span style="color: #A8A49B; text-decoration: line-through; text-decoration-color: rgba(168,164,155,0.5)">Passive studying</span>
-<span style="font-size: 22px; font-weight: 500"><span style="color: #E3B341" aria-hidden="true">→ </span>Active practice</span>
-</div>
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
-<span style="color: #A8A49B; text-decoration: line-through; text-decoration-color: rgba(168,164,155,0.5)">"I think I'm prepared"</span>
-<span style="font-size: 22px; font-weight: 500"><span style="color: #E3B341" aria-hidden="true">→ </span>Measurable progress</span>
-</div>
-</div>
-</div>
-</section>
-
-<section style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
-<div class="lprv" style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start; max-width: 760px">
-<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">WHY IT'S DIFFERENT</span>
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">Not another library of CA resources. A preparation system.</h2>
-</div>
-<div class="lprv" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); column-gap: 64px; row-gap: 0">
-<div style="border-top: 1px solid rgba(255,255,255,0.10); padding: 32px 0 40px; display: flex; gap: 28px">
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 44px; line-height: 1; color: #E3B341">01</span>
-<div style="display: flex; flex-direction: column; gap: 8px">
-<h3 style="margin: 0; font-size: 24px; font-weight: 500">Know what to study</h3>
-<p style="margin: 0; color: #A8A49B">A day-by-day plan built around your attempt date and your study hours.</p>
-</div>
-</div>
-<div style="border-top: 1px solid rgba(255,255,255,0.10); padding: 32px 0 40px; display: flex; gap: 28px">
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 44px; line-height: 1; color: #E3B341">02</span>
-<div style="display: flex; flex-direction: column; gap: 8px">
-<h3 style="margin: 0; font-size: 24px; font-weight: 500">Practice like the real exam</h3>
-<p style="margin: 0; color: #A8A49B">MCQs, RTP and MTP based practice, and full mock examinations.</p>
-</div>
-</div>
-<div style="border-top: 1px solid rgba(255,255,255,0.10); padding: 32px 0 40px; display: flex; gap: 28px">
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 44px; line-height: 1; color: #E3B341">03</span>
-<div style="display: flex; flex-direction: column; gap: 8px">
-<h3 style="margin: 0; font-size: 24px; font-weight: 500">Find your weak spots</h3>
-<p style="margin: 0; color: #A8A49B">The MCQs you get wrong come back until you fix them.</p>
-</div>
-</div>
-<div style="border-top: 1px solid rgba(255,255,255,0.10); padding: 32px 0 40px; display: flex; gap: 28px">
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 44px; line-height: 1; color: #E3B341">04</span>
-<div style="display: flex; flex-direction: column; gap: 8px">
-<h3 style="margin: 0; font-size: 24px; font-weight: 500">See your preparation clearly</h3>
-<p style="margin: 0; color: #A8A49B">Track syllabus completion and your practice scores.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<section id="services" class="gridbg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
-<div class="lprv" style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start; max-width: 760px">
-<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">THE WORKSPACE</span>
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">Everything you need. One preparation workspace.</h2>
-</div>
-<div class="bento lprv" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
-
-<a class="lift" href="#" role="button" data-act="landup" style="grid-row: span 2; background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 14px; color: #F4F1EA; text-decoration: none; min-height: 300px">
-<div aria-hidden="true" style="flex-grow: 1; min-height: 150px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 18px; display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: #A8A49B">
-<div style="display: flex; align-items: center; gap: 10px"><span style="width: 18px; height: 18px; border-radius: 50%; background: #E3B341; flex-shrink: 0"></span><span>Ch 1 · Theoretical framework</span></div>
-<div style="display: flex; align-items: center; gap: 10px"><span style="width: 18px; height: 18px; border-radius: 50%; background: #E3B341; flex-shrink: 0"></span><span>Ch 2 · Accounting process</span></div>
-<div style="display: flex; align-items: center; gap: 10px"><span style="width: 18px; height: 18px; border-radius: 50%; background: #E3B341; flex-shrink: 0"></span><span>Ch 3 · Bank reconciliation</span></div>
-<div style="display: flex; align-items: center; gap: 10px; color: #F4F1EA"><span style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #E3B341; box-sizing: border-box; flex-shrink: 0"></span><span>Ch 4 · Inventories</span></div>
-<div style="display: flex; align-items: center; gap: 10px"><span style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); box-sizing: border-box; flex-shrink: 0"></span><span>Ch 5 · Depreciation</span></div>
-</div></div>
-<h3 style="margin: 0; font-size: 24px; font-weight: 500">Learn</h3>
-<p style="margin: 0; color: #A8A49B">Study chapter by chapter with video lectures and a syllabus tracker.</p>
-<span style="font-weight: 500">Start Learning <span class="arr" aria-hidden="true">→</span></span>
-</a>
-
-<a class="lift" href="#" role="button" data-act="landup" style="grid-column: span 2; background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; color: #F4F1EA; text-decoration: none">
-<div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 12px">
-<h3 style="margin: 0; font-size: 24px; font-weight: 500">Mock Exams</h3>
-<p style="margin: 0; color: #A8A49B">Experience full-length exam conditions.</p>
-<span style="font-weight: 500">Take a Mock <span class="arr" aria-hidden="true">→</span></span>
-</div>
-<div aria-hidden="true" style="flex: 1 1 180px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
-<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B">TIME LEFT</span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 34px; line-height: 1">2:41:07</span>
-<div style="display: flex; flex-wrap: wrap; gap: 6px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #E3B341"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: #E3B341"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: #E3B341"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span><span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.14)"></span></div>
-</div></div>
-</a>
-
-<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: #F4F1EA; text-decoration: none">
-<div aria-hidden="true" style="height: 84px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 16px; display: flex; flex-direction: column; gap: 8px">
-<span style="height: 12px; width: 80%; border-radius: 6px; background: rgba(255,255,255,0.14)"></span>
-<span style="height: 12px; width: 62%; border-radius: 6px; background: #E3B341"></span>
-<span style="height: 12px; width: 72%; border-radius: 6px; background: rgba(255,255,255,0.14)"></span>
-</div></div>
-<h3 style="margin: 0; font-size: 22px; font-weight: 500">Practice</h3>
-<p style="margin: 0; color: #A8A49B; font-size: 16px; flex-grow: 1">Sharpen your concepts with targeted questions and 10-minute MCQs.</p>
-<span style="font-weight: 500">Practice Now <span class="arr" aria-hidden="true">→</span></span>
-</a>
-
-<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: #F4F1EA; text-decoration: none">
-<div aria-hidden="true" style="height: 84px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 16px; display: flex; gap: 8px; font-size: 13px; font-weight: 600">
-<span style="padding: 6px 10px; border-radius: 8px; background: #E3B341; color: #1A1400">RTP</span>
-<span style="padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,0.10)">MTP</span>
-<span style="padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,0.10)">PYQ</span>
-</div></div>
-<h3 style="margin: 0; font-size: 22px; font-weight: 500">RTP / MTP / PYQ</h3>
-<p style="margin: 0; color: #A8A49B; font-size: 16px; flex-grow: 1">Practice with exam-relevant questions and past material.</p>
-<span style="font-weight: 500">Explore Papers <span class="arr" aria-hidden="true">→</span></span>
-</a>
-
-<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: #F4F1EA; text-decoration: none">
-<div aria-hidden="true" style="height: 84px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 16px; height: 84px; box-sizing: border-box; display: flex; align-items: flex-end; gap: 8px">
-<span style="width: 18px; height: 80%; border-radius: 4px; background: rgba(255,255,255,0.14)"></span>
-<span style="width: 18px; height: 35%; border-radius: 4px; background: #E3B341"></span>
-<span style="width: 18px; height: 65%; border-radius: 4px; background: rgba(255,255,255,0.14)"></span>
-<span style="width: 18px; height: 28%; border-radius: 4px; background: #E3B341"></span>
-<span style="width: 18px; height: 90%; border-radius: 4px; background: rgba(255,255,255,0.14)"></span>
-</div></div>
-<h3 style="margin: 0; font-size: 22px; font-weight: 500">Weak Spots</h3>
-<p style="margin: 0; color: #A8A49B; font-size: 16px; flex-grow: 1">Identify what needs more attention.</p>
-<span style="font-weight: 500">Fix Weak Areas <span class="arr" aria-hidden="true">→</span></span>
-</a>
-
-<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: #F4F1EA; text-decoration: none">
-<div aria-hidden="true" style="height: 84px; border-radius: 16px; background: #0F0F11; overflow: hidden"><div class="zoom" style="padding: 14px 16px; display: flex; align-items: center; gap: 14px">
-<svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6"></circle><circle cx="28" cy="28" r="22" fill="none" stroke="#E3B341" stroke-width="6" stroke-linecap="round" stroke-dasharray="58 138" transform="rotate(-90 28 28)"></circle></svg>
-<span style="font-size: 22px; font-weight: 600">42%</span>
-</div></div>
-<h3 style="margin: 0; font-size: 22px; font-weight: 500">Progress</h3>
-<p style="margin: 0; color: #A8A49B; font-size: 16px; flex-grow: 1">See exactly how far you have come.</p>
-<span style="font-weight: 500">View Progress <span class="arr" aria-hidden="true">→</span></span>
-</a>
-
-</div>
-</div>
-</section>
-
-<section id="platform" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 40px">
-<div class="lprv" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
-<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">THE PLATFORM</span>
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12; max-width: 720px">Pick your level. <span style="color: #E3B341">See what's inside.</span></h2>
-</div>
-<div role="tablist" aria-label="CA level" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
-
-<button role="tab" data-lp-lv="foundation" aria-selected="true" style="height: 52px; padding: 0 28px; border-radius: 999px; font-family: inherit; font-size: 17px; font-weight: 500; cursor: pointer; transition: background .15s ease, color .15s ease; background: #E3B341; color: #1A1400; border: 1px solid #E3B341">Foundation</button>
-
-<button role="tab" data-lp-lv="inter" aria-selected="false" style="height: 52px; padding: 0 28px; border-radius: 999px; font-family: inherit; font-size: 17px; font-weight: 500; cursor: pointer; transition: background .15s ease, color .15s ease; background: transparent; color: #F4F1EA; border: 1px solid rgba(255,255,255,0.18)">Intermediate</button>
-
-<button role="tab" data-lp-lv="final" aria-selected="false" style="height: 52px; padding: 0 28px; border-radius: 999px; font-family: inherit; font-size: 17px; font-weight: 500; cursor: pointer; transition: background .15s ease, color .15s ease; background: transparent; color: #F4F1EA; border: 1px solid rgba(255,255,255,0.18)">Final</button>
-
-</div>
-<div class="fa" style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 20px">
-
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 190px">
-<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B"><span data-lv-l="0">PAPERS</span></span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.15"><span data-lv-b="0">4 papers</span></span>
-<span style="color: #A8A49B; font-size: 15px"><span data-lv-s="0">Accounting · Business Laws · Quantitative Aptitude · Business Economics</span></span>
-</div>
-
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 190px">
-<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B"><span data-lv-l="1">CHAPTERS</span></span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.15"><span data-lv-b="1">46 chapters</span></span>
-<span style="color: #A8A49B; font-size: 15px"><span data-lv-s="1">Tracked and ticked off one by one</span></span>
-</div>
-
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 190px">
-<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B"><span data-lv-l="2">PRACTICE PAPERS</span></span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.15"><span data-lv-b="2">RTP · MTP · PYQ</span></span>
-<span style="color: #A8A49B; font-size: 15px"><span data-lv-s="2">Practice papers for each attempt</span></span>
-</div>
-
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 190px">
-<span style="font-size: 12px; letter-spacing: 0.12em; color: #A8A49B"><span data-lv-l="3">ALSO INSIDE</span></span>
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.15"><span data-lv-b="3">Video lectures</span></span>
-<span style="color: #A8A49B; font-size: 15px"><span data-lv-s="3">Chapter-wise, in Hindi and English</span></span>
-</div>
-
-</div>
-<p class="lprv" style="margin: 0; text-align: center; color: #A8A49B">Free chapter-wise analysis, counted from ICAI's own papers: <a href="/analysis" data-ana="landing" style="white-space: nowrap">CA Foundation <span aria-hidden="true">→</span></a> &nbsp;·&nbsp; <a href="/analysis-inter" data-ana="landing-inter" style="white-space: nowrap">CA Intermediate <span aria-hidden="true">→</span></a></p>
-</div>
-</section>
-
-<section id="next" class="gridbg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div class="lprv" style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">Always know what to do next.</h2>
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.10); border-radius: 24px; padding: clamp(28px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 40px">
-<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
-<span style="align-self: flex-start; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 12px; letter-spacing: 0.14em; display: inline-flex; align-items: center">EXAMPLE</span>
-<p style="margin: 0; color: #A8A49B">You're 42% through your preparation. Your next step:</p>
-<h3 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(26px, 3vw, 36px); line-height: 1.15">Complete Chapter 4: Accounting for Inventory</h3>
-<div style="display: flex; flex-wrap: wrap; gap: 20px; color: #A8A49B; font-size: 16px">
-<span>Paper 1 · Accounting</span>
-<span>35 min estimated</span>
-<span>Then: 10-minute MCQs</span>
-</div>
-</div>
-<div style="flex: 0 1 300px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start">
-<button class="primary go" data-act="landup" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Build my plan <span class="arr" aria-hidden="true">→</span></button>
-</div>
-</div>
-</div>
-</section>
-
-<section style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
-<div class="lprv" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
-<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">HOW IT WORKS</span>
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">From first read to exam day. <span style="color: #E3B341">Your six-step loop.</span></h2>
-</div>
-
-<div class="jh" style="position: relative; height: 360px">
-<svg aria-hidden="true" viewBox="0 0 1160 300" preserveAspectRatio="none" style="position: absolute; left: 0; top: 0; width: 100%; height: 300px; overflow: visible">
-<path d="M60,210 C165,210 165,90 270,90 C375,90 375,210 480,210 C585,210 585,90 690,90 C795,90 795,210 900,210 C1005,210 1005,90 1110,90" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="14" stroke-linecap="round"></path>
-<path class="draw" pathLength="1" d="M60,210 C165,210 165,90 270,90 C375,90 375,210 480,210 C585,210 585,90 690,90 C795,90 795,210 900,210 C1005,210 1005,90 1110,90" fill="none" stroke="#E3B341" stroke-width="4" stroke-linecap="round" stroke-dasharray="1" stroke-dashoffset="0"></path>
-</svg>
-
-<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 5.17%; top: 188px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">01</span>
-<span style="font-size: 19px; font-weight: 500">Learn</span>
-<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">Video lectures, chapter by chapter.</span>
-</div>
-
-<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 23.28%; top: 68px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">02</span>
-<span style="font-size: 19px; font-weight: 500">Practice</span>
-<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">10-minute MCQs and chapter questions.</span>
-</div>
-
-<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 41.38%; top: 188px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">03</span>
-<span style="font-size: 19px; font-weight: 500">Revise</span>
-<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">RTPs, MTPs and past papers.</span>
-</div>
-
-<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 59.48%; top: 68px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">04</span>
-<span style="font-size: 19px; font-weight: 500">Test</span>
-<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">A full-length mock under exam timing.</span>
-</div>
-
-<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 77.59%; top: 188px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">05</span>
-<span style="font-size: 19px; font-weight: 500">Analyse</span>
-<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">See which chapters carry the marks.</span>
-</div>
-
-<div class="lprv" style="position: absolute; width: 170px; margin-left: -85px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; left: 95.69%; top: 68px">
-<span style="width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #0B0B0C">06</span>
-<span style="font-size: 19px; font-weight: 500">Improve</span>
-<span style="font-size: 14px; color: #A8A49B; line-height: 1.4">Fix weak spots, then move on.</span>
-</div>
-
-</div>
-
-<div class="jv" style="flex-direction: column; gap: 28px; border-left: 3px solid #E3B341; margin-left: 20px; padding-left: 28px">
-
-<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
-<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">01</span>
-<span style="font-size: 19px; font-weight: 500">Learn</span>
-<span style="font-size: 15px; color: #A8A49B">Video lectures, chapter by chapter.</span>
-</div>
-
-<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
-<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">02</span>
-<span style="font-size: 19px; font-weight: 500">Practice</span>
-<span style="font-size: 15px; color: #A8A49B">10-minute MCQs and chapter questions.</span>
-</div>
-
-<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
-<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">03</span>
-<span style="font-size: 19px; font-weight: 500">Revise</span>
-<span style="font-size: 15px; color: #A8A49B">RTPs, MTPs and past papers.</span>
-</div>
-
-<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
-<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">04</span>
-<span style="font-size: 19px; font-weight: 500">Test</span>
-<span style="font-size: 15px; color: #A8A49B">A full-length mock under exam timing.</span>
-</div>
-
-<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
-<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">05</span>
-<span style="font-size: 19px; font-weight: 500">Analyse</span>
-<span style="font-size: 15px; color: #A8A49B">See which chapters carry the marks.</span>
-</div>
-
-<div class="lprv" style="position: relative; display: flex; flex-direction: column; gap: 4px">
-<span style="position: absolute; left: -52px; top: -2px; width: 44px; height: 44px; border-radius: 50%; background: #E3B341; color: #1A1400; font-weight: 600; display: flex; align-items: center; justify-content: center">06</span>
-<span style="font-size: 19px; font-weight: 500">Improve</span>
-<span style="font-size: 15px; color: #A8A49B">Fix weak spots, then move on.</span>
-</div>
-
-</div>
-</div>
-</section>
-
-<section id="progress" class="gridbg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div class="lprv" style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px">
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.12">Your preparation, at a glance</h2>
-<button data-act="landup" class="ghost go" style="background: transparent; cursor: pointer; font-family: inherit; font-size: inherit; height: 48px; padding: 0 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18); color: #F4F1EA; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 10px">Start tracking yours <span class="arr" aria-hidden="true">→</span></button>
-</div>
-<div style="display: flex; flex-wrap: wrap; gap: 20px">
-<div style="flex: 1 1 320px; background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 32px; display: flex; align-items: center; gap: 28px">
-<svg role="img" aria-label="42 percent of syllabus completed" width="132" height="132" viewBox="0 0 132 132" style="flex-shrink: 0"><circle cx="66" cy="66" r="56" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10"></circle><circle cx="66" cy="66" r="56" fill="none" stroke="#E3B341" stroke-width="10" stroke-linecap="round" stroke-dasharray="148 352" transform="rotate(-90 66 66)"></circle><text x="66" y="75" text-anchor="middle" fill="#F4F1EA" font-size="30" font-family="Outfit, sans-serif" font-weight="600">42%</text></svg>
-<div style="display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 22px; font-weight: 500">Syllabus completed</span>
-<span style="color: #A8A49B">19 of 46 chapters ticked off</span>
-</div>
-</div>
-<div style="flex: 2 1 480px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 20px">
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 14px; color: #A8A49B">Questions attempted</span>
-<span style="font-size: 34px; font-weight: 600; line-height: 1.1">640</span>
-</div>
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 14px; color: #A8A49B">Accuracy</span>
-<span style="font-size: 34px; font-weight: 600; line-height: 1.1">68%</span>
-<div style="height: 6px; border-radius: 3px; background: rgba(255,255,255,0.10); margin-top: 6px"><div style="width: 68%; height: 6px; border-radius: 3px; background: #E3B341"></div></div>
-</div>
-<div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 14px; color: #A8A49B">Mock exams completed</span>
-<span style="font-size: 34px; font-weight: 600; line-height: 1.1">2</span>
-</div>
-<a class="lift" href="#" role="button" data-act="landup" style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 6px; color: #F4F1EA; text-decoration: none">
-<span style="font-size: 14px; color: #A8A49B">Weak areas</span>
-<span style="font-size: 34px; font-weight: 600; line-height: 1.1">4 to fix</span>
-<span style="font-size: 15px; color: #A8A49B">Sample numbers</span>
-</a>
-</div>
-</div>
-</div>
-</section>
-
-
-
-
-
-<section id="mock" style="padding: 112px 24px 112px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div class="lprv" style="max-width: 1160px; margin: 0 auto; background: #E3B341; color: #1A1400; border-radius: 28px; padding: clamp(36px, 6vw, 72px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 40px; box-sizing: border-box">
-<div style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3.8vw, 48px); line-height: 1.1">Ready to see where you actually stand?</h2>
-<p style="margin: 0; font-size: 19px; max-width: 560px; color: #33290A">Take a full-length mock under realistic exam conditions and discover exactly where you need to improve.</p>
-</div>
-<div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
-<button class="go" data-act="landup" style="border: 0; cursor: pointer; font-family: inherit; font-size: inherit; height: 56px; padding: 0 28px; border-radius: 12px; background: #0B0B0C; color: #F4F1EA; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px">Start Mock Exam <span class="arr" aria-hidden="true">→</span></button>
-<button class="go" data-act="landin" style="background: transparent; border: 0; cursor: pointer; font-family: inherit; font-size: inherit; text-decoration: underline; color: #1A1400; font-weight: 500; padding: 10px 0">Already have an account? Sign in <span class="arr" aria-hidden="true">→</span></button>
-</div>
-</div>
-</section>
-
-<section style="padding: 96px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div class="lprv" style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-<div style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start; max-width: 760px">
-<span style="height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(227,179,65,0.5); color: #E3B341; font-size: 13px; letter-spacing: 0.14em; display: inline-flex; align-items: center">WHAT IT'S BUILT ON</span>
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(26px, 3vw, 38px); line-height: 1.15">Built around the ICAI syllabus, paper by paper.</h2>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 24px">
-<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>ICAI-aligned terminology</span></div>
-<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>RTP, MTP and PYQ papers</span></div>
-<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>Chapter-wise preparation</span></div>
-<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>Full-length mock exams</span></div>
-<div style="display: flex; gap: 12px; align-items: flex-start"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>Performance tracking</span></div>
-</div>
-</div>
-</section>
-
-<section class="gridbg" style="padding: 144px 24px; border-top: 1px solid rgba(255,255,255,0.06)">
-<div class="lprv" style="max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
-<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(34px, 4.6vw, 58px); line-height: 1.08">Your next study session <span style="color: #E3B341">starts here.</span></h2>
-<p style="margin: 0; font-size: 19px; color: #A8A49B">Stop wondering what to study next. Start making measurable progress.</p>
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 12px">
-<button class="primary go" data-act="landup" style="height: 52px; padding: 0 24px; border-radius: 12px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: inherit">Create my free account <span class="arr" aria-hidden="true">→</span></button>
-</div>
-</div>
-</section>
-
-<div style="position: sticky; bottom: 24px; height: 0; z-index: 9; padding: 0 24px; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none">
-<button class="mobcta primary" data-act="landup" style="border: 0; cursor: pointer; font-family: inherit; font-size: inherit; pointer-events: auto; height: 52px; padding: 0 20px; border-radius: 999px; background: #E3B341; color: #1A1400; text-decoration: none; font-weight: 600; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5)">Sign up free</button>
-<span aria-hidden="true"></span>
-<a class="ghost" href="__WA__" target="_blank" rel="noopener" data-wa="landing" aria-label="Join the CA PrepX WhatsApp group" style="pointer-events: auto; height: 56px; padding: 0 20px 0 16px; border-radius: 999px; background: #1B1B1E; border: 1px solid rgba(255,255,255,0.18); color: #F4F1EA; text-decoration: none; font-weight: 500; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5)">
-<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.6 7.4L3 20l1.2-5.1A8.5 8.5 0 1121 11.5z"></path></svg>
-<span>Join the group</span>
-</a>
-</div>
-
-</main>
-
-<footer style="padding: 48px 24px 56px; border-top: 1px solid rgba(255,255,255,0.08)">
-<div style="max-width: 1160px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px">
-<div style="display: flex; flex-direction: column; gap: 10px; max-width: 320px">
-<span style="font-family: 'Young Serif', Georgia, serif; font-size: 22px">CA PrepX</span>
-<span style="color: #A8A49B; font-size: 15px">Free CA exam prep, ticked off paper by paper.</span>
-</div>
-<nav aria-label="Product" style="display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 15px; align-content: flex-start">
-<a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Learn</a>
-<a class="navlink" href="#services" data-lp-go="services" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Practice</a>
-<a class="navlink" href="#mock" data-lp-go="mock" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Mock Exams</a>
-<a class="navlink" href="#platform" data-lp-go="platform" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Resources</a>
-<a class="navlink" href="#progress" data-lp-go="progress" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Progress</a>
-<button class="navlink" data-tab="about" style="background: transparent; border: 0; cursor: pointer; font-family: inherit; font-size: inherit; color: #A8A49B; text-decoration: none; padding: 10px 0">About</button>
-<a class="navlink" href="/analysis" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Foundation analysis</a>
-<a class="navlink" href="/analysis-inter" style="color: #A8A49B; text-decoration: none; padding: 10px 0">Inter analysis</a>
-</nav>
-</div>
-</footer>
-
-</div>
+<footer class="lx-foot"><div class="lx-w"><span>CA PrepX · Free CA exam prep, ticked off paper by paper.</span>
+<nav aria-label="More"><button type="button" data-tab="about">About</button><a href="/analysis">Foundation analysis</a><a href="/analysis-inter">Inter analysis</a></nav></div></footer>
 </div>
 </template>
 
@@ -2937,7 +2596,19 @@ function welcome(gate){
     </div>`}
   </div>`;
 }
-function render(){render0();const on=!!document.getElementById("lp");if(document.body.classList.contains("lp-on")!==on){document.body.classList.toggle("lp-on",on);if(!on)window.scrollTo({top:0})}}
+function render(){render0();const on=!!document.getElementById("lp");if(document.body.classList.contains("lp-on")!==on){document.body.classList.toggle("lp-on",on);if(!on)window.scrollTo({top:0})}if(on)lpInit();else document.body.style.background=""}
+let LPI=0;
+function lpInit(){const lp=document.getElementById("lp");if(!lp||lp.dataset.init)return;lp.dataset.init="1";
+  let m="light";try{m=localStorage.getItem("prepx.lpm")==="dark"?"dark":"light"}catch(_){}
+  const tg=lp.querySelector("#lp-tg");
+  const set=v=>{lp.setAttribute("data-m",v);document.body.style.background=v==="dark"?"#0B0B0C":"#FFFDF9";if(tg)tg.textContent=v==="dark"?"Light mode":"Dark mode"};set(m);
+  if(tg)tg.onclick=()=>{const v=lp.getAttribute("data-m")==="dark"?"light":"dark";set(v);try{localStorage.setItem("prepx.lpm",v)}catch(_){}};
+  const g=lp.querySelector("#lp-qg");if(g){let h="";for(let i=1;i<=50;i++)h+='<i class="'+(i<=18?"lx-d":"")+(i===19?" lx-n":"")+'">'+i+"</i>";g.innerHTML=h}
+  const rv=lp.querySelectorAll(".lx-rv");
+  if("IntersectionObserver" in window){const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("lx-in");o.unobserve(e.target)}}),{threshold:.12});rv.forEach(e=>o.observe(e))}else rv.forEach(e=>e.classList.add("lx-in"));
+  const q=lp.querySelector("#lp-mcq");clearInterval(LPI);
+  if(q){const ok=q.querySelector("[data-ok]"),w=q.querySelector(".lx-why");const run=()=>{if(!ok.isConnected){clearInterval(LPI);return}ok.classList.remove("lx-sel");w.classList.remove("lx-on");setTimeout(()=>ok.classList.add("lx-sel"),1600);setTimeout(()=>w.classList.add("lx-on"),2300)};run();LPI=setInterval(run,7500)}
+}
 function render0(){renderChrome();const m=document.getElementById("main");
   if(!authReady){m.innerHTML=freshVisit()?`<section class="view">${landing()}</section>`:`<p class="muted" style="padding:40px 0">Loading…</p>`;return}
   if(gateOn()){m.innerHTML=`<section class="view">${landOn()?landing():welcome(1)}</section>`;return}
