@@ -240,7 +240,36 @@ body.au-on>main#main{max-width:none;padding:0;margin:0}
 #au .au-sub{font-size:16px}
 #au .au-form .card{padding:20px}
 }
-@media(prefers-reduced-motion:reduce){</style>
+:root[data-theme="light"]{color-scheme:light;--bg:#FFFDF9;--surface:#FFFFFF;--surface-2:#F6F1E7;--ink:#1F2430;--muted:#5A6170;--line:#EAE2D2;--accent:#F2B10C;--accent-ink:#1B1403;--accent-soft:#FBF1D6;--gold:#F2B10C;--gold-deep:#B77900;--gold-ink:#1B1403;--hero-bg:#FFFFFF;--hero-line:#EAE2D2;--hero-ink:#1F2430;--hero-muted:#5A6170;--hero-track:#F1EADB;--hero-ring:#F2B10C;--hero-field:#F6F1E7}
+:root[data-theme="light"] body{background:#FFFDF9}
+:root[data-theme="light"] .card,:root[data-theme="light"] .tile,:root[data-theme="light"] .today{box-shadow:0 8px 24px rgba(60,45,10,.08)}
+:root[data-theme="light"] .today{background:#FFFFFF;border-color:#EAE2D2;color:#1F2430}
+:root[data-theme="light"] .btn.primary,:root[data-theme="light"] .today-go{background:linear-gradient(180deg,#FBC531,#E9A300);color:#1B1403;border-color:transparent;box-shadow:0 8px 20px rgba(233,163,0,.25)}
+.hm-hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:28px;background:var(--surface);padding:30px;margin-bottom:18px}
+.hm-hero>.home-hero,.hm-hero>.today{position:relative;z-index:1}
+.hm-bg{position:absolute;right:0;top:0;bottom:0;width:58%;z-index:0}
+.hm-bg img{width:100%;height:100%;object-fit:cover;display:block;opacity:.9}
+.hm-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--surface) 0%,transparent 55%)}
+:root[data-theme="dark"] .hm-bg img{filter:brightness(.5)}
+.hm-hero .home-hero h1{font-size:clamp(1.7rem,3.4vw,2.6rem);line-height:1.1}
+.hm-hero .today{box-shadow:0 18px 50px rgba(0,0,0,.18)}
+.hm-nx{display:flex;align-items:center;gap:8px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--gold-deep)}
+.hm-nx .ic{color:var(--gold)}
+.tiles.v6 .tile{transition:transform .2s}
+.tiles.v6 .tile:hover{transform:translateY(-4px)}
+.promo3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:14px 0}
+.promo3 .wa-card{margin:0;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
+.promo3 .wa-card h2{font-size:1.02rem !important;line-height:1.25}
+.promo3 .wa-card p{font-size:.85rem !important}
+.promo3 .btn{padding:8px 14px;font-size:.9rem}
+@media(max-width:899px){
+.hm-hero{padding:18px;border-radius:22px}
+.hm-bg{width:100%;height:150px;bottom:auto}
+.hm-bg::after{background:linear-gradient(180deg,transparent 0%,var(--surface) 92%)}
+.hm-hero>.home-hero{padding-top:84px}
+.promo3 .wa-card p{display:none}
+}
+</style>
 <style>
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 :root{
@@ -1185,7 +1214,7 @@ main{padding-bottom:120px}
 </style>
 </head>
 <body>
-<script>try{var __t=localStorage.getItem("prepx.theme");document.documentElement.setAttribute("data-theme",__t==="light"?"light":"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
+<script>try{var __t=localStorage.getItem("prepx.theme");if(__t!=="light"&&__t!=="dark")__t=localStorage.getItem("prepx.lpm")==="dark"?"dark":"light";document.documentElement.setAttribute("data-theme",__t)}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <script>try{var __k=false;for(var __i=0;__i<localStorage.length;__i++){if(/^sb-.*-auth-token$/.test(localStorage.key(__i)||""))__k=true}if(!__k&&location.pathname==="/"&&!location.hash)document.body.classList.add("lp-on")}catch(e){}</script>
 <template id="lpT">
 <div id="lp" data-m="light">
@@ -2439,7 +2468,8 @@ function chipNav(label,attr,items,isOn){return `<div class="chipnav" role="group
 const icoSvg=(n,sz)=>`<svg class="ic" width="${sz||20}" height="${sz||20}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 /* theme */
 let THEME=null;try{THEME=localStorage.getItem("prepx.theme")}catch(e){}
-if(THEME!=="light"&&THEME!=="dark")THEME="dark";
+if(THEME!=="light"&&THEME!=="dark"){let __m=null;try{__m=localStorage.getItem("prepx.lpm")}catch(e){}THEME=__m==="dark"?"dark":"light"}
+function setTheme(v){THEME=v;try{localStorage.setItem("prepx.theme",v);localStorage.setItem("prepx.lpm",v)}catch(_){}applyTheme()}
 function applyTheme(){if(THEME)document.documentElement.setAttribute("data-theme",THEME);else document.documentElement.removeAttribute("data-theme")}
 function isDark(){return THEME?THEME==="dark":window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches}
 applyTheme();
@@ -2617,7 +2647,7 @@ function renderChrome(){
 let W={level:"inter"};
 function welcome(gate){
   const auth=sb&&(!session||isGuest()||recovering);
-  if(auth){let m="light";try{m=localStorage.getItem("prepx.lpm")==="dark"?"dark":"light"}catch(_){}
+  if(auth){const m=THEME==="dark"?"dark":"light";
     const tk=t=>`<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>${t}</li>`;
     return `<div id="au" data-m="${m}">
     <div class="au-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1500&q=75" alt=""></div>
@@ -2654,12 +2684,12 @@ function welcome(gate){
 }
 function render(){render0();const on=!!document.getElementById("lp");if(document.body.classList.contains("lp-on")!==on){document.body.classList.toggle("lp-on",on);if(!on)window.scrollTo({top:0})}const au=document.getElementById("au");document.body.classList.toggle("au-on",!!au);if(on)lpInit();else document.body.style.background=au?(au.getAttribute("data-m")==="dark"?"#0B0B0C":"#FFFDF9"):""}
 let LPI=0;
-document.addEventListener("click",e=>{if(!e.target.closest("#au-tg"))return;const au=document.getElementById("au");if(!au)return;const v=au.getAttribute("data-m")==="dark"?"light":"dark";au.setAttribute("data-m",v);document.body.style.background=v==="dark"?"#0B0B0C":"#FFFDF9";e.target.closest("#au-tg").textContent=v==="dark"?"Light mode":"Dark mode";try{localStorage.setItem("prepx.lpm",v)}catch(_){}});
+document.addEventListener("click",e=>{if(!e.target.closest("#au-tg"))return;const au=document.getElementById("au");if(!au)return;const v=au.getAttribute("data-m")==="dark"?"light":"dark";au.setAttribute("data-m",v);document.body.style.background=v==="dark"?"#0B0B0C":"#FFFDF9";e.target.closest("#au-tg").textContent=v==="dark"?"Light mode":"Dark mode";setTheme(v)});
 function lpInit(){const lp=document.getElementById("lp");if(!lp||lp.dataset.init)return;lp.dataset.init="1";
-  let m="light";try{m=localStorage.getItem("prepx.lpm")==="dark"?"dark":"light"}catch(_){}
+  let m=THEME==="dark"?"dark":"light";
   const tg=lp.querySelector("#lp-tg");
   const set=v=>{lp.setAttribute("data-m",v);document.body.style.background=v==="dark"?"#0B0B0C":"#FFFDF9";if(tg)tg.textContent=v==="dark"?"Light mode":"Dark mode"};set(m);
-  if(tg)tg.onclick=()=>{const v=lp.getAttribute("data-m")==="dark"?"light":"dark";set(v);try{localStorage.setItem("prepx.lpm",v)}catch(_){}};
+  if(tg)tg.onclick=()=>{const v=lp.getAttribute("data-m")==="dark"?"light":"dark";set(v);setTheme(v)};
   const g=lp.querySelector("#lp-qg");if(g){let h="";for(let i=1;i<=50;i++)h+='<i class="'+(i<=18?"lx-d":"")+(i===19?" lx-n":"")+'">'+i+"</i>";g.innerHTML=h}
   const rv=lp.querySelectorAll(".lx-rv");
   if("IntersectionObserver" in window){const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("lx-in");o.unobserve(e.target)}}),{threshold:.12});rv.forEach(e=>o.observe(e))}else rv.forEach(e=>e.classList.add("lx-in"));
@@ -2852,8 +2882,8 @@ home(){
     ["rocket","I'm behind",n&&n>0?`Catch-up plan for ${n} days`:"Catch-up plan in one tap",`data-act="catchup"`],
     ["target","Fix weak spots",wn?`${wn} questions to redo`:"Redo what you got wrong",`data-mode="mistakes"`]
   ];
-  return `${tsHomeCard()}${waCard()}${anaCard()}
-  <div class="home-top">
+  return `<div class="home-top hm-hero">
+  <div class="hm-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1400&q=70" alt="" loading="lazy"></div>
   <div class="home-hero">
       <div class="eyebrow">${greet}${S.name?", "+esc(S.name):""} · CA ${lv.label}${n&&n>0?` · ${n} days to exam`:""}</div>
       <h1>What do you need today?</h1>
@@ -2861,12 +2891,14 @@ home(){
       <div id="hres" class="hres" hidden></div>
     </div>
     <div class="today">
+      <div class="hm-nx">${ico("target",18)}<span>Your next step</span></div>
       <div class="today-top"><div class="tring" style="background:conic-gradient(var(--gold) ${pct}%,var(--hero-track) 0)"><b>${pct}%</b></div>
       <div class="today-t"><small>${esc(att)} attempt${n&&n>0?` · ${n} days to go`:""}</small><h2>Syllabus ticked off</h2><small>${tot?`${rd} of ${tot} chapters read`:"Tick chapters as you finish them"}</small></div></div>
       ${hasProg?`<button class="today-go" data-tab="plan" data-sub="progress"><span>${wn?`Pick up where you left off · ${wn} to fix`:"Pick up where you left off"}</span><span aria-hidden="true">→</span></button>`:`<button class="today-go" data-tab="plan" data-sub="study"><span>Build my study plan</span><span aria-hidden="true">→</span></button>`}
     </div>
   </div>
   <div class="tiles v6">${tiles.map(x=>`<button class="tile" ${x[3]}>${ico(x[0],30)}<b>${x[1]}</b><span>${x[2]}</span></button>`).join("")}</div>
+  <div class="promo3">${tsHomeCard()}${anaCard()}${waCard()}</div>
   <div class="home-row"${fits("careers")?"":' style="grid-template-columns:1fr"'}>
     ${fits("careers")?`<button class="jobrow" data-tab="careers">${ico("brief",30)}<span><b>Articleship &amp; jobs</b><small>Roles and open vacancies</small></span><span aria-hidden="true" style="flex:none">→</span></button>`:""}
     <div class="tipstrip">${ico("bulb",26)}<div><span class="eyebrow">Tip of the day · ${esc(tip[0])}</span><p>${esc(tip[1])}</p></div><button class="btn ghost sm" data-tab="resources" data-sub="tips">More tips →</button></div>
@@ -3782,7 +3814,7 @@ document.addEventListener("click",e=>{
   if(a==="jmore"){jobsShown+=12;paintJobs();return}
   if(a==="jreset"){Object.assign(jf(),{city:"all",stage:"all",dom:"all",type:"all",q:""});jobsShown=12;render();return}
   if(a==="plandocx"){if(needAcct("Create your free account to download your study plan.","plandocx"))return;(currentPlan().v2?planDocx2:planDocx)(t);return}
-  if(a==="theme"){THEME=isDark()?"light":"dark";try{localStorage.setItem("prepx.theme",THEME)}catch(_){}applyTheme();renderChrome();return}
+  if(a==="theme"){setTheme(isDark()?"light":"dark");renderChrome();return}
   if(a==="nextq"){pick();paintQ()}
   if(a==="fresh"){const keepUid=S.uid;S=blank(S.level);S.uid=keepUid;W.level=S.level;save();render()}
   if(a==="demo"){const keepUid=S.uid;S=sample();S.uid=keepUid;go("home");save();render()}
