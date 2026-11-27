@@ -1,168 +1,245 @@
 <!doctype html>
-<html lang="en" data-t="a">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>CA PrepX – light theme preview</title>
+<title>CA PrepX – home page preview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
 <style>
-:root{--serif:"Young Serif",Georgia,serif;--sans:"Outfit",system-ui,sans-serif;--good:#1E8E5A;--bad:#D64545}
-[data-t=a]{--bg:#FAF7F0;--card:#FFFFFF;--ink:#14201B;--mu:#5E6B64;--ln:#E6E0D2;--pr:#0F5C4A;--on:#FFFFFF;--ac:#C8973A;--onac:#14201B;--ti:#E7F1EC;--band:#0F5C4A;--onband:#F4F1EA}
-[data-t=b]{--bg:#F7F6FF;--card:#FFFFFF;--ink:#1A1740;--mu:#63618A;--ln:#E4E2F5;--pr:#4338CA;--on:#FFFFFF;--ac:#F5A524;--onac:#1A1740;--ti:#ECEBFF;--band:#1A1740;--onband:#F7F6FF}
-[data-t=c]{--bg:#FFF9F4;--card:#FFFFFF;--ink:#132238;--mu:#5C677A;--ln:#EFE4DA;--pr:#F2613F;--on:#FFFFFF;--ac:#132238;--onac:#FFFFFF;--ti:#FFEDE6;--band:#132238;--onband:#FFF9F4}
+:root{--bg:#0B0B0C;--s1:#141416;--s2:#1E1E21;--ink:#F4F1EA;--mu:#A8A49B;--ln:#2B2B30;--gold:#F0B429;--gold2:#E3A008;--good:#5FBF8A;--bad:#E5675F;--serif:"Young Serif",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;transition:background .3s,color .3s}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;overflow-x:hidden}
 img{display:block;width:100%;height:100%;object-fit:cover}
 a{color:inherit;text-decoration:none}
-.w{max-width:1120px;margin:0 auto;padding:0 20px}
-h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.12;margin:0}
-h1{font-size:clamp(34px,6vw,60px)}
-h2{font-size:clamp(26px,4vw,40px)}
-h3{font-size:20px}
 p{margin:0}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:1.1}
+h1{font-size:clamp(38px,6.2vw,68px)}
+h2{font-size:clamp(28px,4vw,44px)}
+h3{font-size:22px}
+.w{max-width:1180px;margin:0 auto;padding:0 24px}
+.gd{color:var(--gold)}
 .mu{color:var(--mu)}
-.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:13px 22px;font-weight:500;font-size:16px;border:1px solid transparent;cursor:pointer;font-family:inherit}
-.btn.p{background:var(--pr);color:var(--on)}
-.btn.o{border-color:var(--ln);background:var(--card);color:var(--ink)}
-.pill{display:inline-block;background:var(--ti);color:var(--pr);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:500}
-nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
-nav .w{display:flex;align-items:center;justify-content:space-between;height:64px}
-.logo{font-family:var(--serif);font-size:22px}
-.logo b{color:var(--pr);font-weight:400}
-.links{display:flex;gap:26px;font-size:15px}
-.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center;padding:56px 0 64px}
-.hero p.lead{font-size:18px;margin:18px 0 26px;max-width:30em}
-.cta{display:flex;gap:10px;flex-wrap:wrap}
-.pic{position:relative}
-.pic .ph{aspect-ratio:4/4.4;border-radius:28px;overflow:hidden;background:var(--ti)}
-.pic::before{content:"";position:absolute;inset:auto -14px -14px auto;width:62%;height:62%;border-radius:28px;background:var(--ac);opacity:.9;z-index:-1}
-.chip{position:absolute;background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:10px 14px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
-.chip b{display:block;font-size:17px;font-weight:600;color:var(--pr)}
-.chip.c1{left:-18px;top:26px}.chip.c2{right:-10px;bottom:70px}
-.sec{padding:64px 0}
-.head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:28px;flex-wrap:wrap}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.card{background:var(--card);border:1px solid var(--ln);border-radius:20px;overflow:hidden;transition:transform .2s}
-.card:hover{transform:translateY(-4px)}
-.card .im{aspect-ratio:4/3;background:var(--ti)}
-.card .tx{padding:16px 18px 20px}
-.card .tx p{font-size:14px;margin-top:6px}
-.tag{display:inline-block;background:var(--ac);color:var(--onac);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;margin-bottom:8px}
-.band{background:var(--band);color:var(--onband);border-radius:32px;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
-.band .tx{padding:44px}
-.band .tx p{opacity:.8;margin:14px 0 22px}
-.band ul{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:8px;font-size:15px}
-.band li::before{content:"✓";color:var(--ac);margin-right:10px;font-weight:600}
-.band .btn.p{background:var(--ac);color:var(--onac)}
-[data-t=c] .band .btn.p{background:var(--pr);color:var(--on)}
-[data-t=c] .band li::before{color:var(--pr)}
-.price{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
-.price div{border:1px solid color-mix(in srgb,var(--onband) 25%,transparent);border-radius:16px;padding:12px 16px;font-size:13px}
-.price b{display:block;font-family:var(--serif);font-size:24px;font-weight:400}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.wide{position:relative;border-radius:24px;overflow:hidden;min-height:300px;color:#fff}
-.wide img{position:absolute;inset:0}
-.wide::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.72))}
-.wide .tx{position:absolute;inset:auto 0 0 0;padding:24px;z-index:1}
-.wide .tx p{opacity:.85;font-size:14px;margin-top:6px}
-.res{background:var(--card);border:1px solid var(--ln);border-radius:20px;padding:22px;max-width:420px}
-.bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:var(--ln);margin:12px 0 8px}
-footer{border-top:1px solid var(--ln);padding:28px 0 110px;font-size:14px}
-.sw{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9;background:#111;color:#fff;border-radius:999px;padding:6px;display:flex;gap:4px;box-shadow:0 12px 40px rgba(0,0,0,.3);font-size:13px;max-width:calc(100vw - 16px)}
-.sw button{font:inherit;color:#fff;background:transparent;border:0;border-radius:999px;padding:9px 14px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:7px}
-.sw button i{width:12px;height:12px;border-radius:50%;display:inline-block;border:1px solid rgba(255,255,255,.5)}
-.sw button[aria-pressed=true]{background:#fff;color:#111}
-@media(max-width:860px){
-.links{display:none}
-.hero{grid-template-columns:1fr;gap:30px;padding:32px 0 44px}
-.pic{margin:0 14px 14px 14px}
-.grid{grid-template-columns:1fr 1fr}
-.band,.split{grid-template-columns:1fr}
-.band .im{aspect-ratio:16/10}
-.band .tx{padding:28px 22px}
-.sec{padding:44px 0}
-.sw button{padding:9px 11px}
+.btn{display:inline-flex;align-items:center;gap:12px;border-radius:12px;padding:16px 28px;font-weight:600;font-size:18px;background:linear-gradient(180deg,#F7C544,var(--gold2));color:#141006;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.o{background:transparent;border:1.5px solid var(--gold);color:var(--ink);padding:10px 22px;font-size:16px;font-weight:500}
+.pill{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(240,180,41,.55);background:rgba(240,180,41,.08);color:var(--gold);border-radius:999px;padding:8px 18px;font-size:15px;font-weight:500}
+svg.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav{position:absolute;inset:0 0 auto 0;z-index:5}
+nav .w{display:flex;align-items:center;justify-content:space-between;height:84px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:26px}
+.logo img{width:38px;height:38px;border-radius:8px}
+.hero{position:relative;min-height:min(760px,100vh);display:flex;align-items:center;padding:110px 0 70px}
+.hero .ph{position:absolute;inset:84px 0 60px 36%;z-index:0}
+.hero .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(11,11,12,.72) 22%,rgba(11,11,12,0) 55%),linear-gradient(0deg,var(--bg) 0%,rgba(11,11,12,0) 22%)}
+.hero .w{position:relative;z-index:1;width:100%}
+.hero .tx{max-width:560px}
+.hero h1{margin:22px 0 22px}
+.ul{position:relative;white-space:nowrap}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:8px;border-top:4px solid var(--gold);border-radius:50%}
+.hero p{font-size:19px;max-width:26em;margin-bottom:30px}
+.next{position:absolute;right:24px;bottom:30px;display:flex;align-items:center;gap:16px;background:rgba(20,20,22,.88);backdrop-filter:blur(8px);border:1px solid var(--ln);border-radius:16px;padding:16px 22px;z-index:2}
+.next svg{font-size:38px;color:var(--gold)}
+.next b{display:block;font-size:20px;font-weight:500}
+.next span{color:var(--mu)}
+.scroll{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);text-align:center;font-size:14px;color:var(--mu);z-index:2}
+.scroll svg{display:block;margin:0 auto 2px;font-size:26px;color:var(--gold)}
+.sec{padding:76px 0}
+.ttl{text-align:center;margin-bottom:44px}
+.ttl h2::after{content:"";display:block;width:110px;height:3px;background:var(--gold);border-radius:2px;margin:18px auto 0}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+.four a{padding:26px 12px;border-radius:18px;border:1px solid transparent;transition:.2s}
+.four a:hover{border-color:var(--ln);background:var(--s1)}
+.four svg{font-size:46px;color:var(--gold);margin-bottom:10px}
+.four p{font-size:15px;margin-top:6px}
+.feat{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center;padding:52px 0}
+.feat.r .vis{order:-1}
+.lab{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.feat h2{margin:12px 0 14px}
+.feat ul{list-style:none;padding:0;margin:20px 0 26px;display:grid;gap:10px}
+.feat li{display:flex;gap:12px;align-items:flex-start}
+.feat li svg{color:var(--gold);font-size:20px;flex:none;margin-top:3px}
+.lnk{color:var(--gold);font-weight:500}
+.vis{position:relative}
+.vis .im{aspect-ratio:5/4;border-radius:24px;overflow:hidden;border:1px solid var(--ln)}
+.vis .im::after{content:"";position:absolute;inset:0;border-radius:24px;background:linear-gradient(0deg,rgba(11,11,12,.55),rgba(11,11,12,0) 50%)}
+.float{position:absolute;background:rgba(20,20,22,.94);border:1px solid var(--ln);border-radius:16px;padding:14px 18px;font-size:14px;z-index:1}
+.float b{display:block;font-size:22px;font-weight:500;color:var(--gold)}
+.mock{background:var(--s1);border:1px solid var(--ln);border-radius:24px;padding:26px}
+.opt{border:1px solid var(--ln);border-radius:12px;padding:12px 16px;margin-top:10px;display:flex;justify-content:space-between;font-size:16px}
+.opt.sel{border-color:var(--gold);background:rgba(240,180,41,.08)}
+.bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:var(--s2);margin:12px 0 8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stats div{background:var(--s2);border-radius:16px;padding:18px}
+.stats b{display:block;font-family:var(--serif);font-size:30px;font-weight:400}
+.wk{display:flex;gap:8px;align-items:flex-end;height:110px;margin-top:22px}
+.wk i{flex:1;background:var(--s2);border-radius:6px 6px 0 0}
+.wk i.on{background:var(--gold)}
+.end{position:relative;border-radius:32px;overflow:hidden;padding:76px 28px;text-align:center;border:1px solid var(--ln)}
+.end img{position:absolute;inset:0;opacity:.34}
+.end>*:not(img){position:relative}
+.end p{margin:16px auto 30px;max-width:30em;color:#D9D5CC}
+footer{padding:30px 0 50px;font-size:14px;color:var(--mu);text-align:center}
+@media(max-width:880px){
+nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
+.hero{display:block;min-height:0;padding:68px 0 26px}
+.hero .ph{position:relative;inset:auto;height:300px;margin-bottom:-70px}
+.hero .ph::after{background:linear-gradient(0deg,var(--bg) 4%,rgba(11,11,12,0) 60%)}
+.hero h1{margin:16px 0}
+.hero p{font-size:17px;margin-bottom:22px}
+.btn{width:100%;justify-content:center}
+.btn.o{width:auto}
+.next{position:static;margin:22px 0 0}
+.scroll{display:none}
+.sec{padding:48px 0}
+.four{grid-template-columns:1fr 1fr}
+.feat{grid-template-columns:1fr;gap:26px;padding:34px 0}
+.feat.r .vis{order:0}
+.stats b{font-size:24px}
 }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10.2 5.2 7.4 4.6 4 5v13.2c3.4-.4 6.2.2 8 1.5 1.8-1.3 4.6-1.9 8-1.5V5c-3.4-.4-6.2.2-8 1.5zM12 6.5v13.2"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 013 3L8 18.500zM14.500 6l3 3"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><rect x="5" y="4.500" width="14" height="16" rx="2"/><path d="M9 4.500V3h6v1.500M8.500 10l1.200 1.200 2-2.200M8.500 15l1.200 1.200 2-2.200M14 10.500h2.500M14 15.500h2.500"/></symbol>
+<symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20h16M6 20v-5h3v5M10.500 20v-9h3v9M15 20V6h3v14"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="11" cy="13" r="7.500"/><circle cx="11" cy="13" r="3.500"/><path d="M11 13l8-8M16.500 4.500V7.500h3"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></symbol>
+<symbol id="i-cap" viewBox="0 0 24 24"><path d="M2.500 9.500L12 5l9.500 4.500L12 14zM6.500 11.500v4.500c3 2.300 8 2.300 11 0v-4.500M21.500 9.500v5"/></symbol>
+</defs></svg>
+
 <nav><div class="w">
-<a class="logo" href="#">CA Prep<b>X</b></a>
-<div class="links"><a href="#what">Resources</a><a href="#what">Practice</a><a href="#ts">Test Series</a><a href="#an">Analysis</a></div>
-<a class="btn p" style="padding:9px 18px;font-size:14px" href="#">Sign up free</a>
+<a class="logo" href="#"><img src="/logo-64.png" alt=""><span>CA Prep<span class="gd">X</span></span></a>
+<a class="btn o" href="#">Sign in</a>
 </div></nav>
 
-<header class="w hero">
-<div>
-<span class="pill">Free for CA Foundation, Inter and Final</span>
-<h1 style="margin-top:16px">Clear CA with a plan, not panic.</h1>
-<p class="lead mu">Notes, past papers, daily practice and a test series, built by Chartered Accountants who have sat the same exams.</p>
-<div class="cta"><a class="btn p" href="#">Start free →</a><a class="btn o" href="#ts">See the test series</a></div>
+<header class="hero">
+<div class="ph"><img alt="Students preparing together around a laptop" src="https://images.unsplash.com/photo-1758270705317-3ef6142d306f?auto=format&fit=crop&w=1600&q=78"></div>
+<div class="w">
+<div class="tx">
+<span class="pill"><svg class="ic" style="font-size:22px"><use href="#i-cap"/></svg>100% free for CA students</span>
+<h1>Prepare smarter.<br>Know exactly what to <span class="gd ul">study next</span>.</h1>
+<p>One focused place for CA students to learn, practise and track their preparation.</p>
+<a class="btn" href="#">Create my free account <svg class="ic" style="font-size:22px"><use href="#i-arrow"/></svg></a>
 </div>
-<div class="pic">
-<div class="ph"><img alt="Student reading a book" src="https://images.unsplash.com/photo-1617009762269-c062aaf6b3a0?auto=format&fit=crop&w=1100&q=75"></div>
-<div class="chip c1"><b>4 papers</b>covered, chapter by chapter</div>
-<div class="chip c2"><b>30 Nov</b>Foundation tests begin</div>
+<div class="next"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>10-minute practice</span></div></div>
 </div>
+<a class="scroll" href="#all"><svg class="ic"><use href="#i-down"/></svg>Scroll to explore</a>
 </header>
 
-<section class="w sec" id="what" style="padding-top:20px">
-<div class="head"><div><span class="pill">What you get</span><h2 style="margin-top:12px">Everything in one place</h2></div><p class="mu" style="max-width:26em">No hopping between Telegram channels and PDFs. Pick your level and start.</p></div>
-<div class="grid">
-<a class="card" href="#"><div class="im"><img alt="Open book beside a laptop and coffee" src="https://images.unsplash.com/photo-1578589335615-9e804277a5af?auto=format&fit=crop&w=700&q=70"></div><div class="tx"><h3>Resources</h3><p class="mu">Notes, RTPs, MTPs and past papers, sorted by chapter.</p></div></a>
-<a class="card" href="#"><div class="im"><img alt="Pencil on a multiple choice answer sheet" src="https://images.unsplash.com/photo-1606326608690-4e0281b1e588?auto=format&fit=crop&w=700&q=70"></div><div class="tx"><h3>Practice</h3><p class="mu">Daily MCQs with instant answers and explanations.</p></div></a>
-<a class="card" href="#ts"><div class="im"><img alt="Students seated in an exam hall" src="https://images.unsplash.com/photo-1779358296802-715fc9fbc152?auto=format&fit=crop&w=700&q=70"></div><div class="tx"><span class="tag">New</span><h3>Test Series</h3><p class="mu">Unit-wise and full-syllabus tests, checked by teachers.</p></div></a>
-<a class="card" href="#an"><div class="im"><img alt="Printed bar and pie charts" src="https://images.unsplash.com/photo-1762427354251-f008b64dbc32?auto=format&fit=crop&w=700&q=70"></div><div class="tx"><h3>Paper analysis</h3><p class="mu">Which chapters carry the marks, from past exams.</p></div></a>
+<section class="w sec" id="all">
+<div class="ttl"><h2>Everything you need to prepare for CA</h2></div>
+<div class="four">
+<a href="#learn"><svg class="ic"><use href="#i-book"/></svg><h3>Learn</h3><p class="mu">Notes, RTPs, MTPs, past papers</p></a>
+<a href="#practice"><svg class="ic"><use href="#i-pen"/></svg><h3>Practice</h3><p class="mu">Chapter-wise MCQs</p></a>
+<a href="#mock"><svg class="ic"><use href="#i-list"/></svg><h3>Mock exams</h3><p class="mu">Timed tests, checked papers</p></a>
+<a href="#progress"><svg class="ic"><use href="#i-bars"/></svg><h3>Progress</h3><p class="mu">See what to fix next</p></a>
 </div>
 </section>
 
-<section class="w sec" id="ts">
-<div class="band">
-<div class="tx">
-<span class="pill" style="background:color-mix(in srgb,var(--onband) 14%,transparent);color:var(--onband)">CA Foundation · Jan 2027</span>
-<h2 style="margin-top:14px">Test series with a mentor behind you</h2>
-<p>Write real papers, get them checked question by question, and know exactly where your marks are going.</p>
-<ul><li>4 unit tests and 2 full-syllabus tests per subject</li><li>Checked answer sheets with remarks</li><li>MCQ papers with instant score</li></ul>
-<div class="price"><div><b>₹999</b>Test series</div><div><b>₹1,499</b>With mentorship</div></div>
-<a class="btn p" href="#">View test series →</a>
+<div class="w">
+
+<section class="feat" id="learn">
+<div>
+<span class="lab">Learn</span>
+<h2>Every ICAI resource, sorted by chapter</h2>
+<p class="mu">Stop hunting across ten tabs and Telegram channels. Pick your level and paper, and it is all there.</p>
+<ul>
+<li><svg class="ic"><use href="#i-check"/></svg>Study material, RTPs, MTPs and past papers</li>
+<li><svg class="ic"><use href="#i-check"/></svg>Chapter-wise analysis of what examiners ask</li>
+<li><svg class="ic"><use href="#i-check"/></svg>Foundation, Intermediate and Final</li>
+</ul>
+<a class="lnk" href="#">Browse resources →</a>
 </div>
-<div class="im"><img alt="A mentor guiding a student at a laptop" src="https://images.unsplash.com/photo-1664382953647-5c6c76dd63b9?auto=format&fit=crop&w=1100&q=75"></div>
-</div>
+<div class="vis"><div class="im"><img alt="Student studying in a library" src="https://images.unsplash.com/photo-1544456203-0af5a69f5789?auto=format&fit=crop&w=1100&q=75"></div>
+<div class="float" style="left:-14px;bottom:26px"><b>4 papers</b>chapter by chapter</div></div>
 </section>
 
-<section class="w sec" id="an">
-<div class="head"><div><span class="pill">Inside the app</span><h2 style="margin-top:12px">Study smarter, see your progress</h2></div></div>
-<div class="split">
-<div class="wide"><img alt="Calculator and pen on working papers" src="https://images.unsplash.com/photo-1648201637025-1c77b9be3013?auto=format&fit=crop&w=1100&q=75"><div class="tx"><h3>Accounting, made practical</h3><p>Worked problems the way examiners expect them.</p></div></div>
-<div class="wide"><img alt="Group of students around a laptop" src="https://images.unsplash.com/photo-1758270705317-3ef6142d306f?auto=format&fit=crop&w=1100&q=75"><div class="tx"><h3>You are not preparing alone</h3><p>Join the CA PrepX student community.</p></div></div>
+<section class="feat r" id="practice">
+<div>
+<span class="lab">Practice</span>
+<h2>Ten minutes a day beats a ten-hour panic</h2>
+<p class="mu">Short MCQ sets by chapter. You see the answer and the reason straight away, and your mistakes come back until you get them right.</p>
+<ul>
+<li><svg class="ic"><use href="#i-check"/></svg>Chapter-wise question sets</li>
+<li><svg class="ic"><use href="#i-check"/></svg>Explanations with every answer</li>
+<li><svg class="ic"><use href="#i-check"/></svg>Redo list for questions you got wrong</li>
+</ul>
+<a class="lnk" href="#">Try a practice set →</a>
 </div>
-<div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:28px">
-<div class="res">
-<div style="display:flex;justify-content:space-between;align-items:baseline"><span class="mu" style="font-size:13px">Business Economics · Unit Test 1</span><span class="tag" style="margin:0">Sample</span></div>
-<div style="font-family:var(--serif);font-size:40px;color:var(--pr);margin-top:6px">38 <span class="mu" style="font-size:20px">/ 50</span></div>
+<div class="vis"><div class="mock">
+<div style="display:flex;justify-content:space-between;font-size:14px" class="mu"><span>Business Economics · Elasticity</span><span>Question 4 of 10</span></div>
+<p style="font-size:20px;margin:16px 0 8px">When price rises and the quantity demanded stays the same, demand is</p>
+<div class="opt"><span>A. Unit elastic</span></div>
+<div class="opt sel"><span>B. Perfectly inelastic</span><svg class="ic gd" style="font-size:22px"><use href="#i-check"/></svg></div>
+<div class="opt"><span>C. Perfectly elastic</span></div>
+<div class="opt"><span>D. Relatively elastic</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px"><span class="mu" style="font-size:14px">Sample question</span><span class="btn" style="padding:10px 20px;font-size:15px">Next</span></div>
+</div></div>
+</section>
+
+<section class="feat" id="mock">
+<div>
+<span class="lab">Mock exams</span>
+<h2>Sit the paper before the paper</h2>
+<p class="mu">Timed unit tests and full-syllabus papers in a real exam layout. Written answers go to a teacher and come back marked question by question.</p>
+<ul>
+<li><svg class="ic"><use href="#i-check"/></svg>Timer, question grid and answer upload</li>
+<li><svg class="ic"><use href="#i-check"/></svg>Checked answer sheets with remarks</li>
+<li><svg class="ic"><use href="#i-check"/></svg>Instant score on MCQ papers</li>
+</ul>
+<a class="lnk" href="#">See the test series →</a>
+</div>
+<div class="vis"><div class="im"><img alt="Students seated in a hall" src="https://images.unsplash.com/photo-1779358296802-715fc9fbc152?auto=format&fit=crop&w=1100&q=75"></div>
+<div class="float" style="right:-10px;bottom:24px;min-width:230px">
+<span class="mu">Unit Test 1 · sample result</span><b style="font-family:var(--serif);font-size:30px">38 <span class="mu" style="font-size:16px">/ 50</span></b>
 <div class="bar"><div style="width:76%;background:var(--good)"></div><div style="width:18%;background:var(--bad)"></div></div>
-<div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--good)">38 correct</span><span style="color:var(--bad)">9 wrong</span><span class="mu">3 skipped</span></div>
+<div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--good)">38 correct</span><span style="color:var(--bad)">9 wrong</span></div>
+</div></div>
+</section>
+
+<section class="feat r" id="progress">
+<div>
+<span class="lab">Progress</span>
+<h2>Always know your next step</h2>
+<p class="mu">Your home screen shows where you stand and the one thing to do today, so you never open the app and wonder where to start.</p>
+<ul>
+<li><svg class="ic"><use href="#i-check"/></svg>Accuracy and streak at a glance</li>
+<li><svg class="ic"><use href="#i-check"/></svg>Weak chapters flagged for you</li>
+<li><svg class="ic"><use href="#i-check"/></svg>A study plan that fits your real hours</li>
+</ul>
+<a class="lnk" href="#">Build my plan →</a>
 </div>
-<p class="mu" style="max-width:26em">This is how a result card would look inside the app in this theme: one brand colour, with green and red used only for right and wrong.</p>
+<div class="vis"><div class="mock">
+<div style="display:flex;justify-content:space-between;font-size:14px" class="mu"><span>This week</span><span>Sample data</span></div>
+<div class="stats" style="margin-top:14px">
+<div><b class="gd">72%</b><span class="mu" style="font-size:14px">Accuracy</span></div>
+<div><b>9 days</b><span class="mu" style="font-size:14px">Streak</span></div>
+<div><b>14 / 46</b><span class="mu" style="font-size:14px">Chapters</span></div>
+</div>
+<div class="wk"><i style="height:40%"></i><i style="height:62%"></i><i style="height:35%"></i><i style="height:78%"></i><i style="height:55%"></i><i class="on" style="height:92%"></i><i style="height:20%"></i></div>
+<div class="next" style="position:static;margin-top:20px;background:var(--s2)"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>Redo 3 questions from Partnership Accounts</span></div></div>
+</div></div>
+</section>
+
+</div>
+
+<section class="w sec">
+<div class="end">
+<img alt="" src="https://images.unsplash.com/photo-1617009762269-c062aaf6b3a0?auto=format&fit=crop&w=1600&q=70">
+<h2>Tough exam. <span class="gd">Tougher you.</span></h2>
+<p>Create your account in a minute and get your first 10-minute practice set today.</p>
+<a class="btn" href="#" style="width:auto">Create my free account <svg class="ic" style="font-size:22px"><use href="#i-arrow"/></svg></a>
 </div>
 </section>
 
-<footer><div class="w mu">Preview only. Photos from Unsplash (free licence). Nothing on caprepx.com has changed.</div></footer>
-
-<div class="sw" role="group" aria-label="Choose a colour theme">
-<button data-k="a" aria-pressed="true"><i style="background:#0F5C4A"></i>A · Emerald</button>
-<button data-k="b" aria-pressed="false"><i style="background:#4338CA"></i>B · Indigo</button>
-<button data-k="c" aria-pressed="false"><i style="background:#F2613F"></i>C · Coral</button>
-</div>
-<script>
-document.querySelectorAll(".sw button").forEach(function(b){b.addEventListener("click",function(){
-document.documentElement.setAttribute("data-t",b.dataset.k);
-document.querySelectorAll(".sw button").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});
-})});
-</script>
+<footer class="w">Preview only. Photos from Unsplash (free licence). Nothing on caprepx.com has changed.</footer>
 </body>
 </html>
