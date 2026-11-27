@@ -2539,7 +2539,7 @@ document.addEventListener("click",e=>{const a=e.target.closest(".job-act a");if(
 /* ---------- render ---------- */
 const TABS=[["home","Home","Home","home"],["analysis","Paper Analysis","Analysis","target"],["resources","Resources","Resources","papers"],["practice","Practice","Practice","mcq"],["tests","Test Series","Tests","target"],["plan","Plan","Plan","plan"],["spom","SPOM","SPOM","school"],["careers","Careers","Careers","brief"]];
 /* what each level sees: SPOM is Final only, careers from Inter onwards */
-const fits=k=>k==="analysis"?S.level!=="final":k==="spom"?S.level==="final":k==="careers"?S.level!=="foundation":true;
+const fits=k=>k==="spom"?S.level==="final":k==="careers"?S.level!=="foundation":true;
 const tabsNow=()=>TABS.filter(x=>fits(x[0]));
 const lvTipOn=()=>{try{return localStorage.getItem("prepx.lvtip")!=="1"}catch(_){return false}};
 const IC={
@@ -2676,7 +2676,7 @@ function waCard(){
     <div class="row"><a class="btn wa-btn" data-wa="home" href="${WA_LINK}" target="_blank" rel="noopener">${CHAT_IC}<span>Join the group</span></a><button class="btn ghost sm" data-act="waskip">Hide this</button></div></div>`;
 }
 function anaCard(){
-  const A={foundation:["/analysis","CA Foundation Jan 2027: where the marks come from","Chapter-wise analysis of all four papers, counted from ICAI's own past papers."],inter:["/analysis-inter","CA Inter: where the marks come from","Chapter-wise analysis of all six papers, counted from ICAI's own past papers."]}[S.level];
+  const A={foundation:["/analysis","CA Foundation Jan 2027: where the marks come from","Chapter-wise analysis of all four papers, counted from ICAI's own past papers."],inter:["/analysis-inter","CA Inter: where the marks come from","Chapter-wise analysis of all six papers, counted from ICAI's own past papers."],final:["/analysis-final","CA Final: where the marks come from","Chapter-wise analysis of Papers 1 to 5, counted from ICAI's own past papers."]}[S.level];
   if(!A)return "";
   return `<div class="card wa-card"><div><h2 style="font-size:1.1rem">${A[1]}</h2><p class="muted" style="margin-top:4px;font-size:.9rem">${A[2]}</p></div>
     <div class="row"><a class="btn primary" data-ana="home" href="${A[0]}" style="text-decoration:none">See the analysis</a></div></div>`;
@@ -2850,7 +2850,7 @@ function barsHTML(){
 }
 const VIEWS={
 analysis(){
-  const A={foundation:["/analysis","CA Foundation","all four papers"],inter:["/analysis-inter","CA Intermediate","all six papers"]}[S.level];
+  const A={foundation:["/analysis","CA Foundation","all four papers"],inter:["/analysis-inter","CA Intermediate","all six papers"],final:["/analysis-final","CA Final","Papers 1 to 5"]}[S.level];
   if(!A)return `<div class="card"><h2>Paper analysis</h2><p class="muted" style="margin-top:6px">Analysis for CA Final is not ready yet.</p></div>`;
   return `<div class="hm-fh" style="margin-top:10px"><span class="hm-lab">Paper-wise analysis</span><h2>See which chapters carry the marks</h2><p class="muted">Chapter-wise analysis of ${A[2]} for ${A[1]}, counted from ICAI's own papers.</p></div>
   <div class="an-frame"><iframe src="${A[0]}?embed=1" title="${A[1]} paper-wise analysis" loading="lazy"></iframe></div>
