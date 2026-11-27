@@ -308,6 +308,36 @@ body:not(.lp-on):not(.au-on) .wrap{padding-inline:12px}
 body:not(.lp-on):not(.au-on) header.top .brand>div{display:none}
 .tiles.v6{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
 }
+
+body:not(.lp-on):not(.au-on) #bnav{background:linear-gradient(180deg,#FFF8E6 0%,#FFFDF9 38%,#FFFDF9 100%) !important;gap:8px !important}
+:root[data-theme="dark"] body:not(.lp-on):not(.au-on) #bnav{background:radial-gradient(260px 220px at 0% 0%,rgba(240,180,41,.16),transparent 70%),#0F0F11 !important}
+#bnav::before{color:var(--gold-deep);font-weight:600}
+#bnav button{padding:8px 10px !important;border-radius:16px !important;gap:14px;transition:transform .22s cubic-bezier(.3,1.5,.5,1),background .2s,box-shadow .2s}
+#bnav .nvi{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;flex:none;font-style:normal;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c);transition:transform .25s cubic-bezier(.3,1.6,.5,1),background .2s}
+:root[data-theme="dark"] #bnav .nvi{background:color-mix(in srgb,var(--c) 22%,transparent)}
+#bnav button svg{stroke:currentColor !important;width:21px;height:21px}
+#bnav button span{font-size:1.02rem !important;font-weight:500 !important;color:var(--ink);opacity:.82}
+#bnav button:hover{background:var(--surface) !important;transform:translateX(5px);box-shadow:0 8px 20px rgba(60,45,10,.10) !important}
+:root[data-theme="dark"] #bnav button:hover{background:#1A1A1D !important;box-shadow:0 8px 20px rgba(0,0,0,.45) !important}
+#bnav button:hover .nvi{transform:rotate(-10deg) scale(1.1)}
+#bnav button:hover span{opacity:1}
+#bnav button[aria-selected="true"]{background:linear-gradient(135deg,#FBC531,#E9A300) !important;box-shadow:0 10px 24px rgba(233,163,0,.38) !important;transform:none}
+#bnav button[aria-selected="true"] span{color:#1B1403 !important;opacity:1;font-weight:700 !important}
+#bnav button[aria-selected="true"] .nvi{background:rgba(255,255,255,.92);color:#1B1403;transform:rotate(-6deg)}
+#bnav button[aria-selected="true"]::before{display:none}
+@media(max-width:1023px){
+#bnav button{padding:8px 0 7px !important;gap:5px;border-radius:18px !important}
+#bnav button:hover{transform:translateY(-3px)}
+#bnav button span{font-size:.68rem !important}
+#bnav .nvi{width:38px;height:38px}
+}
+@media(max-width:719px){
+#bnav .nvi{width:34px;height:34px;border-radius:11px}
+#bnav button svg{width:19px;height:19px}
+#bnav button span{font-size:.58rem !important}
+#bnav button{padding:7px 0 6px !important;border-radius:15px !important}
+}
+:root[data-theme="dark"] #bnav button[aria-selected="true"] .nvi{background:rgba(255,255,255,.92)}
 </style>
 <style>
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
@@ -2663,6 +2693,7 @@ function landingOld(){
 }
 function guestOK(){return false} /* guest browsing was removed: an account (email + mobile) is needed */
 function gateOn(){if(!sb||recovering)return false;if(session&&!isGuest())return false;if(guestOK())return false;if(tab==="about")return false;return true}
+const NAVC={home:"#E9A300",resources:"#4C8DF6",practice:"#F2613F",tests:"#1FA971",plan:"#8B5CF6",careers:"#14B8A6",spom:"#EC4899"};
 const NAVIC={home:'<path d="M4 11l8-7 8 7"/><path d="M6 10v9h4v-5h4v5h4v-9"/>',resources:'<path d="M12 6.5C10.2 5.2 7.4 4.6 4 5v13.2c3.4-.4 6.2.2 8 1.5 1.8-1.3 4.6-1.9 8-1.5V5c-3.4-.4-6.2.2-8 1.5z"/><path d="M12 6.5v13.2"/>',practice:'<path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 013 3L8 18.5z"/><path d="M14.5 6l3 3"/>',tests:'<rect x="5" y="4.5" width="14" height="16" rx="2"/><path d="M9 4.500V3h6v1.500M8.500 10l1.200 1.200 2-2.200M8.500 15l1.200 1.200 2-2.200M14 10.500h2.500M14 15.500h2.500"/>',plan:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',careers:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 13h18"/>',spom:'<path d="M2.500 9.500L12 5l9.500 4.500L12 14z"/><path d="M6.500 11.500v4.500c3 2.300 8 2.300 11 0v-4.500M21.500 9.500v5"/>'};
 function renderChrome(){
   const gate=gateOn()||(tab==="about"&&!!sb&&!(session&&!isGuest()));
@@ -2679,7 +2710,7 @@ function renderChrome(){
   document.querySelector(".tabs").hidden=tab==="signin"||gate;
   document.getElementById("tabs").innerHTML=tabsNow().map(([k,v,,i])=>`<button role="tab" data-tab="${k}" aria-selected="${tab===k}">${ico(i,18)}${v}</button>`).join("");
   const bn=document.getElementById("bnav");bn.hidden=tab==="signin"||gate;
-  bn.style.setProperty("grid-template-columns","repeat("+tabsNow().length+",1fr)","important");bn.innerHTML=tabsNow().map(([k,v,sh])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${v}"><svg viewBox="0 0 24 24" aria-hidden="true">${NAVIC[k]||NAVIC.home}</svg><span>${sh}</span></button>`).join("");
+  bn.style.setProperty("grid-template-columns","repeat("+tabsNow().length+",1fr)","important");bn.innerHTML=tabsNow().map(([k,v,sh])=>`<button data-tab="${k}" aria-selected="${tab===k}" aria-label="${v}"><i class="nvi" style="--c:${NAVC[k]||"#F2B10C"}"><svg viewBox="0 0 24 24" aria-hidden="true">${NAVIC[k]||NAVIC.home}</svg></i><span>${sh}</span></button>`).join("");
   document.getElementById("themeBtn").innerHTML=ico(isDark()?"sun":"moon",19);
   document.getElementById("aboutBtn").setAttribute("aria-pressed",tab==="about");
   document.getElementById("bannerWrap").innerHTML=real&&isChecker&&tab!=="signin"?`<div class="banner"><span><b>Teacher account.</b> Students' answer sheets are waiting in the checking portal.</span><a class="btn sm primary" href="/checker">Check papers</a></div>`:S.sample&&tab!=="signin"?`<div class="banner"><span><b>This is sample data.</b> Look around, then start your own.</span><button class="btn sm primary" data-act="fresh">Start mine</button></div>`:"";
