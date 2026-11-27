@@ -124,6 +124,12 @@ nav .w{display:flex;align-items:center;justify-content:space-between;height:84px
 .end p{margin:16px auto 30px;max-width:30em;color:var(--mu)}
 footer{padding:30px 0 50px;font-size:14px;color:var(--mu);text-align:center}
 @media(prefers-reduced-motion:reduce){.fl{animation:none}.rv{opacity:1;transform:none}}
+@media(max-width:1140px){
+.stage{padding:0}
+.chip{position:static;margin-top:12px;white-space:normal;animation:none}
+.chip[style*="width:215px"]{width:auto!important}
+.blob{display:none}
+}
 @media(max-width:880px){
 nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 .hero{display:block;min-height:0;padding:68px 0 26px}
@@ -207,8 +213,8 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div><span>Bills of Exchange</span><i style="--w:30%"></i><b>Low</b></div>
 </div>
 </div>
-<div class="chip fl" style="left:-90px;top:64px"><svg class="ic"><use href="#i-bars"/></svg>Foundation and Inter</div>
-<div class="chip fl b" style="right:-80px;bottom:44px"><svg class="ic"><use href="#i-down"/></svg>Download as PDF</div>
+<div class="chip fl" style="left:-60px;top:-22px"><svg class="ic"><use href="#i-bars"/></svg>Foundation and Inter</div>
+<div class="chip fl b" style="right:-60px;bottom:-22px"><svg class="ic"><use href="#i-down"/></svg>Download as PDF</div>
 </div>
 <div class="cta rv"><a class="lnk" href="#">See the analysis →</a></div>
 </div></section>
@@ -224,8 +230,8 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="row"><span>Bank Reconciliation Statement</span><span class="tagz"><i>Notes</i><i>MTP</i><i>PYQ</i></span></div>
 <div class="row"><span>Company Accounts</span><span class="tagz"><i>Notes</i><i>RTP</i><i>MTP</i></span></div>
 </div>
-<div class="chip fl" style="right:-70px;top:34px"><svg class="ic"><use href="#i-book"/></svg>Foundation, Inter and Final</div>
-<div class="chip fl b" style="left:-80px;bottom:40px"><svg class="ic"><use href="#i-bars"/></svg>Chapter-wise paper analysis</div>
+<div class="chip fl" style="right:-60px;top:-22px"><svg class="ic"><use href="#i-book"/></svg>Foundation, Inter and Final</div>
+<div class="chip fl b" style="left:-60px;bottom:-22px"><svg class="ic"><use href="#i-bars"/></svg>Chapter-wise paper analysis</div>
 </div>
 <div class="cta rv"><a class="lnk" href="#">Browse resources →</a></div>
 </div></section>
@@ -243,8 +249,8 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="opt"><span>D. Relatively elastic</span><svg class="ic"><use href="#i-check"/></svg></div>
 <div class="why">Correct. Quantity does not respond to price at all, so elasticity is zero and the demand curve is vertical.</div>
 </div>
-<div class="chip fl" style="left:-90px;top:70px"><svg class="ic"><use href="#i-bolt"/></svg>Instant explanation</div>
-<div class="chip fl c" style="right:-80px;bottom:60px"><svg class="ic"><use href="#i-target"/></svg>Redo list for wrong answers</div>
+<div class="chip fl" style="left:-60px;top:-22px"><svg class="ic"><use href="#i-bolt"/></svg>Instant explanation</div>
+<div class="chip fl c" style="right:-60px;bottom:-22px"><svg class="ic"><use href="#i-target"/></svg>Redo list for wrong answers</div>
 </div>
 <div class="cta rv"><a class="lnk" href="#">Try a practice set →</a></div>
 </div></section>
@@ -258,13 +264,13 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="grid" id="qg"></div>
 <div class="xh mu" style="font-size:14px"><span>18 of 50 answered</span><span>No marks shown until you submit</span></div>
 </div>
-<div class="chip fl b" style="right:-90px;top:40px;display:block;white-space:normal;width:230px">
+<div class="chip fl b" style="right:-175px;top:56px;display:block;white-space:normal;width:215px">
 <span class="mu" style="font-size:13px;font-weight:400">Sample result</span>
 <div style="font-family:var(--serif);font-size:28px;color:var(--goldt);font-weight:400">38 <span class="mu" style="font-size:15px">/ 50</span></div>
 <div class="bar"><div class="g" style="background:var(--good)"></div><div class="r" style="background:var(--bad)"></div></div>
 <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:400"><span style="color:var(--good)">38 correct</span><span style="color:var(--bad)">9 wrong</span></div>
 </div>
-<div class="chip fl" style="left:-80px;bottom:36px"><svg class="ic"><use href="#i-pen"/></svg>Checked sheets with remarks</div>
+<div class="chip fl" style="left:-60px;bottom:-22px"><svg class="ic"><use href="#i-pen"/></svg>Checked sheets with remarks</div>
 </div>
 <div class="cta rv"><a class="lnk" href="#">See the test series →</a></div>
 </div></section>
@@ -283,7 +289,7 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="wk"><i style="--h:40%"></i><i style="--h:62%"></i><i style="--h:35%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i class="on" style="--h:92%"></i><i style="--h:20%"></i></div>
 <div class="next" style="box-shadow:none;background:var(--s2)"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>Redo 3 questions from Partnership Accounts</span></div></div>
 </div>
-<div class="chip fl c" style="left:-80px;top:60px"><svg class="ic"><use href="#i-bars"/></svg>Weak chapters flagged</div>
+<div class="chip fl c" style="left:-60px;top:-22px"><svg class="ic"><use href="#i-bars"/></svg>Weak chapters flagged</div>
 </div>
 <div class="cta rv"><a class="lnk" href="#">Build my plan →</a></div>
 </div></section>
