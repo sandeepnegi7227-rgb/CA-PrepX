@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-m="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,103 +9,133 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0B0B0C;--s1:#141416;--s2:#1E1E21;--ink:#F4F1EA;--mu:#A8A49B;--ln:#2B2B30;--gold:#F0B429;--gold2:#E3A008;--good:#5FBF8A;--bad:#E5675F;--serif:"Young Serif",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}
+:root{--serif:"Young Serif",Georgia,serif;--sans:"Outfit",system-ui,sans-serif;--gold:#F2B10C;--gold2:#E9A300}
+[data-m=light]{--bg:#FFFDF9;--bgr:255,253,249;--band:#FBF5E8;--s1:#FFFFFF;--s2:#F6F1E7;--ink:#1F2430;--mu:#5A6170;--ln:#EAE2D2;--goldt:#B77900;--good:#1E8E5A;--bad:#D64545;--sh:0 18px 50px rgba(60,45,10,.12);--sh2:0 8px 24px rgba(60,45,10,.10)}
+[data-m=dark]{--bg:#0B0B0C;--bgr:11,11,12;--band:#101012;--s1:#141416;--s2:#1E1E21;--ink:#F4F1EA;--mu:#A8A49B;--ln:#2B2B30;--goldt:#F0B429;--good:#5FBF8A;--bad:#E5675F;--sh:0 18px 50px rgba(0,0,0,.5);--sh2:0 8px 24px rgba(0,0,0,.4)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;overflow-x:hidden;transition:background .3s,color .3s}
 img{display:block;width:100%;height:100%;object-fit:cover}
 a{color:inherit;text-decoration:none}
 p{margin:0}
 h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:1.1}
-h1{font-size:clamp(38px,6.2vw,68px)}
+h1{font-size:clamp(38px,6.2vw,66px)}
 h2{font-size:clamp(28px,4vw,44px)}
 h3{font-size:22px}
 .w{max-width:1180px;margin:0 auto;padding:0 24px}
 .gd{color:var(--gold)}
 .mu{color:var(--mu)}
-.btn{display:inline-flex;align-items:center;gap:12px;border-radius:12px;padding:16px 28px;font-weight:600;font-size:18px;background:linear-gradient(180deg,#F7C544,var(--gold2));color:#141006;transition:transform .15s}
+.btn{display:inline-flex;align-items:center;gap:12px;border-radius:12px;padding:16px 28px;font-weight:600;font-size:18px;background:linear-gradient(180deg,#FBC531,var(--gold2));color:#1B1403;box-shadow:0 10px 24px rgba(233,163,0,.28);transition:transform .15s;border:0;cursor:pointer;font-family:inherit}
 .btn:hover{transform:translateY(-2px)}
-.btn.o{background:transparent;border:1.5px solid var(--gold);color:var(--ink);padding:10px 22px;font-size:16px;font-weight:500}
-.pill{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(240,180,41,.55);background:rgba(240,180,41,.08);color:var(--gold);border-radius:999px;padding:8px 18px;font-size:15px;font-weight:500}
-svg.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn.o{background:transparent;border:1.5px solid var(--gold);color:var(--ink);padding:9px 20px;font-size:16px;font-weight:500;box-shadow:none}
+.pill{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(242,177,12,.6);background:rgba(242,177,12,.10);color:var(--ink);border-radius:999px;padding:8px 18px;font-size:15px;font-weight:500}
+.pill svg{color:var(--gold)}
+svg.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 nav{position:absolute;inset:0 0 auto 0;z-index:5}
 nav .w{display:flex;align-items:center;justify-content:space-between;height:84px}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:26px}
 .logo img{width:38px;height:38px;border-radius:8px}
-.hero{position:relative;min-height:min(760px,100vh);display:flex;align-items:center;padding:110px 0 70px}
-.hero .ph{position:absolute;inset:84px 0 60px 36%;z-index:0}
-.hero .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(11,11,12,.72) 22%,rgba(11,11,12,0) 55%),linear-gradient(0deg,var(--bg) 0%,rgba(11,11,12,0) 22%)}
+.nr{display:flex;gap:10px;align-items:center}
+.tg{font:inherit;font-size:14px;color:var(--mu);background:var(--s1);border:1px solid var(--ln);border-radius:999px;padding:8px 14px;cursor:pointer}
+.hero{position:relative;min-height:min(740px,100vh);display:flex;align-items:center;padding:110px 0 70px}
+.hero .ph{position:absolute;inset:84px 0 64px 38%;z-index:0}
+.hero .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),.78) 20%,rgba(var(--bgr),0) 52%),linear-gradient(0deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 20%),linear-gradient(180deg,rgba(var(--bgr),1) 0%,rgba(var(--bgr),0) 10%)}
 .hero .w{position:relative;z-index:1;width:100%}
 .hero .tx{max-width:560px}
-.hero h1{margin:22px 0 22px}
+.hero h1{margin:22px 0}
 .ul{position:relative;white-space:nowrap}
 .ul::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:8px;border-top:4px solid var(--gold);border-radius:50%}
 .hero p{font-size:19px;max-width:26em;margin-bottom:30px}
-.next{position:absolute;right:24px;bottom:30px;display:flex;align-items:center;gap:16px;background:rgba(20,20,22,.88);backdrop-filter:blur(8px);border:1px solid var(--ln);border-radius:16px;padding:16px 22px;z-index:2}
+.next{display:flex;align-items:center;gap:16px;background:var(--s1);border:1px solid var(--ln);border-radius:16px;padding:16px 22px;box-shadow:var(--sh)}
 .next svg{font-size:38px;color:var(--gold)}
 .next b{display:block;font-size:20px;font-weight:500}
 .next span{color:var(--mu)}
+.hero .next{position:absolute;right:24px;bottom:22px;z-index:2}
 .scroll{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);text-align:center;font-size:14px;color:var(--mu);z-index:2}
 .scroll svg{display:block;margin:0 auto 2px;font-size:26px;color:var(--gold)}
-.sec{padding:76px 0}
-.ttl{text-align:center;margin-bottom:44px}
+.sec{padding:72px 0}
+.ttl{text-align:center;margin:0 auto 40px;max-width:760px}
 .ttl h2::after{content:"";display:block;width:110px;height:3px;background:var(--gold);border-radius:2px;margin:18px auto 0}
 .four{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
-.four a{padding:26px 12px;border-radius:18px;border:1px solid transparent;transition:.2s}
-.four a:hover{border-color:var(--ln);background:var(--s1)}
+.four a{padding:26px 12px;border-radius:18px;border:1px solid transparent;transition:.25s}
+.four a:hover{border-color:var(--ln);background:var(--s1);box-shadow:var(--sh2);transform:translateY(-4px)}
 .four svg{font-size:46px;color:var(--gold);margin-bottom:10px}
 .four p{font-size:15px;margin-top:6px}
-.feat{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center;padding:52px 0}
-.feat.r .vis{order:-1}
-.lab{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:500}
-.feat h2{margin:12px 0 14px}
-.feat ul{list-style:none;padding:0;margin:20px 0 26px;display:grid;gap:10px}
-.feat li{display:flex;gap:12px;align-items:flex-start}
-.feat li svg{color:var(--gold);font-size:20px;flex:none;margin-top:3px}
-.lnk{color:var(--gold);font-weight:500}
-.vis{position:relative}
-.vis .im{aspect-ratio:5/4;border-radius:24px;overflow:hidden;border:1px solid var(--ln)}
-.vis .im::after{content:"";position:absolute;inset:0;border-radius:24px;background:linear-gradient(0deg,rgba(11,11,12,.55),rgba(11,11,12,0) 50%)}
-.float{position:absolute;background:rgba(20,20,22,.94);border:1px solid var(--ln);border-radius:16px;padding:14px 18px;font-size:14px;z-index:1}
-.float b{display:block;font-size:22px;font-weight:500;color:var(--gold)}
-.mock{background:var(--s1);border:1px solid var(--ln);border-radius:24px;padding:26px}
-.opt{border:1px solid var(--ln);border-radius:12px;padding:12px 16px;margin-top:10px;display:flex;justify-content:space-between;font-size:16px}
-.opt.sel{border-color:var(--gold);background:rgba(240,180,41,.08)}
-.bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:var(--s2);margin:12px 0 8px}
+.band{background:var(--band)}
+.fh{text-align:center;max-width:720px;margin:0 auto 46px}
+.lab{display:inline-block;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--goldt);font-weight:600;background:rgba(242,177,12,.14);border-radius:999px;padding:7px 16px}
+.fh h2{margin:16px 0 14px}
+.fh b{font-weight:500;color:var(--ink)}
+.stage{position:relative;max-width:760px;margin:0 auto;padding:0 10px}
+.mock{position:relative;background:var(--s1);border:1px solid var(--ln);border-radius:24px;padding:26px;box-shadow:var(--sh);z-index:1}
+.chip{position:absolute;z-index:2;display:flex;align-items:center;gap:10px;background:var(--s1);border:1px solid var(--ln);border-radius:14px;padding:11px 16px;font-size:15px;font-weight:500;box-shadow:var(--sh2);white-space:nowrap}
+.chip svg{color:var(--gold);font-size:20px}
+.fl{animation:fl 6s ease-in-out infinite}
+.fl.b{animation-duration:7.5s;animation-delay:-2s}
+.fl.c{animation-duration:9s;animation-delay:-4s}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.blob{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(242,177,12,.28),rgba(242,177,12,0) 70%);z-index:0;pointer-events:none}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+.rv.in{opacity:1;transform:none}
+.cta{text-align:center;margin-top:34px}
+.lnk{color:var(--goldt);font-weight:600}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tabs span{border:1px solid var(--ln);border-radius:999px;padding:6px 14px;font-size:14px;color:var(--mu)}
+.tabs span.on{background:var(--gold);border-color:var(--gold);color:#1B1403;font-weight:500}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-top:1px solid var(--ln);font-size:16px}
+.tagz{display:flex;gap:6px}
+.tagz i{font-style:normal;font-size:12px;border-radius:6px;padding:3px 8px;background:var(--s2);color:var(--mu)}
+.opt{border:1px solid var(--ln);border-radius:12px;padding:12px 16px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:16px;transition:.3s}
+.opt svg{opacity:0;color:var(--good);font-size:22px;transition:.3s}
+.opt.sel{border-color:var(--good);background:color-mix(in srgb,var(--good) 10%,transparent)}
+.opt.sel svg{opacity:1}
+.why{max-height:0;overflow:hidden;opacity:0;transition:.5s;font-size:15px;color:var(--mu)}
+.why.on{max-height:90px;opacity:1;margin-top:14px;padding:12px 14px;border-left:3px solid var(--gold);background:var(--s2)}
+.xh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tm{font-family:var(--serif);font-size:24px;color:var(--goldt)}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:16px 0}
+.grid i{aspect-ratio:1;border-radius:7px;background:var(--s2);border:1px solid var(--ln);font-style:normal;font-size:12px;display:grid;place-items:center;color:var(--mu)}
+.grid i.d{background:var(--gold);border-color:var(--gold);color:#1B1403}
+.grid i.n{outline:2px solid var(--ink)}
+.bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:var(--s2);margin:10px 0 8px}
+.bar div{width:0;transition:width 1.2s .3s}
+.in .bar .g{width:76%}.in .bar .r{width:18%}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .stats div{background:var(--s2);border-radius:16px;padding:18px}
 .stats b{display:block;font-family:var(--serif);font-size:30px;font-weight:400}
-.wk{display:flex;gap:8px;align-items:flex-end;height:110px;margin-top:22px}
-.wk i{flex:1;background:var(--s2);border-radius:6px 6px 0 0}
+.wk{display:flex;gap:8px;align-items:flex-end;height:110px;margin:22px 0 20px}
+.wk i{flex:1;background:var(--s2);border-radius:6px 6px 0 0;height:0;transition:height 1s}
 .wk i.on{background:var(--gold)}
-.end{position:relative;border-radius:32px;overflow:hidden;padding:76px 28px;text-align:center;border:1px solid var(--ln)}
-.end img{position:absolute;inset:0;opacity:.34}
-.end>*:not(img){position:relative}
-.end p{margin:16px auto 30px;max-width:30em;color:#D9D5CC}
+.in .wk i{height:var(--h)}
+.end{position:relative;border-radius:32px;overflow:hidden;padding:72px 28px;text-align:center;border:1px solid var(--ln);background:var(--band)}
+.end p{margin:16px auto 30px;max-width:30em;color:var(--mu)}
 footer{padding:30px 0 50px;font-size:14px;color:var(--mu);text-align:center}
+@media(prefers-reduced-motion:reduce){.fl{animation:none}.rv{opacity:1;transform:none}}
 @media(max-width:880px){
 nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 .hero{display:block;min-height:0;padding:68px 0 26px}
 .hero .ph{position:relative;inset:auto;height:300px;margin-bottom:-70px}
-.hero .ph::after{background:linear-gradient(0deg,var(--bg) 4%,rgba(11,11,12,0) 60%)}
+.hero .ph::after{background:linear-gradient(0deg,rgba(var(--bgr),1) 4%,rgba(var(--bgr),0) 60%)}
 .hero h1{margin:16px 0}
 .hero p{font-size:17px;margin-bottom:22px}
-.btn{width:100%;justify-content:center}
-.btn.o{width:auto}
-.next{position:static;margin:22px 0 0}
+.hero .btn,.end .btn{width:100%;justify-content:center}
+.hero .next{position:static;margin:22px 0 0}
 .scroll{display:none}
 .sec{padding:48px 0}
 .four{grid-template-columns:1fr 1fr}
-.feat{grid-template-columns:1fr;gap:26px;padding:34px 0}
-.feat.r .vis{order:0}
-.stats b{font-size:24px}
+.stage{padding:0}
+.mock{padding:20px}
+.chip{position:static;margin-top:12px;white-space:normal;animation:none}
+.blob{display:none}
+.stats b{font-size:22px}.stats div{padding:14px}
+.grid{grid-template-columns:repeat(10,1fr);gap:4px}
 }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute"><defs>
-<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10.2 5.2 7.4 4.6 4 5v13.2c3.4-.4 6.2.2 8 1.5 1.8-1.3 4.6-1.9 8-1.5V5c-3.4-.4-6.2.2-8 1.5zM12 6.5v13.2"/></symbol>
-<symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 013 3L8 18.500zM14.500 6l3 3"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.500C10.200 5.200 7.400 4.600 4 5v13.200c3.400-.4 6.200.2 8 1.500 1.800-1.300 4.600-1.900 8-1.500V5c-3.400-.4-6.200.2-8 1.500zM12 6.500v13.200"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4.500L16.500 4a2.100 2.100 0 013 3L8 18.500zM14.500 6l3 3"/></symbol>
 <symbol id="i-list" viewBox="0 0 24 24"><rect x="5" y="4.500" width="14" height="16" rx="2"/><path d="M9 4.500V3h6v1.500M8.500 10l1.200 1.200 2-2.200M8.500 15l1.200 1.200 2-2.200M14 10.500h2.500M14 15.500h2.500"/></symbol>
 <symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20h16M6 20v-5h3v5M10.500 20v-9h3v9M15 20V6h3v14"/></symbol>
 <symbol id="i-target" viewBox="0 0 24 24"><circle cx="11" cy="13" r="7.500"/><circle cx="11" cy="13" r="3.500"/><path d="M11 13l8-8M16.500 4.500V7.500h3"/></symbol>
@@ -113,30 +143,32 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></symbol>
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></symbol>
 <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2.500 9.500L12 5l9.500 4.500L12 14zM6.500 11.500v4.500c3 2.300 8 2.300 11 0v-4.500M21.500 9.500v5"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.500h6L10 21l8-10.500h-6z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
 </defs></svg>
 
 <nav><div class="w">
 <a class="logo" href="#"><img src="/logo-64.png" alt=""><span>CA Prep<span class="gd">X</span></span></a>
-<a class="btn o" href="#">Sign in</a>
+<div class="nr"><button class="tg" id="tg" type="button">Dark mode</button><a class="btn o" href="#">Sign in</a></div>
 </div></nav>
 
 <header class="hero">
-<div class="ph"><img alt="Students preparing together around a laptop" src="https://images.unsplash.com/photo-1758270705317-3ef6142d306f?auto=format&fit=crop&w=1600&q=78"></div>
+<div class="ph"><img alt="Student reading a book" src="https://images.unsplash.com/photo-1617009762269-c062aaf6b3a0?auto=format&fit=crop&w=1600&q=78"></div>
 <div class="w">
 <div class="tx">
 <span class="pill"><svg class="ic" style="font-size:22px"><use href="#i-cap"/></svg>100% free for CA students</span>
 <h1>Prepare smarter.<br>Know exactly what to <span class="gd ul">study next</span>.</h1>
-<p>One focused place for CA students to learn, practise and track their preparation.</p>
+<p>A free, focused platform for CA students to learn, practise and track their preparation.</p>
 <a class="btn" href="#">Create my free account <svg class="ic" style="font-size:22px"><use href="#i-arrow"/></svg></a>
 </div>
-<div class="next"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>10-minute practice</span></div></div>
+<div class="next fl"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>10-minute practice</span></div></div>
 </div>
 <a class="scroll" href="#all"><svg class="ic"><use href="#i-down"/></svg>Scroll to explore</a>
 </header>
 
 <section class="w sec" id="all">
-<div class="ttl"><h2>Everything you need to prepare for CA</h2></div>
-<div class="four">
+<div class="ttl rv"><h2>Everything you need to prepare for CA</h2></div>
+<div class="four rv">
 <a href="#learn"><svg class="ic"><use href="#i-book"/></svg><h3>Learn</h3><p class="mu">Notes, RTPs, MTPs, past papers</p></a>
 <a href="#practice"><svg class="ic"><use href="#i-pen"/></svg><h3>Practice</h3><p class="mu">Chapter-wise MCQs</p></a>
 <a href="#mock"><svg class="ic"><use href="#i-list"/></svg><h3>Mock exams</h3><p class="mu">Timed tests, checked papers</p></a>
@@ -144,102 +176,106 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 </div>
 </section>
 
-<div class="w">
-
-<section class="feat" id="learn">
-<div>
-<span class="lab">Learn</span>
-<h2>Every ICAI resource, sorted by chapter</h2>
-<p class="mu">Stop hunting across ten tabs and Telegram channels. Pick your level and paper, and it is all there.</p>
-<ul>
-<li><svg class="ic"><use href="#i-check"/></svg>Study material, RTPs, MTPs and past papers</li>
-<li><svg class="ic"><use href="#i-check"/></svg>Chapter-wise analysis of what examiners ask</li>
-<li><svg class="ic"><use href="#i-check"/></svg>Foundation, Intermediate and Final</li>
-</ul>
-<a class="lnk" href="#">Browse resources →</a>
+<section class="sec band" id="learn"><div class="w">
+<div class="fh rv"><span class="lab">Learn</span><h2>Every ICAI resource, sorted by chapter</h2><p class="mu">No more ten tabs and Telegram channels. <b>Pick your level and paper</b>, and the notes, RTPs, MTPs and past papers are all in one list.</p></div>
+<div class="stage rv">
+<div class="blob" style="width:340px;height:340px;left:-120px;top:-60px"></div>
+<div class="mock">
+<div class="tabs"><span class="on">Accounting</span><span>Business Laws</span><span>Quantitative Aptitude</span><span>Economics</span></div>
+<div class="row"><span>Partnership Accounts</span><span class="tagz"><i>Notes</i><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="row"><span>Depreciation</span><span class="tagz"><i>Notes</i><i>RTP</i><i>PYQ</i></span></div>
+<div class="row"><span>Bank Reconciliation Statement</span><span class="tagz"><i>Notes</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="row"><span>Company Accounts</span><span class="tagz"><i>Notes</i><i>RTP</i><i>MTP</i></span></div>
 </div>
-<div class="vis"><div class="im"><img alt="Student studying in a library" src="https://images.unsplash.com/photo-1544456203-0af5a69f5789?auto=format&fit=crop&w=1100&q=75"></div>
-<div class="float" style="left:-14px;bottom:26px"><b>4 papers</b>chapter by chapter</div></div>
-</section>
-
-<section class="feat r" id="practice">
-<div>
-<span class="lab">Practice</span>
-<h2>Ten minutes a day beats a ten-hour panic</h2>
-<p class="mu">Short MCQ sets by chapter. You see the answer and the reason straight away, and your mistakes come back until you get them right.</p>
-<ul>
-<li><svg class="ic"><use href="#i-check"/></svg>Chapter-wise question sets</li>
-<li><svg class="ic"><use href="#i-check"/></svg>Explanations with every answer</li>
-<li><svg class="ic"><use href="#i-check"/></svg>Redo list for questions you got wrong</li>
-</ul>
-<a class="lnk" href="#">Try a practice set →</a>
+<div class="chip fl" style="right:-70px;top:34px"><svg class="ic"><use href="#i-book"/></svg>Foundation, Inter and Final</div>
+<div class="chip fl b" style="left:-80px;bottom:40px"><svg class="ic"><use href="#i-bars"/></svg>Chapter-wise paper analysis</div>
 </div>
-<div class="vis"><div class="mock">
-<div style="display:flex;justify-content:space-between;font-size:14px" class="mu"><span>Business Economics · Elasticity</span><span>Question 4 of 10</span></div>
+<div class="cta rv"><a class="lnk" href="#">Browse resources →</a></div>
+</div></section>
+
+<section class="sec" id="practice"><div class="w">
+<div class="fh rv"><span class="lab">Practice</span><h2>Ten minutes a day beats a ten-hour panic</h2><p class="mu">Short MCQ sets by chapter. You get <b>the answer and the reason straight away</b>, and your mistakes come back until you get them right.</p></div>
+<div class="stage rv">
+<div class="blob" style="width:360px;height:360px;right:-130px;top:-40px"></div>
+<div class="mock" id="mcq">
+<div class="xh mu" style="font-size:14px"><span>Business Economics · Elasticity</span><span>Sample question 4 of 10</span></div>
 <p style="font-size:20px;margin:16px 0 8px">When price rises and the quantity demanded stays the same, demand is</p>
-<div class="opt"><span>A. Unit elastic</span></div>
-<div class="opt sel"><span>B. Perfectly inelastic</span><svg class="ic gd" style="font-size:22px"><use href="#i-check"/></svg></div>
-<div class="opt"><span>C. Perfectly elastic</span></div>
-<div class="opt"><span>D. Relatively elastic</span></div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px"><span class="mu" style="font-size:14px">Sample question</span><span class="btn" style="padding:10px 20px;font-size:15px">Next</span></div>
-</div></div>
-</section>
-
-<section class="feat" id="mock">
-<div>
-<span class="lab">Mock exams</span>
-<h2>Sit the paper before the paper</h2>
-<p class="mu">Timed unit tests and full-syllabus papers in a real exam layout. Written answers go to a teacher and come back marked question by question.</p>
-<ul>
-<li><svg class="ic"><use href="#i-check"/></svg>Timer, question grid and answer upload</li>
-<li><svg class="ic"><use href="#i-check"/></svg>Checked answer sheets with remarks</li>
-<li><svg class="ic"><use href="#i-check"/></svg>Instant score on MCQ papers</li>
-</ul>
-<a class="lnk" href="#">See the test series →</a>
+<div class="opt"><span>A. Unit elastic</span><svg class="ic"><use href="#i-check"/></svg></div>
+<div class="opt" data-ok><span>B. Perfectly inelastic</span><svg class="ic"><use href="#i-check"/></svg></div>
+<div class="opt"><span>C. Perfectly elastic</span><svg class="ic"><use href="#i-check"/></svg></div>
+<div class="opt"><span>D. Relatively elastic</span><svg class="ic"><use href="#i-check"/></svg></div>
+<div class="why">Correct. Quantity does not respond to price at all, so elasticity is zero and the demand curve is vertical.</div>
 </div>
-<div class="vis"><div class="im"><img alt="Students seated in a hall" src="https://images.unsplash.com/photo-1779358296802-715fc9fbc152?auto=format&fit=crop&w=1100&q=75"></div>
-<div class="float" style="right:-10px;bottom:24px;min-width:230px">
-<span class="mu">Unit Test 1 · sample result</span><b style="font-family:var(--serif);font-size:30px">38 <span class="mu" style="font-size:16px">/ 50</span></b>
-<div class="bar"><div style="width:76%;background:var(--good)"></div><div style="width:18%;background:var(--bad)"></div></div>
-<div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--good)">38 correct</span><span style="color:var(--bad)">9 wrong</span></div>
-</div></div>
-</section>
-
-<section class="feat r" id="progress">
-<div>
-<span class="lab">Progress</span>
-<h2>Always know your next step</h2>
-<p class="mu">Your home screen shows where you stand and the one thing to do today, so you never open the app and wonder where to start.</p>
-<ul>
-<li><svg class="ic"><use href="#i-check"/></svg>Accuracy and streak at a glance</li>
-<li><svg class="ic"><use href="#i-check"/></svg>Weak chapters flagged for you</li>
-<li><svg class="ic"><use href="#i-check"/></svg>A study plan that fits your real hours</li>
-</ul>
-<a class="lnk" href="#">Build my plan →</a>
+<div class="chip fl" style="left:-90px;top:70px"><svg class="ic"><use href="#i-bolt"/></svg>Instant explanation</div>
+<div class="chip fl c" style="right:-80px;bottom:60px"><svg class="ic"><use href="#i-target"/></svg>Redo list for wrong answers</div>
 </div>
-<div class="vis"><div class="mock">
-<div style="display:flex;justify-content:space-between;font-size:14px" class="mu"><span>This week</span><span>Sample data</span></div>
+<div class="cta rv"><a class="lnk" href="#">Try a practice set →</a></div>
+</div></section>
+
+<section class="sec band" id="mock"><div class="w">
+<div class="fh rv"><span class="lab">Mock exams</span><h2>Sit the paper before the paper</h2><p class="mu">Timed unit tests and full-syllabus papers in a real exam layout. Written answers go to a teacher and <b>come back marked question by question</b>.</p></div>
+<div class="stage rv">
+<div class="blob" style="width:340px;height:340px;left:-110px;bottom:-60px"></div>
+<div class="mock">
+<div class="xh"><div><div class="mu" style="font-size:14px">Unit Test 1 · sample</div><div style="font-size:19px;font-weight:500">Business Economics</div></div><div class="tm"><svg class="ic" style="font-size:20px;vertical-align:-3px"><use href="#i-clock"/></svg> 42:18</div></div>
+<div class="grid" id="qg"></div>
+<div class="xh mu" style="font-size:14px"><span>18 of 50 answered</span><span>No marks shown until you submit</span></div>
+</div>
+<div class="chip fl b" style="right:-90px;top:40px;display:block;white-space:normal;width:230px">
+<span class="mu" style="font-size:13px;font-weight:400">Sample result</span>
+<div style="font-family:var(--serif);font-size:28px;color:var(--goldt);font-weight:400">38 <span class="mu" style="font-size:15px">/ 50</span></div>
+<div class="bar"><div class="g" style="background:var(--good)"></div><div class="r" style="background:var(--bad)"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;font-weight:400"><span style="color:var(--good)">38 correct</span><span style="color:var(--bad)">9 wrong</span></div>
+</div>
+<div class="chip fl" style="left:-80px;bottom:36px"><svg class="ic"><use href="#i-pen"/></svg>Checked sheets with remarks</div>
+</div>
+<div class="cta rv"><a class="lnk" href="#">See the test series →</a></div>
+</div></section>
+
+<section class="sec" id="progress"><div class="w">
+<div class="fh rv"><span class="lab">Progress</span><h2>Always know your next step</h2><p class="mu">Your home screen shows where you stand and <b>the one thing to do today</b>, so you never open the app and wonder where to start.</p></div>
+<div class="stage rv">
+<div class="blob" style="width:360px;height:360px;right:-120px;bottom:-50px"></div>
+<div class="mock">
+<div class="xh mu" style="font-size:14px"><span>This week</span><span>Sample data</span></div>
 <div class="stats" style="margin-top:14px">
-<div><b class="gd">72%</b><span class="mu" style="font-size:14px">Accuracy</span></div>
+<div><b style="color:var(--goldt)">72%</b><span class="mu" style="font-size:14px">Accuracy</span></div>
 <div><b>9 days</b><span class="mu" style="font-size:14px">Streak</span></div>
 <div><b>14 / 46</b><span class="mu" style="font-size:14px">Chapters</span></div>
 </div>
-<div class="wk"><i style="height:40%"></i><i style="height:62%"></i><i style="height:35%"></i><i style="height:78%"></i><i style="height:55%"></i><i class="on" style="height:92%"></i><i style="height:20%"></i></div>
-<div class="next" style="position:static;margin-top:20px;background:var(--s2)"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>Redo 3 questions from Partnership Accounts</span></div></div>
-</div></div>
-</section>
-
+<div class="wk"><i style="--h:40%"></i><i style="--h:62%"></i><i style="--h:35%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i class="on" style="--h:92%"></i><i style="--h:20%"></i></div>
+<div class="next" style="box-shadow:none;background:var(--s2)"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>Redo 3 questions from Partnership Accounts</span></div></div>
 </div>
+<div class="chip fl c" style="left:-80px;top:60px"><svg class="ic"><use href="#i-bars"/></svg>Weak chapters flagged</div>
+</div>
+<div class="cta rv"><a class="lnk" href="#">Build my plan →</a></div>
+</div></section>
 
 <section class="w sec">
-<div class="end">
-<img alt="" src="https://images.unsplash.com/photo-1617009762269-c062aaf6b3a0?auto=format&fit=crop&w=1600&q=70">
+<div class="end rv">
 <h2>Tough exam. <span class="gd">Tougher you.</span></h2>
 <p>Create your account in a minute and get your first 10-minute practice set today.</p>
-<a class="btn" href="#" style="width:auto">Create my free account <svg class="ic" style="font-size:22px"><use href="#i-arrow"/></svg></a>
+<a class="btn" href="#">Create my free account <svg class="ic" style="font-size:22px"><use href="#i-arrow"/></svg></a>
 </div>
 </section>
 
-<footer class="w">Preview only. Photos from Unsplash (free licence). Nothing on caprepx.com has changed.</footer>
+<footer class="w">Preview only. Photo from Unsplash (free licence). Nothing on caprepx.com has changed.</footer>
+
+<script>
+(function(){
+var r=document.documentElement,t=document.getElementById("tg");
+t.addEventListener("click",function(){var d=r.getAttribute("data-m")==="dark";r.setAttribute("data-m",d?"light":"dark");t.textContent=d?"Dark mode":"Light mode"});
+var g=document.getElementById("qg"),h="";
+for(var i=1;i<=50;i++)h+='<i class="'+(i<=18?"d":"")+(i===19?" n":"")+'">'+i+"</i>";
+g.innerHTML=h;
+if("IntersectionObserver" in window){
+var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");o.unobserve(e.target)}})},{threshold:.15});
+document.querySelectorAll(".rv").forEach(function(e){o.observe(e)});
+}else document.querySelectorAll(".rv").forEach(function(e){e.classList.add("in")});
+var m=document.getElementById("mcq"),ok=m.querySelector("[data-ok]"),w=m.querySelector(".why");
+function run(){ok.classList.remove("sel");w.classList.remove("on");setTimeout(function(){ok.classList.add("sel")},1600);setTimeout(function(){w.classList.add("on")},2300)}
+run();setInterval(run,7500);
+})();
+</script>
 </body>
 </html>
