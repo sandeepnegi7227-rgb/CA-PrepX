@@ -3711,7 +3711,7 @@ function tsHead(lv,full){return `<div class="card ts-hero"><div class="eyebrow">
   <ol class="ts-steps"><li><b>1. Take the test</b>Timed, like the exam. No answers shown while you attempt.</li><li><b>2. Submit</b>Tap your MCQ options, or upload your written answers as one PDF.</li><li><b>3. Get your marks</b>Question-wise marks, remarks and the checked copy.</li></ol>`:`<p style="font-size:.9rem">MCQ tests are marked when you submit. Written papers come back checked, with remarks.</p>`}</div>`}
 function testsView(){
   const can=tsCan();if(can&&TS.uid!==session.user.id){TS={loaded:false,loading:false,err:"",enrol:null,tests:[],att:{},res:null,uid:session.user.id}}
-  const enr=can&&TS.loaded&&TS.enrol,lv=(enr&&TS.enrol.level)||S.level,head=tsHead(lv,!enr);
+  const enr=can&&TS.loaded&&TS.enrol,lv=S.level,elv=enr&&TS.enrol.level,head=tsHead(lv,!enr);
   if(!sb)return head+`<div class="card"><p class="muted">The test series works on the live site at caprepx.com.</p></div>`+tsSchedule(lv,"guest");
   if(!can)return head+`<div class="card ts-card"><h2>Sign in to take the tests</h2><p class="muted" style="margin-top:4px">Use the same email you gave when you enrolled, so your tests and marks show up here. Below is how the test series is laid out.</p><div class="row" style="margin-top:12px"><button class="btn primary" data-act="tsauth">Sign in or create account</button></div></div>`+tsSchedule(lv,"guest");
   tsLoad();
@@ -3721,9 +3721,9 @@ function testsView(){
   if(!TS.enrol)return head+`<div class="card ts-card"><h2>For enrolled students</h2><p class="muted" style="margin-top:4px">You can see the full line-up of tests below. Attempting them is open to students who have enrolled in the batch. You're signed in as <b>${esc(session.user.email||"")}</b>.</p>
     <p class="muted" style="margin-top:8px"><b>Already enrolled?</b> Access is switched on for the email you gave when you paid. If that was a different email, sign in with it, or message us and we'll fix it.</p>
     <div class="row" style="margin-top:12px"><a class="btn primary" href="${TS_WA}" target="_blank" rel="noopener" style="text-decoration:none">Ask about enrolment on WhatsApp</a><button class="btn" data-act="tsrefresh">I've enrolled, check again</button></div></div>`+tsSchedule(lv,"locked");
+  if(elv&&elv!==lv&&LEVELS[elv])return head+`<div class="card ts-card"><h2>Your tests are under CA ${esc(LEVELS[elv].label)}</h2><p class="muted" style="margin-top:4px">You're enrolled for the CA ${esc(LEVELS[elv].label)} test series. Below is the CA ${esc(LEVELS[lv].label)} line-up, which is open to students enrolled for ${esc(LEVELS[lv].label)}.</p><div class="row" style="margin-top:12px"><button class="btn primary" data-level="${elv}">Go to my ${esc(LEVELS[elv].label)} tests</button></div></div>`+tsSchedule(lv,"locked");
   if(TS.res)return head+tsResult(TS.res);
-  const note=lv!==S.level?`<div class="card"><p class="muted">You're enrolled for CA ${esc(LEVELS[lv].label)}, so these are ${esc(LEVELS[lv].label)} tests.</p></div>`:"";
-  return head+note+tsSchedule(lv,"open")+`<div class="row"><button class="btn" data-act="tsrefresh">Refresh</button></div>`}
+  return head+tsSchedule(lv,"open")+`<div class="row"><button class="btn" data-act="tsrefresh">Refresh</button></div>`}
 function tsRow(t){const now=Date.now(),a=TS.att[t.id],kind=t.kind==="mcq"?"MCQ":"Written",opens=new Date(t.opens_at).getTime(),closed=t.closes_at&&new Date(t.closes_at).getTime()<now;
   let right="";
   if(a&&a.status==="checked")right=`<span class="ts-score">${tsNum(a.score)}<small> / ${tsNum(a.max_marks||t.max_marks)}</small></span><button class="btn sm" data-tsres="${t.id}">See result</button>`;
