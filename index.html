@@ -203,7 +203,7 @@ body.au-on>header.top,body.au-on>nav.tabs,body.au-on>#bannerWrap,body.au-on>#bna
 body.au-on>main#main{max-width:none;padding:0;margin:0}
 #au{--serif:"Young Serif",Georgia,serif;--sans:"Outfit",system-ui,sans-serif;--mono:"Outfit",system-ui,sans-serif;font-family:var(--sans);min-height:100vh;background:var(--bg);color:var(--ink);padding:0 24px 56px;position:relative;overflow:hidden}
 #au .au-bg{position:absolute;left:0;top:0;width:74%;height:600px;z-index:0}
-#au .au-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+#au .au-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;display:block}
 #au .au-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--bgr),0) 40%,rgba(var(--bgr),.92) 74%,rgba(var(--bgr),1) 92%),linear-gradient(180deg,rgba(var(--bgr),.5) 0%,rgba(var(--bgr),0) 14%,rgba(var(--bgr),0) 48%,rgba(var(--bgr),.9) 74%,rgba(var(--bgr),1) 92%)}
 #au .au-top,#au .au-grid{position:relative;z-index:1}
 #au .au-side{align-self:end;padding-top:370px}
@@ -212,6 +212,8 @@ body.au-on>main#main{max-width:none;padding:0;margin:0}
 #au .au-top{max-width:1120px;margin:0 auto;height:76px;display:flex;align-items:center;justify-content:space-between}
 #au .au-logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:24px}
 #au .au-logo img{border-radius:8px}
+#au .au-btns{display:flex;gap:8px}
+#au[data-m=dark] .au-bg img{filter:brightness(.62)}
 #au .au-logo b{font-weight:400;color:var(--gold)}
 #au .au-back{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font:inherit;font-size:15px;color:var(--ink);cursor:pointer}
 #au .au-grid{max-width:1120px;margin:12px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;align-items:start}
@@ -2618,8 +2620,8 @@ function welcome(gate){
   if(auth){let m="light";try{m=localStorage.getItem("prepx.lpm")==="dark"?"dark":"light"}catch(_){}
     const tk=t=>`<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>${t}</li>`;
     return `<div id="au" data-m="${m}">
-    <div class="au-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1617009762269-c062aaf6b3a0?auto=format&fit=crop&w=1500&q=75" alt=""></div>
-    <div class="au-top"><span class="au-logo"><img src="/logo-64.png" alt="" width="34" height="34"><span>CA Prep<b>X</b></span></span>${recovering?"":gate?`<button class="au-back" data-act="landback">${ico("back",16)} Back</button>`:`<button class="au-back" data-tab="home">${ico("back",16)} Back</button>`}</div>
+    <div class="au-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1544456203-0af5a69f5789?auto=format&fit=crop&w=1500&q=75" alt=""></div>
+    <div class="au-top"><span class="au-logo"><img src="/logo-64.png" alt="" width="34" height="34"><span>CA Prep<b>X</b></span></span><span class="au-btns"><button class="au-back" id="au-tg" type="button">${m==="dark"?"Light mode":"Dark mode"}</button>${recovering?"":gate?`<button class="au-back" data-act="landback">${ico("back",16)} Back</button>`:`<button class="au-back" data-tab="home">${ico("back",16)} Back</button>`}</span></div>
     <div class="au-grid">
       <aside class="au-side">
         <span class="au-pill">100% free for CA students</span>
@@ -2652,6 +2654,7 @@ function welcome(gate){
 }
 function render(){render0();const on=!!document.getElementById("lp");if(document.body.classList.contains("lp-on")!==on){document.body.classList.toggle("lp-on",on);if(!on)window.scrollTo({top:0})}const au=document.getElementById("au");document.body.classList.toggle("au-on",!!au);if(on)lpInit();else document.body.style.background=au?(au.getAttribute("data-m")==="dark"?"#0B0B0C":"#FFFDF9"):""}
 let LPI=0;
+document.addEventListener("click",e=>{if(!e.target.closest("#au-tg"))return;const au=document.getElementById("au");if(!au)return;const v=au.getAttribute("data-m")==="dark"?"light":"dark";au.setAttribute("data-m",v);document.body.style.background=v==="dark"?"#0B0B0C":"#FFFDF9";e.target.closest("#au-tg").textContent=v==="dark"?"Light mode":"Dark mode";try{localStorage.setItem("prepx.lpm",v)}catch(_){}});
 function lpInit(){const lp=document.getElementById("lp");if(!lp||lp.dataset.init)return;lp.dataset.init="1";
   let m="light";try{m=localStorage.getItem("prepx.lpm")==="dark"?"dark":"light"}catch(_){}
   const tg=lp.querySelector("#lp-tg");
