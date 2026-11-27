@@ -120,6 +120,25 @@ nav .w{display:flex;align-items:center;justify-content:space-between;height:84px
 .an i{display:block;height:10px;border-radius:999px;background:var(--gold);width:0;transition:width 1.1s .2s}
 .in .an i{width:var(--w)}
 .an b{font-weight:500;font-size:13px;color:var(--goldt);text-align:right}
+.pain{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:880px;margin:0 auto}
+.pain span{background:var(--s1);border:1px solid var(--ln);border-radius:999px;padding:11px 20px;box-shadow:var(--sh2);font-size:16px}
+.turn{text-align:center;font-size:clamp(24px,3.2vw,36px);margin:52px auto 26px;max-width:18em;line-height:1.2}
+.tr,.num{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tr div,.num div,.steps div,.gl div{background:var(--s1);border:1px solid var(--ln);border-radius:20px;padding:22px;box-shadow:var(--sh2);transition:transform .25s}
+.num div:hover,.steps div:hover{transform:translateY(-6px)}
+.tr div{text-align:center}
+.tr s{display:block;color:var(--mu);font-size:15px}
+.tr i{display:block;font-style:normal;color:var(--gold);margin:4px 0}
+.tr b{display:block;font-family:var(--serif);font-weight:400;font-size:21px}
+.num em,.steps em{font-style:normal;font-family:var(--serif);font-size:32px;color:var(--gold);display:block;margin-bottom:10px}
+.num p,.steps p{font-size:15px;margin-top:8px}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.steps div{padding:18px}
+.gl{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;text-align:center}
+.gl b{display:block;font-family:var(--serif);font-weight:400;font-size:32px}
+.gl span{font-size:14px}
+@media(max-width:1000px){.steps{grid-template-columns:repeat(3,1fr)}.tr,.num{grid-template-columns:1fr 1fr}.gl{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.steps,.gl{grid-template-columns:1fr 1fr}.pain span{font-size:14px;padding:9px 14px;animation:none}}
 .end{position:relative;border-radius:32px;overflow:hidden;padding:72px 28px;text-align:center;border:1px solid var(--ln);background:var(--s1);box-shadow:var(--sh2)}
 .end p{margin:16px auto 30px;max-width:30em;color:var(--mu)}
 footer{padding:30px 0 50px;font-size:14px;color:var(--mu);text-align:center}
@@ -199,8 +218,30 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="vid rv"><video controls playsinline preload="none" poster="/media/founder-reel.jpg" aria-label="CA PrepX founder video"><source src="/media/founder-reel.mp4" type="video/mp4"></video></div>
 </div></section>
 
+<section class="sec" id="why"><div class="w">
+<div class="fh rv"><span class="lab">Why CA PrepX</span><h2>What's really holding your preparation back?</h2><p class="mu">CA preparation shouldn't feel like guessing what to do next.</p></div>
+<div class="pain rv"><span class="fl">Too many chapters</span><span class="fl b">Too many resources</span><span class="fl c">Difficulty knowing what to revise</span><span class="fl b">Weak areas getting ignored</span><span class="fl">Lack of realistic exam practice</span><span class="fl c">No clear preparation roadmap</span><span class="fl b">Not knowing if you're on track</span></div>
+<h3 class="turn rv">We turn all of that into <span class="gd">one clear preparation system.</span></h3>
+<div class="tr rv">
+<div><s>Confused</s><i>↓</i><b>Focused</b></div>
+<div><s>Scattered resources</s><i>↓</i><b>One workspace</b></div>
+<div><s>Passive studying</s><i>↓</i><b>Active practice</b></div>
+<div><s>"I think I'm prepared"</s><i>↓</i><b>Measurable progress</b></div>
+</div>
+</div></section>
+
+<section class="sec band" id="different"><div class="w">
+<div class="fh rv"><span class="lab">Why it's different</span><h2>Not another library of CA resources. A preparation system.</h2></div>
+<div class="num rv">
+<div><em>01</em><h3>Know what to study</h3><p class="mu">A day-by-day plan built around your attempt date and your study hours.</p></div>
+<div><em>02</em><h3>Practice like the real exam</h3><p class="mu">MCQs, RTP and MTP based practice, and full mock examinations.</p></div>
+<div><em>03</em><h3>Find your weak spots</h3><p class="mu">The MCQs you get wrong come back until you fix them.</p></div>
+<div><em>04</em><h3>See your preparation clearly</h3><p class="mu">Track syllabus completion and your practice scores.</p></div>
+</div>
+</div></section>
+
 <section class="sec" id="analysis"><div class="w">
-<div class="fh rv"><span class="lab">Paper-wise analysis</span><h2>Know which chapters carry the marks</h2><p class="mu">We went through past ICAI papers, RTPs and MTPs for every paper. <b>See where the marks have come from</b>, chapter by chapter, before you decide what to study first.</p></div>
+<div class="fh rv"><span class="lab">Paper-wise analysis</span><h2>See which chapters carry the marks</h2><p class="mu">Free chapter-wise analysis, <b>counted from ICAI's own papers</b>, so you know what deserves your time first.</p></div>
 <div class="stage rv">
 <div class="blob" style="width:360px;height:360px;right:-130px;top:-50px"></div>
 <div class="mock">
@@ -216,28 +257,29 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="chip fl" style="left:-60px;top:-22px"><svg class="ic"><use href="#i-bars"/></svg>Foundation and Inter</div>
 <div class="chip fl b" style="right:-60px;bottom:-22px"><svg class="ic"><use href="#i-down"/></svg>Download as PDF</div>
 </div>
-<div class="cta rv"><a class="lnk" href="#">See the analysis →</a></div>
+<div class="cta rv"><a class="lnk" href="#">CA Foundation →</a> &nbsp;·&nbsp; <a class="lnk" href="#">CA Intermediate →</a></div>
 </div></section>
 
 <section class="sec band" id="learn"><div class="w">
-<div class="fh rv"><span class="lab">Learn</span><h2>Every ICAI resource, sorted by chapter</h2><p class="mu">No more ten tabs and Telegram channels. <b>Pick your level and paper</b>, and the notes, RTPs, MTPs and past papers are all in one list.</p></div>
+<div class="fh rv"><span class="lab">Learn</span><h2>Study chapter by chapter</h2><p class="mu">Video lectures and a syllabus tracker for every paper, with <b>RTPs, MTPs and past papers</b> beside each chapter.</p></div>
 <div class="stage rv">
 <div class="blob" style="width:340px;height:340px;left:-120px;top:-60px"></div>
 <div class="mock">
 <div class="tabs"><span class="on">Accounting</span><span>Business Laws</span><span>Quantitative Aptitude</span><span>Economics</span></div>
-<div class="row"><span>Partnership Accounts</span><span class="tagz"><i>Notes</i><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
-<div class="row"><span>Depreciation</span><span class="tagz"><i>Notes</i><i>RTP</i><i>PYQ</i></span></div>
-<div class="row"><span>Bank Reconciliation Statement</span><span class="tagz"><i>Notes</i><i>MTP</i><i>PYQ</i></span></div>
-<div class="row"><span>Company Accounts</span><span class="tagz"><i>Notes</i><i>RTP</i><i>MTP</i></span></div>
+<div class="row"><span>Ch 1 · Theoretical framework</span><span class="tagz"><i style="background:var(--gold);color:#1B1403">Done</i><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="row"><span>Ch 2 · Accounting process</span><span class="tagz"><i style="background:var(--gold);color:#1B1403">Done</i><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="row"><span>Ch 3 · Bank reconciliation</span><span class="tagz"><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="row"><span>Ch 4 · Inventories</span><span class="tagz"><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
+<div class="row"><span>Ch 5 · Depreciation</span><span class="tagz"><i>RTP</i><i>MTP</i><i>PYQ</i></span></div>
 </div>
-<div class="chip fl" style="right:-60px;top:-22px"><svg class="ic"><use href="#i-book"/></svg>Foundation, Inter and Final</div>
-<div class="chip fl b" style="left:-60px;bottom:-22px"><svg class="ic"><use href="#i-bars"/></svg>Chapter-wise paper analysis</div>
+<div class="chip fl" style="right:-60px;top:-22px"><svg class="ic"><use href="#i-book"/></svg>Video lectures in Hindi and English</div>
+<div class="chip fl b" style="left:-60px;bottom:-22px"><svg class="ic"><use href="#i-check"/></svg>46 chapters, ticked off one by one</div>
 </div>
-<div class="cta rv"><a class="lnk" href="#">Browse resources →</a></div>
+<div class="cta rv"><a class="lnk" href="#">Start learning →</a></div>
 </div></section>
 
 <section class="sec" id="practice"><div class="w">
-<div class="fh rv"><span class="lab">Practice</span><h2>Ten minutes a day beats a ten-hour panic</h2><p class="mu">Short MCQ sets by chapter. You get <b>the answer and the reason straight away</b>, and your mistakes come back until you get them right.</p></div>
+<div class="fh rv"><span class="lab">Practice</span><h2>Sharpen your concepts in 10 minutes</h2><p class="mu">Targeted questions and 10-minute MCQs. <b>The ones you get wrong come back</b> until you fix them.</p></div>
 <div class="stage rv">
 <div class="blob" style="width:360px;height:360px;right:-130px;top:-40px"></div>
 <div class="mock" id="mcq">
@@ -252,11 +294,11 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 <div class="chip fl" style="left:-60px;top:-22px"><svg class="ic"><use href="#i-bolt"/></svg>Instant explanation</div>
 <div class="chip fl c" style="right:-60px;bottom:-22px"><svg class="ic"><use href="#i-target"/></svg>Redo list for wrong answers</div>
 </div>
-<div class="cta rv"><a class="lnk" href="#">Try a practice set →</a></div>
+<div class="cta rv"><a class="lnk" href="#">Practice now →</a></div>
 </div></section>
 
 <section class="sec band" id="mock"><div class="w">
-<div class="fh rv"><span class="lab">Mock exams</span><h2>Sit the paper before the paper</h2><p class="mu">Timed unit tests and full-syllabus papers in a real exam layout. Written answers go to a teacher and <b>come back marked question by question</b>.</p></div>
+<div class="fh rv"><span class="lab">Mock exams</span><h2>Test yourself before ICAI does</h2><p class="mu">Full-length mocks under exam timing, plus unit-wise and full-syllabus tests. MCQs are marked the moment you submit. Written papers are <b>checked by a teacher, question by question</b>, with remarks.</p></div>
 <div class="stage rv">
 <div class="blob" style="width:340px;height:340px;left:-110px;bottom:-60px"></div>
 <div class="mock">
@@ -272,32 +314,59 @@ nav .w{height:68px}.logo{font-size:21px}.logo img{width:30px;height:30px}
 </div>
 <div class="chip fl" style="left:-60px;bottom:-22px"><svg class="ic"><use href="#i-pen"/></svg>Checked sheets with remarks</div>
 </div>
-<div class="cta rv"><a class="lnk" href="#">See the test series →</a></div>
+<div class="cta rv"><a class="lnk" href="#">Take a mock →</a></div>
 </div></section>
 
-<section class="sec" id="progress"><div class="w">
-<div class="fh rv"><span class="lab">Progress</span><h2>Always know your next step</h2><p class="mu">Your home screen shows where you stand and <b>the one thing to do today</b>, so you never open the app and wonder where to start.</p></div>
+<section class="sec" id="next"><div class="w">
+<div class="fh rv"><span class="lab">Your plan</span><h2>Always know what to do next</h2></div>
 <div class="stage rv">
 <div class="blob" style="width:360px;height:360px;right:-120px;bottom:-50px"></div>
 <div class="mock">
-<div class="xh mu" style="font-size:14px"><span>This week</span><span>Sample data</span></div>
-<div class="stats" style="margin-top:14px">
-<div><b style="color:var(--goldt)">72%</b><span class="mu" style="font-size:14px">Accuracy</span></div>
-<div><b>9 days</b><span class="mu" style="font-size:14px">Streak</span></div>
-<div><b>14 / 46</b><span class="mu" style="font-size:14px">Chapters</span></div>
+<div class="xh mu" style="font-size:14px"><span>Example</span><span>42% through your preparation</span></div>
+<div class="bar" style="height:10px"><div class="g" style="background:var(--gold);width:42%!important"></div></div>
+<p class="mu" style="margin-top:16px">Your next step:</p>
+<p style="font-family:var(--serif);font-size:clamp(22px,3vw,30px);line-height:1.2;margin:6px 0 14px">Complete Chapter 4: Accounting for Inventory</p>
+<div class="tabs" style="margin:0"><span>Paper 1 · Accounting</span><span>35 min estimated</span><span class="on">Then: 10-minute MCQs</span></div>
 </div>
-<div class="wk"><i style="--h:40%"></i><i style="--h:62%"></i><i style="--h:35%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i class="on" style="--h:92%"></i><i style="--h:20%"></i></div>
-<div class="next" style="box-shadow:none;background:var(--s2)"><svg class="ic"><use href="#i-target"/></svg><div><b>Your next step</b><span>Redo 3 questions from Partnership Accounts</span></div></div>
+<div class="chip fl c" style="left:-60px;top:-22px"><svg class="ic"><use href="#i-target"/></svg>Built around your attempt date</div>
 </div>
-<div class="chip fl c" style="left:-60px;top:-22px"><svg class="ic"><use href="#i-bars"/></svg>Weak chapters flagged</div>
+<div class="cta rv"><a class="btn" href="#">Build my plan <svg class="ic" style="font-size:22px"><use href="#i-arrow"/></svg></a></div>
+</div></section>
+
+<section class="sec band" id="how"><div class="w">
+<div class="fh rv"><span class="lab">How it works</span><h2>From first read to exam day. Your six-step loop.</h2></div>
+<div class="steps rv">
+<div><em>01</em><h3>Learn</h3><p class="mu">Video lectures, chapter by chapter.</p></div>
+<div><em>02</em><h3>Practice</h3><p class="mu">10-minute MCQs and chapter questions.</p></div>
+<div><em>03</em><h3>Revise</h3><p class="mu">RTPs, MTPs and past papers.</p></div>
+<div><em>04</em><h3>Test</h3><p class="mu">A full-length mock under exam timing.</p></div>
+<div><em>05</em><h3>Analyse</h3><p class="mu">See which chapters carry the marks.</p></div>
+<div><em>06</em><h3>Improve</h3><p class="mu">Fix weak spots, then move on.</p></div>
 </div>
-<div class="cta rv"><a class="lnk" href="#">Build my plan →</a></div>
+</div></section>
+
+<section class="sec" id="glance"><div class="w">
+<div class="fh rv"><span class="lab">Progress</span><h2>Your preparation, at a glance</h2></div>
+<div class="gl rv">
+<div><b style="color:var(--goldt)">19 / 46</b><span class="mu">Chapters ticked off</span></div>
+<div><b>640</b><span class="mu">Questions attempted</span></div>
+<div><b>68%</b><span class="mu">Accuracy</span></div>
+<div><b>2</b><span class="mu">Mock exams completed</span></div>
+<div><b>4</b><span class="mu">Weak areas to fix</span></div>
+</div>
+<p class="mu rv" style="text-align:center;font-size:14px;margin-top:14px">Sample numbers</p>
+<div class="cta rv"><a class="lnk" href="#">Start tracking yours →</a></div>
+</div></section>
+
+<section class="sec band" id="built"><div class="w">
+<div class="fh rv"><span class="lab">What it's built on</span><h2>Built around the ICAI syllabus, paper by paper</h2></div>
+<div class="pain rv"><span>ICAI-aligned terminology</span><span>RTP, MTP and PYQ papers</span><span>Chapter-wise preparation</span><span>Full-length mock exams</span><span>Performance tracking</span></div>
 </div></section>
 
 <section class="w sec">
 <div class="end rv">
-<h2>Tough exam. <span class="gd">Tougher you.</span></h2>
-<p>Create your account in a minute and get your first 10-minute practice set today.</p>
+<h2>Your next study session <span class="gd">starts here.</span></h2>
+<p>Stop wondering what to study next. Start making measurable progress.</p>
 <a class="btn" href="#">Create my free account <svg class="ic" style="font-size:22px"><use href="#i-arrow"/></svg></a>
 </div>
 </section>
