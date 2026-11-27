@@ -198,6 +198,50 @@ body.lp-on{background:#FFFDF9;color:#1F2430}
 body.lp-on .land-hero{padding:96px 24px}
 body.lp-on>header.top,body.lp-on>nav.tabs,body.lp-on>#bannerWrap,body.lp-on>#bnav{display:none !important}
 body.lp-on>main#main{max-width:none;padding:0;margin:0}
+
+body.au-on>header.top,body.au-on>nav.tabs,body.au-on>#bannerWrap,body.au-on>#bnav{display:none !important}
+body.au-on>main#main{max-width:none;padding:0;margin:0}
+#au{--serif:"Young Serif",Georgia,serif;--sans:"Outfit",system-ui,sans-serif;--mono:"Outfit",system-ui,sans-serif;font-family:var(--sans);min-height:100vh;background:var(--bg);color:var(--ink);padding:0 24px 56px}
+#au[data-m=light]{color-scheme:light;--bg:#FFFDF9;--surface:#FFFFFF;--surface-2:#F6F1E7;--ink:#1F2430;--muted:#5A6170;--line:#EAE2D2;--accent:#B77900;--accent-ink:#FFFFFF;--accent-soft:#FBF1D6;--gold:#F2B10C;--gold-deep:#B77900;--gold-ink:#1B1403;--good:#1E8E5A;--good-soft:#E3F3EA;--au-sh:0 18px 50px rgba(60,45,10,.12)}
+#au[data-m=dark]{color-scheme:dark;--bg:#0B0B0C;--surface:#141416;--surface-2:#1E1E21;--ink:#F4F1EA;--muted:#A8A49B;--line:#2B2B30;--accent:#F0B429;--accent-ink:#1B1403;--accent-soft:#2A2414;--gold:#F0B429;--gold-deep:#F0B429;--gold-ink:#1B1403;--good:#5FBF8A;--good-soft:#15291E;--au-sh:0 18px 50px rgba(0,0,0,.5)}
+#au .au-top{max-width:1120px;margin:0 auto;height:76px;display:flex;align-items:center;justify-content:space-between}
+#au .au-logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:24px}
+#au .au-logo img{border-radius:8px}
+#au .au-logo b{font-weight:400;color:var(--gold)}
+#au .au-back{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font:inherit;font-size:15px;color:var(--ink);cursor:pointer}
+#au .au-grid{max-width:1120px;margin:12px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;align-items:center}
+#au .au-ph{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:1364/680;box-shadow:var(--au-sh);margin-bottom:26px}
+#au .au-ph img{width:100%;height:100%;object-fit:cover;display:block}
+#au .au-chip{position:absolute;right:14px;bottom:14px;display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 16px;box-shadow:var(--au-sh);animation:au-fl 6s ease-in-out infinite}
+#au .au-chip svg{width:30px;height:30px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#au .au-chip b{display:block;font-weight:500;font-size:16px}
+#au .au-chip span{font-size:14px;color:var(--muted)}
+#au .au-chip span b{color:var(--ink)}
+@keyframes au-fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+#au .au-pill{display:inline-block;border:1px solid rgba(242,177,12,.6);background:rgba(242,177,12,.10);border-radius:999px;padding:6px 16px;font-size:14px;font-weight:500}
+#au h1{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.6vw,46px);line-height:1.1;margin:16px 0 10px;letter-spacing:normal}
+#au h1 em{font-style:normal;color:var(--gold)}
+#au .au-sub{color:var(--muted);font-size:18px;margin:0}
+#au .au-ticks{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px;font-size:16px}
+#au .au-ticks li{display:flex;gap:10px;align-items:flex-start}
+#au .au-ticks svg{width:20px;height:20px;flex:none;margin-top:2px;stroke:var(--gold);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#au .au-form .card{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--au-sh)}
+#au .au-form .gate-perks{display:none}
+#au .au-form .btn.primary{border-radius:12px;font-size:17px;padding-block:14px !important;background:linear-gradient(180deg,#FBC531,#E9A300);color:#1B1403;border:0}
+#au .au-form input{border-radius:12px}
+@media(max-width:900px){
+#au{padding:0 16px 40px}
+#au .au-top{height:64px}
+#au .au-grid{grid-template-columns:1fr;gap:22px;margin-top:0}
+#au .au-ph{margin-bottom:18px;border-radius:18px}
+#au .au-chip{padding:7px 12px;right:10px;bottom:10px}
+#au .au-chip svg{width:24px;height:24px}
+#au .au-chip b{font-size:14px}#au .au-chip span{font-size:12px}
+#au .au-ticks{display:none}
+#au .au-sub{font-size:16px}
+#au .au-form .card{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){#au .au-chip{animation:none}}
 </style>
 <style>
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
@@ -2575,6 +2619,21 @@ function renderChrome(){
 let W={level:"inter"};
 function welcome(gate){
   const auth=sb&&(!session||isGuest()||recovering);
+  if(auth){let m="light";try{m=localStorage.getItem("prepx.lpm")==="dark"?"dark":"light"}catch(_){}
+    const tk=t=>`<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>${t}</li>`;
+    return `<div id="au" data-m="${m}">
+    <div class="au-top"><span class="au-logo"><img src="/logo-64.png" alt="" width="34" height="34"><span>CA Prep<b>X</b></span></span>${recovering?"":gate?`<button class="au-back" data-act="landback">${ico("back",16)} Back</button>`:`<button class="au-back" data-tab="home">${ico("back",16)} Back</button>`}</div>
+    <div class="au-grid">
+      <aside class="au-side">
+        <div class="au-ph"><img src="/media/auth-photo.jpg" alt="Two CA students studying together in a library" width="1364" height="680">
+          <div class="au-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="7.5"/><circle cx="11" cy="13" r="3.5"/><path d="M11 13l8-8M16.5 4.5V7.5h3"/></svg><span><b>Your next step</b>10-minute practice</span></div></div>
+        <span class="au-pill">100% free for CA students</span>
+        <h1>Hey! Let's get you <em>exam-ready</em></h1>
+        <p class="au-sub">CA Foundation, Inter &amp; Final, all in one place.</p>
+        <ul class="au-ticks">${tk("A study plan built around your attempt date")}${tk("RTPs, MTPs, past papers and chapter-wise analysis")}${tk("10-minute MCQs and full mock exams")}${tk("Progress saved on every device")}</ul>
+      </aside>
+      <div class="au-form">${authCard()}</div>
+    </div></div>`}
   return `<div class="auth">
     ${recovering?"":gate?`<div><button class="btn ghost sm" data-act="landback">${ico("back",16)} Back</button></div>`:`<div><button class="btn ghost sm" data-tab="home">${ico("back",16)} Back</button></div>`}
     <div class="auth-head"><img class="mark-logo" src="/logo-180.png" alt="CA PrepX logo" width="76" height="76">
@@ -2596,7 +2655,7 @@ function welcome(gate){
     </div>`}
   </div>`;
 }
-function render(){render0();const on=!!document.getElementById("lp");if(document.body.classList.contains("lp-on")!==on){document.body.classList.toggle("lp-on",on);if(!on)window.scrollTo({top:0})}if(on)lpInit();else document.body.style.background=""}
+function render(){render0();const on=!!document.getElementById("lp");if(document.body.classList.contains("lp-on")!==on){document.body.classList.toggle("lp-on",on);if(!on)window.scrollTo({top:0})}const au=document.getElementById("au");document.body.classList.toggle("au-on",!!au);if(on)lpInit();else document.body.style.background=au?(au.getAttribute("data-m")==="dark"?"#0B0B0C":"#FFFDF9"):""}
 let LPI=0;
 function lpInit(){const lp=document.getElementById("lp");if(!lp||lp.dataset.init)return;lp.dataset.init="1";
   let m="light";try{m=localStorage.getItem("prepx.lpm")==="dark"?"dark":"light"}catch(_){}
