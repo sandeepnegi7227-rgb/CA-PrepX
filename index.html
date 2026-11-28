@@ -298,16 +298,6 @@ body:not(.lp-on):not(.au-on) #bnav{width:76px;padding:96px 8px 16px !important;g
 #bnav button[aria-selected="true"]::before{left:-8px}
 body:not(.lp-on):not(.au-on){padding-left:76px}
 }
-@media(max-width:719px){
-body:not(.lp-on):not(.au-on) #bnav{width:60px;padding:70px 5px 12px !important}
-#bnav button svg{width:21px;height:21px}
-#bnav button span{font-size:.58rem !important}
-#bnav button[aria-selected="true"]::before{left:-5px;width:3px}
-body:not(.lp-on):not(.au-on){padding-left:60px}
-body:not(.lp-on):not(.au-on) .wrap{padding-inline:12px}
-body:not(.lp-on):not(.au-on) header.top .brand>div{display:none}
-.tiles.v6{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
-}
 
 body:not(.lp-on):not(.au-on) #bnav{background:linear-gradient(180deg,#FFF8E6 0%,#FFFDF9 38%,#FFFDF9 100%) !important;gap:8px !important}
 :root[data-theme="dark"] body:not(.lp-on):not(.au-on) #bnav{background:radial-gradient(260px 220px at 0% 0%,rgba(240,180,41,.16),transparent 70%),#0F0F11 !important}
@@ -376,6 +366,15 @@ body:not(.lp-on):not(.au-on) #bnav{background:linear-gradient(180deg,#FFF8E6 0%,
 
 .an-frame{border:1px solid var(--line);border-radius:20px;overflow:hidden;height:calc(100vh - 150px);min-height:560px;background:#fff;box-shadow:0 8px 24px rgba(60,45,10,.08)}
 .an-frame iframe{width:100%;height:100%;border:0;display:block}
+@media(max-width:719px){
+body:not(.lp-on):not(.au-on){padding-left:0;padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+body:not(.lp-on):not(.au-on) #bnav{flex-direction:row !important;left:0 !important;right:0 !important;top:auto !important;bottom:0 !important;width:auto;max-height:none;padding:6px 6px calc(6px + env(safe-area-inset-bottom)) !important;border-right:0 !important;border-top:1px solid var(--line) !important;gap:2px !important;overflow-x:auto;overflow-y:hidden;justify-content:space-between;box-shadow:0 -8px 24px rgba(60,45,10,.10) !important}
+#bnav button{flex:1 1 0;width:auto;min-width:42px;padding:5px 0 4px !important;gap:3px;border-radius:14px !important}
+#bnav .nvi{width:32px;height:32px;border-radius:10px}
+#bnav button:hover{transform:none}
+#bnav button svg{width:19px;height:19px}
+#bnav button span{font-size:.6rem !important}
+}
 </style>
 <style>
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
